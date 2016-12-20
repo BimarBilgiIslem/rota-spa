@@ -77,6 +77,7 @@ item'larını ekleyebilirsiniz.
  - [ng.ckeditor](https://github.com/miamarti/ng.ckeditor)
  - [ngContextMenu](https://github.com/Wildhoney/ngContextMenu)
  - [ivh.treeview](https://github.com/iVantage/angular-ivh-treeview)
+ 
 ####Kütüphaneler
  - [Underscore](underscorejs.org)
  - [Moment.js](momentjs.com)
