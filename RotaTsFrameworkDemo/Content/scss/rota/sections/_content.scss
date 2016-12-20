@@ -1,0 +1,108 @@
+﻿#wrap.home-page {
+    height: 100vh;
+    background: none;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+@media screen and (min-width:800px) {
+    #wrap.home-page.video-bg {
+        background-image: none !important;
+    }
+}
+
+@media screen and (max-device-width: 800px) {
+    #bgvid {
+        display: none;
+    }
+}
+
+#bgvid {
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    z-index: -1000;
+}
+
+#content-body {
+    border-radius: 0px 0px 5px 5px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
+
+#sub-header {
+    background: $sub-header-bg;
+    border-bottom: $sub-header-border-bottom;
+    padding-top: 8px;    
+
+    .title {
+        color: $sub-header-title;
+        font-weight: bold;
+        text-shadow: 1px 2px rgba(51, 51, 51, 0.75);
+        font-size: $sub-header-title-size;
+        background: $sub-header-title-bg;
+        padding: $sub-header-padding;
+        display: inline-block;
+
+        .quickmenu {
+            color: $sub-header-quickmenu-color;
+            font-size: $sub-header-quickmenu-font-size;
+        }
+    }
+
+    .current-company {
+        color: $sub-header-company-color;
+        padding: $sub-header-company-padding;
+        background: $sub-header-company-bg;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+}
+
+#main-content {
+    padding-top: 51px;
+}
+
+/*#region Loading Panel */
+
+.loading-panel {
+    margin-top: 200px;
+}
+
+.loading-panel small {
+    color: #ebebeb;
+}
+
+.loading-panel h1 {
+    color: #ccc;
+}
+
+.loading-panel .startup-progress {
+    width: 100%;
+    background-color: #ebebeb;
+    height: 3px;
+}
+
+.loading-panel .startup-progress .startup-progress-bar {
+    background-color: #42bff4;
+    height: 2px;
+    width: 0;
+}
+
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
+/*#endregion */

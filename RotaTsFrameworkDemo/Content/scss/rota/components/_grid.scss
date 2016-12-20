@@ -1,0 +1,45 @@
+﻿.grid {
+    width: 100%;
+    height: 600px;
+    border-bottom: 3px solid #ABC5DC;
+}
+
+.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
+    background-color: #A9C7DD !important;
+}
+
+.ui-grid-selection-row-header-buttons.ui-grid-row-selected {
+    color: #386190;
+}
+
+.ui-grid-pager-panel {
+    background-color: #ebebeb;
+}
+
+.col-align-center {
+    text-align: center;
+    line-height: 29px;
+}
+
+.col-valign-center {
+    line-height: 29px;
+    padding-left: 5px;
+}
+
+.col-pull-right {
+    float: right;
+    margin-right: 3px;
+}
+
+.grid .badge, .col-pull-right .badge {
+    margin-left: 2px;
+}
+
+.action-buttons {
+    text-align: center;
+    padding: 2px 5px;
+
+    a {
+        padding-left: 5px;
+    }
+}

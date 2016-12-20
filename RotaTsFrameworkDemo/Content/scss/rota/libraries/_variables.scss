@@ -1,0 +1,63 @@
+/*#region Bootstrap */
+$font-size-base: 13px !default;
+$font-family-base: 'Segoe UI', 'Lucida Grande','Ubuntu','sans-serif' !default; //'Open Sans', sans-serif;
+$input-height-base: 32px !default;
+$line-height-base: 1.6;
+$navbar-default-bg: #F5F5F5 !default;
+
+$rota-gray-base: #000 !default;
+$gray-darker: lighten($rota-gray-base, 13.5%) !default; // #222
+$gray-dark: lighten($rota-gray-base, 40%) !default; // #333
+$gray: $gray-darker;
+$dropdown-header-color: #fff;
+/*#endregion */
+
+/*#region Rota */
+//subheader
+$sub-header-bg: #FAFAFA !default;
+$sub-header-border-bottom: 1px solid #ddd !default;
+$sub-header-title: #fff !default;
+$sub-header-title-size: 1.2em !default;
+$sub-header-title-bg: #628eab !default;
+$sub-header-padding: 5px 15px 5px 15px !default;
+$sub-header-quickmenu-color: #fff !default;
+$sub-header-quickmenu-font-size: .8em !default;
+//current company
+$sub-header-company-color: #fff !default;
+$sub-header-company-padding: 4px 9px !default;
+$sub-header-company-bg: #ccc !default;
+//content
+$full-screen-padding: 0 10px !default;
+//avatar
+$avatar-size: 35px !default;
+//margin
+$unit-values: 2,5,10 !default;
+//component
+$validation-control-border: 1px solid #d44950 !important !default;
+$active-control-bg: #f2f6f8 !default;
+//modal
+$modal-header-bg-color: #fff !default;
+$modal-header-color: #31708f !default;
+//rt-select
+$rt-select-border: 1px solid #ccc !default;
+$rt-select-bg: #fff !default;
+$rt-select-drop-bg: $rt-select-bg !default;
+$rt-select-arrow-bg: #eee !default
+$rt-select-arrow-color: inherit !default;
+$rt-select-selected-bg: #b94a48 !default;
+$rt-select-selected-hover-bg: #f5f5f5 !default;
+$rt-select-bg-image: url('/Content/img/select2.png') right top no-repeat;
+//breadcrumb
+$breadcrumb-bg: rgba(240, 173, 78, 0.77) !default;
+$breadcrumb-padding-vertical: 4px !default;
+$breadcrumb-color: #fff !default;
+//badges
+$badge-danger-bg: #d9534f !default;
+$badge-info-bg: #5bc0de !default;
+$badge-success-bg: #5cb85c !default;
+$badge-warning-bg: #f0ad4e !default;
+//rt-callout
+$rt-callout-bg: #a70606 !default;
+$rt-callout-color: #fff !default;
+$rt-callout-shadow: 1px 1px rgba(191, 183, 183, 0.63) !default;
+/*#endregion */

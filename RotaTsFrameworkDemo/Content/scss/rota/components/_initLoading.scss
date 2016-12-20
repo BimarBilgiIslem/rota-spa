@@ -1,0 +1,23 @@
+﻿.loading-panel {
+    margin-top: 200px;
+
+    small {
+        color: #ebebeb;
+    }
+
+    h1 {
+        color: #ccc;
+    }
+
+    .startup-progress {
+        width: 100%;
+        background-color: #ebebeb;
+        height: 3px;
+
+        .startup-progress-bar {
+            background-color: #42bff4;
+            height: 2px;
+            width: 0;
+        }
+    }
+}

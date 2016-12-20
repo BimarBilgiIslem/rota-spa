@@ -1,0 +1,168 @@
+﻿/*#region FadeInRight */
+
+@-webkit-keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateX(20px);
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+@-moz-keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        -moz-transform: translateX(20px);
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        -moz-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+@-o-keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        -o-transform: translateX(20px);
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        -o-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+/*#endregion */
+
+/*#region FadeInLeft */
+
+@-webkit-keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateX(-20px);
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+@-moz-keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        -moz-transform: translateX(-20px);
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        -moz-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+@-o-keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        -o-transform: translateX(-20px);
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        -o-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes fadeInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/*#endregion */
+
+/*#region angular-animate Animations */
+
+.rota-animate-fadeinleft.ng-enter {
+    -webkit-animation: fadeInLeft 0.5s;
+    -moz-animation: fadeInLeft 0.5s;
+    -o-animation: fadeInLeft 0.5s;
+    animation: fadeInLeft 0.5s;
+}
+
+.rota-animate-fadeinright.ng-enter {
+    -webkit-animation: fadeInRight 0.5s;
+    -moz-animation: fadeInRight 0.5s;
+    -o-animation: fadeInRight 0.5s;
+    animation: fadeInRight 0.5s;
+}
+/* end 'enter' transition */
+
+/*#endregion */
+
+.rota-animate-notification {
+    &.ng-enter, &.ng-leave {
+        -moz-transition: opacity .2s linear;
+        -o-transition: opacity .2s linear;
+        -webkit-transition: opacity .2s linear;
+        transition: opacity .2s linear;
+    }
+
+    &.ng-leave, &.ng-enter.ng-enter-active {
+        opacity: 1;
+    }
+
+    &.ng-enter, &.ng-leave.ng-leave-active {
+        opacity: 0;
+    }
+}
+
+.rota-animate-menu {
+    &:hover {
+        i {
+            transform: scale(1.2);
+        }
+    }
+
+    i {
+        transition: all .2s ease-in-out;
+    }
+}

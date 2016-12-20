@@ -1,0 +1,26 @@
+﻿
+.modal {
+    .modal-header {
+        padding: 5px 15px;
+        cursor: move;
+        border-bottom: 1px solid #e5e5e5;
+        background-color: $modal-header-bg-color;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+
+        h4 {
+            color: $modal-header-color;
+        }
+    }
+
+    .modal-body {
+        p {
+            font-size: 1.2em;
+            color: #333;
+        }
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+}

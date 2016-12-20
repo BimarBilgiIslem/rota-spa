@@ -1,0 +1,11 @@
+﻿ul.rt-multi-file-upload {
+    li {
+        &:first-child {
+            border-style: dashed;
+        }
+
+        &.rota-animate-rt-multiselect {
+            @include multiselect-animation;
+        }
+    }
+}

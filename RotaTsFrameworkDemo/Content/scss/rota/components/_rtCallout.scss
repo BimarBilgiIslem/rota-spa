@@ -1,0 +1,27 @@
+﻿.rt-callout {
+    position: absolute;
+    background: $rt-callout-bg;
+    color: $rt-callout-color;
+    padding: 3px 9px;
+    font-size: .85em;
+    border-radius: 4px;
+    display: block;
+    white-space: nowrap;
+    box-shadow: $rt-callout-shadow;
+    z-index: 999;
+    visibility: hidden;
+
+    &:after {
+        top: 100%;
+        left: 10%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-top-color: $rt-callout-bg;
+        border-width: 4px;
+        margin-left: -4px;
+    }
+}

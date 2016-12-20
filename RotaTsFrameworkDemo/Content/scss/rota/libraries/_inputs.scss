@@ -1,0 +1,29 @@
+﻿//controls font
+/*#{$all-text-inputs} {
+    font-weight: bold;
+}*/
+//controls placeholder
+@include placeholder-content {
+    font-weight: normal;
+}
+
+/*label {
+    color: rgb(138, 137, 137);
+    font-weight: normal;
+
+    > input[type=checkbox] + span {
+        display: inline-block;
+        margin-top: 2px;
+    }
+}*/
+
+input {
+    &[type="radio"], &[type="checkbox"] {
+        cursor: pointer;
+    }
+}
+
+input.ng-invalid,
+textarea.ng-invalid {
+    border: $validation-control-border;
+}

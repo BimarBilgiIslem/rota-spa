@@ -1,0 +1,41 @@
+﻿.rt-tree {
+    border: 1px solid #ccc;
+    padding: 5px;
+    max-height: 250px;
+    overflow: auto;
+    border-radius: 4px;
+    position: relative;
+    min-height: 100px;
+
+    .action-buttons {
+        position: absolute;
+        right: 5px;
+        top: 2px;
+    }
+
+    ul.ivh-treeview {
+
+        li.ivh-treeview-node {
+            line-height: 1.9em;
+
+            &.ivh-treeview-node-collapsed {
+            }
+
+            &.ivh-treeview-node-leaf {
+            }
+
+            & .ivh-treeview-node-label {
+                margin-left: 2px;
+            }
+
+            & .ivh-treeview-checkbox {
+                position: relative;
+                top: 2px;
+                left: 1px;
+            }
+        }
+
+        ul.ivh-treeview {
+        }
+    }
+}

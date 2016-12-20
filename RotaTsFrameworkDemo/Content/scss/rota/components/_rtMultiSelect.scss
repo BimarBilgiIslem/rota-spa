@@ -1,0 +1,92 @@
+﻿.rt-multiselect {
+    position: relative;
+    width: 100%;
+
+    &.ng-invalid {
+        @extend %rounded-corner;
+        border: $validation-control-border;
+    }
+
+    .input-group-addon:last-child {
+        border-right: $rt-select-border;
+        border-bottom: $rt-select-border;
+        border-top: $rt-select-border;
+    }
+
+    &.list-open {
+        .rt-select .select2-container .select2-choice,
+        .input-group-addon:last-child {
+            @include border-bottom-radius(0);
+        }
+    }
+
+    .rt-select {
+        .select2-container .select2-choice,
+        a.input-group-addon:last-child {
+            @include border-right-radius(0);
+        }
+    }
+
+    .header {
+    }
+
+    .body {
+        overflow-y: auto;
+        background-color: #fff;
+        border-left: $rt-select-border;
+        border-right: $rt-select-border;
+        border-bottom: $rt-select-border;
+        padding: 0;
+        max-height: 150px;
+        @include border-bottom-radius(4px);
+    }
+
+    .items {
+        width: 100%;
+        border-collapse: collapse;
+        @include border-bottom-radius(4px);
+
+        tr {
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.075);
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &.item {
+                &:hover {
+                    background: $rt-select-selected-hover-bg;
+                }
+
+                &.selected {
+                    background-color: lighten($rt-select-selected-bg,40%);
+                }
+
+                &.rota-animate-rt-multiselect {
+                    @include multiselect-animation;
+                }
+            }
+            /*border-bottom: 1px solid #ebebeb;*/
+            &.group-item {
+            }
+
+            &.child-item td.child-indent {
+                width: 25px;
+            }
+
+            td {
+                padding: 6px;
+
+                &.value {
+                    position: relative;
+                    color: $input-color;
+                }
+
+                &.selection {
+                    width: 15px;
+                    padding: 0 0 0 7px;
+                }
+            }
+        }
+    }
+}

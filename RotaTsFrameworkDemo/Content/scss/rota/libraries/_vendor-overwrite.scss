@@ -1,0 +1,35 @@
+﻿//Fix for "modal shift body" https://github.com/twbs/bootstrap/issues/9855
+.modal {
+    overflow-y: auto;
+}
+
+.modal-open {
+    overflow: auto;
+}
+//Nav-tabs badge fix
+.nav-tabs {
+    margin-bottom: 6px;
+}
+
+//speed dial component override
+a.mfb-component__button--child:hover,
+a.mfb-component__button--main:hover {
+    color: #ffffff !important;
+}
+//cropping are override
+.cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width: 100%;
+    height: 350px;
+}
+//breadcrumb
+
+/************************ MISC **********************************/
+.form-horizontal .control-label {
+    text-align: left !important;
+}
+
+.btn > i + span {
+    margin-left: 3px;
+}

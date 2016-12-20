@@ -1,0 +1,60 @@
+﻿
+//for margin and padding directional mixin
+@mixin directional_content($pre,$value) {
+    .#{$pre}-top-#{$value} {
+        #{$pre}-top: $value + px;
+    }
+
+    .#{$pre}-right-#{$value} {
+        #{$pre}-right: $value + px;
+    }
+
+    .#{$pre}-bottom-#{$value} {
+        #{$pre}-bottom: $value + px;
+    }
+
+    .#{$pre}-left-#{$value} {
+        #{$pre}-left: $value + px;
+    }
+}
+
+@mixin placeholder-content {
+    ::-webkit-input-placeholder {
+        @content
+    }
+
+    :-moz-placeholder { /* Firefox 18- */
+        @content
+    }
+
+    ::-moz-placeholder { /* Firefox 19+ */
+        @content
+    }
+
+    :-ms-input-placeholder {
+        @content
+    }
+}
+
+@mixin multiselect-animation {
+    &.ng-enter, &.ng-leave {
+        -moz-transition: all .2s linear;
+        -o-transition: all .2s linear;
+        -webkit-transition: all .2s linear;
+        transition: all .2s linear;
+    }
+
+    &.ng-enter {
+        transform: translateX(-20px);
+    }
+
+
+    &.ng-leave, &.ng-enter.ng-enter-active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    &.ng-enter, &.ng-leave.ng-leave-active {
+        opacity: 0;
+    }
+}

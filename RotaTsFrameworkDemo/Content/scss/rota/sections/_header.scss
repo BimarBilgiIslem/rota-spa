@@ -1,0 +1,11 @@
+﻿//avatar on header
+.navbar-nav > li > a.profile-image {
+    padding-top: 8px;
+    padding-bottom: 5px;
+
+    img {
+        @include size($avatar-size,$avatar-size)
+    }
+}
+
+

@@ -1,0 +1,20 @@
+﻿.rt-date-picker {
+    width: 180px;
+
+    &.ng-invalid input {
+        border: $validation-control-border;
+    }
+
+    .fixedrange {
+        padding-top: 3px;
+    }
+
+    ul.dropdown-menu {
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .dropdown-menu {
+        background-color: #fff;
+        border: 1px solid #ccc;
+    }
+}
