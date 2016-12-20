@@ -1,0 +1,8 @@
+﻿import "./basecontroller"
+import "./basemodelcontroller"
+import "./basecrudcontroller"
+import "./baselistcontroller"
+import "./basemodalcontroller"
+import "./baseapi"
+import "./basecrudapi"
+import "./baseconfig"

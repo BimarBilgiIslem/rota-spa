@@ -1,0 +1,28 @@
+﻿<!--ShellPage-->
+<div id="wrap" ng-class="{'home-page':shellvm.isHomePage,'video-bg':shellvm.vidOptions}" ng-style="shellvm.isHomePage && shellvm.bgImageUrl">
+    <!--Header-->
+    <header ui-view="header"></header>
+    <!--Main-->
+    <section ui-view id="main-content"></section>
+    <!--Model Debug Panel-->
+    <div class="debug-panel well hidden-xs hidden-md hidden-print hidden-sm" ng-if="enableDebugPanel">
+        <p>Json Model</p>
+        <pre>{{modelInDebug | json}}</pre>
+    </div>
+    <!--Video-->
+    <video autoplay loop muted id="bgvid" ng-if="shellvm.isHomePage && shellvm.vidOptions" poster="{{shellvm.vidOptions.poster}}">
+        <source ng-if="shellvm.vidOptions.urlMp4" src="{{shellvm.vidOptions.urlMp4}}" type="video/mp4" />
+        <source ng-if="shellvm.vidOptions.urlWebm" src="{{shellvm.vidOptions.urlWebm}}" type="video/webm" />
+        <source ng-if="shellvm.vidOptions.urlOgg" src="{{shellvm.vidOptions.urlOgg}}" type="video/ogg" />
+    </video>
+</div>
+<!--Ajax Spinner-->
+<div ng-show="shellvm.isBusy" class="page-splash">
+    <div rt-spinner="shellvm.spinnerOptions"></div>
+</div>
+<!--QuickMenu-->
+<nav ng-if="shellvm.routing.quickMenus.length" mfb-menu position="br" effect="slidein" active-icon="fa fa-close"
+     resting-icon="fa fa-reorder" toggling-method="click">
+    <a mfb-button mfb-button-close label="{{quickMenu.title}}" icon="fa fa-{{quickMenu.menuIcon}}"
+       ng-click="shellvm.routing.go(quickMenu.state,quickMenu.params)" ng-repeat="quickMenu in shellvm.routing.quickMenus"></a>
+</nav>

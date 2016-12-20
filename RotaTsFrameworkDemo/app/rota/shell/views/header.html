@@ -1,0 +1,86 @@
+﻿<!--Header-->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div ng-class="{container:!shellvm.fullScreen}">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="/Content/img/logo_bimar.png" alt="Bimar Logo">
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <!--Menuler-->
+            <rt-menu></rt-menu>
+            <ul class="nav navbar-nav navbar-right">
+                <li uib-dropdown ng-if="currentUser.fullname">
+                    <!--Current User-->
+                    <a href uib-dropdown-toggle ng-class="{'profile-image' : avatarUri}">
+                        <span ng-hide="avatarUri">
+                            <i class="fa fa-user"></i>
+                            {{::currentUser.fullname | textcase:'title'}}
+                        </span>
+                        <img class="img-circle user-picture" ng-if="avatarUri" ngf-src="avatarUri" alt="" />
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu scrollable-menu">
+                        <li>
+                            <a href>
+                                <i class="fa fa-user fa-fw"></i> {{::currentUser.fullname | textcase:'title'}}
+                            </a>
+                        </li>
+                        <!--Authorized Companies-->
+                        <li class="dropdown-header" i18n="rota.sirketler" ng-if="authorizedCompanies"></li>
+                        <li ng-repeat="company in authorizedCompanies">
+                            <a href ng-click="shellvm.setCompany(company)" ng-class="{'active-company':currentCompany.id == company.id}">
+                                <i class="fa fa-fw text-success" ng-class="{'fa-check' : currentCompany.id == company.id}"></i>
+                                <span ng-bind-html="company.companyName"></span>
+                            </a>
+                        </li>
+                        <!--Languages-->
+                        <li class="dropdown-header" i18n="rota.diller"></li>
+                        <li ng-repeat="language in supportedLanguages">
+                            <a href="" ng-click="shellvm.changeLanguage($event,language)" ng-class="{'active-language':currentLanguage.code==language.code}">
+                                <i class="fa fa-fw text-success" ng-class="{'fa-check' : currentLanguage.code==language.code}"></i>
+                                <img alt="" ng-src="/Content/img/{{language.code}}.png">
+                                {{::language.fullname}}
+                            </a>
+                        </li>
+                        <!--Settings-->
+                        <li class="dropdown-header" i18n="rota.ayarlar"></li>
+                        <li>
+                            <a href ng-click="shellvm.hotkey.toggleCheatSheet()">
+                                <i class="fa fa-keyboard-o fa-fw"></i>
+                                {{::"rota.kisayollar" | i18n}}
+                            </a>
+                        </li>
+                        <li ng-if="shellvm.securityConfig.avatarUploadUri">
+                            <a href ng-click="shellvm.changeAvatar()">
+                                <i class="fa fa-picture-o fa-fw"></i>
+                                {{::"rota.fotodegistir" | i18n}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href>
+                                <i class="fa fa-support fa-fw"></i>
+                                {{::"rota.yardim" | i18n}}
+                            </a>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li>
+                            <a href ng-click="shellvm.logOff()">
+                                <i class="fa fa-sign-out fa-fw"></i>
+                                {{::"rota.logout" | i18n}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
