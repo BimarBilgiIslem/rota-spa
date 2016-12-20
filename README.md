@@ -3,7 +3,7 @@ Rota CRUD SPA framework
 **Rota** , [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) uygulama geliştirme amacıyla yazılmış,angular ve bootstrap tabanlı bir [SPA](https://en.wikipedia.org/wiki/Single-page_application) framework'üdür. 
 
 ###Geliştirme ortamı 
-Visual Studio 2015 U3,[TypeScript](http://www.typescriptlang.org/) 2.0.6 kullanılarak geliştirilmiştir.Module loader olarak [RequireJS](requirejs.org),optimizasyon process için [r.js](http://requirejs.org/docs/optimization.html) kullanılmıştır
+Visual Studio 2015,[TypeScript](http://www.typescriptlang.org/) kullanılarak geliştirilmiştir.Module loader olarak [RequireJS](requirejs.org),optimizasyon process için [r.js](http://requirejs.org/docs/optimization.html) kullanılmıştır
 
 ###Gereksinimler
 
@@ -17,8 +17,29 @@ Rota framework'ü nuget'ten uygulamanıza ekleyebilirsiniz
     Install-Package rota.spa
 
 Rota,uygulama root dizini altında **app** klasörü içine eklenecektir. *(~/app/rota)*
+Nuget kurulumu bittikten sonra,app klasörü altına **startup.ts** dosyasını eklemeliyiz.Bu dosya,uygulama bootstrap oldugunda ilk çalışacak dosya'dır.
 
-Hızlı uygulama açmak ve rota item'ları oluşturmak için [sidewaffle](http://sidewaffle.com/) ile oluşturulmuş vs extension kurulum dosyasını [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-tmpl.vsix) indirebilirsiniz.Proje template'i rota.spa nuget paketinin yanında authentication,owin,webapi,signalR gibi server tarafı için gerekli olan nuget paketlerinide içermektedir.
+Dosya içerigi,kısaca aşagidaki gibi olmali.
+
+    //this line is important
+    import { App } from "rota/config/app";
+    
+    //config phase of angular pipeline
+    App.configure(() => {
+    
+    });
+    
+    //run phase of angular pipeline
+    App.run(() => {
+    });
+
+Artık uygulamamızı çalıştırabilirsiniz.
+
+
+----------
+
+
+Hızlı uygulama açmak ve rota item'ları (item templates) oluşturmak için [sidewaffle](http://sidewaffle.com/) ile oluşturulmuş vs extension kurulum dosyasını [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-tmpl.vsix) indirebilirsiniz.Proje template'i rota.spa nuget paketinin yanında authentication,owin,webapi,signalR gibi server tarafı için gerekli olan nuget paketlerinide içermektedir.
 
 Kurulumu yaptıktan sonra,new project template'lerine Rota SPA App uygulaması gelicektir. 
 *Path : Visual C#/Web/Rota Web Apps/Rota SPA App*
@@ -41,7 +62,8 @@ Bu extension ile rota project template'lerini projeye ekleyebilirsiniz*Visual C#
 
 item'larını ekleyebilirsiniz.
 
-###Kullanılan open source directive'ler
+###Kullanılan open source directive'ler ve kütüphaneler
+####Directives
  - [ui-select](https://github.com/angular-ui/ui-select)
  - [ui-grid](https://github.com/angular-ui/ui-grid)
  - [ui-router](https://ui-router.github.io/)
@@ -55,6 +77,14 @@ item'larını ekleyebilirsiniz.
  - [ng.ckeditor](https://github.com/miamarti/ng.ckeditor)
  - [ngContextMenu](https://github.com/Wildhoney/ngContextMenu)
  - [ivh.treeview](https://github.com/iVantage/angular-ivh-treeview)
+####Kütüphaneler
+ - [Underscore](underscorejs.org)
+ - [Moment.js](momentjs.com)
+ - [Spin.js](http://spin.js.org/)
+ - [Angular Bootstrap](angular-ui.github.io/bootstrap/)
+ - [jQuery](https://jquery.com/) 
+ - [jQuery-SignalR](https://github.com/SignalR/SignalR/wiki/SignalR-JS-Client)
+ - [Bootstrap 3x](http://getbootstrap.com/)
 
 Tüm vendor directive bilgilerine [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/RotaTsFrameworkDemo/app/rota/lib/index.ts) erişebilirsiniz
 
