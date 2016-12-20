@@ -106,3 +106,53 @@ Rota style framework'ü,[Bootstrap 3X SASS](https://github.com/twbs/bootstrap-sa
 ###Yetkilendirme
 
 Authentication için [OpenID Connect(OIDC)](http://openid.net/) desteklemektedir..Net implementasyonu için [Identity Server 3](https://github.com/IdentityServer/IdentityServer3) kullanmaktadır.Client kodu için [security servisine](https://github.com/BimarBilgiIslem/rota-spa/blob/master/RotaTsFrameworkDemo/app/rota/services/security.service.ts) bakabilirsiniz
+
+###Optimizasyon (Bundling & minification)
+Optimizasyon için [node.js](https://nodejs.org/en/) tabanlı [r.js](http://requirejs.org/docs/optimization.html) kütüphane'sini kullanıyoruz.Optimisazyon sonucu tüm production dosyaları **dist** klasörüne çıkartılacaktır.
+Javascript dosyalarını optimize etmek için :
+
+    ({
+        baseUrl: "../app",
+        mainConfigFile: "../app/rota/config/main.js",
+        dir: "../dist",
+        preserveLicenseComments: false,
+        locale: "tr-tr",
+        optimize: "uglify2",
+        uglify2: {
+            mangle: false
+        },	
+        onBuildWrite: function (name, path, contents) {		
+            //Olusan config dosyasindali baseUrl yi dist olarak değiştiriyoruz
+            if (name === 'rota/config/main') {
+                contents = contents.replace('app', 'dist');
+            }
+    
+            return contents;
+        },
+        paths: {
+            "signalr.hubs": "empty:"
+        },
+        removeCombined: true,
+    	writeBuildTxt:true,
+        modules: [           
+            {
+                name: "config/vendor.index"
+            },
+            //Rota Infrastructure
+            {
+                name: "startup",
+                exclude: ["config/vendor.index"]              
+            }            
+        ]
+    })
+    
+**Development dosyaları *app* klasörünün altındayken production dosyaları *dist* klasörünün altına kopyalanacaktir.**
+
+Css dosyaları için :
+
+    ({
+        cssIn: '../Content/css/site.css',
+        out: '../Content/css/index.min.css',
+        optimizeCss: 'default'
+    })
+
