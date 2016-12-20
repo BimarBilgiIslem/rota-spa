@@ -2,8 +2,7 @@ Rota CRUD SPA framework
 =======
 **Rota** , [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) uygulama geliştirme amacıyla yazılmış,angular ve bootstrap tabanlı bir [SPA](https://en.wikipedia.org/wiki/Single-page_application) framework'üdür. 
 
-> [Demo uygulama kodları](https://github.com/BimarBilgiIslem/rota-spa-demo)
-> [Canlı Intranet Edukkan uygulaması](http://edukkan.bimar.com)
+> [Demo uygulama kodları](https://github.com/BimarBilgiIslem/rota-spa-demo) |  [Canlı Intranet Edukkan uygulaması](http://edukkan.bimar.com)
 
 ###Geliştirme ortamı 
 Visual Studio 2015,[TypeScript](http://www.typescriptlang.org/) kullanılarak geliştirilmiştir.Module loader olarak [RequireJS](requirejs.org),optimizasyon process için [r.js](http://requirejs.org/docs/optimization.html) kullanılmıştır
@@ -46,11 +45,13 @@ Hızlı uygulama açmak ve rota item'ları (item templates) oluşturmak için [s
 
 Kurulumu yaptıktan sonra,new project template'lerine Rota SPA App uygulaması gelicektir. 
 *Path : Visual C#/Web/Rota Web Apps/Rota SPA App*
+
 ![enter image description here](https://dl.dropboxusercontent.com/u/31471810/new-project.PNG)
 
 Yeni Rota SPA App açtıktan sonra tüm nuget'leri restore ediyoruz ve böylece kod geliştirmeye hazır boş bir MVC uygulaması elde etmiş oluyoruz
 
 ![enter image description here](https://dl.dropboxusercontent.com/u/31471810/rota-items.PNG)
+
 Bu extension ile rota project template'lerini projeye ekleyebilirsiniz*Visual C#/Web/Rota SPA Client Templates* altında 
 
  - BaseApi
