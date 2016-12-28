@@ -362,26 +362,22 @@ interface IBasePageOptions {
 */
 interface IModelPageOptions extends IBasePageOptions {
     /**
-   * Initialize model runing the initModel method of formController     
-   */
+    * New item field name ,default 'new'
+    */
+    newItemParamValue?: string;
+    /**
+     * New item field value ,default 'id'
+     */
+    newItemParamName?: string;
+    /**
+    * Initialize model runing the initModel method of formController     
+    */
     initializeModel?: boolean;
 }
 /**
  * List page options
  */
 interface IListPageOptions extends IModelPageOptions {
-    /**
-     * New item field name ,default 'new'
-     */
-    newItemFieldValue?: string;
-    /**
-     * New item field value ,default 'id'
-     */
-    newItemFieldName?: string;
-    /**
-     * Create a unique number for id field when inserting
-     */
-    generateNewItemValue?: boolean;
     /**
      * Detail page state name of listing page
      */
@@ -421,18 +417,6 @@ interface IListButtonsVisibility {
  * Crud page options given through constructor
  */
 interface ICrudPageOptions extends IModelPageOptions {
-    /**
-     * New item field name ,default 'new'
-     */
-    newItemParamValue?: string;
-    /**
-     * New item field value ,default 'id'
-     */
-    newItemParamName?: string;
-    /**
-     * Create a unique number for id field when inserting
-     */
-    generateNewItemValue?: boolean;
     /**
      * Flag that checks form dirty state and save model when exiting the form,default true
      */
@@ -618,10 +602,12 @@ interface ISaveOptions {
      */
     message?: string;
     /**
-     * User Model
+     * Literal object model
      */
     jsonModel?: IBaseCrudModel;
-
+    /**
+     * Must be true if custom transition occured on afterSaveModel method
+     */
     redirectHandled?: boolean;
 }
 /**
@@ -656,11 +642,11 @@ interface ICrudParsers {
     /**
      * Parses used for saving process
      */
-    saveParsers: Array<IChainableMethod<any>>;
+    saveParsers: Array<IChainableMethod<IParserException>>;
     /**
      * Parses used for deleting process
      */
-    deleteParsers: Array<IChainableMethod<any>>;
+    deleteParsers: Array<IChainableMethod<IParserException>>;
 }
 /**
  * Crud types,Flagable
@@ -716,7 +702,8 @@ interface IParserException extends IServerFailedResponseData {
     title?: string;
     /**
      * Log type
+     * @description Log type must be 
      */
-    logType?: LogType;
+    logType: LogType.Error | LogType.Warn;
 }
 //#endregion

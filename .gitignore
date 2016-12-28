@@ -1,0 +1,28 @@
+# Ignore 
+*
+
+!.gitignore
+# Include 
+!*/**/app/rota/base/*.ts
+!*/**/app/rota/config/*.ts
+!*/**/app/rota/core/*
+!*/**/app/rota/directives/*.ts
+!*/**/app/rota/extensions/*.ts
+!*/**/app/rota/filters/*.ts
+!*/**/app/rota/lib/*
+!*/**/app/rota/resources/*
+!*/**/app/rota/services/*.ts
+!*/**/app/rota/shell/*
+
+#Ignore
+
+*/**/app/rota/**/index.js
+*/**/app/rota/**/*.map
+*/**/app/rota/lib/underscore.min.js
+*/**/app/rota/resources/resources.js
+*/**/app/rota/shell/*.js
+
+# Ignore Content style contents
+!*/**/RotaTsFrameworkDemo/Content/*
+# Ignore build r.js config files
+!*/**/RotaTsFrameworkDemo/build/*.js

@@ -26,7 +26,7 @@ interface IRotaRootScope extends ng.IRootScopeService {
  * Used for chainable promise function
  */
 interface IChainableMethod<T> {
-    (...args: any[]): ng.IPromise<T>;
+    (...args: any[]): ng.IPromise<T> | void;
 }
 /**
  * Result structure returned after caching file in server

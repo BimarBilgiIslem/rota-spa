@@ -31,6 +31,7 @@ class Validators implements IValidators {
         if (!item.func)
             throw new Error(this.constants.errors.NO_VALIDATION_FUNC_DEFINED);
 
+        //#region Defaults
         if (!item.order) {
             item.order = this.validators.length + 1;
         }
@@ -42,6 +43,11 @@ class Validators implements IValidators {
         if (!item.triggerOn) {
             item.triggerOn = TriggerOn.Action | TriggerOn.Changes;
         }
+
+        if (!item.crudFlag) {
+            item.crudFlag = CrudType.Create | CrudType.Update;
+        }
+        //#endregion
 
         this.validators.push(item);
         return this;

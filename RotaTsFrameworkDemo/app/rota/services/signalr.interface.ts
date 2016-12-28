@@ -12,14 +12,11 @@ interface IHubOptions<TListeners extends {}> {
     /**
      * Collection of client side callbacks
      */
-    //listeners?: { [index: string]: (...args: any[]) => void };
     listeners?: TListeners;
-
     /**
      * String array of server side methods which the client can call
      */
     methods?: Array<string>;
-
     /**
      * Sets the root path for the SignalR web service
      */
@@ -54,12 +51,9 @@ interface IHubOptions<TListeners extends {}> {
      * Function to handle hub connection state changed event
      */
     stateChanged?: (state: SignalR.StateChanged) => void;
-
+    //Other stuffs (not used)
     jsonp?: boolean;
-
     pingInterval?: number;
-
     withCredentials?: boolean;
-
     autoConnect?: boolean;
 }

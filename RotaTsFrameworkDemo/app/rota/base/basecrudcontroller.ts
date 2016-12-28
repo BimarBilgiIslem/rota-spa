@@ -23,7 +23,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             saveButton: true,
             saveContinueButton: true
         },
-        generateNewItemValue: true,
         changeIdParamOnSave: true,
         autoSave: false,
         readOnly: false
@@ -177,7 +176,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         //call base constructor
         super(bundle, BaseCrudController.extendOptions(bundle, options));
         //get new instance of validator service
-        //TODO:Validators class can be initialzed with new
         this.validators = this.$injector.instantiate(Validators) as IValidators;
         this.validators.controller = this;
         //set default options
@@ -429,7 +427,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                 }
             });
             //fail parsers
-            parseResult.catch((result: IValidationResult) => {
+            parseResult.catch((result: IParserException) => {
                 defer.reject(result);
             });
         } else {
@@ -441,7 +439,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * Before save event
      * @param options Save options
      */
-    beforeSaveModel(options: ISaveOptions): ng.IPromise<any> { return undefined; }
+    beforeSaveModel(options: ISaveOptions): ng.IPromise<IParserException> | void { return undefined; }
     /**
      * After save event
      * @param options Save options
@@ -501,8 +499,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         //filter by crud flag
         const validatorsFilteredByCrudFlag = _.filter(this.validators.validators, (item: IValidationItem) => {
             let crudFlagOk = false;
-            if (!item.crudFlag ||
-                (this.crudPageFlags.isSaving && options.isNew && item.crudFlag & CrudType.Create) ||
+            if ((this.crudPageFlags.isSaving && options.isNew && item.crudFlag & CrudType.Create) ||
                 (this.crudPageFlags.isSaving && !options.isNew && item.crudFlag & CrudType.Update) ||
                 (this.crudPageFlags.isDeleting && item.crudFlag & CrudType.Delete)) {
                 crudFlagOk = true;
@@ -528,8 +525,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     //#endregion
 
     //#region Authorization
-    checkAuthority(options?: ISaveOptions): ng.IPromise<any> {
-        return this.common.promise();
+    checkAuthority(options?: ISaveOptions): void {
+        //TODO:Will be considered afterwards
     }
     //#endregion
 
@@ -615,7 +612,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     /**
      * Before delete event
      */
-    beforeDeleteModel(): ng.IPromise<any> { return this.common.promise(); }
+    beforeDeleteModel(options: IDeleteOptions): ng.IPromise<IParserException> | void { return undefined }
     /**
      * After delete event
      * @param options

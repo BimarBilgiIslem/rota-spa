@@ -84,7 +84,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Selected rows
      * @returns {} 
      */
-    get gridSeletedRows(): any[] {
+    get gridSeletedRows(): IBaseListModel<TModel> {
         if (this.isAssigned(this.gridApi) && this.isAssigned(this.gridApi.selection)) {
             return this.gridApi.selection.getSelectedRows();
         }
@@ -443,7 +443,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     goToDetailState(id: string): ng.IPromise<any> {
         const params = {};
         if (this.common.isAssigned(id)) {
-            params[this.listPageOptions.newItemFieldName] = id;
+            params[this.listPageOptions.newItemParamName] = id;
             //store filter values if any
             if (this.listPageOptions.storeFilterValues) {
                 const purgedFilters = _.omit(this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,

@@ -408,7 +408,7 @@ module.run([
             '    <div class="modal-body">' +
             '       <div class="cropArea">' +
             '           <img-crop area-type="square" image= "imageFile | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=\'\'"></img-crop>' +
-            '       </div> {{croppedDataUrl}}' +
+            '       </div>' +
             '    </div>' +
             '    <div class="modal-footer">' +
             '        <button type="button" class="btn btn-default" data-ng-click="dismiss()" i18n="rota.iptal">' +
