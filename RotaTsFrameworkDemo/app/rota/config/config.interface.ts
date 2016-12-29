@@ -89,6 +89,7 @@ interface IEvents {
  * Date time formats used in rtDatetime directive
  */
 interface IDateTimeFormat {
+    //All date Formats
     timeFormat: string;
     dateFormat: string;
     monthFormat: string;
@@ -99,9 +100,24 @@ interface IDateTimeFormat {
     datePickerTimeMinStep?: number;
 }
 /**
+ * CRUD Api action names
+ * @description See defaults in constants
+ */
+interface ICrudActionNames {
+    getList: string;
+    getById: string;
+    getPagedList: string;
+    save: string;
+    delete: string;
+}
+/**
  * Main config settings
  */
 interface IMainConfig extends IBaseConfig {
+    /**
+     * CRUD Api action names
+     */
+    crudActionNames?: ICrudActionNames;
     /**
      * Api path used when there is only one api in use
      */

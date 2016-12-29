@@ -44,6 +44,14 @@ class Config extends BaseConfig<IMainConfig> {
                 menuChanged: constants.events.EVENT_MENU_CHANGED,
                 modelLoaded: constants.events.EVENT_MODEL_LOADED
             },
+            //Crud api action names
+            crudActionNames: {
+                delete: constants.server.ACTION_NAME_DELETE,
+                getById: constants.server.ACTION_NAME_GET_BY_ID,
+                getList: constants.server.ACTION_NAME_LIST,
+                getPagedList: constants.server.ACTION_NAME_PAGED_LIST,
+                save: constants.server.ACTION_NAME_SAVE
+            },
             //Grid settings
             gridDefaultPageSize: constants.grid.GRID_DEFAULT_PAGE_SIZE,
             gridDefaultOptionsName: constants.grid.GRID_DEFAULT_OPTIONS_NAME,

@@ -14,7 +14,6 @@ enum RequestMethod {
  */
 class BaseApi extends InjectableObject implements IBaseApi {
     //#region Props
-    $rootScope: ng.IRootScopeService;
     $q: angular.IQService;
     $http: ng.IHttpService;
     uploader: ng.angularFileUpload.IUploadService;
@@ -27,14 +26,13 @@ class BaseApi extends InjectableObject implements IBaseApi {
     //#endregion
 
     //#region Init
-    static injects = InjectableObject.injects.concat(['$rootScope', '$q', '$http', 'Config', 'Common', 'Localization', 'Caching', 'Logger', 'Upload', 'Constants']);
+    static injects = InjectableObject.injects.concat(['$q', '$http', 'Config', 'Common', 'Localization', 'Caching', 'Logger', 'Upload', 'Constants']);
     /**
    * Init bundle
    * @param bundle
    */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.$rootScope = bundle.systemBundles['$rootScope'];
         this.$q = bundle.systemBundles['$q'];
         this.$http = bundle.systemBundles['$http'];
         this.config = bundle.systemBundles['config'];

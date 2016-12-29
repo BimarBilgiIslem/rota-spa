@@ -110,8 +110,6 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
             //#endregion
 
             //#region Utility
-
-
             /**
              * Update visible items
              */
@@ -124,10 +122,11 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
                         return model.$selectItem[attrs.groupbyProp];
                     });
                 }
-                //Required settings
+                //run all validators
+                modelCtrl.$validate();
+                //set required validator
                 const required = !scope.visibleItems.length && common.isDefined(attrs.required) && attrs.required;
                 modelCtrl.$setValidity('required', !required);
-                modelCtrl.$validate();
             }
             /**
              *  Find list item by list item or value
