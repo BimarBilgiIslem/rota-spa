@@ -2,7 +2,7 @@ Rota CRUD SPA framework
 =======
 **Rota** , [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) uygulama geliştirme amacıyla yazılmış,angular ve bootstrap tabanlı bir [SPA](https://en.wikipedia.org/wiki/Single-page_application) framework'üdür. 
 
-> [Demo uygulama kodları](https://github.com/BimarBilgiIslem/rota-spa-demo) |  [Canlı Intranet Edukkan uygulaması](http://edukkan.bimar.com)
+> [Demo uygulama kodları](https://github.com/BimarBilgiIslem/rota-spa-demo) |  [Canlı Intranet Edukkan uygulaması](http://edukkan.bimar.com) | [Wiki](https://github.com/BimarBilgiIslem/rota-spa/wiki) 
 
 ###Geliştirme ortamı 
 Visual Studio 2015,[TypeScript](http://www.typescriptlang.org/) kullanılarak geliştirilmiştir.Module loader olarak [RequireJS](requirejs.org),optimizasyon process için [r.js](http://requirejs.org/docs/optimization.html) kullanılmıştır
@@ -14,14 +14,17 @@ Visual Studio 2015,[TypeScript](http://www.typescriptlang.org/) kullanılarak ge
  - [Web Compiler](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.WebCompiler) (SASS dosyalarını derlemek için)
 
 ###Kurulum
-Rota framework'ü nuget'ten uygulamanıza ekleyebilirsiniz
+Boş MVC uygulamasına Rota framework'ü nuget'ten uygulamanıza ekleyebilirsiniz
 
     Install-Package rota.spa
 
-Rota,uygulama root dizini altında **app** klasörü içine eklenecektir. *(~/app/rota)*
-Nuget kurulumu bittikten sonra,app klasörü altına **startup.ts** dosyasını eklemeliyiz.Bu dosya,uygulama bootstrap oldugunda ilk çalışacak dosya'dır.
+Rota ts dosyaları,uygulama root dizini altında **app** klasörüne,SCSS dosyaları ise **Content** klasörü altına eklenecektir
 
-Dosya içerigi,kısaca aşagidaki gibi olmali.
+Nuget kurulumu bittikten sonra,`app` klasörü altına **startup.ts** dosyasını eklemeliyiz.
+
+> **Bu dosya,uygulama bootstrap oldugunda ilk çalışacak dosya'dır.** Başlangıç ayarları bu dosyada yapılmalıdır.(*Menü ekleme,dinamik resources vs...*)
+
+`startup.ts` dosya içerigi,minimal aşagidaki gibi olmali.*İlk line framewok'ü yükleyecektir.*
 
     //this line is important
     import { App } from "rota/config/app";
@@ -35,38 +38,33 @@ Dosya içerigi,kısaca aşagidaki gibi olmali.
     App.run(() => {
     });
 
-Artık uygulamamızı çalıştırabilirsiniz.
+> **ÖNEMLİ** :  Rota'nın module resolution tipi [AMD](https://en.wikipedia.org/wiki/Asynchronous_module_definition) oldugundan ts.config dosyasında veya proje'nin properties ayarlarında AMD olarak set etmelisiniz
+
+Sonraki adım olarak uygulamanıza menü eklemelisiniz.Menü eklemek için [Routing servisi](https://github.com/BimarBilgiIslem/rota-spa/wiki/Service%27ler#routing) `addMenus` methodu kullanılmalı.
+
+    //run phase of angular pipeline
+        App.run(["Routing",(routing:IRouting) => {
+	        routing.addMenus([...]);
+        }]);
+
+Artık uygulamamızı çalıştırabilirsiniz. :rocket:
 
 
 ----------
+###Styling
+Uygulamayı ilk çalıştırdığınızda herhangi bir CSS dosyayi yüklenmez.Varsayilan CSS dosyasi oluşturmaniz icin `rota.scss` dosyasini derlemeniz gerekir.Oluşan CSS dosyasıda `Content/css` folder'nda olmalı.Ayrıntılı bilgi için [Styling](https://github.com/BimarBilgiIslem/rota-spa/wiki/Styling) sayfasına bakabilirsiniz
 
 
-Hızlı uygulama açmak ve rota item'ları (item templates) oluşturmak için [sidewaffle](http://sidewaffle.com/) ile oluşturulmuş vs extension kurulum dosyasını [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-tmpl.vsix) indirebilirsiniz.Proje template'i rota.spa nuget paketinin yanında authentication,owin,webapi,signalR gibi server tarafı için gerekli olan nuget paketlerinide içermektedir.
+###Project & Item Templates
 
-Kurulumu yaptıktan sonra,new project template'lerine Rota SPA App uygulaması gelicektir. 
-*Path : Visual C#/Web/Rota Web Apps/Rota SPA App*
+Hızli uygulama geliştirmek amacıyla Rota project ve item template'leri içeren VS extension'i [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-tmpl.vsix) indirebilirsiniz.Ayrıntılı bilgi için [Project Item Templates](https://github.com/BimarBilgiIslem/rota-spa/wiki/Project-Item-Templates) sayfasına göz atabilirsiniz
 
-![enter image description here](https://dl.dropboxusercontent.com/u/31471810/new-project.PNG)
+###Yetkilendirme
 
-Yeni Rota SPA App açtıktan sonra tüm nuget'leri restore ediyoruz ve böylece kod geliştirmeye hazır boş bir MVC uygulaması elde etmiş oluyoruz
+Authentication için [OpenID Connect(OIDC)](http://openid.net/) desteklemektedir..Net implementasyonu için [Identity Server 3](https://github.com/IdentityServer/IdentityServer3) kullanmaktadır.Ayrıntılı bilgi için [security servisine](https://github.com/BimarBilgiIslem/rota-spa/wiki/Service%27ler#security) göz atabilirsiniz.
 
-![enter image description here](https://dl.dropboxusercontent.com/u/31471810/rota-items.PNG)
 
-Bu extension ile rota project template'lerini projeye ekleyebilirsiniz*Visual C#/Web/Rota SPA Client Templates* altında 
 
- - BaseApi
- - BaseController
- - BaseCrudApi
- - BaseCrudController
- - BaseFormController
- - BaseListController
- - BaseModalController
- - BaseModelController
- - Directive
- - Filter
- - Modal Template
-
-item'larını ekleyebilirsiniz.
 
 ###Kullanılan open source directive'ler ve kütüphaneler
 ####Directives
@@ -85,6 +83,7 @@ item'larını ekleyebilirsiniz.
  - [ivh.treeview](https://github.com/iVantage/angular-ivh-treeview)
 ####Kütüphaneler
  - [Underscore](underscorejs.org)
+ - [Underscore.string](https://github.com/epeli/underscore.string)
  - [Moment.js](momentjs.com)
  - [Spin.js](http://spin.js.org/)
  - [Angular Bootstrap](angular-ui.github.io/bootstrap/)
@@ -93,72 +92,3 @@ item'larını ekleyebilirsiniz.
  - [Bootstrap 3x](http://getbootstrap.com/)
 
 Tüm vendor directive bilgilerine [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/RotaTsFrameworkDemo/app/rota/lib/index.ts) erişebilirsiniz
-
-###Styling
-
-Rota style framework'ü,[Bootstrap 3X SASS](https://github.com/twbs/bootstrap-sass) kütüphanesini kullanıyor.Rota'nin ihtiyaci olan tüm style dosyaları Content dosyası altında bulunuyor.Proje bazında stil yaratmak için 
-*/Content/scss/* klasörü altında yeni klasör yaratarak kendi SASS dosyalarınızı burada yaratabilirsiniz.
-
-    //proje bazlı variables dosyası
-    @import "variables";
-    //rota sass dosyaları 
-    @import "../rota/rota";
-    //proje bazlı SASS dosyaları
-    @import "components/input_groups";
-    @import "components/dropdown";
-    ...
-    
-
-###Yetkilendirme
-
-Authentication için [OpenID Connect(OIDC)](http://openid.net/) desteklemektedir..Net implementasyonu için [Identity Server 3](https://github.com/IdentityServer/IdentityServer3) kullanmaktadır.Client kodu için [security servisine](https://github.com/BimarBilgiIslem/rota-spa/blob/master/RotaTsFrameworkDemo/app/rota/services/security.service.ts) bakabilirsiniz
-
-###Optimizasyon (Bundling & minification)
-Optimizasyon için [node.js](https://nodejs.org/en/) tabanlı [r.js](http://requirejs.org/docs/optimization.html) kütüphane'sini kullanıyoruz.Optimisazyon sonucu tüm production dosyaları **dist** klasörüne çıkartılacaktır.
-Javascript dosyalarını optimize etmek için :
-
-    ({
-        baseUrl: "../app",
-        mainConfigFile: "../app/rota/config/main.js",
-        dir: "../dist",
-        preserveLicenseComments: false,
-        locale: "tr-tr",
-        optimize: "uglify2",
-        uglify2: {
-            mangle: false
-        },	
-        onBuildWrite: function (name, path, contents) {		
-            //Olusan config dosyasindali baseUrl yi dist olarak değiştiriyoruz
-            if (name === 'rota/config/main') {
-                contents = contents.replace('app', 'dist');
-            }
-    
-            return contents;
-        },
-        paths: {
-            "signalr.hubs": "empty:"
-        },
-        removeCombined: true,
-    	writeBuildTxt:true,
-        modules: [           
-            {
-                name: "config/vendor.index"
-            },
-            //Rota Infrastructure
-            {
-                name: "startup",
-                exclude: ["config/vendor.index"]              
-            }            
-        ]
-    })
-    
-**Development dosyaları *app* klasörünün altındayken production dosyaları *dist* klasörünün altına kopyalanacaktir.**
-
-Css dosyaları için :
-
-    ({
-        cssIn: '../Content/css/site.css',
-        out: '../Content/css/index.min.css',
-        optimizeCss: 'default'
-    })
-
