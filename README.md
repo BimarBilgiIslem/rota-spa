@@ -38,7 +38,7 @@ Nuget kurulumu bittikten sonra,`app` klasörü altına **startup.ts** dosyasın�
     App.run(() => {
     });
 
-> **ÖNEMLİ** :  Rota'nın module resolution tipi [AMD](https://en.wikipedia.org/wiki/Asynchronous_module_definition) oldugundan ts.config dosyasında veya proje'nin properties ayarlarında AMD olarak set etmelisiniz
+> **ÖNEMLİ** : :bulb:  Rota'nın module resolution tipi [AMD](https://en.wikipedia.org/wiki/Asynchronous_module_definition) oldugundan ts.config dosyasında veya proje'nin properties ayarlarında AMD olarak set etmelisiniz
 
 Sonraki adım olarak uygulamanıza menü eklemelisiniz.Menü eklemek için [Routing servisi](https://github.com/BimarBilgiIslem/rota-spa/wiki/Service%27ler#routing) `addMenus` methodu kullanılmalı.
 
@@ -47,7 +47,7 @@ Sonraki adım olarak uygulamanıza menü eklemelisiniz.Menü eklemek için [Rout
 	        routing.addMenus([...]);
         }]);
 
-Artık uygulamamızı çalıştırabilirsiniz. :rocket:
+Artık uygulamanızı çalıştırabilirsiniz. :rocket:
 
 
 ----------
