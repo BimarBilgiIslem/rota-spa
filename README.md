@@ -52,7 +52,7 @@ Artık uygulamamızı çalıştırabilirsiniz. :rocket:
 
 ----------
 ###Styling
-Uygulamayı ilk çalıştırdığınızda herhangi bir CSS dosyayi yüklenmez.Varsayilan CSS dosyasi oluşturmaniz icin `rota.scss` dosyasini derlemeniz gerekir.Oluşan CSS dosyasıda `Content/css` folder'nda olmalı.Ayrıntılı bilgi için [Styling](https://github.com/BimarBilgiIslem/rota-spa/wiki/Styling) sayfasına bakabilirsiniz
+Uygulamayı ilk çalıştırdığınızda herhangi bir CSS dosyası yüklenmez.Varsayilan CSS dosyasi oluşturmaniz icin `rota.scss` dosyasini derlemeniz gerekir.Oluşan CSS dosyasıda `Content/css` folder'nda olmalı.Ayrıntılı bilgi için [Styling](https://github.com/BimarBilgiIslem/rota-spa/wiki/Styling) sayfasına bakabilirsiniz
 
 
 ###Project & Item Templates
@@ -81,6 +81,7 @@ Authentication için [OpenID Connect(OIDC)](http://openid.net/) desteklemektedir
  - [ng.ckeditor](https://github.com/miamarti/ng.ckeditor)
  - [ngContextMenu](https://github.com/Wildhoney/ngContextMenu)
  - [ivh.treeview](https://github.com/iVantage/angular-ivh-treeview)
+
 ####Kütüphaneler
  - [Underscore](underscorejs.org)
  - [Underscore.string](https://github.com/epeli/underscore.string)
@@ -92,3 +93,27 @@ Authentication için [OpenID Connect(OIDC)](http://openid.net/) desteklemektedir
  - [Bootstrap 3x](http://getbootstrap.com/)
 
 Tüm vendor directive bilgilerine [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/RotaTsFrameworkDemo/app/rota/lib/index.ts) erişebilirsiniz
+
+###License
+
+MIT License
+
+Copyright (c) [year] [fullname]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
