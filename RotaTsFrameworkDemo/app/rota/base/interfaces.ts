@@ -695,7 +695,7 @@ interface IBundle {
 /**
  * Parsers exception include notifictaion type and title
  */
-interface IParserException extends IServerFailedResponseData {
+interface IParserException extends IValidationResult {
     /**
      * Log title
      */

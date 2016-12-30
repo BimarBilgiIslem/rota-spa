@@ -353,13 +353,15 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         });
         //if there is error in save response,dispacth errorModel method
         saveResult.catch((error: IParserException): void => {
-            if (this.common.isNullOrEmpty(error.message)) return;
+            const parserErrorMsg = error.message ||
+                (error.messageI18N && this.localization.getLocal(error.messageI18N));
+            if (this.common.isNullOrEmpty(parserErrorMsg)) return;
             switch (error.logType) {
                 case LogType.Error:
-                    this.notification.error({ title: error.title, message: error.message });
+                    this.notification.error({ title: error.title, message: parserErrorMsg });
                     break;
                 case LogType.Warn:
-                    this.notification.warn({ title: error.title, message: error.message });
+                    this.notification.warn({ title: error.title, message: parserErrorMsg });
                     break;
                 default:
                 //Server errors will be handled in logger.exception interceptor
