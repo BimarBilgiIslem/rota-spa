@@ -55,9 +55,11 @@ Artık uygulamanızı çalıştırabilirsiniz. :rocket:
 Uygulamayı ilk çalıştırdığınızda herhangi bir CSS dosyası yüklenmez.Varsayilan CSS dosyasi oluşturmaniz icin `rota.scss` dosyasini derlemeniz gerekir.Oluşan CSS dosyasıda `Content/css` folder'nda olmalı.Ayrıntılı bilgi için [Styling](https://github.com/BimarBilgiIslem/rota-spa/wiki/Styling) sayfasına bakabilirsiniz
 
 
-###Project & Item Templates
+###Project Item Templates & Code Snippets
 
 Hızli uygulama geliştirmek amacıyla Rota project ve item template'leri içeren VS extension'i [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-tmpl.vsix) indirebilirsiniz.Ayrıntılı bilgi için [Project Item Templates](https://github.com/BimarBilgiIslem/rota-spa/wiki/Project-Item-Templates) sayfasına göz atabilirsiniz
+
+Ayrıca rota directive ve custom HTML layout ları için [rota code snippet's](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-snippets.vsix) extension'i kurabilirsiniz
 
 ###Yetkilendirme
 
