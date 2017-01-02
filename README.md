@@ -57,7 +57,7 @@ Uygulamayı ilk çalıştırdığınızda herhangi bir CSS dosyası yüklenmez.V
 
 ###Project Item Templates & Code Snippets
 
-Hızli uygulama geliştirmek amacıyla Rota project ve item template'leri içeren VS extension'i [buradan](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-tmpl.vsix) indirebilirsiniz.Ayrıntılı bilgi için [Project Item Templates](https://github.com/BimarBilgiIslem/rota-spa/wiki/Project-Item-Templates) sayfasına göz atabilirsiniz
+Hızli uygulama geliştirmek amacıyla Rota project ve item template'leri içeren VS extension'i [buradan](https://github.com/BimarBilgiIslem/rota-spa/wiki/Project-Item-Templates-&-Code-Snippets) indirebilirsiniz.Ayrıntılı bilgi için [Project Item Templates](https://github.com/BimarBilgiIslem/rota-spa/wiki/Project-Item-Templates) sayfasına göz atabilirsiniz
 
 Ayrıca rota directive ve custom HTML layout ları için [rota code snippet's](https://github.com/BimarBilgiIslem/rota-spa/blob/master/rota-snippets.vsix) extension'i kurabilirsiniz
 
@@ -123,3 +123,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
