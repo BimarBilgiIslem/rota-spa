@@ -20,7 +20,7 @@ Boş MVC uygulamasına Rota framework'ü nuget'ten uygulamanıza ekleyebilirsini
 
 Rota ts dosyaları,uygulama root dizini altında **app** klasörüne,SCSS dosyaları ise **Content** klasörü altına eklenecektir
 
-Nuget kurulumu bittikten sonra,`app` klasörü altına **startup.ts** dosyasını eklemeliyiz.
+Nuget kurulumu bittikten sonra,`app` klasörü altına **startup.ts** dosyasını eklemelisiniz.
 
 > **Bu dosya,uygulama bootstrap oldugunda ilk çalışacak dosya'dır.** Başlangıç ayarları bu dosyada yapılmalıdır.(*Menü ekleme,dinamik resources vs...*)
 
@@ -46,6 +46,8 @@ Sonraki adım olarak uygulamanıza menü eklemelisiniz.Menü eklemek için [Rout
         App.run(["Routing",(routing:IRouting) => {
 	        routing.addMenus([...]);
         }]);
+
+Son olarak [Global Environments](https://github.com/BimarBilgiIslem/rota-spa/wiki/Global-Environments) sayfasındaki *Index sayfasi* ve *Global settings* ayarlarını yaptıktan sonra
 
 Artık uygulamanızı çalıştırabilirsiniz. :rocket:
 
