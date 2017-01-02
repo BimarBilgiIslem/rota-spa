@@ -15,12 +15,12 @@ angular.module('ng-currency', [])
     .directive('ngCurrency', ['$filter', '$locale', function ($filter, $locale) {
         return {
             require: 'ngModel',
-            link: (scope, element, attrs, controller) => {
+            link: function (scope, element, attrs, controller) {
                 var hardCap, min, max, currencySymbol, ngRequired;
                 var active = true;
                 var fraction = 2;
 
-                attrs.$observe('ngCurrency', (value) => {
+                attrs.$observe('ngCurrency', function (value) {
                     active = (value !== 'false');
                     if (active) {
                         reformat();
@@ -29,33 +29,33 @@ angular.module('ng-currency', [])
                         controller.$render();
                     }
                 });
-                attrs.$observe('hardCap', (value) => {
+                attrs.$observe('hardCap', function (value) {
                     hardCap = (value === 'true');
                     revalidate();
                 });
-                attrs.$observe('min', (value) => {
+                attrs.$observe('min', function (value) {
                     min = value ? Number(value) : undefined;
                     revalidate();
                 });
-                attrs.$observe('max', (value) => {
+                attrs.$observe('max', function (value) {
                     max = value ? Number(value) : undefined;
                     revalidate();
                 });
-                attrs.$observe('currencySymbol', (value) => {
+                attrs.$observe('currencySymbol', function (value) {
                     currencySymbol = value;
                     reformat();
                 });
-                attrs.$observe('ngRequired', (value) => {
+                attrs.$observe('ngRequired', function (value) {
                     ngRequired = value;
                     revalidate();
                 });
-                attrs.$observe('fraction', (value) => {
+                attrs.$observe('fraction', function (value) {
                     fraction = value || 2;
                     reformat();
                     revalidate();
                 });
 
-                controller.$parsers.push((value) => {
+                controller.$parsers.push(function (value) {
                     if (active && [undefined, null, ''].indexOf(value) === -1) {
                         value = clearValue(value);
                         value = keepInRange(Number(value));
@@ -64,14 +64,14 @@ angular.module('ng-currency', [])
                     return value;
                 });
 
-                controller.$formatters.push((value) => {
+                controller.$formatters.push(function (value) {
                     if (active && [undefined, null, ''].indexOf(value) === -1) {
                         return $filter('currency')(value, getCurrencySymbol(), fraction);
                     }
                     return value;
                 });
 
-                controller.$validators.min = (value) => {
+                controller.$validators.min = function (value) {
                     if (!ngRequired && ([undefined, null, ''].indexOf(value) !== -1 || isNaN(value))) {
                         return true;
                     }
@@ -80,7 +80,7 @@ angular.module('ng-currency', [])
                       value >= min;
                 };
 
-                controller.$validators.max = (value) => {
+                controller.$validators.max = function (value) {
                     if (!ngRequired && ([undefined, null, ''].indexOf(value) !== -1 || isNaN(value))) {
                         return true;
                     }
@@ -89,7 +89,7 @@ angular.module('ng-currency', [])
                       value <= max;
                 };
 
-                controller.$validators.fraction = (value) => {
+                controller.$validators.fraction = function (value) {
                     return !active || !value || !isNaN(value);
                 };
 
@@ -135,14 +135,14 @@ angular.module('ng-currency', [])
                     return value;
                 }
 
-                scope.$on('currencyRedraw', () => {
+                scope.$on('currencyRedraw', function () {
                     revalidate();
                     reformat();
                 });
 
-                element.bind('focus', () => {
+                element.bind('focus', function () {
                     if (active) {
-                        var groupRegex = new RegExp(`\\${$locale.NUMBER_FORMATS.GROUP_SEP}`, 'g');
+                        var groupRegex = new RegExp('\\$locale.NUMBER_FORMATS.GROUP_SEP', 'g');
                         var value = [undefined, null, ''].indexOf(controller.$$rawModelValue) === -1 ? $filter('number')(controller.$$rawModelValue, fraction).replace(groupRegex, '') : controller.$$rawModelValue;
                         if (controller.$viewValue !== value) {
                             controller.$viewValue = value;

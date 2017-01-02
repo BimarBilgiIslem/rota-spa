@@ -363,7 +363,7 @@ module.run([
             '               <div class="col-md-12">' +
             '                   <div class="form-group">' +
             '                       <label for="lblValue">{{subTitle}}</label>' +
-            '                       <input id="lblValue" type="text" class="form-control" ng-model="value.val" autofocus/>' +
+            '                       <input id="lblValue" type="text" class="form-control" ng-model="value.val" rt-focus/>' +
             '                   </div>' +
             '               </div>' +
             '           </div>' +
