@@ -51,6 +51,7 @@ require.config({
         scroll: './rota/lib/angular-scroll.min',
         ngcontextmenu: './rota/lib/ng-contextmenu',
         treeview: './rota/lib/ivh-treeview',
+        uimask: './rota/lib/mask.min',
         //Security
         //JWT Client claims helpers
         jws: './rota/lib/jws-3.0.min',
@@ -149,6 +150,9 @@ require.config({
             deps: ['signalr.core']
         },
         treeview: {
+            deps: ['angular']
+        },
+        uimask: {
             deps: ['angular']
         }
     }

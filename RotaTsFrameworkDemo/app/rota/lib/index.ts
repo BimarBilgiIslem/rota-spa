@@ -28,6 +28,7 @@ import "ckeditor"
 import "ng-ckeditor"
 import "ngcontextmenu"
 import "treeview"
+import "uimask"
 //#endregion
 
 //#region Register
@@ -73,6 +74,9 @@ angular.module('rota.lib',
         'ngContextMenu',
         //https://github.com/iVantage/angular-ivh-treeview
         //Treeview 
-        'ivh.treeview'
+        'ivh.treeview',
+        //Mask
+        //https://github.com/angular-ui/ui-mask
+        'ui.mask'
     ]);
 //#endregion
