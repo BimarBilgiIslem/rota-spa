@@ -56,7 +56,7 @@ class Dialogs implements IDialogs {
         }
         //load controller file
         if (modalOptions.controllerUrl) {
-            const cntResolve = this.loader.resolve({ controllerUrl: modalOptions.controllerUrl, templateUrl: templateFilePath });
+            const cntResolve = { load: () => this.loader.resolve(modalOptions.controllerUrl) }
             modalOptions.resolve = angular.extend(modalOptions.resolve, cntResolve);
         }
         //set default controller name if not provided

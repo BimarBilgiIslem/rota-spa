@@ -283,6 +283,13 @@ class Common implements ICommon {
         return angular.isFunction(value);
     }
     /**
+     * Guard method checks for number
+     * @param value
+     */
+    isNumber(value: any): value is Number {
+        return angular.isNumber(value);
+    }
+    /**
      * Guard method checks for defined
      * @param value
      */

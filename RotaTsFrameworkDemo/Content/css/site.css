@@ -6301,17 +6301,18 @@ textarea.ng-invalid {
       height: 2px;
       width: 0; }
 
-.rt-date-picker {
-  width: 180px; }
-  .rt-date-picker.ng-invalid input {
-    border: 1px solid #d44950 !important; }
-  .rt-date-picker .fixedrange {
-    padding-top: 3px; }
-  .rt-date-picker ul.dropdown-menu {
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15); }
-  .rt-date-picker .dropdown-menu {
-    background-color: #fff;
-    border: 1px solid #ccc; }
+.rt-date-picker.ng-invalid input {
+  border: 1px solid #d44950 !important; }
+
+.rt-date-picker .fixedrange {
+  padding-top: 3px; }
+
+.rt-date-picker ul.dropdown-menu {
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15); }
+
+.rt-date-picker .dropdown-menu {
+  background-color: #fff;
+  border: 1px solid #ccc; }
 
 .rt-multiselect {
   position: relative;

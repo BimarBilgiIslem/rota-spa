@@ -24,6 +24,7 @@ import "./rtTree"
 import "./rtDraggableModal"
 import "./rtCallout"
 import "./rtValidator"
+import "./rtDashboard"
 
 angular.module('rota.directives',
     ['rota.directives.rtmenu',
@@ -51,5 +52,6 @@ angular.module('rota.directives',
         'rota.directives.rttree',
         'rota.directives.rtdraggablemodal',
         'rota.directives.rtcallout',
-        'rota.directives.rtvalidator'
+        'rota.directives.rtvalidator',
+        'rota.directives.rtdashboard'
     ]);

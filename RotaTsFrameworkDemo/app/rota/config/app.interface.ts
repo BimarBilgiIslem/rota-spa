@@ -1,4 +1,5 @@
-﻿import { BaseController } from '../base/basecontroller';
+﻿//import { BaseController } from '../base/basecontroller';
+import { InjectableObject } from '../base/injectableobject';
 import { BaseApi } from '../base/baseapi';
 
 /**
@@ -12,7 +13,7 @@ export interface IRotaApp {
     * @param controller Controller instance
     * @param dependencies Dependencies 
     */
-    addController(controllerName: string, controller: typeof BaseController, ...dependencies: string[]): void;
+    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): void;
     /**
     * Register directive
     * @param directiveName Directive Name

@@ -266,6 +266,11 @@ interface ICommon extends IBaseService {
      */
     isString(value: any): value is string;
     /**
+     * Guard method checks for number
+     * @param value
+     */
+    isNumber(value: any): value is Number;
+    /**
    * Guard method checks for array objects
    * @param value Any object
    */

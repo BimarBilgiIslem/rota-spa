@@ -2,7 +2,7 @@
 import { IRotaApp } from './app.interface';
 //deps
 import { BaseApi } from "../base/baseapi";
-import { BaseController } from '../base/basecontroller';
+//import { BaseController } from '../base/basecontroller';
 import { InjectableObject } from '../base/injectableobject';
 import { BaseModalController } from '../base/basemodalcontroller';
 import "./infrastructure.index"
@@ -87,7 +87,7 @@ class RotaApp implements IRotaApp {
      * @param controller Controller instance
      * @param dependencies Dependencies 
      */
-    addController(controllerName: string, controller: typeof BaseController, ...dependencies: string[]): void {
+    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): void {
         const controllerAnnotation = this.createAnnotation(controller, dependencies);
         this.$controllerProvider.register(controllerName, controllerAnnotation);
     }

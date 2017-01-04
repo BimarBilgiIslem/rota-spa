@@ -355,10 +355,7 @@ class Routing implements IRouting {
         //#region Controller Resolve
         //Main Controller load
         if (angular.isString(stateObj.controller)) {
-            const cntResolve = this.loader.resolve({
-                controllerUrl: state.controllerUrl,
-                templateUrl: <string>state.templateUrl
-            });
+            const cntResolve = { load: () => this.loader.resolve(state.controllerUrl) };
             stateObj.resolve = angular.extend(stateObj.resolve, cntResolve);
         } else {
             //if no controller defined and abstract is set,generic template injected here
