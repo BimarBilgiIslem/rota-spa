@@ -110,6 +110,11 @@ interface ICrudActionNames {
     save: string;
     delete: string;
 }
+
+interface IDashboardSettings {
+    widgetLoadingTemplate?: string;
+}
+
 /**
  * Main config settings
  */
@@ -207,6 +212,10 @@ interface IMainConfig extends IBaseConfig {
      * AutoSave interval in ms,default 
      */
     autoSaveInterval?: number;
+    /**
+     * Dashboard settings
+     */
+    dashboardSettings?: IDashboardSettings;
 }
 /**
  * Main config provider

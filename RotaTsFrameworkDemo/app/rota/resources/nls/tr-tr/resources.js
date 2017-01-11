@@ -1,5 +1,8 @@
 ﻿define({
     rota: {
+        kullanmayadevamet: 'Kullanmaya devam et',
+        bostacalismabaslik: 'Boşta çalışma kontrolü',
+        bostacalismauyarisi: 'Herhangi bir işlem yapmadığınız için uygulama {0} içinde kapatılacak',
         okumamoduuyari: 'Bu sayfa okuma amaçlıdır,değişiklik yapamazsınız !',
         sadeceokuma: 'Sadece okuma',
         hepsinisec: 'Hepsini seç',

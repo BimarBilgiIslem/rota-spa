@@ -1,6 +1,9 @@
 ﻿define({
     //#region Rota
     rota: {
+        kullanmayadevamet: 'Continue using app',
+        bostacalismabaslik: 'Idle time out',
+        bostacalismauyarisi: 'You have not interacted with the app for a while.You are going to be logged off within {0}',
         okumamoduuyari: 'This page is readonly,You are not allowed to change the form model',
         sadeceokuma: 'Readonly',
         hepsinisec: 'Select all',

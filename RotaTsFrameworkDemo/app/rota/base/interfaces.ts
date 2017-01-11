@@ -20,6 +20,12 @@ interface IBaseConfigProvider<TConfig extends IBaseConfig> {
 interface IBaseController {
 }
 /**
+ * Model controller interface
+ */
+interface IBaseModelController<TModel extends IBaseCrudModel> extends IBaseController {
+    modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
+}
+/**
  * Request Options for GET ,POST verbs
  */
 interface IRequestOptions {
@@ -402,6 +408,12 @@ interface IListPageOptions extends IModelPageOptions {
      * Store filter values while quiting state
      */
     storeFilterValues?: boolean;
+}
+/**
+ * Widget Controller options
+ */
+interface IWidgetPageOptions extends IModelPageOptions {
+
 }
 /**
  * List Buttons Visibilities

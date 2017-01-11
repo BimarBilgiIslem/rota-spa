@@ -57,7 +57,8 @@ const rotaConstants: IConstants = {
         EVENT_AJAX_STARTED: 'ajaxStarted',
         EVENT_LOGIN_REQIRED: 'loginRequired',
         EVENT_MENU_CHANGED: 'menuChanged',
-        EVENT_MODEL_LOADED: 'modelLoaded'
+        EVENT_MODEL_LOADED: 'modelLoaded',
+        EVENT_RELOAD_WIDGET: 'reloadWidget'
     },
     //Grid 
     grid: {
@@ -182,7 +183,9 @@ const rotaConstants: IConstants = {
         STORAGE_NAME_AUTH_TOKEN: window.__constants.STORAGE_NAME_AUTH_TOKEN,
         STORAGE_NAME_ROLE_ID: window.__constants.STORAGE_NAME_ROLE_ID,
         STORAGE_NAME_COMPANY_ID: window.__constants.STORAGE_NAME_COMPANY_ID,
-        STORAGE_NAME_TEMP_STATE: 'rota-temp-state'
+        STORAGE_NAME_TEMP_STATE: 'rota-temp-state',
+        IDLE_TIMEOUT: 1800000,
+        COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000
     },
     //Logger service
     logger: {
@@ -208,6 +211,14 @@ const rotaConstants: IConstants = {
         //alias
         CONTROLLER_ALIAS_NAME: 'vm',
         SHELL_CONTROLLER_ALIAS_NAME: 'shellvm'
+    },
+    dashboard: {
+        MIN_WIDGET_REFRESH_INTERVAL: 5000,
+        WIDGET_LOADING_TEMPLATE: '\<div class="progress progress-striped active">\n\
+                                    <div class="progress-bar" role="progressbar" style="width: 100%">\n\
+                                      <span class="sr-only">loading ...</span>\n\
+                                    </div>\n\
+                                  </div>'
     }
 };
 

@@ -17,11 +17,13 @@ class Loader implements ILoader {
      * Load file
      * @param url normalized or relative path
      */
-    private load(url: string[]): ng.IPromise<string | string[]> {
+    private load(url: string[]): ng.IPromise<string | string[] | RequireError> {
         var defer = this.$q.defer();
         window.require(url, (...responses: any[]) => {
             defer.resolve(responses);
             this.$rootScope.$apply();
+        }, reason => {
+            defer.reject(reason);
         });
         return defer.promise;
     }

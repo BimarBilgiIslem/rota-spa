@@ -1,5 +1,6 @@
 ﻿<!--ShellPage-->
-<div id="wrap" ng-class="{'home-page':shellvm.isHomePage,'video-bg':shellvm.vidOptions}" ng-style="shellvm.isHomePage && shellvm.bgImageUrl">
+<div id="wrap" ng-class="{'home-page':shellvm.isHomePage,'video-bg':shellvm.vidOptions}"
+     ng-style="shellvm.isHomePage && shellvm.bgImageUrl">
     <!--Header-->
     <header ui-view="header"></header>
     <!--Main-->
@@ -26,3 +27,5 @@
     <a mfb-button mfb-button-close label="{{quickMenu.title}}" icon="fa fa-{{quickMenu.menuIcon}}"
        ng-click="shellvm.routing.go(quickMenu.state,quickMenu.params)" ng-repeat="quickMenu in shellvm.routing.quickMenus"></a>
 </nav>
+<!--idle timeout-->
+<rt-idle-timeout></rt-idle-timeout>

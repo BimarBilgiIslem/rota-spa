@@ -12,7 +12,7 @@ import { BaseController } from "./basecontroller"
 abstract class BaseModelController<TModel extends IBaseCrudModel> extends BaseController {
     //#region Props
     protected _model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>;
-    protected modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
+    modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
     //#endregion
 
     //#region Bundle Services

@@ -102,7 +102,7 @@ class Dialogs implements IDialogs {
     showConfirm(options: IConfirmOptions): ng.IPromise<any> {
         const modalOptions: ng.ui.bootstrap.IModalSettings = {
             templateUrl: 'modalDialog.tpl.html',
-            controller: ['$scope', '$uibModalInstance', 'options',
+            controller: options.controller || ['$scope', '$uibModalInstance', 'options',
                 ($scope: IConfirmScope, $modalInstance: ng.ui.bootstrap.IModalServiceInstance, options: IConfirmOptions) => {
                     $scope.title = options.title || this.localization.getLocal('rota.onay');
                     $scope.message = options.message || '';
@@ -350,7 +350,7 @@ module.run([
             '    </div>' +
             '    <div class="modal-footer">' +
             '        <button class="btn btn-default" data-ng-click="cancel()">{{cancelText}}</button>' +
-            '        <button class="btn btn-primary" data-ng-click="ok()">{{okText}}</button>' +
+            '        <button class="btn btn-primary" autofocus data-ng-click="ok()">{{okText}}</button>' +
             '    </div>');
         //Template olarak cache'de sakla
         $templateCache.put('modalPromptDialog.tpl.html',
@@ -363,7 +363,7 @@ module.run([
             '               <div class="col-md-12">' +
             '                   <div class="form-group">' +
             '                       <label for="lblValue">{{subTitle}}</label>' +
-            '                       <input id="lblValue" type="text" class="form-control" ng-model="value.val" rt-focus/>' +
+            '                       <input id="lblValue" type="text" class="form-control" ng-model="value.val" autofocus/>' +
             '                   </div>' +
             '               </div>' +
             '           </div>' +

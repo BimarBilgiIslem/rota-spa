@@ -19,6 +19,7 @@ interface IDialogScope extends ng.IScope, IDialogOptions {
  */
 interface IConfirmOptions extends IDialogOptions {
     cancelText?: string;
+    controller?: any[] | Function;
 }
 /**
  * Confirm window scope

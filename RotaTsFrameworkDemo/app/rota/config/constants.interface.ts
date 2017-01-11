@@ -40,7 +40,8 @@
         EVENT_AJAX_STARTED: string;
         EVENT_LOGIN_REQIRED: string;
         EVENT_MENU_CHANGED: string;
-        EVENT_MODEL_LOADED: string
+        EVENT_MODEL_LOADED: string;
+        EVENT_RELOAD_WIDGET: string;
     };
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;
@@ -107,6 +108,8 @@
         STORAGE_NAME_ROLE_ID: string;
         STORAGE_NAME_COMPANY_ID: string;
         STORAGE_NAME_TEMP_STATE: string;
+        IDLE_TIMEOUT: number;
+        COUNT_DOWN_FOR_IDLE_TIMEOUT: number;
     },
     logger: {
         TOASTR_TIMEOUT: number;
@@ -127,5 +130,9 @@
         INTERNAL_ERROR_STATE_NAME: string;
         CONTROLLER_ALIAS_NAME: string;
         SHELL_CONTROLLER_ALIAS_NAME: string;
+    },
+    dashboard: {
+        WIDGET_LOADING_TEMPLATE: string;
+        MIN_WIDGET_REFRESH_INTERVAL: number;
     }
 } 

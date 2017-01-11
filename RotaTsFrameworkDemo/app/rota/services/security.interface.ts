@@ -79,6 +79,18 @@ interface ISecurityConfig extends IBaseConfig {
      * Antiforgerytoken request header name
      */
     antiForgeryTokenHeaderName?: string;
+    /**
+     * Logoff when idle timeout has reached by prompting user
+     */
+    logOffWhenIdleTimeout?: boolean;
+    /**
+     * Idle timeout as millisecond default 30 mins
+     */
+    idleTimeout?: number;
+    /**
+     * Count down for logoff when idle time is over,default 5 mins
+     */
+    idleLogoffCountDown?: number;
 }
 /**
  * Security config provider

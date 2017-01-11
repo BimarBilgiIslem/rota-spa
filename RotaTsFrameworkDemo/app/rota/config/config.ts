@@ -65,7 +65,11 @@ class Config extends BaseConfig<IMainConfig> {
             defaultNewItemParamName: constants.controller.DEFAULT_NEW_ITEM_PARAM_NAME,
             //Reportings
             reportViewerUrl: environments.reportViewerUrl,
-            reportControllerUrl: environments.reportControllerUrl
+            reportControllerUrl: environments.reportControllerUrl,
+            //Dashborad
+            dashboardSettings: {
+                widgetLoadingTemplate: constants.dashboard.WIDGET_LOADING_TEMPLATE
+            }
         };
         this.config = config;
     }
