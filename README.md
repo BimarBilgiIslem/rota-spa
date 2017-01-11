@@ -85,6 +85,7 @@ Authentication için [OpenID Connect(OIDC)](http://openid.net/) desteklemektedir
  - [ng.ckeditor](https://github.com/miamarti/ng.ckeditor)
  - [ngContextMenu](https://github.com/Wildhoney/ngContextMenu)
  - [ivh.treeview](https://github.com/iVantage/angular-ivh-treeview)
+ - [ui-mask](https://github.com/angular-ui/ui-mask)
 
 ####Kütüphaneler
  - [Underscore](underscorejs.org)
