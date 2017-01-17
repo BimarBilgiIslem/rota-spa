@@ -21,17 +21,12 @@ class ShellController {
     private _spinnerOptions: SpinnerOptions;
     get spinnerOptions(): SpinnerOptions { return this._spinnerOptions; }
     /**
-   * Active Menu
-   */
-    private _activeMenu: IHierarchicalMenuItem;
-    get activeMenu(): IHierarchicalMenuItem { return this._activeMenu; }
-    /**
      * Indicates that menu will be in fullscreen container,default false
      */
-    fullScreen: boolean;
     isHomePage: boolean;
     bgImageUrl: { [index: string]: string };
     vidOptions: IVideoOptions;
+    navCollapsed: boolean;
     //#endregion
 
     //#region Init
@@ -55,9 +50,8 @@ class ShellController {
         //init settings
         this.setSpinner();
         this.setActiveMenuListener();
-        this.setTitleBadgesListener();
-        this.setDebugPanel();
         //initial vars
+        this.navCollapsed = true;
         if (config.homePageOptions) {
             this.bgImageUrl = config.homePageOptions.imageUri &&
                 { 'background-image': `url(${config.homePageOptions.imageUri})` };
@@ -78,23 +72,8 @@ class ShellController {
 
     //#region Shell Methods
     /**
-     * Set debug panel visibility
-     */
-    private setDebugPanel(): void {
-        this.$scope.enableDebugPanel = this.config.debugMode && window.__globalEnvironment.showModelDebugPanel;
-        if (this.$scope.enableDebugPanel) {
-            this.$scope.$on(this.config.eventNames.modelLoaded, (e, model): void => {
-                if (_.isArray(model))
-                    this.$scope.modelInDebug = model;
-                else
-                    this.$scope.modelInDebug = (model as IObserableModel<IBaseCrudModel>).toJson &&
-                        (model as IObserableModel<IBaseCrudModel>).toJson();
-            });
-        }
-    }
-    /**
-   * Set spinner settings
-   */
+    * Set spinner settings
+    */
     private setSpinner() {
         //register main spinner events
         this.$rootScope.$on(this.config.eventNames.ajaxStarted, () => {
@@ -110,19 +89,8 @@ class ShellController {
      * Set active menu & app title
      */
     private setActiveMenuListener() {
-        this.$scope.$watch<IHierarchicalMenuItem>(() => this.routing.activeMenu, (menu) => {
-            this._activeMenu = menu;
-            //set app title
-            this.$rootScope.appTitle = menu ? (`${menu.title} - ${this.config.appTitle}`) : this.config.appTitle;
-            //set full screen
-            this.fullScreen = menu && menu.isFullScreen;
-        });
-    }
-    /**
-     * Set title badges
-     */
-    private setTitleBadgesListener() {
-        this.$rootScope.$on(this.config.eventNames.menuChanged, (e: ng.IAngularEvent, menu: IHierarchicalMenuItem) => {
+        this.$scope.$watch<INavMenuItem>(() => this.routing.activeMenu, (menu) => {
+            this.$rootScope.appTitle = menu ? (`${menu.name} - ${this.config.appTitle}`) : this.config.appTitle;
             if (this.config.homePageOptions)
                 this.isHomePage = this.$location.url() === this.config.homePageOptions.url;
         });
@@ -182,6 +150,19 @@ class ShellController {
                 this.$window.location.reload();
             });
         });
+    }
+    /**
+     * Quick menu transition
+     * @param quickMenu QuickMenu
+     */
+    goQuickmenu(quickMenu: IMenuModel): void {
+        if (!quickMenu) return;
+
+        if (quickMenu.menuUrl) {
+            this.$window.location.href = quickMenu.menuUrl;
+        } else {
+            this.routing.go(quickMenu.name, quickMenu.params);
+        }
     }
     //#endregion
 }

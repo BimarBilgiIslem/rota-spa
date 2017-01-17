@@ -1,4 +1,4 @@
-﻿//TODO:region ?
+﻿//#region Global Environment
 /**
  * Environment settings
  */
@@ -44,10 +44,6 @@ interface IGlobalEnvironment {
      */
     reportControllerUrl?: string;
     /**
-     * Show model panel
-     */
-    showModelDebugPanel?: boolean;
-    /**
      * EntiForgerytokenEnabled flag
      */
     antiForgeryTokenEnabled?: boolean;
@@ -56,6 +52,9 @@ interface IGlobalEnvironment {
      */
     xDomPaths?: { [index: string]: string };
 }
+//#endregion
+
+//#region Main Config
 /**
  * Common event names used through the app
  */
@@ -110,11 +109,12 @@ interface ICrudActionNames {
     save: string;
     delete: string;
 }
-
+/**
+ * DashBoard Setttings
+ */
 interface IDashboardSettings {
     widgetLoadingTemplate?: string;
 }
-
 /**
  * Main config settings
  */
@@ -216,12 +216,19 @@ interface IMainConfig extends IBaseConfig {
      * Dashboard settings
      */
     dashboardSettings?: IDashboardSettings;
+    /**
+     * Logo Image file name.It must be under ~/Content/img - default place_holder.png
+     */
+    logoImageName?: string;
 }
 /**
  * Main config provider
  */
 interface IMainConfigProvider extends IBaseConfigProvider<IMainConfig> {
 }
+//#endregion
+
+//#region Home Settings
 /**
  * HomePage settings
  */
@@ -248,3 +255,4 @@ interface IVideoOptions {
     urlOgg?: string;
     poster: string;
 }
+//#endregion

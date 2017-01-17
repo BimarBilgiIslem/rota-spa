@@ -38,11 +38,11 @@ require.config({
         fileapi: './rota/lib/FileAPI.min',
         spinner: './rota/lib/spin.min',
         circleprogress: './rota/lib/roundProgress.min',
-        bootstrap: './rota/lib/bootstrap.min',
+        //bootstrap: './rota/lib/bootstrap.min',
         grid: './rota/lib/ui-grid.min',
         hotkeys: './rota/lib/hotkeys.min',
         select: './rota/lib/select.min',
-        'bootstrap-colorpicker-module': './rota/lib/bootstrap-colorpicker-module.min',
+        // 'bootstrap-colorpicker-module': './rota/lib/bootstrap-colorpicker-module.min',
         ckeditor: './rota/lib/ckeditor/ckeditor',
         'ng-ckeditor': './rota/lib/ng-ckeditor',
         ngcurrency: './rota/lib/ng-currency',
@@ -52,6 +52,8 @@ require.config({
         ngcontextmenu: './rota/lib/ng-contextmenu',
         treeview: './rota/lib/ivh-treeview',
         uimask: './rota/lib/mask.min',
+        chart: './rota/lib/Chart.min',
+        'angular-chart': './rota/lib/angular-chart.min',
         //Security
         //JWT Client claims helpers
         jws: './rota/lib/jws-3.0.min',
@@ -68,9 +70,9 @@ require.config({
 
     //#region Shim
     shim: {
-        bootstrap: {
-            deps: ['jquery']
-        },
+        //bootstrap: {
+        //    deps: ['jquery']
+        //},
         angular: {
             exports: 'angular'
         },
@@ -111,9 +113,9 @@ require.config({
         select: {
             deps: ['angular']
         },
-        'bootstrap-colorpicker-module': {
-            deps: ['angular', 'bootstrap']
-        },
+        //'bootstrap-colorpicker-module': {
+        //    deps: ['angular', 'bootstrap']
+        //},
         fileupload: {
             deps: ['fileapi', 'angular']
         },
@@ -154,6 +156,9 @@ require.config({
         },
         uimask: {
             deps: ['angular']
+        },
+        'chart.js': {
+            deps: ['angular', 'chart']
         }
     }
     //#endregion

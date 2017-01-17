@@ -15,7 +15,7 @@ class Routing implements IRouting {
     /**
      * Quick menus
      */
-    quickMenus: IMenuItem[] = [];
+    quickMenus: IMenuModel[] = [];
     /**
      * Orj Menus 
      */
@@ -24,8 +24,8 @@ class Routing implements IRouting {
     /**
      * Hierarchical menus
      */
-    private _menus: IHierarchicalMenuItem[];
-    get menus(): IHierarchicalMenuItem[] { return this._menus; }
+    private _menus: INavMenuItem[];
+    get menus(): INavMenuItem[] { return this._menus; }
     /**
      * Breadcrumbs
      */
@@ -34,8 +34,8 @@ class Routing implements IRouting {
     /**
      * Active Menu
      */
-    private _activeMenu: IHierarchicalMenuItem;
-    get activeMenu(): IHierarchicalMenuItem { return this._activeMenu; }
+    private _activeMenu: INavMenuItem;
+    get activeMenu(): INavMenuItem { return this._activeMenu; }
     /**
      * Get current state
      * @returns IRotaState{}
@@ -81,6 +81,8 @@ class Routing implements IRouting {
         private constants: IConstants) {
         //Register static states and events
         this.init();
+        //static shell state octates count, default "shell.content" 
+        this.shellContentStateOctateLen = this.constants.routing.SHELL_CONTENT_STATE_NAME.split('.').length;
     }
     /**
     * Register static states and events
@@ -97,27 +99,7 @@ class Routing implements IRouting {
     }
     //#endregion
 
-    //#region State Active Methods
-    /**
-         * Check state is active
-         * @param stateName State name
-         * @param params Optional Params
-         */
-    isActive(stateName: string, params?: any): boolean {
-        return this.$state.is(stateName, params);
-    }
-    /**
-    * Check state is in active pipeline
-    * @param stateName State name
-    * @param params Optional Params
-    */
-    isInclude(stateName: string, params?: any): boolean {
-        return this.$state.includes(stateName, params);
-    }
-
-    //#endregion
-
-    //#region State Register Methods
+    //#region Register Methods
     /**
      * Register custom types 
      */
@@ -141,30 +123,23 @@ class Routing implements IRouting {
         */
     private registerEvents(): void {
         this.$rootScope.$on('$stateChangeSuccess', (event, toState: IRotaState) => {
-            /**
-             * Find parent abstract state if state is partial
-             */
-            const getMenu = (_menu?: IHierarchicalMenuItem): IHierarchicalMenuItem => {
-                let menu = _menu || toState.hierarchicalMenu;
-                while (menu && menu.isNestedState) {
-                    menu = menu.parentMenu;
-                }
-                return menu;
-            }
+            if (!toState) return;
             /**
              * Set breadcrumb datasource
              */
             const setBreadcrumb = (): void => {
-                let menu = getMenu();
+                let menu = this.getActiveMenu(toState);
                 const routelist: IBreadcrumb[] = [];
                 while (menu) {
-                    routelist.push(
-                        {
-                            text: menu.title,
-                            url: menu.menuUrl || this.getUrlByState(menu.state),
-                            icon: menu.menuIcon
-                        });
-                    menu = menu.parentMenu && getMenu(menu.parentMenu);
+                    if (menu.name) {
+                        routelist.push(
+                            {
+                                text: menu.name,
+                                url: menu.url || this.getUrlByState(menu.link, menu.params) || "#",
+                                icon: menu.icon
+                            });
+                    }
+                    menu = menu.parent;
                 }
                 this._breadcrumbs = routelist.reverse();
             }
@@ -172,22 +147,18 @@ class Routing implements IRouting {
              * Set current main menu 
              */
             const setActiveMenu = (): void => {
-                //find parent abstract state if state is partial
-                const menu = getMenu();
+                const menu = this.getActiveMenu(toState);
                 if (toState.name === this.constants.routing.SHELL_STATE_NAME || menu !== this.activeMenu) {
                     this._activeMenu = menu;
-                    this.$rootScope.$broadcast(this.config.eventNames.menuChanged, menu);
                 }
             }
 
-            if (!toState) return;
             setActiveMenu();
             setBreadcrumb();
         });
 
         this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
             if (!error) return;
-            //TODO:Hata tipine gore işlem yapılmali
             switch (error.status) {
                 //Not found
                 case 404:
@@ -265,17 +236,13 @@ class Routing implements IRouting {
     * Register states
     */
     private registerStates(): void {
-        //Create default state params
+        //create default state params
         const defaultParams = {};
         defaultParams[this.constants.controller.DEFAULT_NEW_ITEM_PARAM_NAME] =
             this.constants.controller.DEFAULT_NEW_ITEM_PARAM_VALUE;
         defaultParams[this.constants.controller.DEFAULT_READONLY_PARAM_NAME] = true;
-        //filter to get real states 
-        const states: IMenuModel[] = _.filter(this._states, (state: IMenuModel) => {
-            return !!state.name;
-        });
         //register states
-        states.forEach((state: IMenuModel) => {
+        this._states.forEach((state: IMenuModel) => {
             this.registerState(state, defaultParams);
         });
     }
@@ -283,45 +250,35 @@ class Routing implements IRouting {
      * Register state
      * @param state State
      */
-    private registerState(state: IRotaState, defaultParams?: IDictionary<any>): IRouting {
-        //Check if already defined
+    private registerState(state: IMenuModel, defaultParams?: IDictionary<any>): IRouting {
+        //only state name defined
+        if (!state.name) return this;
+        //check if already defined
         if (this.getState(state.name)) {
             this.logger.console.warn({ message: 'state already registered ' + state.name });
             return this;
         }
-        if (!this.common.isAssigned(state.hierarchicalMenu)) {
-            this.logger.console.warn({ message: state.name + ' state\'s parent is not exists so state is skipped', data: state });
-            return this;
-        }
-        //set temlate path based on baseUrl - works both html and dynamic file server
-        const templateFilePath = this.common.isHtml(<string>state.templateUrl) ?
-            window.require.toUrl(<string>state.templateUrl) : state.templateUrl;
-        //#region Define State Object
-        //set url
-        let url = "";
-        if (state.url) {
-            url = <string>(state.hierarchicalMenu.isNestedState || state.hierarchicalMenu.isStickyTab ? '/' + state.url : state.url);
-        }
-        //State Object
+        //normalize template file path
+        const templateFilePath = this.common.isHtml(state.templateUrl as string) ? this.toUrl(state.templateUrl as string) : state.templateUrl;
+        //is nested state
+        const isNestedState = this.isNestedState(state.name);
+        //adjust url
+        const url = (isNestedState ? '/' + state.url : state.url) || '';
+        //define state obj
         const stateObj: IRotaState = {
-            sticky: state.sticky,
-            deepStateRedirect: state.deepStateRedirect,
+            navMenu: state.navMenu,
             abstract: state.abstract,
-            template: state.template,
             templateUrl: templateFilePath,
             controller: state.controller,
-            //ControllerAs syntax used as default 'vm'
             controllerAs: this.routeconfig.contentControllerAlias,
-            hierarchicalMenu: state.hierarchicalMenu,
             url: url,
             params: angular.extend(defaultParams, state.params),
-            //Resolve params
             resolve: {
                 stateInfo: (): IStateInfo => {
                     return {
-                        isNestedState: state.hierarchicalMenu.isNestedState,
+                        isNestedState: isNestedState,
                         stateName: state.name,
-                        isStickyTab: state.hierarchicalMenu.isStickyTab
+                        isStickyTab: state.sticky
                     }
                 },
                 authenticated: [
@@ -329,8 +286,7 @@ class Routing implements IRouting {
                 ],
                 antiForgeryToken: [
                     'Security', (security: ISecurity) => {
-                        if (security.securityConfig.antiForgeryTokenEnabled &&
-                            !state.hierarchicalMenu.isNestedState) {
+                        if (security.securityConfig.antiForgeryTokenEnabled && !isNestedState) {
                             return security.getAntiForgeryToken(state);
                         }
                     }
@@ -339,8 +295,8 @@ class Routing implements IRouting {
                 modalParams: angular.noop
             }
         };
-        //if its tab state,must be added to views object 
-        if (state.hierarchicalMenu && state.hierarchicalMenu.isStickyTab) {
+        //sticky settings 
+        if (state.sticky) {
             const views: { [index: string]: ng.ui.IState } = {};
             views[state.name] = {
                 controller: state.controller,
@@ -350,10 +306,7 @@ class Routing implements IRouting {
             stateObj.views = views;
             stateObj.sticky = true;
         }
-        //#endregion
-
-        //#region Controller Resolve
-        //Main Controller load
+        //controller load
         if (angular.isString(stateObj.controller)) {
             const cntResolve = { load: () => this.loader.resolve(state.controllerUrl) };
             stateObj.resolve = angular.extend(stateObj.resolve, cntResolve);
@@ -363,9 +316,7 @@ class Routing implements IRouting {
                 stateObj.template = '<div ui-view></div>';
             }
         }
-        //#endregion
-
-        //register state
+        //register
         this.$stateProvider.state(state.name, stateObj);
         return this;
     }
@@ -373,81 +324,16 @@ class Routing implements IRouting {
 
     //#region Menu Methods
     /**
-       * Get states by parentId
-       * @param parentId State parentId
-       */
-    private getStatesByParentId(parentId?: number): IMenuModel[] {
-        const menus = _.filter(this._states, (item: IMenuModel) => {
-            if (this.common.isAssigned(parentId)) {
-                return item.parentId === parentId;
-            }
-            return !this.common.isAssigned(item.parentId);
-        });
-        return _.sortBy(menus, this.constants.controller.DEFAULT_MODEL_ORDER_FIELD_NAME);
-    }
-    /**
-     * Convert states to hierarchical node way
-     */
-    private toHierarchicalMenu(): IHierarchicalMenuItem[] {
-        const rootMenus = this.getStatesByParentId();
-        this.shellContentStateOctateLen = this.constants.routing.SHELL_CONTENT_STATE_NAME.split('.').length;
-
-        if (!rootMenus.length) {
-            throw new Error(this.constants.errors.NOT_ROOT_MENU_FOUND);
-        }
-        //generate menus recursively
-        return this.getMenusRecursively(rootMenus);
-    }
-    /**
-     * Get states (menus) recursively
-     * @param parentStates Parent states
-     * @param parentMenu Parent menu
-     */
-    private getMenusRecursively(parentStates: IMenuModel[], parentMenu?: IMenuItem): IHierarchicalMenuItem[] {
-        const menus: IHierarchicalMenuItem[] = [];
-
-        parentStates.forEach((state: IMenuModel) => {
-            const menu = angular.copy<IHierarchicalMenuItem>(state);
-            menu.parentMenu = parentMenu;
-            menu.state = state.name;
-            //update title
-            menu.title = menu.title || (menu.titleI18N && this.localization.getLocal(menu.titleI18N));
-            //set isNestedState flag
-            if (menu.state) {
-                menu.isNestedState = menu.state.split('.').length > (this.shellContentStateOctateLen + 1);
-            }
-            state.hierarchicalMenu = menu;
-            //Set substates
-            var subStates = this.getStatesByParentId(state.id);
-            if (subStates.length) {
-                menu.subMenus = this.getMenusRecursively(subStates, menu);
-            }
-            //set quickmenu
-            if (menu.isQuickMenu)
-                this.quickMenus.push(menu);
-            menus.push(menu);
-        });
-        return menus;
-    }
-
-    //#endregion
-
-    //#region State Utils
-    /**
-         * Get state by name
-         * @param stateName
-         */
-    getState(stateName: string): IRotaState {
-        if (!this.common.isAssigned(stateName)) return undefined;
-        return <IRotaState>this.$state.get(stateName);
-    }
-    /**
-     * Add states with menu definitions
-     * @param states States
-     */
+    * Add states with menu definitions
+    * @param states States
+    */
     addMenus(states: IMenuModel[]): IRouting {
         this._states = states || [];
-        this._menus = this.toHierarchicalMenu();
+        //create navbar menus
+        this._menus = this.createNavMenus();
+        //add quick menus
+        this.createQuickMenus();
+        //register states
         try {
             this.registerStates();
         } finally {
@@ -457,11 +343,71 @@ class Routing implements IRouting {
         return this;
     }
     /**
-     * Go to state
-     * @param stateName State name
-     * @param params State params
-     * @param options State options
+     * Create NavBar menus
      */
+    private createNavMenus(): INavMenuItem[] {
+        const rootMenus = this.getMenusByParentId();
+
+        if (!rootMenus.length) {
+            throw new Error(this.constants.errors.NOT_ROOT_MENU_FOUND);
+        }
+        //generate menus recursively
+        return this.createNavMenusRecursive(rootMenus);
+    }
+    /**
+     * Create nav menu items recursively
+     * @param parentMenus Parent Menus
+     * @param parentNavMenu Parent Menu
+     */
+    private createNavMenusRecursive(parentMenus: IMenuModel[], parentNavMenu?: INavMenuItem): INavMenuItem[] {
+        const navMenus: INavMenuItem[] = [];
+        parentMenus.forEach((state: IMenuModel) => {
+            //seperator ?
+            if (state.startGroup) {
+                navMenus.push({ name: 'divider', visible: true });
+            }
+            //create nav menu
+            const menu: INavMenuItem = {
+                link: state.name,
+                params: state.params,
+                url: state.menuUrl,
+                icon: state.menuIcon,
+                name: state.title || (state.titleI18N && this.localization.getLocal(state.titleI18N)),
+                parent: parentNavMenu,
+                visible: state.isMenu,
+                isFullScreen: state.isFullScreen,
+                isNested: state.name && this.isNestedState(state.name)
+            }
+            //create subnav menus
+            const subMenus = this.getMenusByParentId(state.id);
+            if (subMenus.length) {
+                menu.subtree = this.createNavMenusRecursive(subMenus, menu);
+            }
+            navMenus.push(menu);
+            //update state 
+            state.navMenu = menu;
+        });
+        return navMenus;
+    }
+    /**
+     * Add quick menus
+     */
+    private createQuickMenus(): void {
+        this._states.forEach(state => {
+            if (state.isQuickMenu) {
+                this.quickMenus.push(state);
+            }
+        });
+    }
+    //#endregion
+
+    //#region Utils
+    /**
+    * Go to state
+    * @param stateName State name
+    * @param params State params
+    * @param options State options
+    */
     go(stateName: string, params?, options?: ng.ui.IStateOptions): ng.IPromise<any> {
         return this.$state.go(stateName, params, options);
     }
@@ -491,7 +437,45 @@ class Routing implements IRouting {
      * @param params Optional params
      */
     getUrlByState(stateName: string, params?: any): string {
+        if (!stateName) return null;
         return this.$state.href(stateName, params);
+    }
+    /**
+        * Check state is active
+        * @param stateName State name
+        * @param params Optional Params
+        */
+    isActive(stateName: string, params?: any): boolean {
+        return this.$state.is(stateName, params);
+    }
+    /**
+    * Check state is in active pipeline
+    * @param stateName State name
+    * @param params Optional Params
+    */
+    isInclude(stateName: string, params?: any): boolean {
+        return this.$state.includes(stateName, params);
+    }
+    /**
+    * Get states by parentId
+    * @param parentId State parentId
+    */
+    getMenusByParentId(parentId?: number): IMenuModel[] {
+        const menus = _.filter(this._states, (item: IMenuModel) => {
+            if (this.common.isAssigned(parentId)) {
+                return item.parentId === parentId;
+            }
+            return !this.common.isAssigned(item.parentId);
+        });
+        return _.sortBy(menus, this.constants.controller.DEFAULT_MODEL_ORDER_FIELD_NAME);
+    }
+    /**
+    * Get state by name
+    * @param stateName
+    */
+    getState(stateName: string): IRotaState {
+        if (!stateName) return undefined;
+        return <IRotaState>this.$state.get(stateName);
     }
     /**
      * Convert relative url ro absolute url
@@ -499,6 +483,24 @@ class Routing implements IRouting {
      */
     toUrl(relativeUrl: string): string {
         return window.require.toUrl(relativeUrl);
+    }
+    /**
+     * Returns whether provided state is nested 
+     * @param name State name
+     */
+    private isNestedState(name: string): boolean {
+        return name.split('.').length > (this.shellContentStateOctateLen + 1);
+    }
+    /**
+     * Get active menu eliminating nested states
+     * @param state Optional state
+     */
+    getActiveMenu(state?: IRotaState): INavMenuItem {
+        let menu = (state || this.current).navMenu;
+        while (menu && menu.isNested) {
+            menu = menu.parent;
+        }
+        return menu;
     }
     //#endregion
 }

@@ -29,7 +29,7 @@ function dashboardDirective() {
         transclude: true,
         controllerAs: 'dashboardVm',
         controller: DashboardController,
-        template: '<div class="rtDashboard"><div class="row" ng-transclude></div></div>',
+        template: '<div class="rtDashboard" ng-transclude></div>',
         bindToController: {}
     };
     return directive;
@@ -126,6 +126,5 @@ module.directive('rtDashboard', dashboardDirective)
     .directive('rtWidget', widgetDirective)
     .directive('rtAsyncContent', asyncContentDirective);
 //#endregion
-
 
 export { }

@@ -1,6 +1,7 @@
 ﻿interface IConstants {
     APP_VERSION: string;
     APP_TITLE: string;
+    DEFAULT_LOGO_IMAGE_NAME: string;
     PRODUCTION_DEBUG_WARNING: string;
     MIN_NUMBER_VALUE: number;
     MAX_NUMBER_VALUE: number;

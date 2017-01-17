@@ -3,6 +3,7 @@ const rotaConstants: IConstants = {
     //Application
     APP_VERSION: '0.0.1',
     APP_TITLE: 'Bimar Rota SPA App',
+    DEFAULT_LOGO_IMAGE_NAME: 'logo_place_holder.png',
     PRODUCTION_DEBUG_WARNING: 'Dur ! Bu alan yazılımcılar içindir',
     MIN_NUMBER_VALUE: -9999999999,
     MAX_NUMBER_VALUE: 9999999999,

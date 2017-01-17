@@ -213,14 +213,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     private registerDirtyCheckEvent(): void {
         this.on('$stateChangeStart',
             (event: ng.IAngularEvent, toState: IRotaState, toParams: ng.ui.IStateParamsService, fromState: IRotaState) => {
-                const getMenu = (): IHierarchicalMenuItem => {
-                    let menu = toState.hierarchicalMenu;
-                    while (menu && menu.isNestedState) {
-                        menu = menu.parentMenu;
-                    }
-                    return menu;
-                }
-                const menu = getMenu();
+                const menu = this.routing.getActiveMenu(toState);
                 if (menu !== this.routing.activeMenu && this.isModelDirty &&
                     this.model.modelState !== ModelStates.Deleted && this.isFormValid) {
                     event.preventDefault();

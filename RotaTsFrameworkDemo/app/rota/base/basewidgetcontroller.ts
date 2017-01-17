@@ -37,7 +37,7 @@ abstract class BaseWidgetController<TModel extends IBaseCrudModel> extends BaseM
      */
     static injects = BaseModelController.injects.concat(['$timeout', 'widget']);
 
-    protected constructor(bundle: IBundle, options?: IWidgetPageOptions) {
+    constructor(bundle: IBundle, options?: IWidgetPageOptions) {
         super(bundle, angular.extend({ initializeModel: true }, options));
         //init model
         if (this.widgetPageOptions.initializeModel) {

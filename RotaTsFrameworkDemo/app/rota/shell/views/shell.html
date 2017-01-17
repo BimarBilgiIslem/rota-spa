@@ -5,13 +5,9 @@
     <header ui-view="header"></header>
     <!--Main-->
     <section ui-view id="main-content"></section>
-    <!--Model Debug Panel-->
-    <div class="debug-panel well hidden-xs hidden-md hidden-print hidden-sm" ng-if="enableDebugPanel">
-        <p>Json Model</p>
-        <pre>{{modelInDebug | json}}</pre>
-    </div>
     <!--Video-->
-    <video autoplay loop muted id="bgvid" ng-if="shellvm.isHomePage && shellvm.vidOptions" poster="{{shellvm.vidOptions.poster}}">
+    <!--poster="{{shellvm.vidOptions.poster}}"-->
+    <video autoplay loop muted id="bgvid" ng-if="shellvm.isHomePage && shellvm.vidOptions">
         <source ng-if="shellvm.vidOptions.urlMp4" src="{{shellvm.vidOptions.urlMp4}}" type="video/mp4" />
         <source ng-if="shellvm.vidOptions.urlWebm" src="{{shellvm.vidOptions.urlWebm}}" type="video/webm" />
         <source ng-if="shellvm.vidOptions.urlOgg" src="{{shellvm.vidOptions.urlOgg}}" type="video/ogg" />
@@ -25,7 +21,7 @@
 <nav ng-if="shellvm.routing.quickMenus.length" mfb-menu position="br" effect="slidein" active-icon="fa fa-close"
      resting-icon="fa fa-reorder" toggling-method="click">
     <a mfb-button mfb-button-close label="{{quickMenu.title}}" icon="fa fa-{{quickMenu.menuIcon}}"
-       ng-click="shellvm.routing.go(quickMenu.state,quickMenu.params)" ng-repeat="quickMenu in shellvm.routing.quickMenus"></a>
+       ng-click="shellvm.goQuickmenu(quickMenu)" ng-repeat="quickMenu in shellvm.routing.quickMenus"></a>
 </nav>
 <!--idle timeout-->
 <rt-idle-timeout></rt-idle-timeout>

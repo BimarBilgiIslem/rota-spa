@@ -1,6 +1,6 @@
 ﻿//#region Menu & State Base Objects
 /**
- * Satte options used in controllers
+ * State options used in controllers
  */
 interface IStateInfo {
     /**
@@ -46,18 +46,6 @@ interface IMenuItem {
      */
     menuUrl?: string;
     /**
-     * Flag that state is partial child state,default false
-     */
-    isNestedState?: boolean;
-    /**
-    * Flag that state will be rtTab sticky
-    */
-    isStickyTab?: boolean;
-    /**
-     * Flag that state is multi view state,default false
-     */
-    isMultiViewState?: boolean;
-    /**
      * Starts a new group
      */
     startGroup?: boolean;
@@ -69,11 +57,6 @@ interface IMenuItem {
      * Flag that state menu will be visible on menu list
      */
     isMenu?: boolean;
-    /**
-     * State unique name
-     * @description it must be omitted if only menu is used
-     */
-    state?: string;
     /**
      * Indicates that menu will be in fullscreen container,default false
      */
@@ -88,36 +71,16 @@ interface IMenuItem {
     isQuickMenu?: boolean;
 }
 /**
- * Hierarchical menu item that including subMenus and parent menu
- */
-interface IHierarchicalMenuItem extends IMenuItem {
-    /**
-     * Parent item
-     */
-    parentMenu?: IHierarchicalMenuItem;
-    /**
-     * Sub menus
-     */
-    subMenus?: IHierarchicalMenuItem[];
-}
-/**
  * State that links states with menus
  */
 interface IRotaState extends ng.ui.IStickyState {
-    /**
-     * Linked menu
-     */
-    hierarchicalMenu?: IHierarchicalMenuItem;
+    navMenu?: INavMenuItem;
+
     /**
      * State controller url
      */
     controllerUrl?: string;
 }
-
-interface IMultiViewState extends ng.ui.IState {
-    controllerUrl?: string;
-}
-
 /**
  * Base menu viewmodel object 
  */
@@ -131,6 +94,21 @@ interface IBreadcrumb {
     text: string;
     url: string;
     icon?: string;
+}
+/**
+ * NavBar item - (ui-navbar directive)
+ */
+interface INavMenuItem {
+    name: string;
+    url?: string;
+    link?: string;
+    params?: IDictionary<any>;
+    visible?: boolean;
+    icon?: string;
+    parent?: INavMenuItem;
+    subtree?: INavMenuItem[];
+    isFullScreen?: boolean;
+    isNested?: boolean;
 }
 
 //#endregion
@@ -192,7 +170,7 @@ interface IRouting extends IBaseService {
     /**
      * All menus registered
      */
-    menus: IHierarchicalMenuItem[];
+    menus: INavMenuItem[];
     /**
      * Breadcrumbs
      */
@@ -200,7 +178,7 @@ interface IRouting extends IBaseService {
     /**
      * Current selected menu
      */
-    activeMenu: IHierarchicalMenuItem;
+    activeMenu: INavMenuItem;
     /**
      * Current state
      */
@@ -242,18 +220,28 @@ interface IRouting extends IBaseService {
    */
     getState(stateName: string): IRotaState;
     /**
-  * Check state is active
-  * @param stateName State name
-  * @param params Optional Params
-  * @param includes Flag that state is relatively or absolutely active
-  */
+    * Check state is active
+    * @param stateName State name
+    * @param params Optional Params
+    * @param includes Flag that state is relatively or absolutely active
+    */
     isActive(stateName: string, params?: any, includes?: boolean): boolean;
     /**
- * Check state is in active pipeline
- * @param stateName State name
- * @param params Optional Params
- */
+    * Check state is in active pipeline
+    * @param stateName State name
+    * @param params Optional Params
+    */
     isInclude(stateName: string, params?: any): boolean;
+    /**
+     * Convert relative url ro absolute url
+     * @param relativeUrl Relative url
+     */
+    toUrl(relativeUrl: string): string;
+    /**
+    * Get active menu eliminating nested states
+    * @param state Optional state
+    */
+    getActiveMenu(state?: IRotaState): INavMenuItem;
 }
 
 //#endregion

@@ -2,8 +2,7 @@
     <li><a href="/"><i class="glyphicon glyphicon-home"></i></a></li>
     <li ng-repeat="breadcrumb in shellvm.routing.breadcrumbs">
         <ng-switch on="$last">
-            <a href class="active" ng-switch-when="true" ng-click="shellvm.refresh()"
-               uib-tooltip="{{::'rota.yenile' | i18n}}" tooltip-placement="bottom">
+            <a href class="active" ng-switch-when="true">
                 <i class="fa fa-{{breadcrumb.icon}}"></i>
                 {{breadcrumb.text}}
             </a>

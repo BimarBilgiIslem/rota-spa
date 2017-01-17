@@ -72,9 +72,9 @@ class TabsController {
             tab.params = tab.params || {};
             tab.disable = tab.disable;
             tab.active = this.isActive(tab) && !tab.disable;
-            tab.heading = tab.heading || state.hierarchicalMenu.title;
-            tab.icon = tab.icon || state.hierarchicalMenu.menuIcon;
-            if (state.hierarchicalMenu.isStickyTab) {
+            tab.heading = tab.heading || state.navMenu.name;
+            tab.icon = tab.icon || state.navMenu.icon;
+            if (state.sticky) {
                 tab.tabViewName = tab.tabViewName || state.name;
             } else {
                 tab.tabViewName = 'nosticky';

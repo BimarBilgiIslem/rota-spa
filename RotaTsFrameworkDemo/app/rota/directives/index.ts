@@ -1,5 +1,4 @@
-﻿import "./rtMenu"
-import "./rtSpinner"
+﻿import "./rtSpinner"
 import "./rtGrid"
 import "./rtPanel"
 import "./rtForm"
@@ -26,10 +25,10 @@ import "./rtCallout"
 import "./rtValidator"
 import "./rtDashboard"
 import "./rtIdleTimeout"
+import "./rtNavMenu"
 
 angular.module('rota.directives',
-    ['rota.directives.rtmenu',
-        'rota.directives.rtspinner',
+    ['rota.directives.rtspinner',
         'rota.directives.rtgrid',
         'rota.directives.rtpanel',
         'rota.directives.rtbutton',
@@ -55,5 +54,6 @@ angular.module('rota.directives',
         'rota.directives.rtcallout',
         'rota.directives.rtvalidator',
         'rota.directives.rtdashboard',
-        'rota.directives.rtidletimeout'
+        'rota.directives.rtidletimeout',
+        'rota.directives.rtnavmenu'
     ]);

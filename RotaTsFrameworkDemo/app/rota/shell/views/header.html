@@ -2,19 +2,22 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div ng-class="{container:!shellvm.fullScreen}">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <button type="button" class="navbar-toggle" ng-click="shellvm.navCollapsed = !shellvm.navCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/">
-                <img src="/Content/img/logo_bimar.png" alt="Bimar Logo">
+                <img ng-src="/Content/img/{{::shellvm.config.logoImageName}}" alt="your app logo">
             </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <div id="navbar" class="navbar-collapse collapse" ng-class="!shellvm.navCollapsed && 'in'">
             <!--Menuler-->
-            <rt-menu></rt-menu>
+            <ul class="nav navbar-nav">
+                <rt-nav-menu trees="shellvm.routing.menus"></rt-nav-menu>
+            </ul>
+
             <ul class="nav navbar-nav navbar-right">
                 <li uib-dropdown ng-if="currentUser.fullname">
                     <!--Current User-->
@@ -26,7 +29,7 @@
                         <img class="img-circle user-picture" ng-if="avatarUri" ngf-src="avatarUri" alt="" />
                         <i class="fa fa-angle-down"></i>
                     </a>
-                    <ul class="dropdown-menu scrollable-menu">
+                    <ul class="dropdown-menu scrollable-menu" uib-dropdown-menu>
                         <li>
                             <a href>
                                 <i class="fa fa-user fa-fw"></i> {{::currentUser.fullname | textcase:'title'}}

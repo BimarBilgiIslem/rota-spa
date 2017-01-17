@@ -24,6 +24,7 @@ class Config extends BaseConfig<IMainConfig> {
             appVersion: constants.APP_VERSION,
             appTitle: constants.APP_TITLE,
             debugMode: environments.debugging,
+            logoImageName: constants.DEFAULT_LOGO_IMAGE_NAME,
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
             supportedLanguages: [{ code: 'tr-tr', fullname: 'Türkçe' }, { code: 'en-us', fullname: 'English' }],
             serverExceptionLoggingEnabled: false,

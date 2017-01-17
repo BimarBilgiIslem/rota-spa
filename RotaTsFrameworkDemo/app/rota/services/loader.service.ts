@@ -1,8 +1,4 @@
-﻿//#region Imports
-import './loader.config';
-//#endregion
-
-//#region Loader Service
+﻿//#region Loader Service
 
 /**
  * Controller File Loader Service

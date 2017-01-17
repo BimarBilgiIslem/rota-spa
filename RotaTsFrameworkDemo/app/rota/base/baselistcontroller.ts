@@ -114,7 +114,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const configService = bundle.systemBundles["config"] as IMainConfig;
         const listOptions: IListPageOptions = angular.merge({}, BaseListController.defaultOptions,
             {
-                newItemFieldName: configService.defaultNewItemParamName,
+                newItemParamName: configService.defaultNewItemParamName,
                 pageSize: configService.gridDefaultPageSize
             }, options);
         return listOptions;
@@ -277,7 +277,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             exporterPdfDefaultStyle: { fontSize: 9 },
             exporterPdfTableStyle: { margin: [5, 5, 5, 5] },
             exporterPdfTableHeaderStyle: { fontSize: 10, bold: true, italics: true, color: 'red' },
-            exporterPdfHeader: { text: this.routing.activeMenu.title, style: 'headerStyle' },
+            exporterPdfHeader: { text: this.routing.activeMenu.name, style: 'headerStyle' },
             exporterPdfFooter: (currentPage: number, pageCount: number) => {
                 return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
             },
