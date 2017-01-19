@@ -106,8 +106,7 @@
         DEFAULT_ROTA_RESPONSE_TYPE: string;
         REDIRECT_URI_PATH: string;
         STORAGE_NAME_AUTH_TOKEN: string;
-        STORAGE_NAME_ROLE_ID: string;
-        STORAGE_NAME_COMPANY_ID: string;
+        STORAGE_NAME_CURRENT_COMPANY: string;
         STORAGE_NAME_TEMP_STATE: string;
         IDLE_TIMEOUT: number;
         COUNT_DOWN_FOR_IDLE_TIMEOUT: number;

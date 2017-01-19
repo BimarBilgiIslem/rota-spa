@@ -62,14 +62,13 @@ const requestWrapperInterceptor = ($q: ng.IQService, localization: ILocalization
     currentCompany: ICompany, common: ICommon, constants: IConstants): ng.IHttpInterceptor => {
     return {
         request: (config: ng.IRequestConfig) => {
-            if (common.isApiRequest(config)) {
-                config.headers[constants.server.HEADER_NAME_LANGUAGE] = localization.currentLanguage.code;
-                if (currentCompany) {
-                    if (currentCompany.roleId)
-                        config.headers[constants.server.HEADER_NAME_ROLE_ID] = currentCompany.roleId.toString();
-                    if (currentCompany.companyId)
-                        config.headers[constants.server.HEADER_NAME_COMPANY_ID] = currentCompany.companyId.toString();
-                }
+            //TODO:Add headers to only restful service request if (common.isApiRequest(config)) 
+            config.headers[constants.server.HEADER_NAME_LANGUAGE] = localization.currentLanguage.code;
+            if (currentCompany) {
+                if (currentCompany.roleId)
+                    config.headers[constants.server.HEADER_NAME_ROLE_ID] = currentCompany.roleId.toString();
+                if (currentCompany.companyId)
+                    config.headers[constants.server.HEADER_NAME_COMPANY_ID] = currentCompany.companyId.toString();
             }
             return $q.when(config);
         }

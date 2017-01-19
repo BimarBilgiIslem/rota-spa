@@ -13,8 +13,7 @@ declare global {
          */
         __constants?: {
             STORAGE_NAME_AUTH_TOKEN: string;
-            STORAGE_NAME_ROLE_ID: string;
-            STORAGE_NAME_COMPANY_ID: string;
+            STORAGE_NAME_CURRENT_COMPANY: string;
             ACTIVE_LANG_STORAGE_NAME: string;
             DEFAULT_LANGUAGE: string;
             HEADER_NAME_LANGUAGE: string;

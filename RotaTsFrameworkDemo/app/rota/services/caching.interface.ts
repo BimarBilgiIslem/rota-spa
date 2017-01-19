@@ -13,7 +13,7 @@ interface ICacher {
      * @param key Key value
      * @param value Value object
      */
-    store(key: string, value: any): void;
+    store<TModel extends IBaseModel>(key: string, value: TModel): void;
     /**
      * Remove cache by key
      * @param key Key

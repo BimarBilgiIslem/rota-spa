@@ -123,8 +123,13 @@ class ShellController {
      * @param companyId
      */
     setCompany(company: ICompany): void {
-        this.caching.sessionStorage.store(this.constants.security.STORAGE_NAME_ROLE_ID, company.roleId);
-        this.caching.sessionStorage.store(this.constants.security.STORAGE_NAME_COMPANY_ID, company.id);
+        this.caching.sessionStorage.store<IStorageCurrentCompany>(
+            this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
+            {
+                id: company.id,
+                companyId: company.companyId,
+                roleId: company.roleId
+            });
         //redirect to home page
         this.$window.location.replace("");
     }

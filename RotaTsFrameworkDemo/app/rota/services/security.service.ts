@@ -279,7 +279,7 @@ class Security implements ISecurity {
             this.handleUnAuthorized();
         });
         //set current company
-        this.setCurrenyCompany();
+        this.setCurrentCompany();
     }
     //#endregion
 
@@ -287,10 +287,12 @@ class Security implements ISecurity {
     /**
      * Set current company
      */
-    setCurrenyCompany(): void {
+    setCurrentCompany(): void {
         let selectedCompany = null;
-        const companyId = this.caching.sessionStorage.get(this.constants.security.STORAGE_NAME_COMPANY_ID)
-            || this.securityConfig.defaultCompanyId;
+        const storedCompany = this.caching.sessionStorage
+            .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY);
+
+        const companyId = (storedCompany && storedCompany.id) || this.securityConfig.defaultCompanyId;
 
         if (this.common.isAssigned(companyId)) {
             selectedCompany = _.findWhere(this.securityConfig.authorizedCompanies, { id: companyId });

@@ -182,8 +182,7 @@ const rotaConstants: IConstants = {
         REDIRECT_URI_PATH: '/home/signin',
         //Storage names
         STORAGE_NAME_AUTH_TOKEN: window.__constants.STORAGE_NAME_AUTH_TOKEN,
-        STORAGE_NAME_ROLE_ID: window.__constants.STORAGE_NAME_ROLE_ID,
-        STORAGE_NAME_COMPANY_ID: window.__constants.STORAGE_NAME_COMPANY_ID,
+        STORAGE_NAME_CURRENT_COMPANY: window.__constants.STORAGE_NAME_CURRENT_COMPANY,
         STORAGE_NAME_TEMP_STATE: 'rota-temp-state',
         IDLE_TIMEOUT: 1800000,
         COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000
