@@ -10,7 +10,11 @@ import "./infrastructure.index"
 
 class RotaApp implements IRotaApp {
     //#region Props
+    //Main module name
+    static readonly moduleName = "rota-app";
+    //Main module
     rotaModule: angular.IModule;
+    private $injector: ng.auto.IInjectorService;
     private $controllerProvider: angular.IControllerProvider;
     private $provide: angular.auto.IProvideService;
     private $compileProvider: ng.ICompileProvider;
@@ -82,14 +86,22 @@ class RotaApp implements IRotaApp {
 
     //#region App Methods
     /**
+     * Set injector for further module dependecy
+     * @param $injector
+     */
+    setInjector($injector: ng.auto.IInjectorService): void {
+        this.$injector = $injector;
+    }
+    /**
      * Add controller with dependencies
      * @param controllerName Controller name
      * @param controller Controller instance
      * @param dependencies Dependencies 
      */
-    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): void {
+    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): IRotaApp {
         const controllerAnnotation = this.createAnnotation(controller, dependencies);
         this.$controllerProvider.register(controllerName, controllerAnnotation);
+        return this;
     }
     /**
     * Add service api with dependencies
@@ -97,33 +109,53 @@ class RotaApp implements IRotaApp {
     * @param api Api class itself
     * @param dependencies Optional dependencies
     */
-    addApi(apiName: string, api: typeof BaseApi, ...dependencies: string[]): void {
+    addApi(apiName: string, api: typeof BaseApi, ...dependencies: string[]): IRotaApp {
         const apiAnnotation = this.createAnnotation(api, dependencies);
         this.$provide.service(apiName, apiAnnotation);
+        return this;
     }
     /**
     * Add value provider service
     * @param serviceName Value service name
     * @param service Service itself
     */
-    addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): void {
+    addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): IRotaApp {
         this.$provide.value(serviceName, service);
+        return this;
     }
     /**
      * Register directive
      * @param directiveName Directive Name
      * @param directiveFactory Directive function
      */
-    addDirective(directiveName: string, directiveFactory: Function | any[]): void {
+    addDirective(directiveName: string, directiveFactory: Function | any[]): IRotaApp {
         this.$compileProvider.directive(directiveName, directiveFactory);
+        return this;
     }
     /**
      * Register filter
      * @param filterName Filter Name
      * @param filterFactory Filter factory
      */
-    addFilter(filterName: string, filterFactory: Function | any[]): void {
+    addFilter(filterName: string, filterFactory: Function | any[]): IRotaApp {
         this.$filterProvider.register(filterName, filterFactory);
+        return this;
+    }
+    /**
+     * Add module after app bootstrap
+     * @param modules Modules to load
+     */
+    addModule(...modules: string[]): IRotaApp {
+        /**
+         * Following code injected to angular to make "module adding after bootstrap" available.line 4345
+         * https://github.com/angular/angular.js/pull/4694
+         * 
+         * instanceInjector.loadNewModules = function (mods) {
+              forEach(loadModules(mods), function (fn) { instanceInjector.invoke(fn || noop); });
+           };
+         */
+        this.$injector.loadNewModules(modules);
+        return this;
     }
     /**
     * Configure app method
@@ -211,6 +243,6 @@ class RotaApp implements IRotaApp {
     //#endregion
 }
 //Instance of rota app
-var rotaApp: IRotaApp = new RotaApp("rota-app");
+var rotaApp: IRotaApp = new RotaApp(RotaApp.moduleName);
 //Export
 export { rotaApp as App }

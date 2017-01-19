@@ -11,7 +11,6 @@ class DashboardController {
 
     addWidget(options: IWidgetOptions): void {
         this.widgets.unshift(options);
-        console.log('widget added', options);
     }
 
     deleteWidget(value: number | IWidgetOptions): void {
@@ -35,10 +34,12 @@ function dashboardDirective() {
     return directive;
 }
 //Widget
-function widgetDirective() {
+function widgetDirective(localization: ILocalization) {
     function link(scope: IWidgetScope, element: ng.IAugmentedJQuery,
         attrs: IWidgetAttributes, dashBoardCnt: DashboardController): void {
         dashBoardCnt.addWidget(scope.options);
+        scope.caption = scope.options.title ||
+            (scope.options.titleI18N && localization.getLocal(scope.options.titleI18N));
     }
 
     const directive = <ng.IDirective>{
@@ -47,7 +48,7 @@ function widgetDirective() {
         link: link,
         template: '<div ng-class="options.class">' +
         '<div class="panel panel-default">' +
-        '<div class="panel-heading">{{options.title}}</div>' +
+        '<div class="panel-heading">{{caption}}</div>' +
         '<div class="panel-body" rt-async-content="options">' +
         '</div>' +
         '</div>' +
@@ -59,6 +60,9 @@ function widgetDirective() {
     };
     return directive;
 }
+
+widgetDirective.$inject = ["Localization"];
+
 //Async Widget
 asyncContentDirective.$inject = ['$compile', '$http', '$q', '$controller', '$templateCache', 'Loader', 'RouteConfig', 'Config', 'Constants'];
 function asyncContentDirective($compile: ng.ICompileService, $http: ng.IHttpService,

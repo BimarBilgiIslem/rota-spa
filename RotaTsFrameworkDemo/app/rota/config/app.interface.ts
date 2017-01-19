@@ -8,37 +8,47 @@ import { BaseApi } from '../base/baseapi';
 export interface IRotaApp {
     rotaModule: ng.IModule;
     /**
+    * Set injector for further module dependecy
+    * @param $injector
+    */
+    setInjector($injector: ng.auto.IInjectorService): void;
+    /**
     * Add controller with dependencies
     * @param controllerName Controller name
     * @param controller Controller instance
     * @param dependencies Dependencies 
     */
-    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): void;
+    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): IRotaApp;
     /**
     * Register directive
     * @param directiveName Directive Name
     * @param directiveFactory Directive function
     */
-    addDirective(directiveName: string, directiveFactory: Function | any[]): void;
+    addDirective(directiveName: string, directiveFactory: Function | any[]): IRotaApp;
     /**
     * Register filter
     * @param filterName Filter Name
     * @param filterFactory Filter factory
     */
-    addFilter(filterName: string, filterFactory: Function | any[]): void;
+    addFilter(filterName: string, filterFactory: Function | any[]): IRotaApp;
     /**
      * Add service api with dependencies
      * @param apiName Api name
      * @param api Api class itself
      * @param dependencies Optional dependencies
      */
-    addApi(apiName: string, api: typeof BaseApi, ...dependencies: string[]): void;
+    addApi(apiName: string, api: typeof BaseApi, ...dependencies: string[]): IRotaApp;
     /**
      * Add value provider service
      * @param serviceName Value service name
      * @param service Service itself
      */
-    addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): void;
+    addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): IRotaApp;
+    /**
+    * Add module after app bootstrap
+    * @param modules Modules to load
+    */
+    addModule(...modules: string[]): IRotaApp;
     /**
      * Configure app method
      * @param fn Function to register

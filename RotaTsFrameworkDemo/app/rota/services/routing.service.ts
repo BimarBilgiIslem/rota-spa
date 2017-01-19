@@ -263,7 +263,7 @@ class Routing implements IRouting {
         //is nested state
         const isNestedState = this.isNestedState(state.name);
         //adjust url
-        const url = (isNestedState ? '/' + state.url : state.url) || '';
+        const url = (state.url && (isNestedState ? '/' + state.url : state.url)) || '';
         //define state obj
         const stateObj: IRotaState = {
             navMenu: state.navMenu,

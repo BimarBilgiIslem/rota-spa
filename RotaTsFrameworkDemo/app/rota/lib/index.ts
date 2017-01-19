@@ -1,6 +1,5 @@
 ﻿//#region Import
 import "spinner"
-//import "bootstrap"
 import "grid"
 import "hotkeys"
 import "scroll"
@@ -29,7 +28,6 @@ import "ng-ckeditor"
 import "ngcontextmenu"
 import "treeview"
 import "uimask"
-import "angular-chart"
 //#endregion
 
 //#region Register
@@ -78,9 +76,6 @@ angular.module('rota.lib',
         'ivh.treeview',
         //Mask
         //https://github.com/angular-ui/ui-mask
-        'ui.mask',
-        //Chart.js
-        //https://github.com/jtblin/angular-chart.js
-        'chart.js'
+        'ui.mask'
     ]);
 //#endregion

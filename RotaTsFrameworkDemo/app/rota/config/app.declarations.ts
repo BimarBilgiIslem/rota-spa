@@ -10,3 +10,7 @@ declare module "xdom!*" {
     let json: any;
     export default json;
 }
+declare module "text!*" {
+    let json: any;
+    export default json;
+}

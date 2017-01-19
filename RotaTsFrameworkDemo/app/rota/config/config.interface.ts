@@ -89,10 +89,10 @@ interface IEvents {
  */
 interface IDateTimeFormat {
     //All date Formats
-    timeFormat: string;
-    dateFormat: string;
-    monthFormat: string;
-    yearFormat: string;
+    timeFormat?: string;
+    dateFormat?: string;
+    monthFormat?: string;
+    yearFormat?: string;
     /**
     * Minute step value default 5
     */

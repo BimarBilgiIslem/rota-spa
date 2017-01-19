@@ -6,47 +6,47 @@ interface ISecurityConfig extends IBaseConfig {
     /**
      * Storage name of token
      */
-    tokenStorageName: string;
+    tokenStorageName?: string;
     /**
      * Session storage name of temprorary data
      */
-    stateTempStorageName: string;
+    stateTempStorageName?: string;
     /**
      * Redirecting uri for unauthorized requests
      */
-    redirectUri: string;
+    redirectUri?: string;
     /**
      * Default uri to redirect after successful authorization
      */
-    postLogoutRedirectUri: string;
+    postLogoutRedirectUri?: string;
     /**
      * Response type for OIC
      */
-    responseType: string;
+    responseType?: string;
     /**
      * Default scopes
      */
-    scope: string;
+    scope?: string;
     /**
      * Flag that indicates if user-profile-endpoint will be used for profile information
      */
-    loadUserProfile: boolean;
+    loadUserProfile?: boolean;
     /**
      * Flag that if omitting built-it claims is active
      */
-    filterProtocolClaims: boolean;
+    filterProtocolClaims?: boolean;
     /**
      * Client Id
      */
-    clientId: string;
+    clientId?: string;
     /**
      * OIC main uri
      */
-    authority: string;
+    authority?: string;
     /**
      * Flag that if app will be used with no authoirzation or not
      */
-    allowAnonymousAccess: boolean;
+    allowAnonymousAccess?: boolean;
     /**
    * Auhorized Companies 
    */

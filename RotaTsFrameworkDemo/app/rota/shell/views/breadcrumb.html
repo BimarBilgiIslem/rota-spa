@@ -1,5 +1,7 @@
 ﻿<ul class="breadcrumb">
-    <li><a href="/"><i class="glyphicon glyphicon-home"></i></a></li>
+    <li>
+        <a href="/"><i class="glyphicon glyphicon-home"></i></a>
+    </li>
     <li ng-repeat="breadcrumb in shellvm.routing.breadcrumbs">
         <ng-switch on="$last">
             <a href class="active" ng-switch-when="true">

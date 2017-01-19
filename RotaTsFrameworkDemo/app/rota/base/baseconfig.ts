@@ -2,7 +2,7 @@
     config: TConfig;
 
     configure(config: TConfig): void {
-        this.config = angular.extend(this.config, config);
+        this.config = angular.merge(this.config, config);
     }
 
     $get(): TConfig {
