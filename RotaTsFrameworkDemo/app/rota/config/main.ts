@@ -11,7 +11,7 @@ require(['config/vendor.index'], (): void => {
         if (pbar && pbar.parentNode) {
             pbar.parentNode.removeChild(pbar);
         }
-        //bootstrap app
+        //bootstrap rota app
         angular.element(document).ready(() => {
             const $injector = angular.bootstrap(document, [app.rotaModule.name]);
             app.setInjector($injector);
