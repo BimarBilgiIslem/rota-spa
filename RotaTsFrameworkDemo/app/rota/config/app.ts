@@ -197,7 +197,7 @@ class RotaApp implements IRotaApp {
      * Define a state rule providiing the url 
      * @param redirections List of reddirections including from and to paths
      */
-    redirect(redirections: { from: string, to: string }[]): void {
+    redirect(redirections: { from: string, to: string }[]): IRotaApp {
         this.configure(["$urlRouterProvider",
             ($urlRouterProvider: ng.ui.IUrlRouterProvider) => {
                 const escapeRegex = (stringToGoIntoTheRegex: string): string => {
@@ -208,6 +208,7 @@ class RotaApp implements IRotaApp {
                     $urlRouterProvider.when(regex, "/" + redirectItem.to);
                 });
             }]);
+        return this;
     }
     /**
     * Create annotation style of contructor function

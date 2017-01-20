@@ -83,7 +83,7 @@ export interface IRotaApp {
         to: "bkg/new/genelbilgiler"
     }]);
      */
-    redirect(redirections: { from: string, to: string }[]): void;
+    redirect(redirections: { from: string, to: string }[]): IRotaApp;
     /**
      * Sets home page settings
      * @param options Options
