@@ -223,7 +223,6 @@ class Routing implements IRouting {
         ],
             contentSections = [{ '@shell': { templateUrl: 'content.html' } },
             { 'breadcrumb@shell.content': { templateUrl: 'breadcrumb.html' } },
-            { 'notification@shell.content': { templateUrl: 'notification.html' } },
             { 'badges@shell.content': { templateUrl: 'badges.html' } }
             ];
         //register shell state

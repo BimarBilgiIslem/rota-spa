@@ -154,15 +154,3 @@
         opacity: 0;
     }
 }
-
-.rota-animate-menu {
-    &:hover {
-        i {
-            transform: scale(1.2);
-        }
-    }
-
-    i {
-        transition: all .2s ease-in-out;
-    }
-}

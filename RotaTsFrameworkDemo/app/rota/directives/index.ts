@@ -26,6 +26,7 @@ import "./rtValidator"
 import "./rtDashboard"
 import "./rtIdleTimeout"
 import "./rtNavMenu"
+import "./rtNotification"
 
 angular.module('rota.directives',
     ['rota.directives.rtspinner',
@@ -55,5 +56,6 @@ angular.module('rota.directives',
         'rota.directives.rtvalidator',
         'rota.directives.rtdashboard',
         'rota.directives.rtidletimeout',
-        'rota.directives.rtnavmenu'
+        'rota.directives.rtnavmenu',
+        'rota.directives.rtnotification'
     ]);

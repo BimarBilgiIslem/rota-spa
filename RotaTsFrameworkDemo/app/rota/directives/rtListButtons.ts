@@ -8,12 +8,12 @@ function listButtonsDirective() {
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton"  text-i18n="rota.ara" icon="search"' +
         'uib-tooltip="{{::\'rota.ara\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" shortcut="ctrl+enter"></rt-button>&nbsp;' +
-        '<div ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
+        '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
         '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\',\'pdfExport\')" text-i18n="rota.disariyaaktar"' +
         'uib-tooltip="{{::\'rota.disariyaaktar\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom"></rt-button>' +
-        '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">' +
+        '<button type="button" class="btn btn-info dropdown-toggle" uib-dropdown-toggle>' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
-        '<ul class="dropdown-menu">' +
+        '<ul class="dropdown-menu" uib-dropdown-menu>' +
         '<li><a href i18n="rota.aktarallcsv" ng-click="vm.exportGrid(\'all\',\'csvExport\')"></a></li>' +
         '<li><a href i18n="rota.aktarekrandakicsv" ng-click="vm.exportGrid(\'visible\',\'csvExport\')"></a></li>' +
         '<li><a href i18n="rota.aktarsecilicsv" ng-disabled="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',\'csvExport\')"></a></li>' +

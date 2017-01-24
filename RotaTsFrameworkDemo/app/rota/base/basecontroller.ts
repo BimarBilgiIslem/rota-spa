@@ -12,17 +12,17 @@ class BaseController extends InjectableObject implements IBaseController {
             * Notification Service
             * @returns {IBaseLogger}
             */
-    get notification(): IBaseLogger { return this.logger.notification; }
+    get notification(): INotification { return this.logger.notification; }
     /**
      * Toastr Service
      * @returns {IBaseLogger}
      */
-    get toastr(): IBaseLogger { return this.logger.toastr; }
+    get toastr(): IToastr { return this.logger.toastr; }
     /**
      * Console Service
      * @returns {IBaseLogger}
      */
-    get console(): IBaseLogger { return this.logger.console; }
+    get console(): IConsole { return this.logger.console; }
 
     //#endregion
     /**

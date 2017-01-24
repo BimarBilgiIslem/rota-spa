@@ -1,9 +1,0 @@
-﻿<div ng-class="['alert alert-block', 'alert-'+notification.style]"
-     ng-repeat="notification in shellvm.logger.notification.notifications">
-    <a class="close" ng-click="shellvm.logger.notification.removeNotification(notification)" href="">×</a>
-    <h4 class="alert-heading">
-        <i class="fa-fw fa fa-{{notification.icon}}"></i>
-        {{notification.title}}
-    </h4>
-    <p ng-bind-html="notification.message"></p>
-</div>

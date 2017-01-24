@@ -1,7 +1,5 @@
 ﻿//#region Imports
-import "../services/routing.service";
-import "../config/config";
-import "../services/logger.service";
+import { App } from "rota/config/app";
 //#endregion
 
 //#region Shell Controller
@@ -123,6 +121,13 @@ class ShellController {
      * @param companyId
      */
     setCompany(company: ICompany): void {
+        if (App.onCompanyChanged) {
+            const result = App.onCompanyChanged(company);
+            if (result === true) {
+                return;
+            }
+        }
+
         this.caching.sessionStorage.store<IStorageCurrentCompany>(
             this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
             {

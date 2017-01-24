@@ -19,41 +19,51 @@ class Toastr implements IToastr {
      * Toast log message
      * @param toast Log
      */
-    log(toast: ILog): void {
+    log(toast: ILog): IRemoveLog {
         toastr.options.timeOut = toast.isSticky ? 0 : this.loggerconfig.timeOuts[LogType.Debug];
-        this.info(toast);
+        return this.info(toast);
     }
     /**
      * Toast error message
      * @param toast Log
      */
-    error(toast: ILog): void {
+    error(toast: ILog): IRemoveLog {
         toastr.options.timeOut = toast.isSticky ? 0 : this.loggerconfig.timeOuts[LogType.Error];
-        toastr.error(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Error]);
+        const elem = toastr.error(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Error]);
+        return () => { toastr.clear(elem); }
     }
     /**
      * Toast warn message
      * @param toast Log
      */
-    warn(toast: ILog): void {
+    warn(toast: ILog): IRemoveLog {
         toastr.options.timeOut = toast.isSticky ? 0 : this.loggerconfig.timeOuts[LogType.Warn];
-        toastr.warning(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Warn]);
+        const elem = toastr.warning(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Warn]);
+        return () => { toastr.clear(elem); }
     }
     /**
      * Toast success message
      * @param toast Log
      */
-    success(toast: ILog): void {
+    success(toast: ILog): IRemoveLog {
         toastr.options.timeOut = toast.isSticky ? 0 : this.loggerconfig.timeOuts[LogType.Success];
-        toastr.success(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Success]);
+        const elem = toastr.success(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Success]);
+        return () => { toastr.clear(elem); }
     }
     /**
      * Toast info message
      * @param toast Log
      */
-    info(toast: ILog): void {
+    info(toast: ILog): IRemoveLog {
         toastr.options.timeOut = toast.isSticky ? 0 : this.loggerconfig.timeOuts[LogType.Info];
-        toastr.info(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Info]);
+        const elem = toastr.info(toast.message, toast.title || this.loggerconfig.defaultTitles[LogType.Info]);
+        return () => { toastr.clear(elem); }
+    }
+    /**
+     * Clear all toasts
+     */
+    clearAll(): void {
+        toastr.clear();
     }
 }
 /**
@@ -72,60 +82,68 @@ class Notification implements INotification {
      * Notify log message
      * @param notify Notify message
      */
-    log(notify: ILog): void {
-        this.info(notify);
+    log(notify: INotifyLog): IRemoveLog {
+        return this.info(notify);
     }
     /**
      * Notify info message
      * @param notify Notify message
      */
-    info(notify: ILog): INotify {
-        return this.addNotification({
+    info(notify: INotifyLog): IRemoveLog {
+        const result = this.addNotification({
             title: notify.title || this.loggerconfig.defaultTitles[LogType.Info],
             message: notify.message,
             icon: 'info',
             style: 'info',
-            isSticky: notify.isSticky
+            isSticky: notify.isSticky,
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content
         });
+        return () => { this.removeNotification(result); }
     }
     /**
      * Notify error message
      * @param notify Notify message
      */
-    error(notify: ILog): INotify {
-        return this.addNotification({
+    error(notify: INotifyLog): IRemoveLog {
+        const result = this.addNotification({
             title: notify.title || this.loggerconfig.defaultTitles[LogType.Error],
             message: notify.message,
             icon: 'times',
             style: 'danger',
-            isSticky: notify.isSticky
+            isSticky: notify.isSticky,
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content
         });
+        return () => { this.removeNotification(result); }
     }
     /**
      * Notify warn message
      * @param notify Notify message
      */
-    warn(notify: ILog): INotify {
-        return this.addNotification({
+    warn(notify: INotifyLog): IRemoveLog {
+        const result = this.addNotification({
             title: notify.title || this.loggerconfig.defaultTitles[LogType.Warn],
             message: notify.message,
             icon: 'warning',
             style: 'warning',
-            isSticky: notify.isSticky
+            isSticky: notify.isSticky,
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content
         });
+        return () => { this.removeNotification(result); }
     }
     /**
      * Notify success message
      * @param notify Notify message
      */
-    success(notify: ILog): INotify {
-        return this.addNotification({
+    success(notify: INotifyLog): IRemoveLog {
+        const result = this.addNotification({
             title: notify.title || this.loggerconfig.defaultTitles[LogType.Success],
             message: notify.message,
             icon: 'check-square-o',
             style: 'success',
-            isSticky: notify.isSticky
+            isSticky: notify.isSticky,
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content
         });
+        return () => { this.removeNotification(result); }
     }
     /**
      * Add notification
@@ -154,6 +172,12 @@ class Notification implements INotification {
         this.notifications.delete((item) => {
             return includeSticky || !item.isSticky;
         });
+    }
+    /**
+    * Clear all notifications
+    */
+    clearAll(): void {
+        this.removeAll(true);
     }
 }
 /**
@@ -185,6 +209,7 @@ class Console implements IConsole {
      */
     log(log: ILog): void {
         this.logit('log', this.formatLog(log), log.data);
+
     }
     /**
      * Info
@@ -251,8 +276,13 @@ class Console implements IConsole {
             this.logit('error', 'console.timeEnd not supported');
         }
     }
+    /**
+    * Clear console
+    */
+    clearAll(): void {
+        console.clear();
+    }
 }
-
 //#endregion
 
 //#region Logger Service
@@ -262,23 +292,23 @@ class Console implements IConsole {
 class Logger implements ILogger {
     //#region Props
     serviceName = "Logger Service";
-    private logServices: { [index: number]: IBaseLogger };
+    private logServices: { [index: number]: IBaseLogger<ILog> };
     //Services
     /**
      * Console Service
      * @returns {} Console Service
      */
-    get console(): IBaseLogger { return this.logServices[LogServices.Console]; }
+    get console(): IConsole { return this.logServices[LogServices.Console] as IConsole; }
     /**
      * Notification Service
      * @returns {} Notification Service
      */
-    get notification(): IBaseLogger { return this.logServices[LogServices.Notification]; }
+    get notification(): INotification { return this.logServices[LogServices.Notification] as INotification; }
     /**
      * Toastr service
      * @returns {} Toastr service
      */
-    get toastr(): IBaseLogger { return this.logServices[LogServices.Toastr]; }
+    get toastr(): IToastr { return this.logServices[LogServices.Toastr] as IToastr; }
     //#endregion
     static $inject = ['$rootScope', '$log', '$document', 'Config', 'LoggerConfig', 'Localization'];
     constructor($rootScope: ng.IRootScopeService,

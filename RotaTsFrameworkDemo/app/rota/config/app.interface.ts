@@ -6,6 +6,14 @@ import { BaseApi } from '../base/baseapi';
  * Application interface
  */
 export interface IRotaApp {
+    /**
+     * Company changed event
+     * @param company Selected company     
+     */
+    onCompanyChanged?(company: ICompany): void | boolean;
+    /**
+     * Rota module
+     */
     rotaModule: ng.IModule;
     /**
     * Set injector for further module dependecy

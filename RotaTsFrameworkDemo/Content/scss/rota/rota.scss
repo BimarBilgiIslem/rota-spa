@@ -3,6 +3,7 @@
 //vendor core libs
 @import '../vendor/bootstrap.scss';
 @import '../vendor/bourbon.scss';
+@import "../vendor/animate/animate";
 //sections
 @import 'sections/header.scss';
 @import "sections/content";
@@ -20,6 +21,7 @@
 @import "components/rtSelect";
 @import "components/rtTabs";
 @import "components/rtMultFileUpload";
+@import "components/rtNotification";
 //@import "components/subDropDown";
 @import "components/breadcrumbs";
 @import "components/badges";
