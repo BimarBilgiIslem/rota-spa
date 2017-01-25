@@ -28,6 +28,7 @@ import "ng-ckeditor"
 import "ngcontextmenu"
 import "treeview"
 import "uimask"
+import "uilayout"
 //#endregion
 
 //#region Register
@@ -35,7 +36,8 @@ angular.module('rota.lib',
     [
         //Grid plugins
         //https://github.com/angular-ui/ui-grid
-        'ui.grid', 'ui.grid.selection', 'ui.grid.pinning', 'ui.grid.pagination', 'ui.grid.exporter', 'ui.grid.grouping', 'ui.grid.resizeColumns',
+        'ui.grid', 'ui.grid.selection', 'ui.grid.pinning', 'ui.grid.pagination', 'ui.grid.exporter',
+        'ui.grid.grouping', 'ui.grid.resizeColumns', 'ui.grid.saveState', 'ui.grid.moveColumns',
         //Datetime picker
         //https://github.com/dalelotts/angular-bootstrap-datetimepicker
         'ui.dateTimeInput',
@@ -76,6 +78,9 @@ angular.module('rota.lib',
         'ivh.treeview',
         //Mask
         //https://github.com/angular-ui/ui-mask
-        'ui.mask'
+        'ui.mask',
+        //ui-layout
+        //https://github.com/angular-ui/ui-layout
+        'ui.layout'
     ]);
 //#endregion

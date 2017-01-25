@@ -37,7 +37,7 @@
 #sub-header {
     background: $sub-header-bg;
     border-bottom: $sub-header-border-bottom;
-    padding-top: 8px;    
+    padding-top: 8px;
 
     .title {
         color: $sub-header-title;
@@ -64,7 +64,11 @@
 }
 
 #main-content {
-    padding-top: 51px;
+    padding-top: ($navbar-height + 1px);
+}
+
+.top-margin {
+    margin-top: ($navbar-height + 1px);
 }
 
 /*#region Loading Panel */

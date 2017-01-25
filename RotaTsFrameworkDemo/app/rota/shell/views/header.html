@@ -1,6 +1,6 @@
 ﻿<!--Header-->
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div ng-class="{container:!shellvm.fullScreen}">
+    <div ng-class="{container:!shellvm.routing.activeMenu.isFullScreen}">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" ng-click="shellvm.navCollapsed = !shellvm.navCollapsed">
                 <span class="sr-only">Toggle navigation</span>

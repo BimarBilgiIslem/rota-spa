@@ -21,6 +21,7 @@
 @import url(vendor-css/ivh-treeview.css);
 @import url(vendor-css/ivh-treeview-theme-basic.css);
 @import url(vendor-css/ui-navbar.min.css);
+@import url(vendor-css/ui-layout.css);
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5893,6 +5894,9 @@ body {
 
 #main-content {
   padding-top: 51px; }
+
+.top-margin {
+  margin-top: 51px; }
 
 /*#region Loading Panel */
 .loading-panel {

@@ -53,6 +53,7 @@ require.config({
         ngcontextmenu: './rota/lib/ng-contextmenu',
         treeview: './rota/lib/ivh-treeview',
         uimask: './rota/lib/mask.min',
+        uilayout: './rota/lib/ui-layout',
         //Security
         //JWT Client claims helpers
         jws: './rota/lib/jws-3.0.min',
@@ -148,6 +149,9 @@ require.config({
             deps: ['angular']
         },
         uimask: {
+            deps: ['angular']
+        },
+        uilayout: {
             deps: ['angular']
         }
     }

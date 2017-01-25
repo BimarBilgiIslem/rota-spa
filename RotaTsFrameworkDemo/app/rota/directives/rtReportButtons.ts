@@ -62,11 +62,11 @@ function reportButtonsDirective(reporting: IReporting) {
             }
         },
         template:
-        '<div class="btn-group">' +
+        '<div class="btn-group" uib-dropdown>' +
         '<rt-button size="sm" color="info" icon="external-link" click="onClick(\'reportviewer\')" text-i18n="rota.raporgoster"></rt-button>' +
-        '<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">' +
+        '<button uib-dropdown-toggle type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
-        '<ul class="dropdown-menu">' +
+        '<ul class="dropdown-menu" uib-dropdown-menu>' +
         '<li class="dropdown-header" i18n="rota.indir"></li>' +
         '<li><a href ng-click="onClick(\'indirpdf\')">' +
         '<i class="fa fa-file-pdf-o fa-fw"></i>&nbsp;{{::"rota.indirpdf" | i18n}}' +
