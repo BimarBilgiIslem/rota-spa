@@ -4,6 +4,14 @@
     border-bottom: 3px solid #ABC5DC;
 }
 
+.ui-grid-row:nth-child(odd):hover .ui-grid-cell {
+    background: #A9C7DD;
+}
+
+.ui-grid-row:nth-child(even):hover .ui-grid-cell {
+    background: #A9C7DD;
+}
+
 .ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
     background-color: #A9C7DD !important;
 }

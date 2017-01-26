@@ -51,6 +51,10 @@ interface IGlobalEnvironment {
      * Cross Domain root Paths,like https://xdomain.com
      */
     xDomPaths?: { [index: string]: string };
+    /**
+     * Logoff when idle timeout has reached by prompting user
+     */
+    logOffWhenIdleTimeout?: boolean;
 }
 //#endregion
 

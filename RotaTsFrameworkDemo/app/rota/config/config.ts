@@ -11,7 +11,7 @@ if (env) {
     const _env = angular.copy<IGlobalEnvironment>(env);
     module.constant('Environment', _env);
 } else {
-    throw new Error('no server config found');
+    throw 'no server config found';
 }
 //#endregion
 

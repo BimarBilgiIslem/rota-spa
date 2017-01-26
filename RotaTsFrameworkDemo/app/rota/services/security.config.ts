@@ -21,7 +21,7 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
             antiForgeryTokenEnabled: environments.antiForgeryTokenEnabled,
             antiForgeryTokenUrl: constants.server.ACTION_NAME_ANTI_FORGERY_TOKEN,
             antiForgeryTokenHeaderName: constants.server.HEADER_NAME_ANTI_FORGERY_TOKEN,
-            logOffWhenIdleTimeout: false,
+            logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout,
             idleTimeout: constants.security.IDLE_TIMEOUT,
             idleLogoffCountDown: constants.security.COUNT_DOWN_FOR_IDLE_TIMEOUT
         }
