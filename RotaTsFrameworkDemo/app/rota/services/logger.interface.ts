@@ -47,6 +47,10 @@ interface INotifyLog extends ILog {
      * Enum that whether notification will be displayed in top or content
      */
     notificationLayout?: NotificationLayout;
+    /**
+     * Notification will close if provided hideDelay in ms passed
+     */
+    autoHideDelay?: number;
 }
 
 type IAlertStyle = 'warning' | 'danger' | 'success' | 'info';

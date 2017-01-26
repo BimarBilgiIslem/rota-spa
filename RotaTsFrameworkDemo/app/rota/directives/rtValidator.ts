@@ -37,7 +37,8 @@ function validatorDirective(common: ICommon, constants: IConstants, localization
                 //register blur event 
                 if (validator.triggerOn & TriggerOn.Blur) {
                     //element must be input type
-                    $(element).bind('blur', () => {
+                    const inputElem = element[0] instanceof HTMLInputElement ? element : element.find('input');
+                    inputElem && $(inputElem).bind('blur', () => {
                         const value = ngModelCnt.$modelValue || ngModelCnt.$viewValue;
 
                         validators.runValidation(validator, TriggerOn.Blur, value)

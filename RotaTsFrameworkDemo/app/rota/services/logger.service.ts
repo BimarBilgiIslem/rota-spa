@@ -75,7 +75,9 @@ class Notification implements INotification {
      */
     notifications: INotify[];
 
-    constructor(private loggerconfig: ILoggerConfig, private $document: duScroll.IDocumentService) {
+    constructor(private loggerconfig: ILoggerConfig,
+        private $document: duScroll.IDocumentService,
+        private $timeout: ng.ITimeoutService) {
         this.notifications = [];
     }
     /**
@@ -96,7 +98,8 @@ class Notification implements INotification {
             icon: 'info',
             style: 'info',
             isSticky: notify.isSticky,
-            notificationLayout: notify.notificationLayout || NotificationLayout.Content
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content,
+            autoHideDelay: notify.autoHideDelay
         });
         return () => { this.removeNotification(result); }
     }
@@ -111,7 +114,8 @@ class Notification implements INotification {
             icon: 'times',
             style: 'danger',
             isSticky: notify.isSticky,
-            notificationLayout: notify.notificationLayout || NotificationLayout.Content
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content,
+            autoHideDelay: notify.autoHideDelay
         });
         return () => { this.removeNotification(result); }
     }
@@ -126,7 +130,8 @@ class Notification implements INotification {
             icon: 'warning',
             style: 'warning',
             isSticky: notify.isSticky,
-            notificationLayout: notify.notificationLayout || NotificationLayout.Content
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content,
+            autoHideDelay: notify.autoHideDelay
         });
         return () => { this.removeNotification(result); }
     }
@@ -141,7 +146,8 @@ class Notification implements INotification {
             icon: 'check-square-o',
             style: 'success',
             isSticky: notify.isSticky,
-            notificationLayout: notify.notificationLayout || NotificationLayout.Content
+            notificationLayout: notify.notificationLayout || NotificationLayout.Content,
+            autoHideDelay: notify.autoHideDelay
         });
         return () => { this.removeNotification(result); }
     }
@@ -153,6 +159,10 @@ class Notification implements INotification {
     private addNotification(notify: INotify): INotify {
         //TODO:sce sanitize message and text ?
         this.notifications.push(notify);
+        //autohide 
+        if (notify.autoHideDelay) {
+            this.$timeout(() => this.removeNotification(notify), notify.autoHideDelay);
+        }
         //Scroll up to top to make notifications visible
         this.$document.duScrollTop && this.$document.duScrollTop(0, 500);
         return notify;
@@ -310,10 +320,11 @@ class Logger implements ILogger {
      */
     get toastr(): IToastr { return this.logServices[LogServices.Toastr] as IToastr; }
     //#endregion
-    static $inject = ['$rootScope', '$log', '$document', 'Config', 'LoggerConfig', 'Localization'];
+    static $inject = ['$rootScope', '$log', '$document', '$timeout', 'Config', 'LoggerConfig', 'Localization'];
     constructor($rootScope: ng.IRootScopeService,
         $log: ng.ILogService,
         $document: duScroll.IDocumentService,
+        $timeout: ng.ITimeoutService,
         config: IMainConfig,
         loggerconfig: ILoggerConfig,
         localization: ILocalization) {
@@ -325,7 +336,7 @@ class Logger implements ILogger {
         //register services
         this.logServices = {};
         this.logServices[LogServices.Console] = new Console($log, config);
-        this.logServices[LogServices.Notification] = new Notification(loggerconfig, $document);
+        this.logServices[LogServices.Notification] = new Notification(loggerconfig, $document, $timeout);
         this.logServices[LogServices.Toastr] = new Toastr(loggerconfig);
     }
 }
