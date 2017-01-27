@@ -122,7 +122,7 @@ class Routing implements IRouting {
         * Register state events 
         */
     private registerEvents(): void {
-        this.$rootScope.$on('$stateChangeSuccess', (event, toState: IRotaState) => {
+        this.$rootScope.$on(this.constants.events.EVENT_STATE_CHANGE_SUCCESS, (event, toState: IRotaState) => {
             if (!toState) return;
             /**
              * Set breadcrumb datasource

@@ -250,30 +250,6 @@ interface IBaseListModel<TModel extends IBaseCrudModel> extends Array<TModel & I
     */
     findByGui?: (gui: string) => TModel & IObserableModel<TModel>;
     /**
-    * Filter the list in the list pass the iterator truth test.
-    * @param callback Iterator function
-    * @returns {IBaseListModel<TModel>}
-    */
-    where?: (fn: _.ListIterator<TModel, boolean>) => IBaseListModel<TModel>;
-    /**
-    * Returns the first element of the list pass the iterator truth test.
-    * @param callback Iterator function
-    * @returns {TModel}
-    */
-    firstOrDefault?: (fn?: _.ListIterator<TModel, boolean>) => TModel & IObserableModel<TModel>;
-    /**
-     *  Returns true if any of the values in the list pass the iterator truth test.
-     * @param fn Iteratır function
-     * @returns {boolean} 
-     */
-    any?: (fn: _.ListIterator<TModel, boolean>) => boolean;
-    /**
-    * Get count in the list pass the iterator truth test.
-    * @param callback Iterator fuction
-    * @returns {number} 
-    */
-    count?: (fn: _.ListIterator<TModel, boolean>) => number;
-    /**
      * Remove model or mark model deleted
      * @description This is extension method defined in model.extensions
      * @param item Model item
@@ -310,12 +286,6 @@ interface IBaseListModel<TModel extends IBaseCrudModel> extends Array<TModel & I
      * @returns {} 
      */
     new?: (values?: IBaseCrudModel) => TModel;
-    /**
-     * Sum values returned from iteration function
-     * @param fn Iteration function
-     * @returns {number} 
-     */
-    sum?: (fn: _.ListIterator<TModel, number>) => number;
 }
 
 /**

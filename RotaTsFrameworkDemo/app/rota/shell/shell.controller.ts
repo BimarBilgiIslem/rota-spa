@@ -1,8 +1,4 @@
-﻿//#region Imports
-import { App } from "rota/config/app";
-//#endregion
-
-//#region Shell Controller
+﻿//#region Shell Controller
 /**
  * Shell controller 
  */
@@ -121,12 +117,8 @@ class ShellController {
      * @param companyId
      */
     setCompany(company: ICompany): void {
-        if (App.onCompanyChanged) {
-            const result = App.onCompanyChanged(company);
-            if (result === true) {
-                return;
-            }
-        }
+        //broadcast
+        this.$rootScope.$broadcast(this.constants.events.EVENT_COMPANY_CHANGED, company);
 
         this.caching.sessionStorage.store<IStorageCurrentCompany>(
             this.constants.security.STORAGE_NAME_CURRENT_COMPANY,

@@ -7,10 +7,15 @@ import { BaseApi } from '../base/baseapi';
  */
 export interface IRotaApp {
     /**
+     * Error event handler
+     * @param error Error
+     */
+    onError?(errCallBack: Function | any[]): void;
+    /**
      * Company changed event
      * @param company Selected company     
      */
-    onCompanyChanged?(company: ICompany): void | boolean;
+    onCompanyChanged?(callBack: Function | any[]): void ;
     /**
      * Rota module
      */

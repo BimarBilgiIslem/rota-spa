@@ -211,7 +211,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * Register event that catch model dirty while quiting
      */
     private registerDirtyCheckEvent(): void {
-        this.on('$stateChangeStart',
+        this.on(this.constants.events.EVENT_STATE_CHANGE_START,
             (event: ng.IAngularEvent, toState: IRotaState, toParams: ng.ui.IStateParamsService, fromState: IRotaState) => {
                 const menu = this.routing.getActiveMenu(toState);
                 if (menu !== this.routing.activeMenu && this.isModelDirty &&

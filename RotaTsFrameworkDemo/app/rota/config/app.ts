@@ -19,6 +19,9 @@ class RotaApp implements IRotaApp {
     private $provide: angular.auto.IProvideService;
     private $compileProvider: ng.ICompileProvider;
     private $filterProvider: ng.IFilterProvider;
+    //calbacks
+    private errCallBack: Function | any[];
+    private companyChangedCallBack: Function | any[];
     //#endregion
 
     //#region Init
@@ -79,12 +82,35 @@ class RotaApp implements IRotaApp {
                     $sceDelegateProvider.resourceUrlWhitelist(xdoms);
                 }
             }]);
+        //Hook handlers
+        this.run(["$rootScope", "Constants", ($rootScope: IRotaRootScope, constants: IConstants) => {
+            $rootScope.$on(constants.events.EVENT_ON_ERROR, (e, error) => {
+                if (this.errCallBack) {
+                    this.$injector && this.$injector.invoke(<Function>this.errCallBack, error);
+                }
+            });
+            $rootScope.$on(constants.events.EVENT_COMPANY_CHANGED, (e, company) => {
+                if (this.companyChangedCallBack) {
+                    this.$injector && this.$injector.invoke(<Function>this.companyChangedCallBack, company);
+                }
+            });
+        }]);
         //add base modal controllers if not defined controller.see dialog.services->showModal
         this.rotaModule.controller(window.__constants.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(BaseModalController));
     }
     //#endregion
 
     //#region App Methods
+    onCompanyChanged?(callBack: Function | any[]): void {
+        this.companyChangedCallBack = callBack;
+    }
+    /**
+     * 
+     * @param errCallBack
+     */
+    onError?(errCallBack: Function | any[]): void {
+        this.errCallBack = errCallBack;
+    }
     /**
      * Set injector for further module dependecy
      * @param $injector

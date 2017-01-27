@@ -43,6 +43,10 @@
         EVENT_MENU_CHANGED: string;
         EVENT_MODEL_LOADED: string;
         EVENT_RELOAD_WIDGET: string;
+        EVENT_STATE_CHANGE_START: string;
+        EVENT_STATE_CHANGE_SUCCESS: string;
+        EVENT_ON_ERROR: string;
+        EVENT_COMPANY_CHANGED: string;
     };
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;

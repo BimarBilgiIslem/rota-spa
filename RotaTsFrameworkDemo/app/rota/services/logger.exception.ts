@@ -3,7 +3,8 @@ import "./logger.service"
 //#endregion
 
 //#region Client Error Tracker
-const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.auto.IInjectorService, config: IMainConfig) => {
+const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.auto.IInjectorService,
+    config: IMainConfig, constants: IConstants) => {
     let loggerService: ILogger;
     let httpService: ng.IHttpService;
     let $rootScope: ng.IRootScopeService;
@@ -43,13 +44,17 @@ const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.
         //toastr and notification log
         loggerService.toastr.error({ message: exception.message });
         loggerService.notification.error({ message: exception.message });
+        //broadcast
+        $rootScope = $rootScope || $injector.get<ng.IRootScopeService>('$rootScope');
+        $rootScope.$broadcast(constants.events.EVENT_ON_ERROR, exception);
     };
 };
-exceptionHandler.$inject = ['$delegate', '$injector', 'Config'];
+exceptionHandler.$inject = ['$delegate', '$injector', 'Config', 'Constants'];
 //#endregion
 
 //#region Server Error Tracker
-var errorHttpInterceptorService = ($q: ng.IQService, logger: ILogger, config: IMainConfig) => {
+var errorHttpInterceptorService = ($q: ng.IQService, $rootScope: IRotaRootScope,
+    logger: ILogger, config: IMainConfig, constants: IConstants) => {
     //display server error messages
     const concatErrorMessages = (exception: IServerFailedResponseData | string): string => {
         if (angular.isString(exception)) {
@@ -93,11 +98,13 @@ var errorHttpInterceptorService = ($q: ng.IQService, logger: ILogger, config: IM
                 //no response from server
                 logger.notification.error({ message: 'Server connection lost' });
             }
+            //broadcast
+            $rootScope.$broadcast(constants.events.EVENT_ON_ERROR, response);
             return $q.reject(response);
         }
     };
 }
-errorHttpInterceptorService.$inject = ['$q', 'Logger', 'Config'];
+errorHttpInterceptorService.$inject = ['$q', '$rootScope', 'Logger', 'Config', 'Constants'];
 //#endregion
 
 //#region Register

@@ -48,42 +48,6 @@ Array.prototype["findByGui"] = function (gui: string): IBaseCrudModel {
     return item as IBaseCrudModel;
 }
 /**
- * Get count in the list pass the iterator truth test.
- * @param callback Iterator fuction
- * @returns {number} 
- */
-Array.prototype["count"] = function (callback: _.ListIterator<IBaseCrudModel, boolean>): number {
-    const items = this.where(this, callback);
-    return items !== null ? items.length : 0;
-}
-/**
- *  Returns true if any of the values in the list pass the iterator truth test.
- * @param fn Iterator function
- * @returns {boolean} 
- */
-Array.prototype["any"] = function (callback: _.ListIterator<IBaseCrudModel, boolean>): boolean {
-    return _.some(this, callback);
-}
-/**
- * Filter the list in the list pass the iterator truth test.
-  * @param callback Iterator function
- * @returns {IBaseListModel<TModel>}
- */
-Array.prototype["where"] = function (callback: _.ListIterator<IBaseCrudModel, boolean>): Array<IBaseCrudModel> {
-    return _.filter<IBaseCrudModel>(this, callback);
-}
-/**
- * Returns the first element of the list pass the iterator truth test.
-  * @param callback Iterator function
- * @returns {IBaseListModel}
- */
-Array.prototype["firstOrDefault"] = function (callback?: _.ListIterator<IBaseCrudModel, boolean>): IBaseCrudModel {
-    let result = this;
-    if (callback)
-        result = this.where(callback);
-    return result[0];
-}
-/**
 * Delete model by id
 * @param id Model id
 * @returns {IBaseListModel<TModel>}
@@ -184,15 +148,4 @@ Array.prototype["add"] = function (model: IBaseCrudModel | IObserableModel<IBase
 Array.prototype["subscribeCollectionChanged"] = function (callback: IModelCollectionChangedEvent, includeAllChanges?: boolean): void {
     if (!this._collectionChangedEvents) this._collectionChangedEvents = [];
     this._collectionChangedEvents.push(callback);
-}
-/**
- * Sum values returned from iteration function
- * @param callBack Iteration function
- * @returns {number} 
- */
-Array.prototype["sum"] = function (callBack: _.ListIterator<IBaseCrudModel, number>): number {
-    return _.reduce<IBaseCrudModel, number>(this, (total, item, index, list) => {
-        total += callBack(item, index, list);
-        return total;
-    }, 0);
 }

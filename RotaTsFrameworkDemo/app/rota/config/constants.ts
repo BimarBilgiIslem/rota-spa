@@ -53,13 +53,17 @@ const rotaConstants: IConstants = {
     //Angular event names
     events: {
         //Events names
-        EVENT_LOGIN_CHANGED: 'userLoginChanged',
-        EVENT_AJAX_FINISHED: 'ajaxFinished',
-        EVENT_AJAX_STARTED: 'ajaxStarted',
-        EVENT_LOGIN_REQIRED: 'loginRequired',
-        EVENT_MENU_CHANGED: 'menuChanged',
-        EVENT_MODEL_LOADED: 'modelLoaded',
-        EVENT_RELOAD_WIDGET: 'reloadWidget'
+        EVENT_LOGIN_CHANGED: 'rota:userLoginChanged',
+        EVENT_AJAX_FINISHED: 'rota:ajaxFinished',
+        EVENT_AJAX_STARTED: 'rota:ajaxStarted',
+        EVENT_LOGIN_REQIRED: 'rota:loginRequired',
+        EVENT_MENU_CHANGED: 'rota:menuChanged',
+        EVENT_MODEL_LOADED: 'rota:modelLoaded',
+        EVENT_RELOAD_WIDGET: 'rota:reloadWidget',
+        EVENT_STATE_CHANGE_START: '$stateChangeStart',
+        EVENT_STATE_CHANGE_SUCCESS: '$stateChangeSuccess',
+        EVENT_ON_ERROR: 'rota:error',
+        EVENT_COMPANY_CHANGED: 'rota:companychanged'
     },
     //Grid 
     grid: {
