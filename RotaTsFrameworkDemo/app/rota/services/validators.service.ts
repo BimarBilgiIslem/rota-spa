@@ -41,7 +41,7 @@ class Validators implements IValidators {
         }
 
         if (!item.triggerOn) {
-            item.triggerOn = TriggerOn.Action | TriggerOn.Blur;
+            item.triggerOn = TriggerOn.Action | TriggerOn.Changes;
         }
 
         if (!item.crudFlag) {

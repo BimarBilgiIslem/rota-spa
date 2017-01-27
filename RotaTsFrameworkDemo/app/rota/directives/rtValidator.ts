@@ -25,6 +25,9 @@ function validatorDirective(common: ICommon, constants: IConstants, localization
                 //register asyncvalidators when changes occured
                 if (validator.triggerOn & TriggerOn.Changes) {
                     ngModelCnt.$asyncValidators[attrs.rtValidator] = (modelValue, viewValue) => {
+                        //ignore initial validation
+                        if (!ngModelCnt.$dirty) return common.promise();
+
                         var value = modelValue || viewValue;
                         return validators.runValidation(validator, TriggerOn.Changes, value)
                             .catch((result: IValidationResult) => {
@@ -40,6 +43,8 @@ function validatorDirective(common: ICommon, constants: IConstants, localization
                     const inputElem = element[0] instanceof HTMLInputElement ? element : element.find('input');
                     inputElem && $(inputElem).bind('blur', () => {
                         const value = ngModelCnt.$modelValue || ngModelCnt.$viewValue;
+                        //first set pending status 
+                        ngModelCnt.$setValidity(attrs.rtValidator, false);
 
                         validators.runValidation(validator, TriggerOn.Blur, value)
                             .then(() => {

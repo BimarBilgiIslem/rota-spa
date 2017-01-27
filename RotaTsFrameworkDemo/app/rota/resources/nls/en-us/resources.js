@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        sayfabulunamadi: 'Page not found !',
         kullanmayadevamet: 'Continue using app',
         bostacalismabaslik: 'Idle time out',
         bostacalismauyarisi: 'You have not interacted with the app for a while.You are going to be logged off within {0}',
