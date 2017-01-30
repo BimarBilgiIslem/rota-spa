@@ -4,7 +4,6 @@ import * as rotaresource from 'i18n!rota-resources/nls/resources';
 import * as appresource from 'i18n!app-resources/nls/resources';
 //moment localization
 import 'i18n!rota-resources/nls/moment-lang';
-import * as _ from 'underscore';
 //#endregion
 
 //#region Localization Service
@@ -24,6 +23,11 @@ class Localization implements ILocalization {
      */
     set currentLanguage(value: ILanguage) {
         if (value === this.currentLanguage) return;
+
+        if (!this.config.supportedLanguages.any(lang => lang.code === value.code)) {
+            throw new Error("not supported culture.(allowed 'en-us' or 'tr-tr')");
+        }
+
         this.$window.localStorage.setItem(this.constants.localization.ACTIVE_LANG_STORAGE_NAME, value.code);
         this.$window.location.reload();
     }
@@ -36,9 +40,16 @@ class Localization implements ILocalization {
         private resources: IResource,
         private config: IMainConfig,
         private constants: IConstants) {
-        const currentLangCode = $window.localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME) ||
-            constants.localization.DEFAULT_LANGUAGE;
-        this._currentLanguage = _.findWhere<ILanguage, ILanguage>(this.config.supportedLanguages, { code: currentLangCode });
+        //TODO:localStorege must be obtained thru injector
+        let currentCulture = $window.localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME);
+        //set user predefined culture 
+        if (!currentCulture && config.culture && config.culture !== constants.localization.DEFAULT_LANGUAGE) {
+            this.currentLanguage = { code: config.culture };
+            return;
+        }
+        //default to tr-tr
+        currentCulture = currentCulture || constants.localization.DEFAULT_LANGUAGE;
+        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === currentCulture);
     }
 
     //#endregion

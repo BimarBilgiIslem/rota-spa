@@ -86,12 +86,12 @@ class RotaApp implements IRotaApp {
         this.run(["$rootScope", "Constants", ($rootScope: IRotaRootScope, constants: IConstants) => {
             $rootScope.$on(constants.events.EVENT_ON_ERROR, (e, error) => {
                 if (this.errCallBack) {
-                    this.$injector && this.$injector.invoke(<Function>this.errCallBack, error);
+                    this.$injector.invoke(<Function>this.errCallBack, error);
                 }
             });
             $rootScope.$on(constants.events.EVENT_COMPANY_CHANGED, (e, company) => {
                 if (this.companyChangedCallBack) {
-                    this.$injector && this.$injector.invoke(<Function>this.companyChangedCallBack, company);
+                    this.$injector.invoke(<Function>this.companyChangedCallBack, company);
                 }
             });
         }]);

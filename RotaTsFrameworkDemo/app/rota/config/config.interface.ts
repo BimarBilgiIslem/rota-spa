@@ -181,6 +181,10 @@ interface IMainConfig extends IBaseConfig {
      */
     supportedLanguages?: ILanguage[];
     /**
+     * User predefined language
+     */
+    culture?: "en-us" | "tr-tr";
+    /**
      * Exception will be logged to Elmah db
      */
     serverExceptionLoggingEnabled?: boolean;

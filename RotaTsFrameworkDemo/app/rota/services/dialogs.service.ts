@@ -306,7 +306,6 @@ class Dialogs implements IDialogs {
     }
     //#endregion
 }
-
 //#endregion
 
 //#region Register

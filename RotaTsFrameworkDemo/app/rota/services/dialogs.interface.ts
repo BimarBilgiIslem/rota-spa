@@ -166,8 +166,11 @@ interface IModalOptions extends ng.ui.bootstrap.IModalSettings {
      * @description Controller should be string or left undefined.In case of undefined,default modal controller assigned to modal (BaseModalController)
      */
     controller?: any;
+    /**
+     * Optional suffix of modal window class. The value used is appended to the `modal-` class, i.e. a value of `sm` gives `modal-sm`.
+     */
+    size?: 'sm' | 'md' | 'lg';
 }
-
 /**
  * Image Cropping Scope
  */
