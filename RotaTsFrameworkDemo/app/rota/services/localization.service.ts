@@ -25,7 +25,7 @@ class Localization implements ILocalization {
         if (value === this.currentLanguage) return;
 
         if (!this.config.supportedLanguages.any(lang => lang.code === value.code)) {
-            throw new Error("not supported culture.(allowed 'en-us' or 'tr-tr')");
+            throw new Error(`'${value.code}' not supported culture.(allowed 'en-us' or 'tr-tr')`);
         }
 
         this.$window.localStorage.setItem(this.constants.localization.ACTIVE_LANG_STORAGE_NAME, value.code);
