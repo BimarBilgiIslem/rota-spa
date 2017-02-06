@@ -4,14 +4,14 @@ import "signalr.hubs"
 /**
  * SignalR helper hub class in conjuction with server hub
  */
-class Hub<TMethods extends {}, TListeners extends {}> implements IHub<TMethods, TListeners> {
+class Hub<TMethods> implements IHub<TMethods> {
     //#region Static Methods
     private static globalConnections: SignalR.Connection[] = [];
     /**
      * Create new connnection for negotition
      * @param options Hub Options
      */
-    private static initNewConnection(options: IHubOptions<any>): SignalR.Hub.Connection {
+    private static initNewConnection(options: IHubOptions): SignalR.Hub.Connection {
         let connection = null;
         if (options && options.rootPath) {
             connection = $.hubConnection(options.rootPath, { useDefaultPath: false });
@@ -25,7 +25,7 @@ class Hub<TMethods extends {}, TListeners extends {}> implements IHub<TMethods, 
      * Get connection
      * @param options
      */
-    private static getConnection(options: IHubOptions<any>): SignalR.Hub.Connection {
+    private static getConnection(options: IHubOptions): SignalR.Hub.Connection {
         const useSharedConnection = !(options && options.useSharedConnection === false);
         if (useSharedConnection) {
             return typeof Hub.globalConnections[options.rootPath] === 'undefined' ?
@@ -46,7 +46,7 @@ class Hub<TMethods extends {}, TListeners extends {}> implements IHub<TMethods, 
     //#endregion
 
     //#region Init
-    constructor(hubName: string, private options: IHubOptions<TListeners>) {
+    constructor(hubName: string, private options: IHubOptions) {
         this.connection = Hub.getConnection(options);
         this.proxy = this.connection.createHubProxy(hubName);
         this.methods = {} as TMethods;

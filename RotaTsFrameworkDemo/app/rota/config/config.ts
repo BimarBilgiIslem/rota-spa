@@ -29,6 +29,7 @@ class Config extends BaseConfig<IMainConfig> {
             supportedLanguages: [{ code: 'tr-tr', fullname: 'Türkçe' }, { code: 'en-us', fullname: 'English' }],
             serverExceptionLoggingEnabled: false,
             showCompanyName: true,
+            pushServicePath: environments.pushServicePath,
             datetimeFormat: {
                 timeFormat: constants.localization.TIME_FORMAT,
                 dateFormat: constants.localization.DATE_FORMAT,

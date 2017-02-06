@@ -34,21 +34,39 @@ class Localization implements ILocalization {
     //#endregion
 
     //#region Init
-    static $inject = ['$window', '$interpolate', 'Resource', 'Config', 'Constants'];
-    constructor(private $window: ng.IWindowService,
+    static $inject = ['$injector', '$window', '$interpolate', 'Resource', 'Config', 'Constants', 'CurrentUser'];
+    constructor(
+        private $injector: ng.auto.IInjectorService,
+        private $window: ng.IWindowService,
         private $interpolate: ng.IInterpolateService,
         private resources: IResource,
         private config: IMainConfig,
-        private constants: IConstants) {
-        //TODO:localStorege must be obtained thru injector
-        let currentCulture = $window.localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME);
+        private constants: IConstants,
+        private currentUser: IUser) {
+        //Init culture 
+        this.initCulture();
+    }
+    /**
+     * Initiate culture
+     * @description Following order is applied when determining the culture
+     * 1 - ) Get selected & stored culture in local storage
+     * 2 - ) Get provided culture in main config
+     * 3 - ) Get culture from claims of user
+     * 4 - ) Fallback to default language defined in constants
+     */
+    private initCulture(): void {
+        //get selected culture if available
+        const selectedCulture = this.$window.localStorage.getItem(this.constants.localization.ACTIVE_LANG_STORAGE_NAME);
         //set user predefined culture 
-        if (!currentCulture && config.culture && config.culture !== constants.localization.DEFAULT_LANGUAGE) {
-            this.currentLanguage = { code: config.culture };
-            return;
+        if (!selectedCulture) {
+            const userCulture = this.config.culture || this.currentUser.culture;
+            if (userCulture && userCulture !== this.constants.localization.DEFAULT_LANGUAGE) {
+                //set storage and reload
+                this.currentLanguage = { code: userCulture };
+                return;
+            }
         }
-        //default to tr-tr
-        currentCulture = currentCulture || constants.localization.DEFAULT_LANGUAGE;
+        const currentCulture = selectedCulture || this.constants.localization.DEFAULT_LANGUAGE;
         this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === currentCulture);
     }
 

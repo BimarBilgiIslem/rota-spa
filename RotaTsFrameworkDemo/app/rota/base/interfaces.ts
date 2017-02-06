@@ -166,7 +166,6 @@ interface IBaseCrudModel extends IBaseModel {
      */
     isActive?: boolean;
 }
-//TODO:Obserable contructor interface eklenmeli
 /**
  * Obserable model
  * @description Converts literal obj to dynamic model entity

@@ -1,5 +1,5 @@
 ﻿
-interface IHub<TMethods extends {}, TListeners extends {}> {
+interface IHub<TMethods> {
     promise: JQueryPromise<any>;
     methods: TMethods;
     on(eventName: string, callback: (...msg: any[]) => void): void;
@@ -8,11 +8,11 @@ interface IHub<TMethods extends {}, TListeners extends {}> {
     connect(queryParams?: string | Object): JQueryPromise<any>;
 }
 
-interface IHubOptions<TListeners extends {}> {
+interface IHubOptions {
     /**
      * Collection of client side callbacks
      */
-    listeners?: TListeners;
+    listeners?: IListeners;
     /**
      * String array of server side methods which the client can call
      */
@@ -56,4 +56,13 @@ interface IHubOptions<TListeners extends {}> {
     pingInterval?: number;
     withCredentials?: boolean;
     autoConnect?: boolean;
+}
+
+interface IPushService extends IBaseService {
+    connectToHub(hubName: string, options: IHubOptions): IHub<{}>;
+    connectToHub<TMethods>(hubName: string, options: IHubOptions): IHub<TMethods>;
+}
+
+interface IListeners {
+    [index: string]: (...msg: any[]) => void;
 }

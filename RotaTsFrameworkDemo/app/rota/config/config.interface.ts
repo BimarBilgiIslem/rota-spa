@@ -55,6 +55,10 @@ interface IGlobalEnvironment {
      * Logoff when idle timeout has reached by prompting user
      */
     logOffWhenIdleTimeout?: boolean;
+    /**
+     * Default push service root path
+     */
+    pushServicePath?: string;
 }
 //#endregion
 
@@ -183,7 +187,7 @@ interface IMainConfig extends IBaseConfig {
     /**
      * User predefined language
      */
-    culture?: "en-us" | "tr-tr";
+    culture?: ISupportedCultures;
     /**
      * Exception will be logged to Elmah db
      */
@@ -228,6 +232,10 @@ interface IMainConfig extends IBaseConfig {
      * Logo Image file name.It must be under ~/Content/img - default place_holder.png
      */
     logoImageName?: string;
+    /**
+     * Default push service root path
+     */
+    pushServicePath?: string;
 }
 /**
  * Main config provider

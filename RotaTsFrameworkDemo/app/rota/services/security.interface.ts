@@ -159,7 +159,7 @@ interface IUser {
     name: string;
     email?: string;
     managerId?: number;
-    languageid?: number;
+    culture?: ISupportedCultures;
     id: number;
 }
 /**

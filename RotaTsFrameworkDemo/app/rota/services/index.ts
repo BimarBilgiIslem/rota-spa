@@ -11,6 +11,7 @@ import "./security.service"
 import "./validators.service"
 import "./reporting.service"
 import "./security.encoding.service"
+import "./signalr.service"
 //service module index
 angular.module('rota.services',
     [
@@ -25,7 +26,8 @@ angular.module('rota.services',
         'rota.services.security',
         'rota.services.validators',
         'rota.services.reporting',
-        'rota.services.security.encoding'
+        'rota.services.security.encoding',
+        'rota.services.signalr'
     ]);
 
 

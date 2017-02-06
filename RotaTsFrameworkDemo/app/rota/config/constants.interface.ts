@@ -7,7 +7,7 @@
     MAX_NUMBER_VALUE: number;
     localization: {
         ACTIVE_LANG_STORAGE_NAME: string;
-        DEFAULT_LANGUAGE: string,
+        DEFAULT_LANGUAGE: ISupportedCultures,
         TIME_FORMAT: string;
         DATE_FORMAT: string;
         MONTH_FORMAT: string;

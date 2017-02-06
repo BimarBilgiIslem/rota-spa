@@ -109,11 +109,13 @@ module.factory('httpAjaxInterceptor', httpRequestTrackerService)
         $httpProvider.interceptors.push('httpAjaxInterceptor');
         $httpProvider.interceptors.push('requestWrapperInterceptor');
         //#region fix for IE caching problem
+        //http://stackoverflow.com/questions/16098430/angular-ie-caching-issue-for-http
         if (!$httpProvider.defaults.headers.get) {
             $httpProvider.defaults.headers.get = {};
         }
         $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
         //#endregion
     }]);
 //#endregion

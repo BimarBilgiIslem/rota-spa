@@ -5,13 +5,17 @@ interface IResource {
     [s: string]: any;
 }
 /**
+ * Supported Cultures
+ */
+type ISupportedCultures = "en-us" | "tr-tr";
+/**
  * Language model
  */
 interface ILanguage {
     /**
      * Lang code tr-tr,en-us ...
      */
-    code: string;
+    code: ISupportedCultures;
     /**
      * Language fullname
      */
