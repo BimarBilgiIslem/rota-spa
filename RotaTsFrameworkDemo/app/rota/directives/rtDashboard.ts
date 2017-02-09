@@ -78,7 +78,7 @@ function asyncContentDirective($compile: ng.ICompileService, $http: ng.IHttpServ
             //create controller
             const templateScope = scope.$new();
             const templateCtrl = $controller<IBaseModelController<IBaseCrudModel>>(options.controller,
-                { $scope: templateScope, stateInfo: {}, widget: options });
+                { $scope: templateScope, stateInfo: { isNestedState: true }, widget: options });
             templateScope[routeconfig.contentControllerAlias] = templateCtrl;
             //controller getModel promise
             const widgetDataPromise = templateCtrl.modelPromise || $q.when();
