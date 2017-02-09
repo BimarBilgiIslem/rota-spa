@@ -45,7 +45,7 @@ angular.module('ng-currency', [])
                     currencySymbol = value;
                     reformat();
                 });
-                attrs.$observe('ngRequired', function (value) {
+                scope.$watch('ngRequired', function (value) {
                     ngRequired = value;
                     revalidate();
                 });
