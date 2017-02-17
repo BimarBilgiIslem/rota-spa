@@ -283,13 +283,6 @@ class Routing implements IRouting {
                 authenticated: [
                     'Security', (security: ISecurity) => security.isStateAuthenticated(state)
                 ],
-                antiForgeryToken: [
-                    'Security', (security: ISecurity) => {
-                        if (security.securityConfig.antiForgeryTokenEnabled && !isNestedState) {
-                            return security.getAntiForgeryToken(state);
-                        }
-                    }
-                ],
                 $modalInstance: angular.noop,
                 modalParams: angular.noop
             }

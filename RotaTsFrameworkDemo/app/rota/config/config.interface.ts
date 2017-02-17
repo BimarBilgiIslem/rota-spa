@@ -24,6 +24,14 @@ interface IGlobalEnvironment {
      */
     authority: string;
     /**
+    * Redirecting uri for unauthorized requests
+    */
+    redirectUri?: string;
+    /**
+     * Default uri to redirect after successful authorization
+     */
+    postLogoutRedirectUri?: string;
+    /**
      * Allow anouynmous access
      */
     allowAnonymousAccess: boolean;
@@ -43,10 +51,6 @@ interface IGlobalEnvironment {
      * Session endppotiny for Report params session
      */
     reportControllerUrl?: string;
-    /**
-     * EntiForgerytokenEnabled flag
-     */
-    antiForgeryTokenEnabled?: boolean;
     /**
      * Cross Domain root Paths,like https://xdomain.com
      */
@@ -105,6 +109,10 @@ interface IDateTimeFormat {
     * Minute step value default 5
     */
     datePickerTimeMinStep?: number;
+    /**
+     * Append offset value for converting to json,default true
+     */
+    useTimeZoneOffSet?: boolean;
 }
 /**
  * CRUD Api action names

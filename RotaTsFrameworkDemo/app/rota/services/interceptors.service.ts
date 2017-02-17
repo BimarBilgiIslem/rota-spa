@@ -81,13 +81,6 @@ requestWrapperInterceptor.$inject = ['$q', 'Localization', 'CurrentCompany', 'Co
 const securityInterceptor = ($rootScope: IRotaRootScope, $q: ng.IQService,
     config: IMainConfig, securityConfig: ISecurityConfig, tokens: ITokens, common: ICommon): ng.IHttpInterceptor => {
     return {
-        request: (config: ng.IRequestConfig) => {
-            if (securityConfig.antiForgeryTokenEnabled &&
-                tokens.antiForgeryToken && common.isApiRequest(config)) {
-                config.headers[securityConfig.antiForgeryTokenHeaderName] = tokens.antiForgeryToken;
-            }
-            return $q.when(config);
-        },
         responseError: response => {
             if (response.status === 401 && !response.config.ignoreAuthModule) {
                 $rootScope.$broadcast(config.eventNames.loginRequired);

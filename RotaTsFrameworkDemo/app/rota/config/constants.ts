@@ -40,9 +40,6 @@ const rotaConstants: IConstants = {
         ACTION_NAME_SET_REPORT_FILTERS: 'setReportParameters',
         ACTION_NAME_GENERATE_REPORT: 'generateReport',
         ACTION_NAME_GET_REPORT: 'getReport',
-        //AntiForgeryToken
-        ACTION_NAME_ANTI_FORGERY_TOKEN: '/api/security/antiforgerytoken',
-        HEADER_NAME_ANTI_FORGERY_TOKEN: '__antiForgeryToken',
         //Request Header
         HEADER_NAME_LANGUAGE: window.__constants.HEADER_NAME_LANGUAGE,
         HEADER_NAME_ROLE_ID: window.__constants.HEADER_NAME_ROLE_ID,
@@ -59,7 +56,6 @@ const rotaConstants: IConstants = {
         EVENT_LOGIN_REQIRED: 'rota:loginRequired',
         EVENT_MENU_CHANGED: 'rota:menuChanged',
         EVENT_MODEL_LOADED: 'rota:modelLoaded',
-        EVENT_RELOAD_WIDGET: 'rota:reloadWidget',
         EVENT_STATE_CHANGE_START: '$stateChangeStart',
         EVENT_STATE_CHANGE_SUCCESS: '$stateChangeSuccess',
         EVENT_ON_ERROR: 'rota:error',
@@ -161,7 +157,6 @@ const rotaConstants: IConstants = {
         //Routing
         NOT_ROOT_MENU_FOUND: 'root menus not found',
         //Securty
-        NO_ANTIFORGERY_TOKEN_URL_DEFINED: 'no antiForgeryTokenUrl defined',
         NO_AVATAR_URI_PROVIDED: 'no avatarUploadUri is provided',
         //reports
         NO_REPORT_URL_PROVIDED: 'reportcontroller url is not defined',

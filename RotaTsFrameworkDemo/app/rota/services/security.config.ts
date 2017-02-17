@@ -9,8 +9,8 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
         const config: ISecurityConfig = {
             tokenStorageName: constants.security.STORAGE_NAME_AUTH_TOKEN,
             stateTempStorageName: constants.security.STORAGE_NAME_TEMP_STATE,
-            redirectUri: window.location.protocol + "//" + window.location.host + constants.security.REDIRECT_URI_PATH,
-            postLogoutRedirectUri: window.location.protocol + "//" + window.location.host,
+            redirectUri: environments.redirectUri || (window.location.protocol + "//" + window.location.host + constants.security.REDIRECT_URI_PATH),
+            postLogoutRedirectUri: environments.postLogoutRedirectUri || (window.location.protocol + "//" + window.location.host),
             responseType: constants.security.DEFAULT_ROTA_RESPONSE_TYPE,
             scope: '',
             loadUserProfile: false,
@@ -18,9 +18,6 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
             clientId: environments.clientId,
             authority: environments.authority,
             allowAnonymousAccess: environments.allowAnonymousAccess,
-            antiForgeryTokenEnabled: environments.antiForgeryTokenEnabled,
-            antiForgeryTokenUrl: constants.server.ACTION_NAME_ANTI_FORGERY_TOKEN,
-            antiForgeryTokenHeaderName: constants.server.HEADER_NAME_ANTI_FORGERY_TOKEN,
             logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout,
             idleTimeout: constants.security.IDLE_TIMEOUT,
             idleLogoffCountDown: constants.security.COUNT_DOWN_FOR_IDLE_TIMEOUT

@@ -188,17 +188,17 @@ class JwtHelper implements IJWTHelper {
                     if (idTokenContents.aud !== this.securityConfig.clientId) {
                         return this.reject("Invalid audience");
                     }
+                    //TODO:Must be changed
+                    //var now = Math.round(Date.now() / 1000);
 
-                    var now = Math.round(Date.now() / 1000);
+                    //var diff = now - idTokenContents.iat;
+                    //if (diff > (5 * 60)) {
+                    //    return this.reject("Token issued too long ago");
+                    //}
 
-                    var diff = now - idTokenContents.iat;
-                    if (diff > (5 * 60)) {
-                        return this.reject("Token issued too long ago");
-                    }
-
-                    if (idTokenContents.exp < now) {
-                        return this.reject("Token expired");
-                    }
+                    //if (idTokenContents.exp < now) {
+                    //    return this.reject("Token expired");
+                    //}
                     return this.common.promise(idTokenContents);
                 });
 
@@ -467,27 +467,6 @@ class Security implements ISecurity {
         //Validate JWT open_id token and return claims
         return this.jwthelper.validateIdToken(model.id_token, requestSettings.nonce);
     }
-    /**
-    * Request token from which defined in security config
-    * @returns {} 
-    */
-    getAntiForgeryToken(state: IRotaState): ng.IPromise<string> {
-        const d = this.$q.defer();
-        if (this.common.isAssigned(this.securityConfig.antiForgeryTokenUrl)) {
-            this.isStateAuthenticated(state)
-                .then(() => {
-                    this.$http.get(this.securityConfig.antiForgeryTokenUrl)
-                        .then((args: ng.IHttpPromiseCallbackArg<string>) => {
-                            d.resolve(this.tokens.antiForgeryToken = args.data);
-                        });
-                }, () => {
-                    d.reject();
-                });
-        } else {
-            throw new Error(this.constants.errors.NO_ANTIFORGERY_TOKEN_URL_DEFINED);
-        }
-        return d.promise;
-    }
     //#endregion
 
     //#region Authorize Methods
@@ -603,7 +582,7 @@ serviceModule
 serviceModule.run(['Security', 'SecurityConfig', 'Logger', (security: ISecurity, securityconfig: ISecurityConfig, logger: ILogger) => {
     //Log
     logger.console.warn({
-        message: `Security is initiated with AllowAnonymousAccess ${securityconfig.allowAnonymousAccess ? 'true' : 'false'},antiForgeryTokenEnabled ${securityconfig.antiForgeryTokenEnabled ? 'true' : 'false'}`
+        message: `Security is initiated with AllowAnonymousAccess ${securityconfig.allowAnonymousAccess ? 'true' : 'false'}`
     });
     //Eger allowAnonymousAccess e izin verilmiyorsa 
     if (!securityconfig.allowAnonymousAccess) {

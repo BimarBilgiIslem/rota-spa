@@ -28,8 +28,6 @@
         ACTION_NAME_SET_REPORT_FILTERS: string;
         ACTION_NAME_GENERATE_REPORT: string;
         ACTION_NAME_GET_REPORT: string;
-        ACTION_NAME_ANTI_FORGERY_TOKEN: string;
-        HEADER_NAME_ANTI_FORGERY_TOKEN: string;
         HEADER_NAME_LANGUAGE: string;
         HEADER_NAME_ROLE_ID: string;
         HEADER_NAME_COMPANY_ID: string;
@@ -42,7 +40,6 @@
         EVENT_LOGIN_REQIRED: string;
         EVENT_MENU_CHANGED: string;
         EVENT_MODEL_LOADED: string;
-        EVENT_RELOAD_WIDGET: string;
         EVENT_STATE_CHANGE_START: string;
         EVENT_STATE_CHANGE_SUCCESS: string;
         EVENT_ON_ERROR: string;
@@ -95,7 +92,6 @@
         MISSING_TABS: string;
         MISSING_TEMPLATE_URL: string;
         NOT_ROOT_MENU_FOUND: string;
-        NO_ANTIFORGERY_TOKEN_URL_DEFINED: string;
         NO_AVATAR_URI_PROVIDED: string;
         NO_REPORT_URL_PROVIDED: string;
         NO_REPORT_VIEWER_URL_PROVIDED: string;

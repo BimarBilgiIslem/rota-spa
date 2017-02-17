@@ -106,12 +106,9 @@ function asyncContentDirective($compile: ng.ICompileService, $http: ng.IHttpServ
         const options: IWidgetOptions = scope.$eval(attrs.rtAsyncContent);
         let currentScope: ng.IScope;
         //compile widget
-        compileWidget(options, element, scope).then(scope => { currentScope = scope });
-        //refresh widget
-        scope.$on(constants.events.EVENT_RELOAD_WIDGET,
-            () => {
-                compileWidget(options, element, scope, currentScope).then(scope => { currentScope = scope });
-            });
+        compileWidget(options, element, scope).then(scope => {
+            currentScope = scope;
+        });
     }
 
     const directive = <ng.IDirective>{

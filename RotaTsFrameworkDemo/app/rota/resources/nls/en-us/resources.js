@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        devreyealimuyarisi: 'Maintanence will be held in {0} mins.Please get your job done and quit',
         sayfabulunamadi: 'Page not found !',
         kullanmayadevamet: 'Continue using app',
         bostacalismabaslik: 'Idle time out',

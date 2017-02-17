@@ -68,7 +68,7 @@ abstract class BaseWidgetController<TModel extends IBaseCrudModel> extends BaseM
      * Refresh widget
      */
     refreshWidget(): void {
-        this.$scope.$emit(this.constants.events.EVENT_RELOAD_WIDGET);
+        this.initModel();
     }
     /**
     * @abstract Abstract get model method

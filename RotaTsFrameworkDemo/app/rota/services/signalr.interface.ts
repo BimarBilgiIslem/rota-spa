@@ -45,7 +45,7 @@ interface IHubOptions {
     /**
      * Sets transport method (e.g    'longPolling'    or    ['webSockets', 'longPolling'] )
      */
-    transport?: any;
+    transport?: "webSockets" | "foreverFrame" | "serverSentEvents" | "longPolling";
 
     /**
      * Function to handle hub connection state changed event

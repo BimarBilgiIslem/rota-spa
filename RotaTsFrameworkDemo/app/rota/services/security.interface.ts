@@ -68,18 +68,6 @@ interface ISecurityConfig extends IBaseConfig {
      */
     avatarUri?: string;
     /**
-     * Flag that indicates if AntiForgerytoken is enabled 
-     */
-    antiForgeryTokenEnabled?: boolean;
-    /**
-     * Backend url for antiforgery token
-     */
-    antiForgeryTokenUrl?: string;
-    /**
-     * Antiforgerytoken request header name
-     */
-    antiForgeryTokenHeaderName?: string;
-    /**
      * Logoff when idle timeout has reached by prompting user
      */
     logOffWhenIdleTimeout?: boolean;
@@ -141,11 +129,6 @@ interface ISecurity extends IBaseService {
      * @returns {ng.IPromise<any>}
      */
     logOff(): ng.IPromise<any>;
-    /**
-     * Request token from which defined in security config
-     * @returns {} 
-     */
-    getAntiForgeryToken(state: IRotaState): ng.IPromise<string>;
 }
 
 //#endregion
@@ -339,7 +322,6 @@ interface IProfileModel<T extends IUser> {
 interface ITokens {
     idToken: string;
     accessToken: string;
-    antiForgeryToken?: string;
 }
 
 interface IStorageCurrentCompany {

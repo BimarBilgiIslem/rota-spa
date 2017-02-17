@@ -20,7 +20,6 @@
 @import url(vendor-css/ng-img-crop.css);
 @import url(vendor-css/ivh-treeview.css);
 @import url(vendor-css/ivh-treeview-theme-basic.css);
-@import url(vendor-css/ui-navbar.min.css);
 @import url(vendor-css/ui-layout.css);
 html {
   font-family: sans-serif;
@@ -6112,6 +6111,21 @@ a.mfb-component__button--main:hover {
   height: auto;
   max-height: 500px;
   overflow-x: hidden; }
+  .scrollable-menu::-webkit-scrollbar {
+    width: 5px;
+    height: 12px; }
+  .scrollable-menu::-webkit-scrollbar-track {
+    background: #f2f2f2;
+    border-radius: 10px; }
+  .scrollable-menu::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 10px; }
+  .scrollable-menu:hover::-webkit-scrollbar-thumb {
+    background: #bbb; }
+  .scrollable-menu::-webkit-scrollbar-thumb:horizontal:hover, .scrollable-menu::-webkit-scrollbar-thumb:vertical:hover {
+    background: #999; }
+  .scrollable-menu::-webkit-scrollbar-thumb:horizontal:active, .scrollable-menu::-webkit-scrollbar-thumb:vertical:active {
+    background: #777; }
 
 /*#region FadeInRight */
 @-webkit-keyframes fadeInRight {
@@ -7033,6 +7047,33 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
   cursor: pointer;
   padding: 10px;
   margin: 0 auto; }
+
+.dropdown-submenu {
+  position: relative; }
+  .dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: 0px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0; }
+  .dropdown-submenu:hover > .dropdown-menu {
+    display: block; }
+  .dropdown-submenu:hover > a:after {
+    border-left-color: #666666; }
+  .dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px; }
 
 .breadcrumb {
   margin-bottom: 0;
