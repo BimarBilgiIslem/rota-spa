@@ -1,5 +1,6 @@
 ﻿define({
     rota: {
+        menuler: 'Menüler',
         devreyealimuyarisi: '{0} dk içinde bakım başlıyacaktır.Lütfen işinizi sonlandırıp uygulamadan çıkınız',
         kullanmayadevamet: 'Kullanmaya devam et',
         bostacalismabaslik: 'Boşta çalışma kontrolü',

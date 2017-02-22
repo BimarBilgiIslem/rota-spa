@@ -24,12 +24,13 @@ class Dialogs implements IDialogs {
      * @param options Modal options
      */
     showModal<TResult extends IBaseModel>(options: IModalOptions): ng.IPromise<TResult> {
-        if (this.common.isNullOrEmpty(options.templateUrl)) {
+        if (this.common.isNullOrEmpty(options.templateUrl) &&
+            this.common.isNullOrEmpty(options.absoluteTemplateUrl)) {
             throw new Error(this.constants.errors.MISSING_TEMPLATE_URL);
         }
         //set temlate path based on baseUrl - works both html and dynamic file server
-        const templateFilePath = this.common.isHtml(options.templateUrl) ?
-            window.require.toUrl(options.templateUrl) : options.templateUrl;
+        const templateFilePath = options.absoluteTemplateUrl || (this.common.isHtml(options.templateUrl) ?
+            window.require.toUrl(options.templateUrl) : options.templateUrl);
 
         //default options
         const defaultModalOptions: IModalOptions = {
@@ -39,11 +40,15 @@ class Dialogs implements IDialogs {
             animation: false,
             bindToController: true,
             controllerAs: this.constants.routing.CONTROLLER_ALIAS_NAME,
-            windowClass: 'custom-modal',
             templateUrl: ''
         }
         //merge default options
         const modalOptions: IModalOptions = angular.extend(defaultModalOptions, options, { templateUrl: templateFilePath });
+        //sidebar
+        if (options.isSideBar) {
+            modalOptions.windowClass += ` ${options.sideBarPosition || "left"}`;
+            modalOptions.animation = modalOptions.backdrop = true;
+        }
         //resolve data
         modalOptions.resolve = {
             instanceOptions: () => modalOptions.instanceOptions,

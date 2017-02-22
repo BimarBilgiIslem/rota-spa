@@ -123,10 +123,9 @@
     routing: {
         SHELL_PATH: string;
         SHELL_STATE_NAME: string;
+        TEMPLATES: ITemplates;
         SHELL_CONTENT_STATE_NAME: string;
-        NOT_FOUND_HTML_NAME: string;
         NOT_FOUND_STATE_NAME: string;
-        INTERNAL_ERROR_HTML_NAME: string;
         INTERNAL_ERROR_STATE_NAME: string;
         CONTROLLER_ALIAS_NAME: string;
         SHELL_CONTROLLER_ALIAS_NAME: string;

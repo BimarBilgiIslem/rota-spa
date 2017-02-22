@@ -203,9 +203,20 @@ const rotaConstants: IConstants = {
         SHELL_STATE_NAME: 'shell',
         SHELL_CONTENT_STATE_NAME: 'shell.content',
         //error pages settings
-        NOT_FOUND_HTML_NAME: 'error404.html',
+        TEMPLATES: {
+            error404: 'error404.html',
+            error500: 'error500.html',
+            title: 'title.html',
+            shell: 'shell.html',
+            header: 'header.html',
+            userprofile: 'user-profile.html',
+            badges: 'badges.html',
+            breadcrumb: 'breadcrumb.html',
+            content: 'content.html',
+            currentcompany: 'current-company.html',
+            navmenumobile: 'nav-menu-mobile.html'
+        },
         NOT_FOUND_STATE_NAME: 'shell.error404',
-        INTERNAL_ERROR_HTML_NAME: 'error500.html',
         INTERNAL_ERROR_STATE_NAME: 'shell.error500',
         //alias
         CONTROLLER_ALIAS_NAME: 'vm',

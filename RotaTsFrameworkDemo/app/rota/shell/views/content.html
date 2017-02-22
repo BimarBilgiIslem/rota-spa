@@ -2,17 +2,15 @@
     <div ng-class="shellvm.routing.activeMenu.isFullScreen ? 'fullscreen' : 'container'">
         <div class="row">
             <div class="col-md-6">
+                <!--Badges-->
                 <ui-view name="badges"></ui-view>
-                <span class="title">
-                    <i ng-class="['fa', 'fa-' + shellvm.routing.activeMenu.icon]"></i> {{shellvm.routing.activeMenu.name}}
-                </span>
+                <!--Menu caption-->
+                <ui-view name="title"></ui-view>
             </div>
             <div class="col-md-6 hidden-xs">
-                <div ng-if="currentCompany.companyName && shellvm.config.showCompanyName" class="text-right">
-                    <span class="current-company" uib-tooltip="{{::'rota.aktifsirket' | i18n}}" tooltip-placement="left">
-                        <i class="fa fa-database"></i>&nbsp;{{::currentCompany.companyName | htmltoplaintext}}
-                    </span>
-                </div>
+                <!--Current company name-->
+                <ui-view name="currentcompany"></ui-view>
+                <!--Breadcrumbs-->
                 <ui-view name="breadcrumb"></ui-view>
             </div>
         </div>

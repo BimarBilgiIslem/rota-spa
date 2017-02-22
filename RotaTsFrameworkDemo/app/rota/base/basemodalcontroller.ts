@@ -55,7 +55,6 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
     //#region Init
     constructor(bundle: IBundle, options?: IModalPageOptions) {
         super(bundle, options);
-
         const modalPageOptions = this.common.extend<IModalPageOptions>({ initializeModel: true }, options);
 
         if (modalPageOptions.initializeModel) {

@@ -27,6 +27,8 @@ import "./rtDashboard"
 import "./rtIdleTimeout"
 import "./rtNavMenu"
 import "./rtNotification"
+import "./rtNavProfile"
+import "./rtAvatar"
 
 angular.module('rota.directives',
     ['rota.directives.rtspinner',
@@ -57,5 +59,7 @@ angular.module('rota.directives',
         'rota.directives.rtdashboard',
         'rota.directives.rtidletimeout',
         'rota.directives.rtnavmenu',
-        'rota.directives.rtnotification'
+        'rota.directives.rtnotification',
+        'rota.directives.rtnavprofile',
+        'rota.directives.rtavatar'
     ]);

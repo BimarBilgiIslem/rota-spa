@@ -24,8 +24,13 @@ class Routing implements IRouting {
     /**
      * Hierarchical menus
      */
-    private _menus: INavMenuItem[];
-    get menus(): INavMenuItem[] { return this._menus; }
+    private _hierarchicalMenus: IHierarchicalMenu[];
+    get hierarchicalMenus(): IHierarchicalMenu[] { return this._hierarchicalMenus; }
+    /**
+     * Nav Menus menus
+     */
+    private _navMenus: INavMenuItem[];
+    get navMenus(): INavMenuItem[] { return this._navMenus; }
     /**
      * Breadcrumbs
      */
@@ -34,8 +39,8 @@ class Routing implements IRouting {
     /**
      * Active Menu
      */
-    private _activeMenu: INavMenuItem;
-    get activeMenu(): INavMenuItem { return this._activeMenu; }
+    private _activeMenu: IHierarchicalMenu;
+    get activeMenu(): IHierarchicalMenu { return this._activeMenu; }
     /**
      * Get current state
      * @returns IRotaState{}
@@ -131,15 +136,15 @@ class Routing implements IRouting {
                 let menu = this.getActiveMenu(toState);
                 const routelist: IBreadcrumb[] = [];
                 while (menu) {
-                    if (menu.name) {
+                    if (menu.navMenu) {
                         routelist.push(
                             {
-                                text: menu.name,
-                                url: menu.url || this.getUrlByState(menu.link, menu.params) || "#",
-                                icon: menu.icon
+                                text: menu.navMenu.name,
+                                url: menu.navMenu.url,
+                                icon: menu.navMenu.icon
                             });
                     }
-                    menu = menu.parent;
+                    menu = menu.parentMenu;
                 }
                 this._breadcrumbs = routelist.reverse();
             }
@@ -177,10 +182,10 @@ class Routing implements IRouting {
     private registerStaticPages(): void {
         //404 page
         this.$stateProvider.state(this.constants.routing.NOT_FOUND_STATE_NAME,
-            { url: 'error404', templateUrl: this.routeconfig.error404StateUrl });
+            { url: 'error404', templateUrl: this.routeconfig.templates.error404 });
         //500 page
         this.$stateProvider.state(this.constants.routing.INTERNAL_ERROR_STATE_NAME,
-            { url: 'error500', templateUrl: this.routeconfig.error500StateUrl });
+            { url: 'error500', templateUrl: this.routeconfig.templates.error500 });
     }
     /**
      * Register shell section
@@ -198,7 +203,7 @@ class Routing implements IRouting {
             for (let state in section) {
                 if (section.hasOwnProperty(state)) {
                     views[state] = {
-                        templateUrl: this.toUrl(this.routeconfig.shellPath + section[state].templateUrl),
+                        templateUrl: section[state].templateUrl,
                         controller: section[state].controller,
                         controllerAs: section[state].controllerAs
                     };
@@ -218,13 +223,20 @@ class Routing implements IRouting {
     */
     private registerShellSections(): void {
         const shellSections = [
-            { 'shell@': { templateUrl: 'shell.html', controller: 'ShellController', controllerAs: this.routeconfig.shellControllerAlias } },
-            { 'header@shell': { templateUrl: 'header.html' } }
+            {
+                'shell@': {
+                    templateUrl: this.routeconfig.templates.shell,
+                    controller: 'ShellController',
+                    controllerAs: this.routeconfig.shellControllerAlias
+                }
+            },
+            { 'header@shell': { templateUrl: this.routeconfig.templates.header } }
         ],
-            contentSections = [{ '@shell': { templateUrl: 'content.html' } },
-            { 'breadcrumb@shell.content': { templateUrl: 'breadcrumb.html' } },
-            { 'badges@shell.content': { templateUrl: 'badges.html' } }
-            ];
+            contentSections = [{ '@shell': { templateUrl: this.routeconfig.templates.content } },
+            { 'breadcrumb@shell.content': { templateUrl: this.routeconfig.templates.breadcrumb } },
+            { 'badges@shell.content': { templateUrl: this.routeconfig.templates.badges } },
+            { 'currentcompany@shell.content': { templateUrl: this.routeconfig.templates.currentcompany } },
+            { 'title@shell.content': { templateUrl: this.routeconfig.templates.title } }];
         //register shell state
         //UNDONE:add shell promise
         this.registerShellSection(this.constants.routing.SHELL_STATE_NAME, shellSections, false, '/', true);
@@ -265,7 +277,7 @@ class Routing implements IRouting {
         const url = (state.url && (isNestedState ? '/' + state.url : state.url)) || '';
         //define state obj
         const stateObj: IRotaState = {
-            navMenu: state.navMenu,
+            hierarchicalMenu: state.hierarchicalMenu,
             abstract: state.abstract,
             templateUrl: templateFilePath,
             controller: state.controller,
@@ -321,13 +333,14 @@ class Routing implements IRouting {
     */
     addMenus(states: IMenuModel[]): IRouting {
         this._states = states || [];
-        //create navbar menus
-        this._menus = this.createNavMenus();
+        //create hierarchical & navbar menus
+        this._hierarchicalMenus = this.createHierarchicalMenus();
         //add quick menus
         this.createQuickMenus();
         //register states
         try {
             this.registerStates();
+            this._navMenus = this.createNavMenus();
         } finally {
             this.$urlRouter.sync();
             this.$urlRouter.listen();
@@ -335,51 +348,64 @@ class Routing implements IRouting {
         return this;
     }
     /**
+     * Create nav menu items
+     * @param menus
+     */
+    private createNavMenus(menus?: IHierarchicalMenu[]): INavMenuItem[] {
+        const navMenus: INavMenuItem[] = [];
+
+        (menus || this._hierarchicalMenus).where(menu => menu.isMenu)
+            .forEach(menu => {
+                if (menu.startGroup) {
+                    navMenus.push({ name: 'divider' });
+                }
+                const navMenu: INavMenuItem = {
+                    name: menu.title,
+                    subtree: menu.subMenus && this.createNavMenus(menu.subMenus),
+                    url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)) || '#',
+                    icon: menu.menuIcon
+                }
+                navMenus.push(navMenu);
+                //update hierarchical menu for navigational ui directives
+                menu.navMenu = navMenu;
+            });
+        return navMenus;
+    }
+    /**
      * Create NavBar menus
      */
-    private createNavMenus(): INavMenuItem[] {
+    private createHierarchicalMenus(): IHierarchicalMenu[] {
         const rootMenus = this.getMenusByParentId();
 
         if (!rootMenus.length) {
             throw new Error(this.constants.errors.NOT_ROOT_MENU_FOUND);
         }
         //generate menus recursively
-        return this.createNavMenusRecursive(rootMenus);
+        return this.createHierarchicalMenusRecursive(rootMenus);
     }
     /**
      * Create nav menu items recursively
      * @param parentMenus Parent Menus
      * @param parentNavMenu Parent Menu
      */
-    private createNavMenusRecursive(parentMenus: IMenuModel[], parentNavMenu?: INavMenuItem): INavMenuItem[] {
-        const navMenus: INavMenuItem[] = [];
+    private createHierarchicalMenusRecursive(parentMenus: IMenuModel[], parentMenu?: IHierarchicalMenu): IHierarchicalMenu[] {
+        const menus: IHierarchicalMenu[] = [];
         parentMenus.forEach((state: IMenuModel) => {
-            //seperator ?
-            if (state.startGroup) {
-                navMenus.push({ name: 'divider', visible: true });
-            }
-            //create nav menu
-            const menu: INavMenuItem = {
-                link: state.name,
-                params: state.params,
-                url: state.menuUrl,
-                icon: state.menuIcon,
-                name: state.title || (state.titleI18N && this.localization.getLocal(state.titleI18N)),
-                parent: parentNavMenu,
-                visible: state.isMenu,
-                isFullScreen: state.isFullScreen,
-                isNested: state.name && this.isNestedState(state.name)
-            }
+            //create hierarchical menu
+            const menu = angular.copy<IHierarchicalMenu>(state as IHierarchicalMenu);
+            //localize menu title
+            menu.title = state.title || (state.titleI18N && this.localization.getLocal(state.titleI18N));
+            menu.parentMenu = parentMenu;
             //create subnav menus
             const subMenus = this.getMenusByParentId(state.id);
             if (subMenus.length) {
-                menu.subtree = this.createNavMenusRecursive(subMenus, menu);
+                menu.subMenus = this.createHierarchicalMenusRecursive(subMenus, menu);
             }
-            navMenus.push(menu);
+            menus.push(menu);
             //update state 
-            state.navMenu = menu;
+            state.hierarchicalMenu = menu;
         });
-        return navMenus;
+        return menus;
     }
     /**
      * Add quick menus
@@ -487,10 +513,10 @@ class Routing implements IRouting {
      * Get active menu eliminating nested states
      * @param state Optional state
      */
-    getActiveMenu(state?: IRotaState): INavMenuItem {
-        let menu = (state || this.current).navMenu;
-        while (menu && menu.isNested) {
-            menu = menu.parent;
+    getActiveMenu(state?: IRotaState): IHierarchicalMenu {
+        let menu = (state || this.current).hierarchicalMenu;
+        while (menu && this.isNestedState(menu.name)) {
+            menu = menu.parentMenu;
         }
         return menu;
     }

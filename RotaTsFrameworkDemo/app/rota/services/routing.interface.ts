@@ -74,8 +74,10 @@ interface IMenuItem {
  * State that links states with menus
  */
 interface IRotaState extends ng.ui.IStickyState {
-    navMenu?: INavMenuItem;
-
+    /**
+     * Hierarchical menu for navigation
+     */
+    hierarchicalMenu?: IHierarchicalMenu;
     /**
      * State controller url
      */
@@ -88,6 +90,14 @@ interface IMenuModel extends IRotaState, IMenuItem, IBaseModel {
     id: number;
 }
 /**
+ * Hierarchical menu items for navigation stuff
+ */
+interface IHierarchicalMenu extends IMenuModel {
+    parentMenu?: IHierarchicalMenu;
+    subMenus?: IHierarchicalMenu[];
+    navMenu?: INavMenuItem;
+}
+/**
  * Breadcrumb object
  */
 interface IBreadcrumb {
@@ -96,44 +106,41 @@ interface IBreadcrumb {
     icon?: string;
 }
 /**
- * NavBar item - (ui-navbar directive)
+ * NavBar item 
  */
 interface INavMenuItem {
     name: string;
     url?: string;
-    link?: string;
-    params?: IDictionary<any>;
-    visible?: boolean;
     icon?: string;
     parent?: INavMenuItem;
     subtree?: INavMenuItem[];
-    isFullScreen?: boolean;
-    isNested?: boolean;
 }
 
 //#endregion
 
 //#region Routing config
+interface ITemplates {
+    error404?: string;
+    error500?: string;
+    shell?: string;
+    header?: string;
+    content?: string;
+    breadcrumb?: string;
+    badges?: string;
+    currentcompany?: string;
+    title?: string;
+    userprofile?: string;
+    navmenumobile?: string;
+}
+
 /**
  * Route config
  */
 interface IRouteConfig extends IBaseConfig {
     /**
-     * Base shell path
+     * Html templates
      */
-    shellPath?: string;
-    /**
-     * Error 404 not found state url
-     */
-    error404StateUrl?: string;
-    /**
-     * Error 500 internal error state url
-     */
-    error500StateUrl?: string;
-    /**
-     * if there is no such state demanded,it will be transitioned to inactiveStateUrl
-     */
-    inactiveStateUrl?: string;
+    templates?: ITemplates;
     /**
     * Content controller alias name 
     */
@@ -170,7 +177,9 @@ interface IRouting extends IBaseService {
     /**
      * All menus registered
      */
-    menus: INavMenuItem[];
+    navMenus: INavMenuItem[];
+
+    hierarchicalMenus: IHierarchicalMenu[];
     /**
      * Breadcrumbs
      */
@@ -178,7 +187,7 @@ interface IRouting extends IBaseService {
     /**
      * Current selected menu
      */
-    activeMenu: INavMenuItem;
+    activeMenu: IHierarchicalMenu;
     /**
      * Current state
      */
@@ -241,7 +250,7 @@ interface IRouting extends IBaseService {
     * Get active menu eliminating nested states
     * @param state Optional state
     */
-    getActiveMenu(state?: IRotaState): INavMenuItem;
+    getActiveMenu(state?: IRotaState): IHierarchicalMenu;
 }
 
 //#endregion

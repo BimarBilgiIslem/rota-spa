@@ -256,7 +256,9 @@ class Security implements ISecurity {
     //#endregion
 
     //#region Init
-    constructor(private $rootScope: IRotaRootScope,
+    constructor(
+        private $window: ng.IWindowService,
+        private $rootScope: IRotaRootScope,
         private $http: ng.IHttpService,
         private $q: ng.IQService,
         public securityConfig: ISecurityConfig,
@@ -285,9 +287,25 @@ class Security implements ISecurity {
 
     //#region Utils
     /**
+     * Set company from UI
+     * @param company Company to be selected
+     */
+    setCompany(company: ICompany): void {
+        this.$rootScope.$broadcast(this.constants.events.EVENT_COMPANY_CHANGED, company);
+        this.caching.sessionStorage.store<IStorageCurrentCompany>(
+            this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
+            {
+                id: company.id,
+                companyId: company.companyId,
+                roleId: company.roleId
+            });
+        //redirect to home page
+        this.$window.location.replace("");
+    }
+    /**
      * Set current company
      */
-    setCurrentCompany(): void {
+    private setCurrentCompany(): void {
         let selectedCompany = null;
         const storedCompany = this.caching.sessionStorage
             .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY);
@@ -562,7 +580,7 @@ class Security implements ISecurity {
 //#region Injection
 JwtHelper.$inject = ['$http', '$q', 'SecurityConfig', 'Logger', 'Common', 'Constants'];
 
-Security.$inject = ['$rootScope', '$http', '$q', 'SecurityConfig', 'Config', 'Common', 'Localization',
+Security.$inject = ['$window', '$rootScope', '$http', '$q', 'SecurityConfig', 'Config', 'Common', 'Localization',
     'Caching', 'Logger', 'JWTHelper', 'CurrentUser', 'CurrentCompany', 'Tokens', 'Constants'
 ];
 //#endregion

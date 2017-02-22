@@ -20,7 +20,6 @@ class ShellController {
     isHomePage: boolean;
     bgImageUrl: { [index: string]: string };
     vidOptions: IVideoOptions;
-    navCollapsed: boolean;
     //#endregion
 
     //#region Init
@@ -28,24 +27,18 @@ class ShellController {
         private $scope: IShellScope,
         private $location: ng.ILocationService,
         private $window: ng.IWindowService,
-        private hotkey: ng.hotkeys.HotkeysProvider,
-        private uploader: ng.angularFileUpload.IUploadService,
-        private securityConfig: ISecurityConfig,
         private routing: IRouting,
         private config: IMainConfig,
-        private logger: ILogger,
-        private titleBadges: ITitleBadges,
-        private localization: ILocalization,
-        private security: ISecurity,
         private dialogs: IDialogs,
-        private caching: ICaching,
-        private routeConfig: IRouteConfig,
-        private constants: IConstants) {
+        private constants: IConstants,
+        private currentUser: IUser,
+        private currentCompany: ICompany,
+        private routeconfig: IRouteConfig,
+        private titleBadges: ITitleBadges) {
         //init settings
         this.setSpinner();
         this.setActiveMenuListener();
         //initial vars
-        this.navCollapsed = true;
         if (config.homePageOptions) {
             this.bgImageUrl = config.homePageOptions.imageUri &&
                 { 'background-image': `url(${config.homePageOptions.imageUri})` };
@@ -54,13 +47,6 @@ class ShellController {
         }
         $rootScope.appTitle = '';
         $rootScope.forms = {};
-        $scope.supportedLanguages = this.config.supportedLanguages;
-        $scope.currentLanguage = localization.currentLanguage;
-        $scope.currentUser = security.currentUser;
-        $scope.currentCompany = security.currentCompany;
-        $scope.authorizedCompanies = securityConfig.authorizedCompanies;
-        if (securityConfig.avatarUri)
-            $scope.avatarUri = securityConfig.avatarUri;
     }
     //#endregion
 
@@ -83,8 +69,8 @@ class ShellController {
      * Set active menu & app title
      */
     private setActiveMenuListener() {
-        this.$scope.$watch<INavMenuItem>(() => this.routing.activeMenu, (menu) => {
-            this.$rootScope.appTitle = menu ? (`${menu.name} - ${this.config.appTitle}`) : this.config.appTitle;
+        this.$scope.$watch<IHierarchicalMenu>(() => this.routing.activeMenu, (menu) => {
+            this.$rootScope.appTitle = menu ? (`${menu.title} - ${this.config.appTitle}`) : this.config.appTitle;
             if (this.config.homePageOptions)
                 this.isHomePage = this.$location.url() === this.config.homePageOptions.url;
         });
@@ -94,64 +80,6 @@ class ShellController {
     */
     refresh(): void {
         this.routing.reload();
-    }
-    /**
-     * Change current language
-     * @param $event Event
-     * @param lang Language to be changed to
-     */
-    changeLanguage($event: ng.IAngularEvent, lang: ILanguage) {
-        this.localization.currentLanguage = lang;
-        $event.preventDefault();
-    }
-    /**
-     * Logoff
-     */
-    logOff(): void {
-        this.dialogs.showConfirm({ message: this.localization.getLocal('rota.cikisonay') }).then((): void => {
-            this.security.logOff();
-        });
-    }
-    /**
-     * Change selected company
-     * @param companyId
-     */
-    setCompany(company: ICompany): void {
-        //broadcast
-        this.$rootScope.$broadcast(this.constants.events.EVENT_COMPANY_CHANGED, company);
-
-        this.caching.sessionStorage.store<IStorageCurrentCompany>(
-            this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
-            {
-                id: company.id,
-                companyId: company.companyId,
-                roleId: company.roleId
-            });
-        //redirect to home page
-        this.$window.location.replace("");
-    }
-    /**
-     * Change profile picture
-     */
-    changeAvatar(): void {
-        if (!this.securityConfig.avatarUploadUri)
-            throw new Error(this.constants.errors.NO_AVATAR_URI_PROVIDED);
-
-        this.dialogs.showFileUpload({
-            allowedExtensions: this.constants.controller.ALLOWED_AVATAR_EXTENSIONS,
-            showImageCroppingArea: true,
-            title: this.localization.getLocal('rota.fotosec'),
-            sendText: this.localization.getLocal('rota.fotodegistir')
-        }).then((file): void => {
-            this.uploader.upload({
-                url: this.securityConfig.avatarUploadUri,
-                method: 'POST',
-                data: { file: (file as ICroppedImageUploadResult).image }
-            }).then((): void => {
-                this.logger.toastr.success({ message: this.localization.getLocal('rota.fotodegistirildi') });
-                this.$window.location.reload();
-            });
-        });
     }
     /**
      * Quick menu transition
@@ -166,13 +94,23 @@ class ShellController {
             this.routing.go(quickMenu.name, quickMenu.params);
         }
     }
+
+    showNavMenu(): void {
+        this.dialogs.showModal({
+            isSideBar: true,
+            windowClass: 'side-nav',
+            absoluteTemplateUrl: this.routeconfig.templates.navmenumobile,
+            controller: 'ProfileModalController',
+            controllerAs: 'profilevm'
+        });
+    }
     //#endregion
 }
 //#endregion
 
 //#region Injection
-ShellController.$inject = ['$rootScope', '$scope', '$location', '$window', 'hotkeys', 'Upload', 'SecurityConfig', 'Routing', 'Config', 'Logger',
-    'TitleBadges', 'Localization', 'Security', 'Dialogs', 'Caching', 'RouteConfig', 'Constants'];
+ShellController.$inject = ['$rootScope', '$scope', '$location', '$window', 'Routing', 'Config',
+    'Dialogs', 'Constants', 'CurrentUser', 'CurrentCompany', 'RouteConfig', 'TitleBadges'];
 //#endregion
 
 //#region Register

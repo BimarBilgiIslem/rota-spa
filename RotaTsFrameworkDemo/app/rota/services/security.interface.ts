@@ -64,10 +64,6 @@ interface ISecurityConfig extends IBaseConfig {
      */
     avatarUploadUri?: string;
     /**
-     * Avatar get uri,User id will be added as parameter
-     */
-    avatarUri?: string;
-    /**
      * Logoff when idle timeout has reached by prompting user
      */
     logOffWhenIdleTimeout?: boolean;
@@ -129,6 +125,11 @@ interface ISecurity extends IBaseService {
      * @returns {ng.IPromise<any>}
      */
     logOff(): ng.IPromise<any>;
+    /**
+    * Set company from UI
+    * @param company Company to be selected
+    */
+    setCompany(company: ICompany): void;
 }
 
 //#endregion
@@ -138,12 +139,13 @@ interface ISecurity extends IBaseService {
  * Base User profile 
  */
 interface IUser {
+    id: number;
     fullname: string;
     name: string;
     email?: string;
     managerId?: number;
     culture?: ISupportedCultures;
-    id: number;
+    avatarUri?: string;
 }
 /**
  * All claims

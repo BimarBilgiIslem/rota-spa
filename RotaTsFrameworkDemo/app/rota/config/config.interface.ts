@@ -221,10 +221,6 @@ interface IMainConfig extends IBaseConfig {
      */
     reportControllerUrl?: string;
     /**
-     * Show company name on stratup next to avatar/user name
-     */
-    showCompanyName?: boolean;
-    /**
      * Home page options
      */
     homePageOptions?: IHomePageOptions;

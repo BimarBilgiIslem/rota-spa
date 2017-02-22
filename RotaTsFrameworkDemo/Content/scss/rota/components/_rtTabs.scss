@@ -1,6 +1,56 @@
-﻿.rt-tabs {
-    .tabbadge {
-        margin-left: 4px;
-        margin-top: -3px;
+﻿.nav-tabs {
+    border-bottom: 2px solid #eee;
+
+    > li {
+        &.active {
+            > a {
+                border-width: 0;
+                border: none;
+                color: $rt-tabs-color !important;
+                background: transparent;
+
+                &:focus, &:hover {
+                    border-width: 0;
+                    background-color: transparent;
+                }
+
+                &:after {
+                    transform: scale(1);
+                }
+            }
+        }
+
+        > a {
+            border: none;
+            color: #666;
+            font-size: 1.1em;
+
+            &:hover {
+                border: none;
+                color: $rt-tabs-color !important;
+                background: transparent;
+            }
+
+            &::after {
+                content: "";
+                background: $rt-tabs-color;
+                height: 4px;
+                position: absolute;
+                width: 100%;
+                left: 0px;
+                bottom: -1px;
+                transition: all 250ms ease 0s;
+                transform: scale(0);
+            }
+
+            .tabbadge {
+                margin-left: 4px;
+                margin-top: -3px;
+            }
+        }
+
+        &:hover > a::after {
+            transform: scale(1);
+        }
     }
 }

@@ -28,7 +28,6 @@ class Config extends BaseConfig<IMainConfig> {
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
             supportedLanguages: [{ code: 'tr-tr', fullname: 'Türkçe' }, { code: 'en-us', fullname: 'English' }],
             serverExceptionLoggingEnabled: false,
-            showCompanyName: true,
             pushServicePath: environments.pushServicePath,
             datetimeFormat: {
                 timeFormat: constants.localization.TIME_FORMAT,

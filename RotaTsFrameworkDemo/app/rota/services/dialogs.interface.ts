@@ -150,9 +150,13 @@ interface IModalInstanceOptions {
  */
 interface IModalOptions extends ng.ui.bootstrap.IModalSettings {
     /**
-     * Modal template url
+     * Modal template relative url
      */
-    templateUrl: string;
+    templateUrl?: string;
+    /**
+     * Modal template absolute url
+     */
+    absoluteTemplateUrl?: string;
     /**
      * Controller url
      */
@@ -170,6 +174,14 @@ interface IModalOptions extends ng.ui.bootstrap.IModalSettings {
      * Optional suffix of modal window class. The value used is appended to the `modal-` class, i.e. a value of `sm` gives `modal-sm`.
      */
     size?: 'sm' | 'md' | 'lg';
+    /**
+     * Set if you'd like to the modal appear at the left or right sides,default false
+     */
+    isSideBar?: boolean;
+    /**
+     * SideBar position,default "left"
+     */
+    sideBarPosition?: 'left' | 'right';
 }
 /**
  * Image Cropping Scope
