@@ -199,6 +199,7 @@ const rotaConstants: IConstants = {
     },
     routing: {
         //shell options
+        SHELL_CONTROLLER_NAME: 'ShellController',
         SHELL_PATH: 'rota/shell/views/',
         SHELL_STATE_NAME: 'shell',
         SHELL_CONTENT_STATE_NAME: 'shell.content',

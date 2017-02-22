@@ -94,7 +94,9 @@ class ShellController {
             this.routing.go(quickMenu.name, quickMenu.params);
         }
     }
-
+    /**
+     * Shows nav menus & settings modal for small devices
+     */
     showNavMenu(): void {
         this.dialogs.showModal({
             isSideBar: true,

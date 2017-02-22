@@ -226,7 +226,7 @@ class Routing implements IRouting {
             {
                 'shell@': {
                     templateUrl: this.routeconfig.templates.shell,
-                    controller: 'ShellController',
+                    controller: this.constants.routing.SHELL_CONTROLLER_NAME,
                     controllerAs: this.routeconfig.shellControllerAlias
                 }
             },
@@ -351,7 +351,7 @@ class Routing implements IRouting {
      * Create nav menu items
      * @param menus
      */
-    private createNavMenus(menus?: IHierarchicalMenu[]): INavMenuItem[] {
+    private createNavMenus(menus?: IHierarchicalMenu[], parent?: INavMenuItem): INavMenuItem[] {
         const navMenus: INavMenuItem[] = [];
 
         (menus || this._hierarchicalMenus).where(menu => menu.isMenu)
@@ -361,10 +361,11 @@ class Routing implements IRouting {
                 }
                 const navMenu: INavMenuItem = {
                     name: menu.title,
-                    subtree: menu.subMenus && this.createNavMenus(menu.subMenus),
                     url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)) || '#',
-                    icon: menu.menuIcon
+                    icon: menu.menuIcon,
+                    parent: parent
                 }
+                navMenu.subtree = menu.subMenus && this.createNavMenus(menu.subMenus, navMenu);
                 navMenus.push(navMenu);
                 //update hierarchical menu for navigational ui directives
                 menu.navMenu = navMenu;

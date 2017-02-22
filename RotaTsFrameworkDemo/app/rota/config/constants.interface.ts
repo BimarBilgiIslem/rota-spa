@@ -121,6 +121,7 @@
         TOASTR_DEBUG_TIMEOUT: number;
     },
     routing: {
+        SHELL_CONTROLLER_NAME: string;
         SHELL_PATH: string;
         SHELL_STATE_NAME: string;
         TEMPLATES: ITemplates;

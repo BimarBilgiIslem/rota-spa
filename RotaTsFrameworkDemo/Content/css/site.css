@@ -6128,15 +6128,6 @@ a.mfb-component__button--main:hover {
   height: 35px;
   width: 35px; }
 
-.sidebar1 {
-  background: #253241;
-  background: -webkit-linear-gradient(#253241, #00526e, #2e8b57);
-  background: -o-linear-gradient(#253241, #00526e, #2e8b57);
-  background: -moz-linear-gradient(#253241, #00526e, #2e8b57);
-  background: linear-gradient(#253241, #00526e, #2e8b57);
-  padding: 0;
-  min-height: 100%; }
-
 /*#region FadeInRight */
 @-webkit-keyframes fadeInRight {
   0% {
@@ -7131,9 +7122,10 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
   padding: 0 !important; }
 
 .side-nav.modal.left .modal-header {
-  background-color: #307090;
+  background: #307090;
   color: #fff;
-  border-radius: 0; }
+  border-radius: 0;
+  padding: 10px 15px; }
   .side-nav.modal.left .modal-header h4 {
     color: #fff; }
 
@@ -7149,6 +7141,8 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
   margin-bottom: 0; }
   .side-nav .list-group .list-group-item.header {
     background-color: #ebebeb; }
+  .side-nav .list-group .list-group-item span.fa {
+    margin-top: 5px; }
 
 .breadcrumb {
   margin-bottom: 0;
