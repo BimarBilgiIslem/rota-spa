@@ -61,11 +61,13 @@ class Routing implements IRouting {
     //#endregion
 
     //#region Init
-    static $inject = ['$state', '$stateParams', '$rootScope', '$q', '$urlRouter', '$location',
+    static $inject = ['$window', '$state', '$stateParams', '$rootScope', '$q', '$urlRouter', '$location',
         '$stickyState', '$urlMatcherFactory', '$timeout', 'StateProvider', 'UrlRouterProvider',
         'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants'];
     //ctor
-    constructor(private $state: ng.ui.IStateService,
+    constructor(
+        private $window: ng.IWindowService,
+        private $state: ng.ui.IStateService,
         public $stateParams: ng.ui.IStateParamsService,
         private $rootScope: IRotaRootScope,
         private $q: angular.IQService,
@@ -136,14 +138,12 @@ class Routing implements IRouting {
                 let menu = this.getActiveMenu(toState);
                 const routelist: IBreadcrumb[] = [];
                 while (menu) {
-                    if (menu.navMenu) {
-                        routelist.push(
-                            {
-                                text: menu.navMenu.name,
-                                url: menu.navMenu.url,
-                                icon: menu.navMenu.icon
-                            });
-                    }
+                    routelist.push(
+                        {
+                            text: menu.localizedTitle,
+                            url: menu.absoluteUrl,
+                            icon: menu.menuIcon
+                        });
                     menu = menu.parentMenu;
                 }
                 this._breadcrumbs = routelist.reverse();
@@ -360,15 +360,15 @@ class Routing implements IRouting {
                     navMenus.push({ name: 'divider' });
                 }
                 const navMenu: INavMenuItem = {
-                    name: menu.title,
+                    name: menu.localizedTitle,
                     url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)) || '#',
                     icon: menu.menuIcon,
                     parent: parent
                 }
                 navMenu.subtree = menu.subMenus && this.createNavMenus(menu.subMenus, navMenu);
                 navMenus.push(navMenu);
-                //update hierarchical menu for navigational ui directives
-                menu.navMenu = navMenu;
+                //update url on menu
+                menu.absoluteUrl = navMenu.url;
             });
         return navMenus;
     }
@@ -394,8 +394,8 @@ class Routing implements IRouting {
         parentMenus.forEach((state: IMenuModel) => {
             //create hierarchical menu
             const menu = angular.copy<IHierarchicalMenu>(state as IHierarchicalMenu);
-            //localize menu title
-            menu.title = state.title || (state.titleI18N && this.localization.getLocal(state.titleI18N));
+            //set helper props
+            menu.localizedTitle = state.title || (state.titleI18N && this.localization.getLocal(state.titleI18N));
             menu.parentMenu = parentMenu;
             //create subnav menus
             const subMenus = this.getMenusByParentId(state.id);
@@ -431,10 +431,24 @@ class Routing implements IRouting {
         return this.$state.go(stateName, params, options);
     }
     /**
+     * Change address bar url without reloading
+     * @param params
+     */
+    changeUrl<T>(params: IDictionary<T>): ng.IPromise<any> {
+        return this.go(this.current.name, params,
+            { notify: false, reload: false });
+    }
+    /**
      * Reload state
      */
     reload(): ng.IPromise<any> {
         return this.$state.reload();
+    }
+    /**
+     * Full reload
+     */
+    reloadBrowser(): void {
+        this.$window.location.replace("");
     }
     /**
      * Set the startup state when app get bootstrapped

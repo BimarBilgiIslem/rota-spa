@@ -75,6 +75,10 @@ interface ISecurityConfig extends IBaseConfig {
      * Count down for logoff when idle time is over,default 5 mins
      */
     idleLogoffCountDown?: number;
+    /**
+  * Flag that enables avatar that shows first letter of user name,default true
+  */
+    useFirstLetterAvatar?: boolean;
 }
 /**
  * Security config provider

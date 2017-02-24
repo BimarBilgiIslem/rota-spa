@@ -71,8 +71,21 @@ function treeDirective(ivhTreeviewMgr: any) {
 treeDirective.$inject = ['ivhTreeviewMgr'];
 
 //#region Register
-angular.module('rota.directives.rttree', [])
-    .directive('rtTree', treeDirective);
+angular.module('rota.directives.rttree', ['ivh.treeview'])
+    .directive('rtTree', treeDirective)
+    .config(['ivhTreeviewOptionsProvider', 'Constants', (ivhTreeviewOptionsProvider: any, constants: IConstants) => {
+        //treeview global settings
+        ivhTreeviewOptionsProvider.set({
+            idAttribute: 'id',
+            defaultSelectedState: false,
+            validate: true,
+            expandToDepth: 1,
+            twistieCollapsedTpl: constants.tree.TREE_TWISTIE_COLLAPSED_TPL,
+            twistieExpandedTpl: constants.tree.TREE_TWISTIE_EXPANDED_TPL,
+            twistieLeafTpl: '&nbsp;&nbsp;'
+        });
+    }]);
+
 //#endregion
 
 //https://github.com/iVantage/angular-ivh-treeview#options

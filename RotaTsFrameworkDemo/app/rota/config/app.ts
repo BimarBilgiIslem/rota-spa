@@ -29,17 +29,17 @@ class RotaApp implements IRotaApp {
         this.rotaModule = angular.module(moduleName, ["rota"]);
         //Configure lazy loading assignments and debug options
         this.configure(['$filterProvider', '$animateProvider', '$compileProvider', '$controllerProvider',
-            '$provide', 'ConfigProvider', 'ivhTreeviewOptionsProvider', '$sceDelegateProvider', 'Environment', 'Constants',
+            '$provide', 'ConfigProvider', '$sceDelegateProvider', 'Environment', 'Constants',
             ($filterProvider: ng.IFilterProvider,
                 $animateProvider: ng.animate.IAnimateProvider,
                 $compileProvider: ng.ICompileProvider,
                 $controllerProvider: ng.IControllerProvider,
                 $provide: ng.auto.IProvideService,
                 configProvider: IMainConfigProvider,
-                ivhTreeviewOptionsProvider: any,
                 $sceDelegateProvider: ng.ISCEDelegateProvider,
                 environment: IGlobalEnvironment,
                 constants: IConstants) => {
+                //Lazy registering 
                 this.$controllerProvider = $controllerProvider;
                 this.$provide = $provide;
                 this.$compileProvider = $compileProvider;
@@ -53,16 +53,6 @@ class RotaApp implements IRotaApp {
                 //only animation starts with rota-animate is allowed 
                 //Stricted due to error in ui - select https://github.com/angular-ui/ui-select/issues/1467
                 $animateProvider.classNameFilter(/rota-animate/);
-                //treeview global settings
-                ivhTreeviewOptionsProvider.set({
-                    idAttribute: 'id',
-                    defaultSelectedState: false,
-                    validate: true,
-                    expandToDepth: 1,
-                    twistieCollapsedTpl: constants.tree.TREE_TWISTIE_COLLAPSED_TPL,
-                    twistieExpandedTpl: constants.tree.TREE_TWISTIE_EXPANDED_TPL,
-                    twistieLeafTpl: '&nbsp;&nbsp;'
-                });
                 //register xdom paths
                 if (!_.isEmpty(environment.xDomPaths)) {
                     const xdoms = ['self'];

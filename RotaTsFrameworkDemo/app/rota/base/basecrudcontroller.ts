@@ -761,8 +761,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         idParam[this.crudPageOptions.newItemParamName] = id;
         //replace the url with new id
         const params = this.common.extend(this.$stateParams, idParam);
-        return this.routing.go(this.routing.current.name, params,
-            { notify: false, reload: false });
+        return this.routing.changeUrl(params);
     }
     //#endregion
 

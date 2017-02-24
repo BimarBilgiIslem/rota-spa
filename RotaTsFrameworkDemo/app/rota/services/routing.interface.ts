@@ -95,7 +95,9 @@ interface IMenuModel extends IRotaState, IMenuItem, IBaseModel {
 interface IHierarchicalMenu extends IMenuModel {
     parentMenu?: IHierarchicalMenu;
     subMenus?: IHierarchicalMenu[];
-    navMenu?: INavMenuItem;
+    //helper props
+    localizedTitle?: string;
+    absoluteUrl?: string;
 }
 /**
  * Breadcrumb object
@@ -178,7 +180,9 @@ interface IRouting extends IBaseService {
      * All menus registered
      */
     navMenus: INavMenuItem[];
-
+    /**
+     * Hierarchical menus & states
+     */
     hierarchicalMenus: IHierarchicalMenu[];
     /**
      * Breadcrumbs
@@ -211,6 +215,15 @@ interface IRouting extends IBaseService {
      * @returns {ng.IPromise<any>} Promise
      */
     reload(): ng.IPromise<any>;
+    /**
+     * Full reload
+     */
+    reloadBrowser(): void;
+    /**
+     * Change address bar url without reloading
+     * @param params
+     */
+    changeUrl<T>(params: IDictionary<T>): ng.IPromise<any>;
     /**
      * Initial state when application bootstraped
      * @param stateName State name

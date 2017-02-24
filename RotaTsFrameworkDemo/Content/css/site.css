@@ -6120,13 +6120,22 @@ a.mfb-component__button--main:hover {
   .scrollable-menu::-webkit-scrollbar-thumb:horizontal:active, .scrollable-menu::-webkit-scrollbar-thumb:vertical:active {
     background: #b3b3b3; }
 
-.avatar-image-link {
+.avatar-link {
   padding-top: 8px !important;
   padding-bottom: 5px !important; }
 
 .avatar-small {
   height: 35px;
   width: 35px; }
+
+.avatar-firstletter {
+  border-radius: 50%;
+  background: #888;
+  color: #fff;
+  font-size: 1.3em;
+  text-align: center;
+  line-height: 1.8em;
+  display: inline-block; }
 
 /*#region FadeInRight */
 @-webkit-keyframes fadeInRight {
