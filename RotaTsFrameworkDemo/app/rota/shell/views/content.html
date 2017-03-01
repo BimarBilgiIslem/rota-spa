@@ -1,18 +1,16 @@
 ﻿<section id="sub-header">
     <div ng-class="shellvm.routing.activeMenu.isFullScreen ? 'fullscreen' : 'container'">
-        <div class="row">
-            <div class="col-md-6">
-                <!--Badges-->
-                <ui-view name="badges"></ui-view>
-                <!--Menu caption-->
-                <ui-view name="title"></ui-view>
-            </div>
-            <div class="col-md-6 hidden-xs">
-                <!--Current company name-->
-                <ui-view name="currentcompany"></ui-view>
-                <!--Breadcrumbs-->
-                <ui-view name="breadcrumb"></ui-view>
-            </div>
+        <div class="content-header">
+            <!--Badges-->
+            <ui-view name="badges"></ui-view>
+            <!--Menu caption-->
+            <ui-view name="title"></ui-view>
+            <!--Current company name-->
+            <ui-view name="currentcompany"></ui-view>
+            <!--Action buttons-->
+            <ui-view name="actions"></ui-view>
+            <!--Breadcrumbs-->
+            <ui-view name="breadcrumb"></ui-view>
         </div>
     </div>
 </section>

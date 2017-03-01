@@ -211,6 +211,7 @@ const rotaConstants: IConstants = {
             header: 'header.html',
             userprofile: 'user-profile.html',
             badges: 'badges.html',
+            actions: 'header-action-buttons.html',
             breadcrumb: 'breadcrumb.html',
             content: 'content.html',
             currentcompany: 'current-company.html',

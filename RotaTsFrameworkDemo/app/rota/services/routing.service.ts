@@ -235,6 +235,7 @@ class Routing implements IRouting {
             contentSections = [{ '@shell': { templateUrl: this.routeconfig.templates.content } },
             { 'breadcrumb@shell.content': { templateUrl: this.routeconfig.templates.breadcrumb } },
             { 'badges@shell.content': { templateUrl: this.routeconfig.templates.badges } },
+            { 'actions@shell.content': { templateUrl: this.routeconfig.templates.actions } },
             { 'currentcompany@shell.content': { templateUrl: this.routeconfig.templates.currentcompany } },
             { 'title@shell.content': { templateUrl: this.routeconfig.templates.title } }];
         //register shell state
@@ -358,7 +359,7 @@ class Routing implements IRouting {
                 }
                 const navMenu: INavMenuItem = {
                     name: menu.localizedTitle,
-                    url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)) || '#',
+                    url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)),
                     icon: menu.menuIcon,
                     parent: parent
                 }
@@ -440,6 +441,12 @@ class Routing implements IRouting {
      */
     reload(): ng.IPromise<any> {
         return this.$state.reload();
+    }
+    /**
+     * Go preview page
+     */
+    goBack(): void {
+        this.$window.history.go(-1);
     }
     /**
      * Full reload

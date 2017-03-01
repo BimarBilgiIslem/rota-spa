@@ -1,14 +1,14 @@
-﻿<ul class="breadcrumb">
+﻿<ul class="breadcrumb hidden-xs">
     <li>
         <a href="/"><i class="glyphicon glyphicon-home"></i></a>
     </li>
     <li ng-repeat="breadcrumb in shellvm.routing.breadcrumbs">
         <ng-switch on="$last">
-            <a href class="active" ng-switch-when="true">
+            <a class="active" ng-switch-when="true">
                 <i class="fa fa-{{breadcrumb.icon}}"></i>
                 {{breadcrumb.text}}
             </a>
-            <a href="{{breadcrumb.url}}" ng-switch-default>
+            <a ng-href="{{breadcrumb.url}}" ng-switch-default>
                 <i class="fa fa-{{breadcrumb.icon}}"></i>
                 {{breadcrumb.text}}
             </a>

@@ -145,7 +145,7 @@
         hatalidegermin: 'Min value must be greater than {0}',
         hatalidegermax: 'Max value must be lesser than {0}',
         yenile: "Refresh",
-        geridon: "Go Back",
+        geridon: "Go to previous page",
         sil: "Delete",
         detay: "Detail",
         tamam: 'OK',

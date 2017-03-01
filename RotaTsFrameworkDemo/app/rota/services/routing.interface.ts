@@ -129,6 +129,7 @@ interface ITemplates {
     content?: string;
     breadcrumb?: string;
     badges?: string;
+    actions?: string;
     currentcompany?: string;
     title?: string;
     userprofile?: string;
@@ -210,6 +211,10 @@ interface IRouting extends IBaseService {
      * @returns {ng.IPromise<any>} Promise of any
      */
     go(state: string, params?: any, options?: ng.ui.IStateOptions): ng.IPromise<any>;
+    /**
+     * Go preview page
+     */
+    goBack(): void;
     /**
      * Reload content page
      * @returns {ng.IPromise<any>} Promise

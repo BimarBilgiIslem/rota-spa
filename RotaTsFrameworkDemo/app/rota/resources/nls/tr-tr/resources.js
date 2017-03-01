@@ -143,7 +143,7 @@
         hatalidegermin: 'Girdiğiniz sayı {0}\'dan büyük olmalı',
         hatalidegermax: 'Girdiğiniz sayı {0}\'dan küçük olmalı',
         yenile: "Yenile",
-        geridon: "Geri",
+        geridon: "Bir önceki sayfaya dön",
         sil: "Sil",
         Detay: "Detay",
         tamam: 'Tamam',

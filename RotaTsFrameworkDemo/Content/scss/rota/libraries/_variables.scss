@@ -24,9 +24,11 @@ $sub-header-quickmenu-font-size: .8em !default;
 //current company
 $sub-header-company-color: #fff !default;
 $sub-header-company-padding: 4px 9px !default;
-$sub-header-company-bg: #ccc !default;
+$sub-header-company-bg: #a94442 !default;
+//actions
+$sub-header-actions-bg: $sub-header-title-bg !default;
 //side nav bar
-$side-nav-header-bg: #307090 !default;
+$side-nav-header-bg: $sub-header-title-bg !default;
 $side-nav-header-color: #fff !default;
 $side-nav-item-header: #ebebeb !default;
 //content
@@ -52,7 +54,7 @@ $rt-select-selected-bg: #b94a48 !default;
 $rt-select-selected-hover-bg: #f5f5f5 !default;
 $rt-select-bg-image: url('/Content/img/select2.png') right top no-repeat;
 //breadcrumb
-$breadcrumb-bg: rgba(240, 173, 78, 0.77) !default;
+$breadcrumb-bg: $sub-header-title-bg !default;
 $breadcrumb-padding-vertical: 4px !default;
 $breadcrumb-color: #fff !default;
 //badges

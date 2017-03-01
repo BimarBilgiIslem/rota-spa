@@ -70,7 +70,6 @@ interface ISecurity extends IBaseService {
     securityConfig: ISecurityConfig;
     /**
      * Initialize security
-     * @returns {IProfileModel<IUser>}
      */
     initSecurity(): void;
     /**
