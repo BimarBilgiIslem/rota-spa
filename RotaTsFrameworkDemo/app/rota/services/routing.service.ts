@@ -292,9 +292,6 @@ class Routing implements IRouting {
                         isStickyTab: state.sticky
                     }
                 },
-                authenticated: [
-                    'Security', (security: ISecurity) => security.isStateAuthenticated(state)
-                ],
                 $modalInstance: angular.noop,
                 modalParams: angular.noop
             }
@@ -544,6 +541,7 @@ var config = ($provide: ng.auto.IProvideService,
     $stateProvider: ng.ui.IStateProvider,
     $urlRouterProvider: ng.ui.IUrlRouterProvider,
     $stickyStateProvider: ng.ui.IStickyStateProvider,
+    $locationProvider: ng.ILocationProvider,
     constants: IConstants) => {
     //make runtime config
     $provide.factory('StateProvider', () => $stateProvider);
@@ -558,8 +556,10 @@ var config = ($provide: ng.auto.IProvideService,
     });
     //Sticky mode log monitoring
     $stickyStateProvider.enableDebug(false);
+
+    $locationProvider.html5Mode(true);
 }
-config.$inject = ['$provide', '$stateProvider', '$urlRouterProvider', '$stickyStateProvider', 'Constants'];
+config.$inject = ['$provide', '$stateProvider', '$urlRouterProvider', '$stickyStateProvider', '$locationProvider', 'Constants'];
 //#endregion
 
 //#region Register

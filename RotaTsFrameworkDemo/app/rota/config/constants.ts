@@ -182,7 +182,6 @@ const rotaConstants: IConstants = {
         //Storage names
         STORAGE_NAME_AUTH_TOKEN: window.__constants.STORAGE_NAME_AUTH_TOKEN,
         STORAGE_NAME_CURRENT_COMPANY: window.__constants.STORAGE_NAME_CURRENT_COMPANY,
-        STORAGE_NAME_TEMP_STATE: 'rota-temp-state',
         IDLE_TIMEOUT: 1800000,
         COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000
     },

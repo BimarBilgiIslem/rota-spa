@@ -8,6 +8,10 @@ declare global {
     */
         __globalEnvironment?: IGlobalEnvironment;
         /**
+         * Access token for async request of text plugin
+         */
+        __access_token?: string;
+        /**
          * Global storage names
          * @description this global constants aims to be aligned with main constants service
          */

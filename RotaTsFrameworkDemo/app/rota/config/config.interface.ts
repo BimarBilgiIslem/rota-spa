@@ -24,6 +24,10 @@ interface IGlobalEnvironment {
      */
     authority: string;
     /**
+     *Scope
+     */
+    scope: string;
+    /**
     * Redirecting uri for unauthorized requests
     */
     redirectUri?: string;
@@ -31,6 +35,14 @@ interface IGlobalEnvironment {
      * Default uri to redirect after successful authorization
      */
     postLogoutRedirectUri?: string;
+    /**
+     * Silently update user path
+     */
+    silentRedirectUri?: string;
+    /**
+     * Clock skew in sec
+     */
+    clockSkew?: number;
     /**
      * Allow anouynmous access
      */
@@ -274,5 +286,23 @@ interface IVideoOptions {
     urlWebm?: string;
     urlOgg?: string;
     poster: string;
+}
+//#endregion
+
+//#region OIDC
+interface IOidcManager {
+    instance: Oidc.UserManager;
+    user: Oidc.User;
+    init(settings: IOidcSettings): Promise<Oidc.User>;
+}
+
+interface IOidcSettings {
+    authority: string;
+    clientId: string;
+    redirectUri?: string;
+    silentRedirectUri?: string;
+    scope?: string;
+    postLogoutRedirectUri?: string;
+    clockSkew?: number;
 }
 //#endregion

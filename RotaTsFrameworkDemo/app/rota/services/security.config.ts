@@ -7,16 +7,7 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
     constructor(environments: IGlobalEnvironment, constants: IConstants) {
         super();
         const config: ISecurityConfig = {
-            tokenStorageName: constants.security.STORAGE_NAME_AUTH_TOKEN,
-            stateTempStorageName: constants.security.STORAGE_NAME_TEMP_STATE,
-            redirectUri: environments.redirectUri || (window.location.protocol + "//" + window.location.host + constants.security.REDIRECT_URI_PATH),
-            postLogoutRedirectUri: environments.postLogoutRedirectUri || (window.location.protocol + "//" + window.location.host),
-            responseType: constants.security.DEFAULT_ROTA_RESPONSE_TYPE,
-            scope: '',
-            loadUserProfile: false,
-            filterProtocolClaims: true,
-            clientId: environments.clientId,
-            authority: environments.authority,
+            tokenStorageName: `rotaid.user:${environments.authority}:${environments.clientId}`,
             allowAnonymousAccess: environments.allowAnonymousAccess,
             logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout,
             idleTimeout: constants.security.IDLE_TIMEOUT,

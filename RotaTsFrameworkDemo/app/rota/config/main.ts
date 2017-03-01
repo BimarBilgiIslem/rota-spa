@@ -22,6 +22,7 @@ require.config({
         'angular-animate': './rota/core/angular-animate',
         'angular-cookies': './rota/core/angular-cookies.min',
         'signalr.core': './rota/core/jquery.signalR-2.2.1.min',
+        oidc: './rota/core/oidc-client.min',
         //libs
         toastr: './rota/lib/toastr',
         underscore: './rota/lib/underscore.min',
@@ -54,12 +55,6 @@ require.config({
         treeview: './rota/lib/ivh-treeview',
         uimask: './rota/lib/mask.min',
         uilayout: './rota/lib/ui-layout',
-        //Security
-        //JWT Client claims helpers
-        jws: './rota/lib/jws-3.0.min',
-        rsa: './rota/lib/rsa',
-        jsonsanseval: './rota/lib/json-sans-eval',
-        crypto: './rota/lib/crypto',
         //grid libs
         pdfMake: './rota/lib/pdfMake.min',
         vfs_fonts: './rota/lib/vfs_fonts',
@@ -116,10 +111,6 @@ require.config({
         ngcurrency: {
             deps: ['angular']
         },
-        jws: { exports: 'jws' },
-        rsa: { exports: 'rsa' },
-        jsonsanseval: { exports: 'jsonsanseval' },
-        crypto: { exports: 'crypto' },
         mfb: {
             deps: ['angular']
         },
@@ -153,6 +144,9 @@ require.config({
         },
         uilayout: {
             deps: ['angular']
+        },
+        oidc: {
+            exports: 'oidc'
         }
     }
     //#endregion
@@ -216,19 +210,8 @@ if (window) {
                     //set language for server 
                     xhr.setRequestHeader(headerNameLanguage, currentLanguage);
                     //set authorization token for json & text requests
-                    const tokenModel = sessionStorage.getItem(storageNameAuthToken) ||
-                        localStorage.getItem(storageNameAuthToken);
-                    if (tokenModel) {
-                        const token = JSON.parse(tokenModel);
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + token.access_token);
-                    }
-                },
-                onXhrComplete(xhr, url) {
-                    //if response status is unauthorized,remove tokens if available so that security service redirect to identity server
-                    //BUG:there is 500 internal server error with message "authorization is not granted"
-                    if (xhr.status === 401) {
-                        sessionStorage.removeItem(storageNameAuthToken);
-                        localStorage.removeItem(storageNameAuthToken);
+                    if (window.__access_token) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + window.__access_token);
                     }
                 }
             }
@@ -247,37 +230,57 @@ if (window) {
             paths: xpaths
         });
     }
+
+    //#region ckEditor Path Setting
+    //http://stackoverflow.com/questions/8807029/how-do-you-define-the-path-which-ckeditor-uses-to-search-for-config-language-f
+    if (!debugging) {
+        window.CKEDITOR_BASEPATH = '/dist/rota/lib/ckeditor/';
+    }
+    //#endregion
 }
 //#endregion
 
-//#region ckEditor Path Setting
-//http://stackoverflow.com/questions/8807029/how-do-you-define-the-path-which-ckeditor-uses-to-search-for-config-language-f
-if (!debugging) {
-    window.CKEDITOR_BASEPATH = '/dist/rota/lib/ckeditor/';
-}
-//#endregion
+//#region Init files
+require(['config/oidc-manager'],
+    (oidc: IOidcManager) => {
+        //init authz
+        const result = oidc.init({
+            authority: window.__globalEnvironment.authority,
+            clientId: window.__globalEnvironment.clientId,
+            postLogoutRedirectUri: window.__globalEnvironment.postLogoutRedirectUri,
+            redirectUri: window.__globalEnvironment.redirectUri,
+            silentRedirectUri: window.__globalEnvironment.silentRedirectUri,
+            clockSkew: window.__globalEnvironment.clockSkew,
+            scope: window.__globalEnvironment.scope
+        });
 
-//#region Load initial files
-//load vendor specific files
-require(['config/vendor.index'], (): void => {
-    //load startup along with rota fr
-    require(['startup'], (app): void => {
-        //remove progress bar
-        const pbar = document.getElementById('progressBar');
-        if (pbar && pbar.parentNode) {
-            pbar.parentNode.removeChild(pbar);
-        }
-        //validate app
-        if (!app || !app.rotaModule) {
-            throw "startup module must return the App class - i.e export = App";
-        }
-        //bootstrap rota app
-        angular.element(document).ready(() => {
-            const $injector = angular.bootstrap(document, [app.rotaModule.name]);
-            //injector is stored for further module dependecy.(angular is modified)
-            //check for this link https://github.com/angular/angular.js/pull/4694
-            app.setInjector($injector);
+        result.then(user => {
+            if (user !== null) {
+                //#region Load files
+                require(['config/vendor.index'], (): void => {
+                    //load startup along with rota fr
+                    require(['startup'], (app): void => {
+                        //validate app
+                        if (!app || !app.rotaModule) {
+                            throw "startup module must return the App class - i.e export = App";
+                        }
+                        //bootstrap rota app
+                        angular.element(document).ready(() => {
+                            const $injector = angular.bootstrap(document, [app.rotaModule.name]);
+                            //injector is stored for further module dependecy.(angular is modified)
+                            //check for this link https://github.com/angular/angular.js/pull/4694
+                            app.setInjector($injector);
+                            //remove progress bar
+                            const pbar = document.getElementById('progressBar');
+                            if (pbar && pbar.parentNode) {
+                                pbar.parentNode.removeChild(pbar);
+                            }
+                        });
+                    });
+                });
+                //#endregion
+            }
         });
     });
-});
 //#endregion
+
