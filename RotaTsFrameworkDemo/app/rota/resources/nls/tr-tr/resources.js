@@ -46,7 +46,7 @@
         diller: 'Diller',
         sirketler: 'Şirketler',
         hizlimenuekle: 'Hızlı menü ekle',
-        hizlimenueklendi: '"{0}" hızlı menu eklendi',
+        hizlimenusilmehatasi: 'Bu menü kaldırılamaz',
         hizliemenuadetkisiti: 'Max {0} adet hizli menu ekleyebilirsiniz',
         createduser: 'Yaratan Kull.',
         createddate: 'Yaratma Tarihi',

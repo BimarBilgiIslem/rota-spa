@@ -202,6 +202,8 @@ const rotaConstants: IConstants = {
         SHELL_PATH: 'rota/shell/views/',
         SHELL_STATE_NAME: 'shell',
         SHELL_CONTENT_STATE_NAME: 'shell.content',
+        QUICKMENU_STORAGE_KEY: 'quick-menus',
+        MAX_QUICKMENU_LEN: 4,
         //error pages settings
         TEMPLATES: {
             error404: 'error404.html',

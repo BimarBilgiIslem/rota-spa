@@ -129,6 +129,8 @@
         INTERNAL_ERROR_STATE_NAME: string;
         CONTROLLER_ALIAS_NAME: string;
         SHELL_CONTROLLER_ALIAS_NAME: string;
+        QUICKMENU_STORAGE_KEY: string;
+        MAX_QUICKMENU_LEN: number;
     },
     dashboard: {
         WIDGET_LOADING_TEMPLATE: string;

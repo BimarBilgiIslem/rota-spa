@@ -85,13 +85,12 @@ class ShellController {
      * Quick menu transition
      * @param quickMenu QuickMenu
      */
-    goQuickmenu(quickMenu: IMenuModel): void {
+    goQuickmenu(quickMenu: IQuickMenu): void {
         if (!quickMenu) return;
-
-        if (quickMenu.menuUrl) {
-            this.$window.location.href = quickMenu.menuUrl;
+        if (quickMenu.url) {
+            this.$window.location.replace(quickMenu.url);
         } else {
-            this.routing.go(quickMenu.name, quickMenu.params);
+            this.routing.go(quickMenu.state);
         }
     }
     /**

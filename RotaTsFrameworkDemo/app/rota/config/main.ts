@@ -23,8 +23,9 @@ require.config({
         'angular-cookies': './rota/core/angular-cookies.min',
         'signalr.core': './rota/core/jquery.signalR-2.2.1.min',
         oidc: './rota/core/oidc-client.min',
+        silentrenew: 'rota/shell/views/silent_renew.html',
         //libs
-        toastr: './rota/lib/toastr',
+        toastr: './rota/lib/toastr.min',
         underscore: './rota/lib/underscore.min',
         'underscore.string': './rota/lib/underscore.string.min',
         'underscore.mixed': './rota/lib/underscore.mixed',

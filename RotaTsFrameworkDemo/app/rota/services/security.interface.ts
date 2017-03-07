@@ -4,10 +4,6 @@
  */
 interface ISecurityConfig extends IBaseConfig {
     /**
-     * Storage name of token
-     */
-    tokenStorageName?: string;
-    /**
      * Flag that if app will be used with no authoirzation or not
      */
     allowAnonymousAccess?: boolean;

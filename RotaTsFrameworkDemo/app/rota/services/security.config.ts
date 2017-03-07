@@ -7,7 +7,6 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
     constructor(environments: IGlobalEnvironment, constants: IConstants) {
         super();
         const config: ISecurityConfig = {
-            tokenStorageName: `rotaid.user:${environments.authority}:${environments.clientId}`,
             allowAnonymousAccess: environments.allowAnonymousAccess,
             logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout,
             idleTimeout: constants.security.IDLE_TIMEOUT,

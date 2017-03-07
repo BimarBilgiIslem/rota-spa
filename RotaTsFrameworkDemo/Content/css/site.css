@@ -5967,7 +5967,7 @@ body {
       display: inline-block;
       border-radius: 0;
       bottom: 0;
-      right: 66px; }
+      right: 99px; }
       #sub-header .content-header .breadcrumb:after {
         clear: both; }
       #sub-header .content-header .breadcrumb a {
@@ -7229,17 +7229,36 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
 .side-nav .nav-tabs {
   margin-bottom: 0; }
 
-.side-nav .list-group .list-group-item {
-  border-radius: 0;
-  border-bottom: 1px solid #ddd;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  margin-bottom: 0; }
-  .side-nav .list-group .list-group-item.header {
-    background-color: #ebebeb; }
-  .side-nav .list-group .list-group-item span.fa {
-    margin-top: 5px; }
+.side-nav .list-group {
+  overflow: hidden; }
+  .side-nav .list-group .list-group-item {
+    border-radius: 0;
+    border-bottom: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    margin-bottom: 0;
+    /*&.ng-enter, &.ng-leave {
+                transition: transform .4s ease;
+                transform: translate3d(0,0,0);
+            }
+
+            &.ng-enter {
+                transform: translate3d(100%,0,0);
+            }
+
+            &.ng-enter.ng-enter-active, &.ng-leave {
+                transform: translate3d(0,0,0);
+            }
+
+            &.ng-leave.ng-leave-active {
+                transform: translate3d(-100%,0,0);
+                margin-bottom: -($line-height-computed + 20px);
+            }*/ }
+    .side-nav .list-group .list-group-item.header {
+      background-color: #ebebeb; }
+    .side-nav .list-group .list-group-item span.fa {
+      margin-top: 5px; }
 
 .btn.btn-outline {
   background-color: transparent;
@@ -7378,9 +7397,12 @@ ul.contextmenu {
     border-top-right-radius: 6px; }
     .modal .modal-header h4 {
       color: #31708f; }
-  .modal .modal-body p {
-    font-size: 1.2em;
-    color: #333; }
+  .modal .modal-body {
+    max-height: calc(100vh - 140px);
+    overflow-y: auto; }
+    .modal .modal-body p {
+      font-size: 1.2em;
+      color: #333; }
   .modal .modal-footer {
     border-top: none; }
   .modal.left .modal-dialog,

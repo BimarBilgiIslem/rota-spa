@@ -15,7 +15,7 @@ class Routing implements IRouting {
     /**
      * Quick menus
      */
-    quickMenus: IMenuModel[] = [];
+    quickMenus: IQuickMenu[];
     /**
      * Orj Menus 
      */
@@ -63,7 +63,7 @@ class Routing implements IRouting {
     //#region Init
     static $inject = ['$window', '$state', '$stateParams', '$rootScope', '$q', '$urlRouter', '$location',
         '$stickyState', '$urlMatcherFactory', '$timeout', 'StateProvider', 'UrlRouterProvider',
-        'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants'];
+        'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants', 'Caching'];
     //ctor
     constructor(
         private $window: ng.IWindowService,
@@ -85,7 +85,8 @@ class Routing implements IRouting {
         private logger: ILogger,
         private localization: ILocalization,
         private base64: IBase64,
-        private constants: IConstants) {
+        private constants: IConstants,
+        private caching: ICaching) {
         //Register static states and events
         this.init();
         //static shell state octates count, default "shell.content" 
@@ -333,12 +334,13 @@ class Routing implements IRouting {
         this._states = states || [];
         //create hierarchical & navbar menus
         this._hierarchicalMenus = this.createHierarchicalMenus();
-        //add quick menus
-        this.createQuickMenus();
         //register states
         try {
             this.registerStates();
+            //create nav menus *this must be called after registration of states*
             this._navMenus = this.createNavMenus();
+            //add quick menus
+            this.createQuickMenus();
         } finally {
             this.$urlRouter.sync();
             this.$urlRouter.listen();
@@ -355,10 +357,10 @@ class Routing implements IRouting {
         (menus || this._hierarchicalMenus).where(menu => menu.isMenu)
             .forEach(menu => {
                 if (menu.startGroup) {
-                    navMenus.push({ name: 'divider' });
+                    navMenus.push({ text: 'divider' });
                 }
                 const navMenu: INavMenuItem = {
-                    name: menu.localizedTitle,
+                    text: menu.localizedTitle,
                     url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)),
                     icon: menu.menuIcon,
                     parent: parent
@@ -410,15 +412,82 @@ class Routing implements IRouting {
      * Add quick menus
      */
     private createQuickMenus(): void {
-        this._states.forEach(state => {
-            if (state.isQuickMenu) {
-                this.quickMenus.push(state);
+        //default quickmenus
+        const qMenus: IQuickMenu[] = this._states.where(state => state.isQuickMenu).map(menu => {
+            return {
+                url: menu.menuUrl,
+                text: menu.hierarchicalMenu.localizedTitle,
+                icon: menu.menuIcon,
+                state: menu.name
             }
         });
+        //user-defined quickmenus
+        const staleMenus = [],
+            uqMenus = this.caching.localStorage.get<string[]>(this.constants.routing.QUICKMENU_STORAGE_KEY) || [];
+        uqMenus.forEach(sname => {
+            let state: IRotaState;
+            if (state = this.getState(sname)) {
+                const menu = this.getActiveMenu(state);
+                menu.isQuickMenu = true;
+                qMenus.push({
+                    text: menu.localizedTitle,
+                    icon: menu.menuIcon,
+                    state: sname
+                });
+            } else {
+                staleMenus.push(sname);
+            }
+        });
+        //add
+        this.quickMenus = qMenus.slice(0, this.constants.routing.MAX_QUICKMENU_LEN);
+        //remove stale states if any 
+        if (staleMenus.length) {
+            uqMenus.delete(sname => staleMenus.indexOf(sname) > -1);
+            this.caching.localStorage.store(this.constants.routing.QUICKMENU_STORAGE_KEY, uqMenus);
+        }
+    }
+    /**
+     * Add current menu to quick menus
+     */
+    addCurrentMenuToQuickMenus(): void {
+        const qmenus = this.caching.localStorage.get<string[]>(this.constants.routing.QUICKMENU_STORAGE_KEY) || [];
+        const selInd = qmenus.indexOf(this.current.name);
+
+        if (!this.activeMenu.isQuickMenu) {
+            if (selInd === -1) {
+                if (this.quickMenus.length >= this.constants.routing.MAX_QUICKMENU_LEN) {
+                    this.logger.toastr.warn({
+                        message: this.localization.getLocal("rota.hizliemenuadetkisiti", this.constants.routing.MAX_QUICKMENU_LEN)
+                    });
+                    return;
+                }
+                qmenus.push(this.current.name);
+                this.activeMenu.isQuickMenu = true;
+            }
+        } else {
+            if (selInd > -1) {
+                qmenus.splice(selInd, 1);
+                this.activeMenu.isQuickMenu = false;
+            } else {
+                this.logger.toastr.warn({
+                    message: this.localization.getLocal("rota.hizlimenusilmehatasi")
+                });
+                return;
+            }
+        }
+        this.caching.localStorage.store(this.constants.routing.QUICKMENU_STORAGE_KEY, qmenus);
+        this.createQuickMenus();
     }
     //#endregion
 
     //#region Utils
+    /**
+    * Get base host url
+    * @returns {string} 
+    */
+    getHostUrl(): string {
+        return location.protocol + "//" + location.host;
+    }
     /**
     * Go to state
     * @param stateName State name

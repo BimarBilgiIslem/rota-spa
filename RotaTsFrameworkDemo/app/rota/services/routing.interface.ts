@@ -100,20 +100,29 @@ interface IHierarchicalMenu extends IMenuModel {
     absoluteUrl?: string;
 }
 /**
+ * Used for navigational things
+ */
+interface IBaseNavigationModel {
+    text: string;
+    url?: string;
+    icon?: string;
+}
+/**
  * Breadcrumb object
  */
-interface IBreadcrumb {
-    text: string;
-    url: string;
-    icon?: string;
+interface IBreadcrumb extends IBaseNavigationModel {
+
+}
+/**
+ * Mbf struct
+ */
+interface IQuickMenu extends IBaseNavigationModel {
+    state?: string;
 }
 /**
  * NavBar item 
  */
-interface INavMenuItem {
-    name: string;
-    url?: string;
-    icon?: string;
+interface INavMenuItem extends IBaseNavigationModel {
     parent?: INavMenuItem;
     subtree?: INavMenuItem[];
 }
@@ -204,6 +213,10 @@ interface IRouting extends IBaseService {
      */
     addMenus(states: IMenuModel[]): IRouting;
     /**
+     * Add current menu to quick menus
+     */
+    addCurrentMenuToQuickMenus(): void;
+    /**
      * Go to state
      * @param state  State to go
      * @param params State parameters
@@ -269,6 +282,11 @@ interface IRouting extends IBaseService {
     * @param state Optional state
     */
     getActiveMenu(state?: IRotaState): IHierarchicalMenu;
+    /**
+    * Get base host url
+    * @returns {string} 
+    */
+    getHostUrl(): string;
 }
 
 //#endregion
