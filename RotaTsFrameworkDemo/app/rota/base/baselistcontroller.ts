@@ -222,14 +222,15 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     */
     protected getDefaultGridButtons(): uiGrid.IColumnDef[] {
         const buttons: uiGrid.IColumnDef[] = [];
-        const getButtonColumn = (name: string, template: string): any => {
+        const getButtonColumn = (name: string, template: string): uiGrid.IColumnDef => {
             return {
                 name: name,
                 cellClass: 'col-align-center',
-                width: '30',
+                width: '35',
                 displayName: '',
                 enableColumnMenu: false,
-                cellTemplate: template
+                cellTemplate: template,
+                pinnedRight: true
             };
         }
         //edit button

@@ -101,6 +101,7 @@
         sonbiryil: 'Last 1 year',
         ozel: 'Custom',
         cikisonay: 'Are you sure to exit ?',
+        cikisyapiliyor: 'Signing out...',
         filter: 'Filter Criters',
         ayarlar: 'Settings',
         genislet: 'Expand',

@@ -2,6 +2,39 @@
     width: 100%;
     height: 600px;
     border-bottom: 3px solid #ABC5DC;
+    max-height: 600px;
+    overflow-x: hidden;
+
+    .ui-grid-viewport {
+        &::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: lighten($grid-scroll-base-color,10%);
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: darken($grid-scroll-base-color,20%);
+            border-radius: 10px;
+        }
+
+        &:hover::-webkit-scrollbar-thumb {
+            background: darken($grid-scroll-base-color,25%);
+        }
+
+        &::-webkit-scrollbar-thumb:horizontal:hover,
+        &::-webkit-scrollbar-thumb:vertical:hover {
+            background: darken($grid-scroll-base-color,30%);
+        }
+
+        &::-webkit-scrollbar-thumb:horizontal:active,
+        &::-webkit-scrollbar-thumb:vertical:active {
+            background: darken($grid-scroll-base-color,35%);
+        }
+    }
 }
 
 .ui-grid-row:nth-child(odd):hover .ui-grid-cell {

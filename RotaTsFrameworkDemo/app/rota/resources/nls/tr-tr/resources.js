@@ -99,6 +99,7 @@
         sonbiryil: 'Son 1 yil',
         ozel: 'Özel',
         cikisonay: 'Çıkmak istediğinize eminmisiniz ?',
+        cikisyapiliyor: 'Çıkış yapılıyor...',
         filter: 'Filtre Kriterleri',
         ayarlar: 'Ayarlar',
         genislet: 'Genişlet',

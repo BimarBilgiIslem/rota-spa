@@ -2,6 +2,6 @@
     <span ng-repeat="(notifyType,notifyItem) in shellvm.titleBadges.badges" class="rota-animate-fadeinleft"
           ng-class="notifyItem.color" ng-if="notifyItem.show">
         <i ng-if="notifyItem.icon" ng-class="['fa','fa-' + notifyItem.icon]"></i>
-        <span class="hidden-xs">{{notifyItem.description}}</span>
+        <span>{{notifyItem.description}}</span>
     </span>
 </div>

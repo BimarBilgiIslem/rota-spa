@@ -21,7 +21,7 @@ $sub-header-title-bg: #628eab !default;
 $sub-header-padding: 5px 15px 5px 15px !default;
 $sub-header-quickmenu-color: #fff !default;
 $sub-header-quickmenu-font-size: .8em !default;
-$sub-header-content-height:60px !default;
+$sub-header-content-height: 60px !default;
 //current company
 $sub-header-company-color: #fff !default;
 $sub-header-company-padding: 4px 9px !default;
@@ -69,4 +69,6 @@ $rt-callout-color: #fff !default;
 $rt-callout-shadow: 1px 1px rgba(191, 183, 183, 0.63) !default;
 //rtTabs color
 $rt-tabs-color: #5aa1cb;
+//grid
+$grid-scroll-base-color: #fff;
 /*#endregion */

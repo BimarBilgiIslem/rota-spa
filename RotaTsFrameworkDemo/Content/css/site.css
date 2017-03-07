@@ -6351,7 +6351,24 @@ textarea.ng-invalid {
 .grid {
   width: 100%;
   height: 600px;
-  border-bottom: 3px solid #ABC5DC; }
+  border-bottom: 3px solid #ABC5DC;
+  max-height: 600px;
+  overflow-x: hidden; }
+  .grid .ui-grid-viewport::-webkit-scrollbar {
+    width: 5px;
+    height: 5px; }
+  .grid .ui-grid-viewport::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 10px; }
+  .grid .ui-grid-viewport::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 10px; }
+  .grid .ui-grid-viewport:hover::-webkit-scrollbar-thumb {
+    background: #bfbfbf; }
+  .grid .ui-grid-viewport::-webkit-scrollbar-thumb:horizontal:hover, .grid .ui-grid-viewport::-webkit-scrollbar-thumb:vertical:hover {
+    background: #b3b3b3; }
+  .grid .ui-grid-viewport::-webkit-scrollbar-thumb:horizontal:active, .grid .ui-grid-viewport::-webkit-scrollbar-thumb:vertical:active {
+    background: #a6a6a6; }
 
 .ui-grid-row:nth-child(odd):hover .ui-grid-cell {
   background: #A9C7DD; }
@@ -7237,9 +7254,11 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
             &.ng-leave.ng-leave-active {
                 transform: translate3d(-100%,0,0);
                 margin-bottom: -($line-height-computed + 20px);
+            }
+
+            &.header {
+                background-color: $side-nav-item-header;
             }*/ }
-    .side-nav .list-group .list-group-item.header {
-      background-color: #ebebeb; }
     .side-nav .list-group .list-group-item span.fa {
       margin-top: 5px; }
 
