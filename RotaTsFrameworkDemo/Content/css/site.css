@@ -6208,23 +6208,6 @@ a.mfb-component__button--main:hover {
   .scrollable-menu::-webkit-scrollbar-thumb:horizontal:active, .scrollable-menu::-webkit-scrollbar-thumb:vertical:active {
     background: #b3b3b3; }
 
-.avatar-link {
-  padding-top: 8px !important;
-  padding-bottom: 5px !important; }
-
-.avatar-small {
-  height: 35px;
-  width: 35px; }
-
-.avatar-firstletter {
-  border-radius: 50%;
-  background: #888;
-  color: #fff;
-  font-size: 1.3em;
-  text-align: center;
-  line-height: 1.8em;
-  display: inline-block; }
-
 /*#region FadeInRight */
 @-webkit-keyframes fadeInRight {
   0% {
@@ -7465,6 +7448,23 @@ ul.contextmenu {
     border-top-color: #a70606;
     border-width: 4px;
     margin-left: -4px; }
+
+.avatar-link {
+  padding-top: 8px !important;
+  padding-bottom: 5px !important; }
+
+.avatar-small {
+  height: 35px;
+  width: 35px; }
+
+.avatar-firstletter {
+  border-radius: 50%;
+  background: #888;
+  color: #fff;
+  font-size: 1.2em;
+  text-align: center;
+  line-height: 2.1em;
+  display: inline-block; }
 
 /************** VENDOR CSS URL IMPORTS ******************/
 /*@import "vendor-css/select2_custom.css";*/

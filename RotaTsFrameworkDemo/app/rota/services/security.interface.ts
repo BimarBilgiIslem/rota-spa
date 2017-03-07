@@ -24,6 +24,14 @@ interface ISecurityConfig extends IBaseConfig {
      */
     avatarUploadUri?: string;
     /**
+     * Backend url for avatar images
+     */
+    avatarProviderUri?: string;
+    /**
+    * Flag that enables avatar that shows first letter of user name,default true
+    */
+    useFirstLetterAvatar?: boolean;
+    /**
      * Logoff when idle timeout has reached by prompting user
      */
     logOffWhenIdleTimeout?: boolean;
@@ -35,10 +43,6 @@ interface ISecurityConfig extends IBaseConfig {
      * Count down for logoff when idle time is over,default 5 mins
      */
     idleLogoffCountDown?: number;
-    /**
-  * Flag that enables avatar that shows first letter of user name,default true
-  */
-    useFirstLetterAvatar?: boolean;
 }
 /**
  * Security config provider
@@ -93,7 +97,7 @@ interface IUser {
     email?: string;
     managerId?: number;
     culture?: ISupportedCultures;
-    avatarUri?: string;
+    avatarDataUri?: string;
 }
 /**
  * Company structure

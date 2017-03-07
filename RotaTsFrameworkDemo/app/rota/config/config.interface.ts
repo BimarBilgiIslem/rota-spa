@@ -252,6 +252,10 @@ interface IMainConfig extends IBaseConfig {
      * Default push service root path
      */
     pushServicePath?: string;
+    /**
+     * Enable quick menu feature,default true
+     */
+    enableQuickMenu?: boolean;
 }
 /**
  * Main config provider

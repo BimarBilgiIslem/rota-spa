@@ -20,7 +20,7 @@
     <div rt-spinner="shellvm.spinnerOptions"></div>
 </div>
 <!--QuickMenu-->
-<nav ng-if="shellvm.routing.quickMenus.length" mfb-menu position="br" effect="slidein" active-icon="fa fa-close"
+<nav ng-if="shellvm.config.enableQuickMenu && shellvm.routing.quickMenus.length" mfb-menu position="br" effect="slidein" active-icon="fa fa-close"
      resting-icon="fa fa-reorder" toggling-method="click">
     <a mfb-button mfb-button-close label="{{quickMenu.text}}" icon="fa fa-{{quickMenu.icon}}"
        ng-click="shellvm.goQuickmenu(quickMenu)" ng-repeat="quickMenu in shellvm.routing.quickMenus"></a>
