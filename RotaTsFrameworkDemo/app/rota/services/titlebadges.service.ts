@@ -44,7 +44,8 @@ class TitleBadges implements ITitleBadges {
         this.badges[BadgeTypes.Dirty] = {
             color: 'success',
             icon: 'pencil',
-            description: this.localization.getLocal('rota.duzeltiliyor')
+            description: this.localization.getLocal('rota.duzeltiliyor'),
+            hiddenDescOnMobile: true
         };
 
         this.badges[BadgeTypes.Recordcount] = {

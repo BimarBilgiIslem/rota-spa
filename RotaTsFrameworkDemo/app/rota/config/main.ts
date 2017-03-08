@@ -25,7 +25,7 @@ require.config({
         oidc: './rota/core/oidc-client.min',
         silentrenew: 'rota/shell/views/silent_renew.html',
         //libs
-        toastr: './rota/lib/toastr.min',
+        toastr: './rota/lib/toastr',
         underscore: './rota/lib/underscore.min',
         'underscore.string': './rota/lib/underscore.string.min',
         'underscore.mixed': './rota/lib/underscore.mixed',

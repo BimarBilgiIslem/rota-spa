@@ -229,8 +229,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                 width: '35',
                 displayName: '',
                 enableColumnMenu: false,
-                cellTemplate: template,
-                pinnedRight: true
+                cellTemplate: template
             };
         }
         //edit button

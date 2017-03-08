@@ -32,6 +32,11 @@ class Routing implements IRouting {
     private _navMenus: INavMenuItem[];
     get navMenus(): INavMenuItem[] { return this._navMenus; }
     /**
+     * Active Menu
+     */
+    private _activeMenu: IHierarchicalMenu;
+    get activeMenu(): IHierarchicalMenu { return this._activeMenu; }
+    /**
      * Breadcrumbs
      */
     private _breadcrumbs: IBreadcrumb[];
@@ -58,7 +63,7 @@ class Routing implements IRouting {
     //#region Init
     static $inject = ['$window', '$state', '$stateParams', '$rootScope', '$q', '$urlRouter', '$location',
         '$stickyState', '$urlMatcherFactory', '$timeout', 'StateProvider', 'UrlRouterProvider',
-        'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants', 'Caching', 'ActiveMenu'];
+        'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants', 'Caching'];
     //ctor
     constructor(
         private $window: ng.IWindowService,
@@ -81,8 +86,7 @@ class Routing implements IRouting {
         private localization: ILocalization,
         private base64: IBase64,
         private constants: IConstants,
-        private caching: ICaching,
-        public activeMenu: IHierarchicalMenu) {
+        private caching: ICaching) {
         //Register static states and events
         this.init();
         //static shell state octates count, default "shell.content" 
@@ -151,7 +155,7 @@ class Routing implements IRouting {
             const setActiveMenu = (): void => {
                 const menu = this.getActiveMenu(toState);
                 if (toState.name === this.constants.routing.SHELL_STATE_NAME || menu !== this.activeMenu) {
-                    angular.extend(this.activeMenu, menu);
+                    this._activeMenu = menu;
                 }
             }
 
@@ -638,7 +642,6 @@ config.$inject = ['$provide', '$stateProvider', '$urlRouterProvider', '$stickySt
 var module: ng.IModule = angular.module('rota.services.routing', ['rota.services.routing.config', 'rota.services.loader', 'ui.router',
     'ct.ui.router.extras.sticky', 'ct.ui.router.extras.dsr']);
 module.service('Routing', Routing)
-    .value("ActiveMenu", {})
     .config(config);
 //#endregion
 

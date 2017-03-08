@@ -34,6 +34,10 @@ interface ITitleBadge {
      */
     description?: string;
     /**
+     * Hide description part of badge on small devices
+     */
+    hiddenDescOnMobile?: boolean;
+    /**
      * Flag that set visibility
      */
     show?: boolean;
