@@ -29,6 +29,7 @@ import "./rtNavMenu"
 import "./rtNotification"
 import "./rtNavProfile"
 import "./rtAvatar"
+import "./rtDownload"
 
 angular.module('rota.directives',
     ['rota.directives.rtspinner',
@@ -61,5 +62,6 @@ angular.module('rota.directives',
         'rota.directives.rtnavmenu',
         'rota.directives.rtnotification',
         'rota.directives.rtnavprofile',
-        'rota.directives.rtavatar'
+        'rota.directives.rtavatar',
+        'rota.directives.rtdownload'
     ]);

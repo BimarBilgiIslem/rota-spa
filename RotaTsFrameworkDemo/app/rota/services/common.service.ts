@@ -87,7 +87,7 @@ class Common implements ICommon {
      * @param path Path
      */
     addPrefixSlash(path: string): string {
-        var ilkChar = path && path[0];
+        const ilkChar = path && path[0];
 
         if (ilkChar === '/')
             return path;

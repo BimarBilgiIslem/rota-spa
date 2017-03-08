@@ -34,6 +34,11 @@ declare global {
          */
         CKEDITOR_BASEPATH?: string;
     }
+
+
+    interface JSON {
+        dateParser?: (key, value) => Date;
+    }
 }
 
 export { }

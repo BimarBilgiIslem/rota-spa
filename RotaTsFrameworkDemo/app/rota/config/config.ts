@@ -36,7 +36,7 @@ class Config extends BaseConfig<IMainConfig> {
                 monthFormat: constants.localization.MONTH_FORMAT,
                 yearFormat: constants.localization.YEAR_FORMAT,
                 datePickerTimeMinStep: constants.localization.MIN_STEP,
-                useTimeZoneOffSet: true
+                useTimeZoneOffSet: false
             },
             //Event names
             eventNames: {
