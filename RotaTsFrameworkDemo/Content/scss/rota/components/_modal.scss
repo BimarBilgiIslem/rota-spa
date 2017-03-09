@@ -14,8 +14,6 @@
     }
 
     .modal-body {
-        max-height: calc(100vh - 140px);
-        overflow-y: auto;
 
         p {
             font-size: 1.2em;
@@ -25,6 +23,11 @@
 
     .modal-footer {
         border-top: none;
+    }
+
+    &.viewport .modal-body {
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
     }
 
     &.left .modal-dialog,

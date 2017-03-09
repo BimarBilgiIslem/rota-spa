@@ -40,7 +40,8 @@ class Dialogs implements IDialogs {
             animation: false,
             bindToController: true,
             controllerAs: this.constants.routing.CONTROLLER_ALIAS_NAME,
-            templateUrl: ''
+            templateUrl: '',
+            windowClass: ''
         }
         //merge default options
         const modalOptions: IModalOptions = angular.extend(defaultModalOptions, options, { templateUrl: templateFilePath });
@@ -48,6 +49,10 @@ class Dialogs implements IDialogs {
         if (options.isSideBar) {
             modalOptions.windowClass += ` ${options.sideBarPosition || "left"}`;
             modalOptions.animation = modalOptions.backdrop = true;
+        }
+        //viewport h
+        if (options.viewPortSize) {
+            modalOptions.windowClass += " viewport";
         }
         //resolve data
         modalOptions.resolve = {

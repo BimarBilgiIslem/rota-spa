@@ -7378,14 +7378,14 @@ ul.contextmenu {
     border-top-right-radius: 6px; }
     .modal .modal-header h4 {
       color: #31708f; }
-  .modal .modal-body {
-    max-height: calc(100vh - 140px);
-    overflow-y: auto; }
-    .modal .modal-body p {
-      font-size: 1.2em;
-      color: #333; }
+  .modal .modal-body p {
+    font-size: 1.2em;
+    color: #333; }
   .modal .modal-footer {
     border-top: none; }
+  .modal.viewport .modal-body {
+    max-height: calc(100vh - 140px);
+    overflow-y: auto; }
   .modal.left .modal-dialog,
   .modal.right .modal-dialog {
     position: fixed;

@@ -182,6 +182,10 @@ interface IModalOptions extends ng.ui.bootstrap.IModalSettings {
      * SideBar position,default "left"
      */
     sideBarPosition?: 'left' | 'right';
+    /**
+     * Show modal at viewport size when its height exceeds viewport height
+     */
+    viewPortSize?: boolean;
 }
 /**
  * Image Cropping Scope
