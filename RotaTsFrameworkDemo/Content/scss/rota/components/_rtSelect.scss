@@ -1,4 +1,9 @@
 ﻿.rt-select {
+    //fix for Expected multiple .ui-select-choices-row but got '0'
+    //https://github.com/angular-ui/ui-select/issues/1467
+    .ui-select-toggle > .caret {
+        pointer-events: none;
+    }
 
     .select2-drop {
         z-index: 1000 !important;
