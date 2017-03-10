@@ -70,7 +70,7 @@ class ShellController {
      */
     private setActiveMenuListener() {
         this.$scope.$watch<IHierarchicalMenu>(() => this.routing.activeMenu, (menu) => {
-            this.$rootScope.appTitle = menu ? (`${menu.title} - ${this.config.appTitle}`) : this.config.appTitle;
+            this.$rootScope.appTitle = menu ? (`${menu.localizedTitle} - ${this.config.appTitle}`) : this.config.appTitle;
             if (this.config.homePageOptions)
                 this.isHomePage = this.$location.url() === this.config.homePageOptions.url;
         });

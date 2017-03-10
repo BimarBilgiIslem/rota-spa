@@ -168,17 +168,6 @@ const rotaConstants: IConstants = {
     },
     //Securty Service
     security: {
-        //OIC discovery endpoint part 
-        AUTHORITY_PART: '.well-known/openid-configuration',
-        //Builtin claims to be purged
-        OPEN_ID_BUILTIN_CLAIMS: [
-            'iss', 'sub', 'aud', 'exp', 'iat', 'acr', 'amr', 'azp', 'sid',
-            'nonce', 'auth_time', 'client_id', 'idp', 'nbf', 'scope', 'at_hash'
-        ],
-        DEFAULT_ROTA_SCOPES: 'openid rotauser rotaapi',
-        DEFAULT_ROTA_RESPONSE_TYPE: 'id_token token',
-        //Redirect Uri path
-        REDIRECT_URI_PATH: '/home/signin',
         //Storage names
         STORAGE_NAME_AUTH_TOKEN: window.__constants.STORAGE_NAME_AUTH_TOKEN,
         STORAGE_NAME_CURRENT_COMPANY: window.__constants.STORAGE_NAME_CURRENT_COMPANY,

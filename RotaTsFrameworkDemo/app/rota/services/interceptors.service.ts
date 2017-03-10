@@ -65,9 +65,9 @@ const requestWrapperInterceptor = ($q: ng.IQService, localization: ILocalization
             //TODO:Add headers to only restful service request if (common.isApiRequest(config)) 
             config.headers[constants.server.HEADER_NAME_LANGUAGE] = localization.currentLanguage.code;
             if (currentCompany) {
-                if (currentCompany.roleId)
+                if (common.isAssigned(currentCompany.roleId))
                     config.headers[constants.server.HEADER_NAME_ROLE_ID] = currentCompany.roleId.toString();
-                if (currentCompany.companyId)
+                if (common.isAssigned(currentCompany.companyId))
                     config.headers[constants.server.HEADER_NAME_COMPANY_ID] = currentCompany.companyId.toString();
             }
             return $q.when(config);

@@ -130,7 +130,7 @@ class Localization implements ILocalization {
 const module: ng.IModule = angular.module('rota.services.localization', []);
 module.service('Localization', Localization);
 module.factory('Resource', () => {
-    return angular.extend({}, appresource, rotaresource);
+    return angular.merge({}, rotaresource, appresource);
 });
 //#endregion
 

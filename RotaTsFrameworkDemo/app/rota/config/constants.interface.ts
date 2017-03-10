@@ -100,11 +100,6 @@
         NO_VALIDATION_FUNC_DEFINED: string;
     };
     security: {
-        AUTHORITY_PART: string;
-        OPEN_ID_BUILTIN_CLAIMS: string[];
-        DEFAULT_ROTA_SCOPES: string;
-        DEFAULT_ROTA_RESPONSE_TYPE: string;
-        REDIRECT_URI_PATH: string;
         STORAGE_NAME_AUTH_TOKEN: string;
         STORAGE_NAME_CURRENT_COMPANY: string;
         IDLE_TIMEOUT: number;
