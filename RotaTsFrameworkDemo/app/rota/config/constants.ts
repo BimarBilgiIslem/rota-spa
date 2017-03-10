@@ -67,7 +67,7 @@ const rotaConstants: IConstants = {
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
         GRID_FULL_FEATUTE_LIST:
         'ui-grid-selection ui-grid-pinning ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
-        GRID_STANDART_FEATURE_LIST: 'ui-grid-pagination ui-grid-exporter ui-grid-pinning',
+        GRID_STANDART_FEATURE_LIST: 'ui-grid-pagination ui-grid-exporter',
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html

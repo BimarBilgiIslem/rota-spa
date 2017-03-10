@@ -33,6 +33,10 @@ declare global {
          * ckEditor path,debug <ckeditor path>/* ,release /dist/rota/lib/ckeditor/
          */
         CKEDITOR_BASEPATH?: string;
+        /**
+         * Device information
+         */
+        device?: IUAParser.IDevice;
     }
 
 

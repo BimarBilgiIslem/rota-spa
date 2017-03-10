@@ -20,8 +20,10 @@ class Reporting implements IReporting {
         private dialogs: IDialogs,
         private logger: ILogger,
         private constants: IConstants) {
-        if (!config.reportControllerUrl) throw new Error(this.constants.errors.NO_REPORT_URL_PROVIDED);
-        if (!config.reportViewerUrl) throw new Error(this.constants.errors.NO_REPORT_VIEWER_URL_PROVIDED);
+        if (!config.reportControllerUrl)
+            this.logger.console.warn({ message: this.constants.errors.NO_REPORT_URL_PROVIDED });
+        if (!config.reportViewerUrl)
+            this.logger.console.warn({ message: this.constants.errors.NO_REPORT_VIEWER_URL_PROVIDED });
     }
     /**
      * Convert literak filter obj to ReportParams array     

@@ -29,7 +29,7 @@ class RotaApp implements IRotaApp {
         this.rotaModule = angular.module(moduleName, ["rota"]);
         //Configure lazy loading assignments and debug options
         this.configure(['$filterProvider', '$animateProvider', '$compileProvider', '$controllerProvider',
-            '$provide', 'ConfigProvider', '$sceDelegateProvider', 'Environment', 'Constants',
+            '$provide', 'ConfigProvider', '$sceDelegateProvider', '$uibTooltipProvider', 'Environment', 'Constants',
             ($filterProvider: ng.IFilterProvider,
                 $animateProvider: ng.animate.IAnimateProvider,
                 $compileProvider: ng.ICompileProvider,
@@ -37,6 +37,7 @@ class RotaApp implements IRotaApp {
                 $provide: ng.auto.IProvideService,
                 configProvider: IMainConfigProvider,
                 $sceDelegateProvider: ng.ISCEDelegateProvider,
+                $uibTooltipProvider: ng.ui.bootstrap.ITooltipProvider,
                 environment: IGlobalEnvironment,
                 constants: IConstants) => {
                 //Lazy registering 
@@ -70,6 +71,12 @@ class RotaApp implements IRotaApp {
                         }
                     }
                     $sceDelegateProvider.resourceUrlWhitelist(xdoms);
+                }
+                //remove tooltips for mobile
+                if (window.device && (window.device.type === "tablet" || window.device.type === "mobile")) {
+                    $uibTooltipProvider.options({
+                        trigger: 'none'
+                    });
                 }
             }]);
         //Hook handlers
