@@ -16,7 +16,6 @@ declare global {
          * @description this global constants aims to be aligned with main constants service
          */
         __constants?: {
-            STORAGE_NAME_AUTH_TOKEN: string;
             STORAGE_NAME_CURRENT_COMPANY: string;
             ACTIVE_LANG_STORAGE_NAME: string;
             DEFAULT_LANGUAGE: ISupportedCultures;
@@ -24,6 +23,7 @@ declare global {
             HEADER_NAME_ROLE_ID: string;
             HEADER_NAME_COMPANY_ID: string;
             DEFAULT_MODAL_CONTROLLER_NAME: string;
+            IS_TOUCHABLE: boolean;
         };
         /**
          * Global require
@@ -37,6 +37,8 @@ declare global {
          * Device information
          */
         device?: IUAParser.IDevice;
+
+        opera?: string;
     }
 
 

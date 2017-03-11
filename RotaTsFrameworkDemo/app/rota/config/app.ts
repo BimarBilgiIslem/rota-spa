@@ -73,7 +73,7 @@ class RotaApp implements IRotaApp {
                     $sceDelegateProvider.resourceUrlWhitelist(xdoms);
                 }
                 //remove tooltips for mobile
-                if (window.device && (window.device.type === "tablet" || window.device.type === "mobile")) {
+                if (window.__constants.IS_TOUCHABLE) {
                     $uibTooltipProvider.options({
                         trigger: 'none'
                     });
