@@ -77,7 +77,7 @@
         kayitkopyalandı: 'Item succesfully copied',
         sonrakikayit: 'Next',
         oncekikayit: 'Prev',
-        yenikayit: 'New',
+        yenikayit: 'Creates new item',
         kayitduzeltme: 'Update',
         ara: 'Search',
         temizle: 'Clear',

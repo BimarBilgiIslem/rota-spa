@@ -19,11 +19,13 @@ declare global {
             STORAGE_NAME_CURRENT_COMPANY: string;
             ACTIVE_LANG_STORAGE_NAME: string;
             DEFAULT_LANGUAGE: ISupportedCultures;
+            ENGLISH_LANGUAGE: ISupportedCultures;
             HEADER_NAME_LANGUAGE: string;
             HEADER_NAME_ROLE_ID: string;
             HEADER_NAME_COMPANY_ID: string;
             DEFAULT_MODAL_CONTROLLER_NAME: string;
             IS_TOUCHABLE: boolean;
+            CULTURE?: string;
         };
         /**
          * Global require
@@ -34,10 +36,8 @@ declare global {
          */
         CKEDITOR_BASEPATH?: string;
         /**
-         * Device information
+         * this is for device detect
          */
-        device?: IUAParser.IDevice;
-
         opera?: string;
     }
 

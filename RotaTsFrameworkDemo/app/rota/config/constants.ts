@@ -11,6 +11,7 @@ const rotaConstants: IConstants = {
     localization: {
         ACTIVE_LANG_STORAGE_NAME: window.__constants.ACTIVE_LANG_STORAGE_NAME,
         DEFAULT_LANGUAGE: window.__constants.DEFAULT_LANGUAGE,
+        ENGLISH_LANGUAGE: window.__constants.ENGLISH_LANGUAGE,
         TIME_FORMAT: 'DD-MM-YYYY HH:mm',
         DATE_FORMAT: 'DD-MM-YYYY',
         MONTH_FORMAT: 'YYYY / MM',
@@ -169,7 +170,6 @@ const rotaConstants: IConstants = {
     //Securty Service
     security: {
         //Storage names
-        STORAGE_NAME_AUTH_TOKEN: window.__constants.STORAGE_NAME_AUTH_TOKEN,
         STORAGE_NAME_CURRENT_COMPANY: window.__constants.STORAGE_NAME_CURRENT_COMPANY,
         IDLE_TIMEOUT: 1800000,
         COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000

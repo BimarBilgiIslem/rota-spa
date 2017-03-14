@@ -92,6 +92,17 @@ class RotaApp implements IRotaApp {
                 }
             });
         }]);
+        //Check culture if its different that user's or app's culture
+        this.run(["$window", "Localization", "Config", "CurrentUser",
+            ($window: ng.IWindowService, localization: ILocalization, config: IMainConfig, currentUser: IUser) => {
+                const userCulture = config.culture || currentUser.culture,
+                    initialCulture = $window.__constants.CULTURE;
+
+                if (userCulture && userCulture !== initialCulture) {
+                    //store culture and reload
+                    localization.currentLanguage = { code: userCulture };
+                }
+            }]);
         //add base modal controllers if not defined controller.see dialog.services->showModal
         this.rotaModule.controller(window.__constants.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(BaseModalController));
     }

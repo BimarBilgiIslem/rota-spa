@@ -308,5 +308,6 @@ interface IOidcSettings {
     scope?: string;
     postLogoutRedirectUri?: string;
     clockSkew?: number;
+    lang?: string;
 }
 //#endregion

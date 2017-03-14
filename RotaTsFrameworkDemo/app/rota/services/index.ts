@@ -15,15 +15,15 @@ import "./signalr.service"
 //service module index
 angular.module('rota.services',
     [
-        'rota.services.log',
+        'rota.services.security',
         'rota.services.common',
         'rota.services.dialog',
         'rota.services.httpRequestTracker',
         'rota.services.caching',
         'rota.services.localization',
+        'rota.services.log',
         'rota.services.titlebadges',
         'rota.services.routing',
-        'rota.services.security',
         'rota.services.validators',
         'rota.services.reporting',
         'rota.services.security.encoding',

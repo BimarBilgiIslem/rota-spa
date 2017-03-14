@@ -76,7 +76,7 @@
         bilinmeyenhataolustu: 'Bilinmeyen hata oluştu',
         sonrakikayit: 'Sonraki',
         oncekikayit: 'Önceki',
-        yenikayit: 'Yeni',
+        yenikayit: 'Yeni kayıt açar',
         kayitduzeltme: 'Düzeltme',
         kayitbasarisiz: 'Kayıt işlemi iptal edildi',
         ara: 'Ara',

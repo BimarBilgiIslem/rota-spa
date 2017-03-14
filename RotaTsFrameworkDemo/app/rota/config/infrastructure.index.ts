@@ -11,8 +11,8 @@ import "../shell/profile.controller"
 
 angular.module('rota', [
     'rota.constants',
-    'rota.services',
     'rota.config',
+    'rota.services',
     'rota.directives',
     'rota.filters',
     'rota.shell',

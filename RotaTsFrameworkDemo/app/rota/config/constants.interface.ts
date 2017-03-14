@@ -8,6 +8,7 @@
     localization: {
         ACTIVE_LANG_STORAGE_NAME: string;
         DEFAULT_LANGUAGE: ISupportedCultures,
+        ENGLISH_LANGUAGE: ISupportedCultures,
         TIME_FORMAT: string;
         DATE_FORMAT: string;
         MONTH_FORMAT: string;
@@ -100,7 +101,6 @@
         NO_VALIDATION_FUNC_DEFINED: string;
     };
     security: {
-        STORAGE_NAME_AUTH_TOKEN: string;
         STORAGE_NAME_CURRENT_COMPANY: string;
         IDLE_TIMEOUT: number;
         COUNT_DOWN_FOR_IDLE_TIMEOUT: number;

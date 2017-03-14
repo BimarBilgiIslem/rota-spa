@@ -44,32 +44,8 @@ class Localization implements ILocalization {
         private constants: IConstants,
         private currentUser: IUser) {
         //Init culture 
-        this.initCulture();
+        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === window.__constants.CULTURE);
     }
-    /**
-     * Initiate culture
-     * @description Following order is applied when determining the culture
-     * 1 - ) Get selected & stored culture in local storage
-     * 2 - ) Get provided culture in main config
-     * 3 - ) Get culture from claims of user
-     * 4 - ) Fallback to default language defined in constants
-     */
-    private initCulture(): void {
-        //get selected culture if available
-        const selectedCulture = this.$window.localStorage.getItem(this.constants.localization.ACTIVE_LANG_STORAGE_NAME);
-        //set user predefined culture 
-        if (!selectedCulture) {
-            const userCulture = this.config.culture || this.currentUser.culture;
-            if (userCulture && userCulture !== this.constants.localization.DEFAULT_LANGUAGE) {
-                //set storage and reload
-                this.currentLanguage = { code: userCulture };
-                return;
-            }
-        }
-        const currentCulture = selectedCulture || this.constants.localization.DEFAULT_LANGUAGE;
-        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === currentCulture);
-    }
-
     //#endregion
 
     //#region Localization Methods
