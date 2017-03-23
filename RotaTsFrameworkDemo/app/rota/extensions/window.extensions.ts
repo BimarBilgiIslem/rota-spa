@@ -8,9 +8,9 @@ declare global {
     */
         __globalEnvironment?: IGlobalEnvironment;
         /**
-         * Access token for async request of text plugin
+         * OIDC manager for async request of text plugin
          */
-        __access_token?: string;
+        __OIDC?: IOidcManager;
         /**
          * Global storage names
          * @description this global constants aims to be aligned with main constants service

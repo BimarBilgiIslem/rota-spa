@@ -227,8 +227,16 @@ if (window) {
                     //set language for server 
                     xhr.setRequestHeader(headerNameLanguage, currentLanguage);
                     //set authorization token for json & text requests
-                    if (window.__access_token) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + window.__access_token);
+                    if (window.__OIDC.user) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + window.__OIDC.user.access_token);
+                    }
+                },
+                onXhrComplete(xhr, url) {
+                    //if text plugin request reponse status is 401,that must be claim or idsrv session related error
+                    //so logging out is the best place to go.
+                    //Warning for consistantly redirecting to idsrv
+                    if (xhr.status === 401) {
+                        window.__OIDC.instance.signoutRedirect();
                     }
                 }
             }
@@ -258,6 +266,8 @@ if (window) {
     //#region Init files
     require(['config/oidc-manager'],
         (oidc: IOidcManager) => {
+            //this is for requirejs text plugin 
+            window.__OIDC = oidc;
             //init authz
             const result = oidc.init({
                 authority: window.__globalEnvironment.authority,

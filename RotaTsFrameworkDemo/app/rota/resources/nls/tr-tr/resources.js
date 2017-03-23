@@ -83,7 +83,7 @@
         temizle: 'Temizle',
         crudonay: 'Yaptıgınız değişiklikleri kayit etmek istiyormusunuz ?',
         tt_bironcekisayfayadon: 'Bir önceki sayfaya gider',
-        tt_kaydet: 'Yapılan değişikliklari kayit eder',
+        tt_kaydet: 'Yapılan değişiklikleri kayıt eder',
         tt_kaydetdevam: 'Değişklikleri kaydedip yeni kayıt açar',
         tt_gerial: 'Yapılan değişiklikleri geri alır',
         tt_sil: 'Kaydı siler',

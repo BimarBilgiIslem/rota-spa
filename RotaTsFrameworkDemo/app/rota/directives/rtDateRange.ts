@@ -113,9 +113,9 @@ function dateRangeDirective($parse: ng.IParseService, config: IMainConfig, commo
         '<input id="cus" type="radio" ng-model="fixedrange" value="" ng-click="showfixedrange=true" /><label for="cus" i18n=\'rota.ozel\'></label></div>' +
         '<div ng-show="showfixedrange">' +
         '<div class="col-sm-6 ">' +
-        '<rt-date-picker ng-model=dateStart class="start"></rt-date-picker>' +
+        '<rt-date-picker ng-model=dateStart date-format="time" class="start"></rt-date-picker>' +
         '</div><div class="col-sm-6 ">' +
-        '<rt-date-picker ng-model=dateEnd class="end"></rt-date-picker>' +
+        '<rt-date-picker ng-model=dateEnd date-format="time" class="end"></rt-date-picker>' +
         '</div></div></div>'
     };
     return directive;
