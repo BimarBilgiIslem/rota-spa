@@ -202,6 +202,8 @@ if (window) {
     const currentLanguage = window.__constants.CULTURE = getCulture();
     //debugging indicator
     const debugging = window.__globalEnvironment.debugging;
+    //redirecting flag
+    let redirecting;
     //#endregion
 
     require.config({
@@ -235,8 +237,9 @@ if (window) {
                     //if text plugin request reponse status is 401,that must be claim or idsrv session related error
                     //so logging out is the best place to go.
                     //Warning for consistantly redirecting to idsrv
-                    if (xhr.status === 401) {
+                    if (xhr.status === 401 && !redirecting) {
                         window.__OIDC.instance.signoutRedirect();
+                        redirecting = true;
                     }
                 }
             }
