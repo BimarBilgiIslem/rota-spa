@@ -7,8 +7,8 @@ function crudButtonsDirective() {
         '<div class="rt-crudbutton" ng-if="vm.isNew || !vm.crudPageOptions.readOnly">' +
         '<div class="btn-group">' +
         '<div class="btn-group" uib-dropdown>' +
-        '<rt-button ng-if="vm.crudPageOptions.crudButtonsVisibility.newButton" text-i18n="rota.yeni" icon="plus"  color="info" click="vm.initNewModel()" ng-disabled="vm.isNew" ' +
-        'uib-tooltip="{{::\'rota.yenikayit\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" shortcut="ctrl+ins"></rt-button>' +
+        '<rt-button ng-if="vm.crudPageOptions.crudButtonsVisibility.newButton" text-i18n="rota.yenikayit" icon="plus"  color="info" click="vm.initNewModel()" ng-disabled="vm.isNew" ' +
+        'uib-tooltip="{{::\'rota.tt_yenikayit\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" shortcut="ctrl+ins"></rt-button>' +
         '<button uib-dropdown-toggle ng-if="vm.crudPageOptions.crudButtonsVisibility.copyButton" type="button" class="btn btn-info" ng-disabled="vm.isNew">' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
         '<ul class="dropdown-menu" uib-dropdown-menu>' +

@@ -28,7 +28,7 @@ class TitleBadges implements ITitleBadges {
         this.badges[BadgeTypes.Newmode] = {
             color: 'info',
             icon: 'plus',
-            description: this.localization.getLocal('rota.yenikayit')
+            description: this.localization.getLocal('rota.yeni')
         };
         this.badges[BadgeTypes.Cloning] = {
             color: 'danger',

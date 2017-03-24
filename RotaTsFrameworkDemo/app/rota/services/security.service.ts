@@ -72,7 +72,7 @@ class Security implements ISecurity {
         delete this.$http.defaults.headers.common['Authorization'];
         this.currentUser = null;
         //redirect to oip
-        OidcManager.instance.signinRedirect();
+        OidcManager.signinRedirect();
     }
     /**
      * Logoff

@@ -26,8 +26,8 @@ function listButtonsDirective() {
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.clearButton"  text-i18n="rota.temizle" icon="eraser" ' +
         'uib-tooltip="{{::\'rota.temizle\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'color="info" click="vm.clearAll()"></rt-button>&nbsp;' +
-        '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.newButton"  text-i18n="rota.yeni" icon="plus" ' +
-        'uib-tooltip="{{::\'rota.yenikayit\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
+        '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.newButton"  text-i18n="rota.yenikayit" icon="plus" ' +
+        'uib-tooltip="{{::\'rota.tt_yenikayit\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'color="success" click="vm.goToDetailState()" shortcut="ctrl+ins"></rt-button>&nbsp;' +
         '<rt-button  text-i18n="rota.secilikayitlarisil" icon="remove" color="danger" click="vm.initDeleteSelectedModels()" ' +
         'uib-tooltip="{{::\'rota.secilikayitlarisil\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +

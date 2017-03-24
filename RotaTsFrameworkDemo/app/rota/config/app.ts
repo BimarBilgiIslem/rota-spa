@@ -92,13 +92,15 @@ class RotaApp implements IRotaApp {
                 }
             });
         }]);
-        //Check culture if its different that user's or app's culture
-        this.run(["$window", "Localization", "Config", "CurrentUser",
-            ($window: ng.IWindowService, localization: ILocalization, config: IMainConfig, currentUser: IUser) => {
+        //reload if user specific culture different than browser culture
+        this.run(["$window", "Localization", "Config", "CurrentUser", "Constants", "Common",
+            ($window: ng.IWindowService, localization: ILocalization, config: IMainConfig,
+                currentUser: IUser, constants: IConstants, common: ICommon) => {
                 const userCulture = config.culture || currentUser.culture,
+                    selCulture = localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME),
                     initialCulture = $window.__constants.CULTURE;
 
-                if (userCulture && userCulture !== initialCulture) {
+                if (userCulture && userCulture !== initialCulture && common.isNullOrEmpty(selCulture)) {
                     //store culture and reload
                     localization.currentLanguage = { code: userCulture };
                 }
