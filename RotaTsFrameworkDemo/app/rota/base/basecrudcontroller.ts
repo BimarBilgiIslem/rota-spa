@@ -243,9 +243,11 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                         this.initSaveModel().then(() => {
                             this.routing.go(toState.name, toParams);
                         });
-                    }).catch(() => {
-                        this.resetForm();
-                        this.routing.go(toState.name, toParams);
+                    }).catch((reason: string) => {
+                        if (reason !== 'dismiss') {
+                            this.resetForm();
+                            this.routing.go(toState.name, toParams);
+                        }
                     });
                 }
             });

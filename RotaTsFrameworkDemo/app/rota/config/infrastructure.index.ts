@@ -15,7 +15,6 @@
  */
 
 import "./config"
-import "./constants"
 import "../base/index"
 import "../services/index"
 import "../directives/index"

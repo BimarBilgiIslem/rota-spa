@@ -21,6 +21,7 @@ import { BaseApi } from "../base/baseapi";
 //import { BaseController } from '../base/basecontroller';
 import { InjectableObject } from '../base/injectableobject';
 import { BaseModalController } from '../base/basemodalcontroller';
+import constants = require('config/constants');
 import "./infrastructure.index"
 //#endregion
 
@@ -89,7 +90,7 @@ class RotaApp implements IRotaApp {
                     $sceDelegateProvider.resourceUrlWhitelist(xdoms);
                 }
                 //remove tooltips for mobile
-                if (window.__constants.IS_TOUCHABLE) {
+                if (window.__IS_TOUCHABLE) {
                     $uibTooltipProvider.options({
                         trigger: 'none'
                     });
@@ -114,7 +115,7 @@ class RotaApp implements IRotaApp {
                 currentUser: IUser, constants: IConstants, common: ICommon) => {
                 const userCulture = config.culture || currentUser.culture,
                     selCulture = localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME),
-                    initialCulture = $window.__constants.CULTURE;
+                    initialCulture = $window.__CULTURE;
 
                 if (userCulture && userCulture !== initialCulture && common.isNullOrEmpty(selCulture)) {
                     //store culture and reload
@@ -122,7 +123,7 @@ class RotaApp implements IRotaApp {
                 }
             }]);
         //add base modal controllers if not defined controller.see dialog.services->showModal
-        this.rotaModule.controller(window.__constants.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(BaseModalController));
+        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(BaseModalController));
     }
     //#endregion
 

@@ -16,10 +16,11 @@
 
 //#region Imports
 import { BaseConfig } from "../base/baseconfig";
+import constants = require('config/constants');
 import * as angular from "angular";
 //#endregion
 
-//#region Server Configuration Environtment
+//#region Server configuration environment service
 const module: ng.IModule = angular.module('rota.config', []);
 //Get environment and make it constant to be available thru app
 const env = window.__globalEnvironment;
@@ -29,6 +30,11 @@ if (env) {
 } else {
     throw 'no server config found';
 }
+//#endregion
+
+//#region Constants service
+const constantsModule: ng.IModule = angular.module('rota.constants', []);
+constantsModule.constant('Constants', constants);
 //#endregion
 
 //#region Config
@@ -42,7 +48,13 @@ class Config extends BaseConfig<IMainConfig> {
             debugMode: environments.debugging,
             logoImageName: constants.DEFAULT_LOGO_IMAGE_NAME,
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
-            supportedLanguages: [{ code: 'tr-tr', fullname: 'Türkçe' }, { code: 'en-us', fullname: 'English' }],
+            supportedLanguages: [{
+                code: constants.localization.DEFAULT_LANGUAGE,
+                fullname: constants.localization.DEFAULT_LANGUAGE_DISPLAY_NAME
+            }, {
+                code: constants.localization.ENGLISH_LANGUAGE,
+                fullname: constants.localization.ENGLISH_LANGUAGE_DISPLAY_NAME
+            }],
             serverExceptionLoggingEnabled: false,
             pushServicePath: environments.pushServicePath,
             enableQuickMenu: true,

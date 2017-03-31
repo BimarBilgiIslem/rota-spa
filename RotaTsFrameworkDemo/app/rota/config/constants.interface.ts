@@ -24,7 +24,9 @@ interface IConstants {
     localization: {
         ACTIVE_LANG_STORAGE_NAME: string;
         DEFAULT_LANGUAGE: ISupportedCultures,
+        DEFAULT_LANGUAGE_DISPLAY_NAME: string,
         ENGLISH_LANGUAGE: ISupportedCultures,
+        ENGLISH_LANGUAGE_DISPLAY_NAME: string,
         TIME_FORMAT: string;
         DATE_FORMAT: string;
         MONTH_FORMAT: string;

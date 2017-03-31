@@ -135,7 +135,7 @@ class Dialogs implements IDialogs {
                     $scope.okText = options.okText || this.localization.getLocal('rota.ok');
                     $scope.cancelText = options.cancelText || this.localization.getLocal('rota.iptal');
                     $scope.ok = () => { $modalInstance.close('ok'); };
-                    $scope.cancel = () => { $modalInstance.dismiss(''); };
+                    $scope.cancel = (reason) => { $modalInstance.dismiss(reason); };
                 }],
             keyboard: true,
             backdrop: 'static',
@@ -367,7 +367,7 @@ module.run([
         //Template olarak cache'de sakla
         $templateCache.put('modalDialog.tpl.html',
             '    <div class="modal-header">' +
-            '        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-ng-click="cancel()">&times;</button>' +
+            '        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-ng-click="cancel(\'dismiss\')">&times;</button>' +
             '        <h4><i class="fa fa-question-circle"></i>&nbsp;{{title}}</h4>' +
             '    </div>' +
             '    <div class="modal-body">' +

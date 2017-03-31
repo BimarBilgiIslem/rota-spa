@@ -41,7 +41,7 @@ interface IConfirmOptions extends IDialogOptions {
  * Confirm window scope
  */
 interface IConfirmScope extends IDialogScope, IConfirmOptions {
-    cancel(): void;
+    cancel(reason?: string): void;
 }
 
 interface IReportOptions extends IDialogOptions {

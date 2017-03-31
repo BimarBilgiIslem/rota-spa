@@ -25,9 +25,11 @@ const rotaConstants: IConstants = {
     MAX_NUMBER_VALUE: 9999999999,
     //Localization
     localization: {
-        ACTIVE_LANG_STORAGE_NAME: window.__constants.ACTIVE_LANG_STORAGE_NAME,
-        DEFAULT_LANGUAGE: window.__constants.DEFAULT_LANGUAGE,
-        ENGLISH_LANGUAGE: window.__constants.ENGLISH_LANGUAGE,
+        ACTIVE_LANG_STORAGE_NAME: 'active.language',
+        DEFAULT_LANGUAGE: 'tr-tr',
+        DEFAULT_LANGUAGE_DISPLAY_NAME: 'Türkçe',
+        ENGLISH_LANGUAGE: 'en-us',
+        ENGLISH_LANGUAGE_DISPLAY_NAME: 'English',
         TIME_FORMAT: 'DD-MM-YYYY HH:mm',
         DATE_FORMAT: 'DD-MM-YYYY',
         MONTH_FORMAT: 'YYYY / MM',
@@ -58,9 +60,9 @@ const rotaConstants: IConstants = {
         ACTION_NAME_GENERATE_REPORT: 'generateReport',
         ACTION_NAME_GET_REPORT: 'getReport',
         //Request Header
-        HEADER_NAME_LANGUAGE: window.__constants.HEADER_NAME_LANGUAGE,
-        HEADER_NAME_ROLE_ID: window.__constants.HEADER_NAME_ROLE_ID,
-        HEADER_NAME_COMPANY_ID: window.__constants.HEADER_NAME_COMPANY_ID,
+        HEADER_NAME_LANGUAGE: 'Rota-Language',
+        HEADER_NAME_ROLE_ID: 'Current-RoleId',
+        HEADER_NAME_COMPANY_ID: 'Current-CompanyId',
         //Misc
         AJAX_TIMER_DELAY: 800
     },
@@ -131,7 +133,7 @@ const rotaConstants: IConstants = {
         DEFAULT_MODEL_ORDER_FIELD_NAME: 'order',
         DEFAULT_AUTOSAVE_INTERVAL: 60 * 1000,
         //Default modal cont.name
-        DEFAULT_MODAL_CONTROLLER_NAME: window.__constants.DEFAULT_MODAL_CONTROLLER_NAME,
+        DEFAULT_MODAL_CONTROLLER_NAME: 'defaultModalController',
         //Default ajax spinner options
         DEFAULT_SPINNER_OPTIONS: {
             lines: 13, // The number of lines to draw
@@ -186,7 +188,7 @@ const rotaConstants: IConstants = {
     //Securty Service
     security: {
         //Storage names
-        STORAGE_NAME_CURRENT_COMPANY: window.__constants.STORAGE_NAME_CURRENT_COMPANY,
+        STORAGE_NAME_CURRENT_COMPANY: 'current-company',
         IDLE_TIMEOUT: 1800000,
         COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000
     },
@@ -240,9 +242,4 @@ const rotaConstants: IConstants = {
     }
 };
 
-//#region Register
-const module: ng.IModule = angular.module('rota.constants', []);
-module.constant('Constants', rotaConstants);
-//#endregion
-
-export { rotaConstants }
+export = rotaConstants;

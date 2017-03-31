@@ -60,7 +60,7 @@ class Localization implements ILocalization {
         private constants: IConstants,
         private currentUser: IUser) {
         //Init culture 
-        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === window.__constants.CULTURE);
+        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === window.__CULTURE);
     }
     //#endregion
 

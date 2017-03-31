@@ -171,164 +171,152 @@ require.config({
 
 //#region Runtime config 
 if (window) {
-    //#region Global Consts
-    //this global constants aims to be aligned with main constants service
-    window.__constants = {
-        //localizations
-        ACTIVE_LANG_STORAGE_NAME: 'active.language',
-        DEFAULT_LANGUAGE: 'tr-tr',
-        ENGLISH_LANGUAGE: 'en-us',
-        //storage names
-        STORAGE_NAME_CURRENT_COMPANY: 'current-company',
-        //request header names
-        HEADER_NAME_LANGUAGE: 'Rota-Language',
-        HEADER_NAME_ROLE_ID: 'Current-RoleId',
-        HEADER_NAME_COMPANY_ID: 'Current-CompanyId',
-        //default modal controller name
-        DEFAULT_MODAL_CONTROLLER_NAME: 'defaultModalController',
-        IS_TOUCHABLE: mobileAndTabletcheck()
-    }
-    //#endregion
+    const env = window.__globalEnvironment;
 
-    //#region Utils
-    //check user-agent for tablet or mobile
-    function mobileAndTabletcheck(): boolean {
+    //#region Methods
+    const mobileAndTabletcheck = (): boolean => {
         let check = false;
         (a => { if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true; })(navigator.userAgent || navigator.vendor || window.opera);
         return check;
     };
-    //get selected or browser culture code - only tr , en langs supported
-    function getCulture(): string {
-        const initialCulture = localStorage.getItem(window.__constants.ACTIVE_LANG_STORAGE_NAME) ||
-            (navigator.language.substr(0, 2) === window.__constants.DEFAULT_LANGUAGE.substr(0, 2)
-                ? window.__constants.DEFAULT_LANGUAGE
-                : window.__constants.ENGLISH_LANGUAGE);
+
+    const getCulture = (constants: IConstants): string => {
+        const initialCulture = localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME) ||
+            (navigator.language.substr(0, 2) === constants.localization.DEFAULT_LANGUAGE.substr(0, 2)
+                ? constants.localization.DEFAULT_LANGUAGE
+                : constants.localization.ENGLISH_LANGUAGE);
         return initialCulture;
     }
-    //#endregion
 
-    //#region Vars
-    //storage keys consts
-    const storageNameCurrentCompany = window.__constants.STORAGE_NAME_CURRENT_COMPANY;
-    //header consts
-    const headerNameCurrentRoleId = window.__constants.HEADER_NAME_ROLE_ID;
-    const headerNameCurrentCompanyId = window.__constants.HEADER_NAME_COMPANY_ID;
-    const headerNameLanguage = window.__constants.HEADER_NAME_LANGUAGE;
-    //current language 
-    const currentLanguage = window.__constants.CULTURE = getCulture();
-    //debugging indicator
-    const debugging = window.__globalEnvironment.debugging;
-    //redirecting flag
-    let redirecting;
-    //#endregion
+    const initCulture = (culture: string) => {
+        require.config({
+            config: {
+                i18n: {
+                    locale: culture
+                }
+            }
+        });
+        window.__CULTURE = culture;
+    }
 
-    require.config({
-        //#region Config
-        config: {
-            //Set the config for the i18nmodule ID
-            i18n: {
-                locale: currentLanguage
-            },
-            text: {
-                //this is for cross origin text requests
-                useXhr: (url, protocol, hostname, port) => true,
-                onXhr: (xhr, url) => {
-                    //get selected company if any
-                    let currentCompany: IStorageCurrentCompany = null;
-                    const storedCompany = sessionStorage.getItem(storageNameCurrentCompany);
-                    if (storedCompany) {
-                        currentCompany = JSON.parse(storedCompany);
-                    }
-                    //set current company & role id
-                    xhr.setRequestHeader(headerNameCurrentRoleId, currentCompany && currentCompany.roleId);
-                    xhr.setRequestHeader(headerNameCurrentCompanyId, currentCompany && currentCompany.companyId);
-                    //set language for server 
-                    xhr.setRequestHeader(headerNameLanguage, currentLanguage);
-                    //set authorization token for json & text requests
-                    if (window.__OIDC.user) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + window.__OIDC.user.access_token);
-                    }
-                },
-                onXhrComplete(xhr, url) {
-                    //if text plugin request reponse status is 401,that must be claim or idsrv session related error
-                    //so logging out is the best place to go.
-                    //Warning for consistantly redirecting to idsrv
-                    if (xhr.status === 401 && !redirecting) {
-                        window.__OIDC.instance.signoutRedirect();
-                        redirecting = true;
+    const setTextPlugin = (oidc: IOidcManager, constants: IConstants, culture: string) => {
+        let redirecting;
+        require.config({
+            config: {
+                text: {
+                    //this is for cross origin text requests
+                    useXhr: (url, protocol, hostname, port) => true,
+                    onXhr: (xhr, url) => {
+                        //get selected company if any
+                        let currentCompany: IStorageCurrentCompany = null;
+                        const storedCompany = sessionStorage.getItem(constants.security.STORAGE_NAME_CURRENT_COMPANY);
+                        if (storedCompany) {
+                            currentCompany = JSON.parse(storedCompany);
+                        }
+                        //set current company & role id
+                        xhr.setRequestHeader(constants.server.HEADER_NAME_ROLE_ID, currentCompany && currentCompany.roleId);
+                        xhr.setRequestHeader(constants.server.HEADER_NAME_COMPANY_ID, currentCompany && currentCompany.companyId);
+                        //set language for server 
+                        xhr.setRequestHeader(constants.server.HEADER_NAME_LANGUAGE, culture);
+                        //set authorization token for json & text requests
+                        if (oidc.user) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + oidc.user.access_token);
+                        }
+                    },
+                    onXhrComplete(xhr, url) {
+                        //if text plugin request reponse status is 401,that must be claim or idsrv session related error
+                        //so logging out is the best place to go.
+                        //Warning for consistantly redirecting to idsrv
+                        if (xhr.status === 401 && !redirecting) {
+                            oidc.instance.signoutRedirect();
+                            redirecting = true;
+                        }
                     }
                 }
             }
-        },
-        //#endregion
-
-        //this wait for remote service call to warm up
-        waitSeconds: 9999,
-        //cache busting
-        urlArgs: window.__globalEnvironment.cacheBusting
-    });
-    //add xdomains to paths
-    const xpaths = window.__globalEnvironment.xDomPaths;
-    if (xpaths) {
-        require.config({
-            paths: xpaths
         });
     }
 
-    //#region ckEditor Path Setting
-    //http://stackoverflow.com/questions/8807029/how-do-you-define-the-path-which-ckeditor-uses-to-search-for-config-language-f
-    if (!debugging) {
-        window.CKEDITOR_BASEPATH = '/dist/rota/lib/ckeditor/';
+    const setCrossOriginPaths = () => {
+        const xpaths = env.xDomPaths;
+        if (xpaths) {
+            require.config({
+                paths: xpaths
+            });
+        }
+    }
+
+    const setRequireConfig = () => {
+        require.config({
+            //this is for server warm up - must be think about it
+            waitSeconds: 9999,
+            urlArgs: env.cacheBusting
+        });
+    }
+
+    const setConfig = () => {
+        window.__IS_TOUCHABLE = mobileAndTabletcheck();
+        //http://stackoverflow.com/questions/8807029/how-do-you-define-the-path-which-ckeditor-uses-to-search-for-config-language-f
+        if (!env.debugging) {
+            window.CKEDITOR_BASEPATH = '/dist/rota/lib/ckeditor/';
+        }
+    }
+
+    const loadFr = () => {
+        require(['config/vendor.index'], (): void => {
+            //load startup along with rota fr
+            require(['startup'], (app): void => {
+                //validate app
+                if (!app || !app.rotaModule) {
+                    throw "startup module must return the App class - i.e export = App";
+                }
+                //bootstrap rota app
+                angular.element(document).ready(() => {
+                    const $injector = angular.bootstrap(document, [app.rotaModule.name]);
+                    //injector is stored for further module dependecy.(angular is modified)
+                    //check for this link https://github.com/angular/angular.js/pull/4694
+                    app.setInjector($injector);
+                    //remove progress bar
+                    const pbar = document.getElementById('progressBar');
+                    if (pbar && pbar.parentNode) {
+                        pbar.parentNode.removeChild(pbar);
+                    }
+                });
+            });
+        });
     }
     //#endregion
 
     //#region Init files
-    require(['config/oidc-manager'],
-        (oidc: IOidcManager) => {
-            //this is for requirejs text plugin 
-            window.__OIDC = oidc;
-            //init authz
-            const result = oidc.init({
-                authority: window.__globalEnvironment.authority,
-                clientId: window.__globalEnvironment.clientId,
-                postLogoutRedirectUri: window.__globalEnvironment.postLogoutRedirectUri,
-                redirectUri: window.__globalEnvironment.redirectUri,
-                silentRedirectUri: window.__globalEnvironment.silentRedirectUri,
-                clockSkew: window.__globalEnvironment.clockSkew,
-                scope: window.__globalEnvironment.scope,
-                lang: currentLanguage
-            });
-
-            result.then(user => {
-                if (user !== null) {
-                    //#region Load files
-                    require(['config/vendor.index'], (): void => {
-                        //load startup along with rota fr
-                        require(['startup'], (app): void => {
-                            //validate app
-                            if (!app || !app.rotaModule) {
-                                throw "startup module must return the App class - i.e export = App";
-                            }
-                            //bootstrap rota app
-                            angular.element(document).ready(() => {
-                                const $injector = angular.bootstrap(document, [app.rotaModule.name]);
-                                //injector is stored for further module dependecy.(angular is modified)
-                                //check for this link https://github.com/angular/angular.js/pull/4694
-                                app.setInjector($injector);
-                                //remove progress bar
-                                const pbar = document.getElementById('progressBar');
-                                if (pbar && pbar.parentNode) {
-                                    pbar.parentNode.removeChild(pbar);
-                                }
-                            });
-                        });
-                    });
-                    //#endregion
-                }
-            }, (error) => {
-                alert("there is something wrong with this app,check authorization configuration settings.!\n Error: " + error.message);
-            });
+    require(['config/oidc-manager', 'config/constants'], (oidc: IOidcManager, constants: IConstants) => {
+        const currentCulture = getCulture(constants);
+        //init authz
+        const result = oidc.init({
+            authority: env.authority,
+            clientId: env.clientId,
+            postLogoutRedirectUri: env.postLogoutRedirectUri,
+            redirectUri: env.redirectUri,
+            silentRedirectUri: env.silentRedirectUri,
+            clockSkew: env.clockSkew,
+            scope: env.scope,
+            lang: currentCulture
         });
+
+        result.then(user => {
+            if (user !== null) {
+                //settings
+                initCulture(currentCulture);
+                setTextPlugin(oidc, constants, currentCulture);
+                setCrossOriginPaths();
+                setRequireConfig();
+                setConfig();
+                //init fr
+                loadFr();
+            }
+        }, (error) => {
+            alert("there is something wrong with this app,check authorization configuration settings.!\n Error: " + error.message);
+        });
+    });
     //#endregion
 }
 //#endregion

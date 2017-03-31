@@ -67,8 +67,7 @@ class Security implements ISecurity {
         const storedCompany = this.caching.sessionStorage
             .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY);
 
-        const companyId = (storedCompany && storedCompany.id) || this.securityConfig.defaultCompanyId;
-
+        const companyId = (storedCompany && this.common.isAssigned(storedCompany.id)) ? storedCompany.id : this.securityConfig.defaultCompanyId;
         if (this.common.isAssigned(companyId)) {
             selectedCompany = _.findWhere(this.securityConfig.authorizedCompanies, { id: companyId });
         }
