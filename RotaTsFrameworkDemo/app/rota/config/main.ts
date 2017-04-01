@@ -287,7 +287,7 @@ if (window) {
     }
     //#endregion
 
-    //#region Init files
+    //#region Init
     require(['config/oidc-manager', 'config/constants'], (oidc: IOidcManager, constants: IConstants) => {
         const currentCulture = getCulture(constants);
         //init authz

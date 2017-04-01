@@ -29,6 +29,8 @@ class RotaApp implements IRotaApp {
     //#region Props
     //Main module name
     static readonly moduleName = "rota-app";
+    //registered objs
+    private registeredObjs: IDictionary<Array<string>> = {};
     //Main module
     rotaModule: angular.IModule;
     private $injector: ng.auto.IInjectorService;
@@ -152,6 +154,7 @@ class RotaApp implements IRotaApp {
      * @param dependencies Dependencies 
      */
     addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): IRotaApp {
+        this.validateName(controllerName, "controller");
         const controllerAnnotation = this.createAnnotation(controller, dependencies);
         this.$controllerProvider.register(controllerName, controllerAnnotation);
         return this;
@@ -163,6 +166,7 @@ class RotaApp implements IRotaApp {
     * @param dependencies Optional dependencies
     */
     addApi(apiName: string, api: typeof BaseApi, ...dependencies: string[]): IRotaApp {
+        this.validateName(apiName, "api");
         const apiAnnotation = this.createAnnotation(api, dependencies);
         this.$provide.service(apiName, apiAnnotation);
         return this;
@@ -173,6 +177,7 @@ class RotaApp implements IRotaApp {
     * @param service Service itself
     */
     addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): IRotaApp {
+        this.validateName(serviceName, "value");
         this.$provide.value(serviceName, service);
         return this;
     }
@@ -182,6 +187,7 @@ class RotaApp implements IRotaApp {
      * @param directiveFactory Directive function
      */
     addDirective(directiveName: string, directiveFactory: Function | any[]): IRotaApp {
+        this.validateName(directiveName, "directive");
         this.$compileProvider.directive(directiveName, directiveFactory);
         return this;
     }
@@ -191,6 +197,7 @@ class RotaApp implements IRotaApp {
      * @param filterFactory Filter factory
      */
     addFilter(filterName: string, filterFactory: Function | any[]): IRotaApp {
+        this.validateName(filterName, "filter");
         this.$filterProvider.register(filterName, filterFactory);
         return this;
     }
@@ -293,6 +300,16 @@ class RotaApp implements IRotaApp {
         //add ctor
         deps.push(controllerCtor);
         return deps;
+    }
+    /**
+     * Validate name if already registered
+     * @param name Name
+     * @param kind Kind of angular obj
+     */
+    private validateName(name: string, kind: "controller" | "api" | "value" | "directive" | "filter"): void {
+        const names = this.registeredObjs[kind] || (this.registeredObjs[kind] = []);
+        if (names.indexOf(name) !== -1) throw `${name} already registered - ${kind}`;
+        names.push(name);
     }
     //#endregion
 }
