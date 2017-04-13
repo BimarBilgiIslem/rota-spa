@@ -314,7 +314,7 @@ if (window) {
                 loadFr();
             }
         }, (error) => {
-            alert("there is something wrong with this app,check authorization configuration settings.!\n Error: " + error.message);
+            alert("there is something wrong with this app authorization,check configuration settings.!\n Error: " + error.message);
         });
     });
     //#endregion

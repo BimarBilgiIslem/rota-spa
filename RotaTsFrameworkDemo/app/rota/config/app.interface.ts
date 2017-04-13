@@ -30,7 +30,7 @@ export interface IRotaApp {
      * Company changed event
      * @param company Selected company     
      */
-    onCompanyChanged?(callBack: Function | any[]): void ;
+    onCompanyChanged?(callBack: Function | any[]): void;
     /**
      * Rota module
      */
@@ -78,6 +78,21 @@ export interface IRotaApp {
     */
     addModule(...modules: string[]): IRotaApp;
     /**
+    * Set app global settings
+    * @param settings app settings
+    */
+    setConfig(settings: IAppConfig): IRotaApp;
+    /**
+     * Add menus
+     * @param menus Navigational menus
+     */
+    setNavMenus(menus: IMenuModel[]): IRotaApp;
+    /**
+     * Extend resources with dynamic resources from DB or else
+     * @param dynamicresource Dynamic resource object
+     */
+    setResources(dynamicresource: IDictionary<string | IDictionary<string>>): IRotaApp;
+    /**
      * Configure app method
      * @param fn Function to register
      * @returns {IRotaApp} 
@@ -112,10 +127,4 @@ export interface IRotaApp {
     }]);
      */
     redirect(redirections: { from: string, to: string }[]): IRotaApp;
-    /**
-     * Sets home page settings
-     * @param options Options
-     * @returns {IRotaApp}
-     */
-    setHomePage(options: IHomePageOptions): IRotaApp;
 }

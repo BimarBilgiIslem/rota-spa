@@ -218,6 +218,49 @@ class RotaApp implements IRotaApp {
         return this;
     }
     /**
+     * Set app global settings
+     * @param settings App settings
+     */
+    setConfig(settings: IAppConfig): IRotaApp {
+        this.configure(["ConfigProvider", "SecurityConfigProvider", "RouteConfigProvider", "$urlRouterProvider",
+            (config: IMainConfigProvider, securityConfig: ISecurityConfigProvider,
+                routeConfig: IRouteConfigProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) => {
+                //set all configs
+                settings.main && config.configure(settings.main);
+                settings.security && securityConfig.configure(settings.security);
+                settings.routing && routeConfig.configure(settings.routing);
+
+                if (settings.main && settings.main.homePageOptions) {
+                    if (settings.main.homePageOptions.url) {
+                        //just redirect to home page when "/" is active state
+                        $urlRouterProvider.when("/", settings.main.homePageOptions.url);
+                    }
+                }
+            }]);
+        return this;
+    }
+    /**
+     * Add menus
+     * @param menus Navigational menus
+     */
+    setNavMenus(menus: IMenuModel[]): IRotaApp {
+        this.run(["Routing", (routing: IRouting) => {
+            routing.addMenus(menus);
+        }]);
+        return this;
+    }
+    /**
+     * Extend resources with dynamic resources from DB or else
+     * @param dynamicresource Dynamic resource object
+     */
+    setResources(dynamicresource: IDictionary<string | IDictionary<string>>): IRotaApp {
+        this.run(["Resource", (resource: IDictionary<string | IDictionary<string>>) => {
+            //Extend resources from server to statics
+            resource = angular.extend(resource, dynamicresource);
+        }]);
+        return this;
+    }
+    /**
     * Configure app method
     * @param fn Function to register
     * @returns {IRotaApp} 
@@ -233,24 +276,6 @@ class RotaApp implements IRotaApp {
     */
     run(fn: any): IRotaApp {
         this.rotaModule.run(fn);
-        return this;
-    }
-    /**
-     * Sets home page settings
-     * @param options Options
-     * @returns {IRotaApp}
-     */
-    setHomePage(options: IHomePageOptions): IRotaApp {
-        this.configure([
-            "$urlRouterProvider", "RouteConfigProvider", "ConfigProvider",
-            ($urlRouterProvider: ng.ui.IUrlRouterProvider, routeConfig: IRouteConfigProvider, config: IMainConfigProvider) => {
-                if (options.url) {
-                    //just redirect to home page when "/" is active state
-                    $urlRouterProvider.when("/", options.url);
-                }
-                config.config.homePageOptions = options;
-            }
-        ]);
         return this;
     }
     /**

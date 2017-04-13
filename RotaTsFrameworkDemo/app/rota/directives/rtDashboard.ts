@@ -88,7 +88,7 @@ function asyncContentDirective($compile: ng.ICompileService, $http: ng.IHttpServ
     const compileWidget = (options: IWidgetOptions, element: ng.IAugmentedJQuery,
         scope: ng.IScope, prevScope?: ng.IScope): IP<ng.IScope> => {
         //set loading template
-        element.html(config.dashboardSettings.widgetLoadingTemplate);
+        element.html(config.dashboardOptions.widgetLoadingTemplate);
         //load controller & template
         return loader.resolve([options.controllerUrl, options.templateUrl]).then(response => {
             //create controller

@@ -4,6 +4,7 @@
 @import '../vendor/bootstrap.scss';
 @import '../vendor/bourbon.scss';
 @import "../vendor/animate/animate";
+@import "../vendor/awesome-bootstrap-checkbox";
 //sections
 @import "sections/content";
 @import "sections/sub-header";
@@ -39,7 +40,6 @@
 /*@import "vendor-css/select2_custom.css";*/
 @import "vendor-css/datetimepicker.css";
 @import "vendor-css/ui-grid.css";
-@import "vendor-css/awesome-bootstrap-checkbox.css";
 @import "vendor-css/mfb.min.css";
 @import "vendor-css/ng-img-crop.css";
 @import "vendor-css/ivh-treeview.css";

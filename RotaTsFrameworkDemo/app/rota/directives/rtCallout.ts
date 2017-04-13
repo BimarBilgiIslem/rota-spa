@@ -28,6 +28,8 @@ interface ICalloutAttributes extends ng.IAttributes {
     maxDate?: string;
     minValue?: number;
     maxValue?: number;
+    min?: number;
+    max?: number;
 }
 //#endregion
 
@@ -113,12 +115,12 @@ function calloutDirective($position: any, $timeout: ng.ITimeoutService, $filter:
                             case "min":
                                 //ngCurrency
                                 errorMessages.unshift(hatalidegermin.replace('{0}',
-                                    $filter('currency')(attrs.minValue || constants.MIN_NUMBER_VALUE, '', 0)));
+                                    $filter('currency')(attrs.minValue || attrs.min || constants.MIN_NUMBER_VALUE, '', 0)));
                                 break;
                             case "max":
                                 //ngCurrency
                                 errorMessages.unshift(hatalidegermax.replace('{0}',
-                                    $filter('currency')(attrs.maxValue || constants.MAX_NUMBER_VALUE, '', 0)));
+                                    $filter('currency')(attrs.maxValue || attrs.max || constants.MAX_NUMBER_VALUE, '', 0)));
                                 break;
                             case attrs.rtValidator:
                                 errorMessages.unshift(scope[attrs.rtValidator]);

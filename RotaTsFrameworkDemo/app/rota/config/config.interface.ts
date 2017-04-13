@@ -95,6 +95,24 @@ interface IGlobalEnvironment {
 //#endregion
 
 //#region Main Config
+
+/**
+ * App global settings
+ */
+interface IAppConfig {
+    /**
+     * Main app settings
+     */
+    main?: IMainConfig;
+    /**
+     * App OIDC security settings
+     */
+    security?: ISecurityConfig;
+    /**
+     * App routing settings
+     */
+    routing?: IRouteConfig;
+}
 /**
  * Common event names used through the app
  */
@@ -259,7 +277,7 @@ interface IMainConfig extends IBaseConfig {
     /**
      * Dashboard settings
      */
-    dashboardSettings?: IDashboardSettings;
+    dashboardOptions?: IDashboardSettings;
     /**
      * Logo Image file name.It must be under ~/Content/img - default place_holder.png
      */

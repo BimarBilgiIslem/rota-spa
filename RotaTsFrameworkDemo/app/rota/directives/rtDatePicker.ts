@@ -50,6 +50,7 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
             minStep = cAttrs.minuteStep || config.datetimeFormat.datePickerTimeMinStep;
         //inital view values
         let startView = "day", minView = "day", format = config.datetimeFormat.dateFormat;
+        if (common.isNullOrEmpty(cAttrs.dateFormat)) cAttrs.dateFormat = "day";
 
         switch (cAttrs.dateFormat) {
             case "day":

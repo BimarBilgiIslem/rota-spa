@@ -60,8 +60,10 @@ function validatorDirective(common: ICommon, constants: IConstants, localization
                     inputElem && $(inputElem).bind('blur', () => {
                         const value = ngModelCnt.$modelValue || ngModelCnt.$viewValue;
                         //first set pending status 
-                        ngModelCnt.$setValidity(attrs.rtValidator, false);
-
+                        if (common.isNullOrEmpty(value)) {
+                            ngModelCnt.$setValidity(attrs.rtValidator, true);
+                            return;
+                        }
                         validators.runValidation(validator, TriggerOn.Blur, value)
                             .then(() => {
                                 ngModelCnt.$setValidity(attrs.rtValidator, true);
@@ -72,6 +74,13 @@ function validatorDirective(common: ICommon, constants: IConstants, localization
                                 ngModelCnt.$setValidity(attrs.rtValidator, false);
                             });
                     });
+                    //reset validation when model set to pristine
+                    scope.$watch(() => ngModelCnt.$pristine,
+                        (pristine) => {
+                            if (pristine) {
+                                ngModelCnt.$setValidity(attrs.rtValidator, true);
+                            }
+                        });
                 }
             }
         }

@@ -155,7 +155,7 @@
         ekle: "Add",
         guncelle: "Update",
         kaydet: "Save",
-        gerial: "Revert Back",
+        gerial: "Discard changes",
         ok: "OK",
         deleteconfirmtitle: "Delete Confirm",
         deleteconfirm: "Are you sure to delete the record ?",

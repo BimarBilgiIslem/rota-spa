@@ -98,7 +98,7 @@ class Config extends BaseConfig<IMainConfig> {
             reportViewerUrl: environments.reportViewerUrl,
             reportControllerUrl: environments.reportControllerUrl,
             //Dashborad
-            dashboardSettings: {
+            dashboardOptions: {
                 widgetLoadingTemplate: constants.dashboard.WIDGET_LOADING_TEMPLATE
             }
         };
