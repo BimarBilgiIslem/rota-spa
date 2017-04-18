@@ -146,7 +146,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         //set badge
         if (!this.stateInfo.isNestedState) {
             this.recordcountBadge.show = true;
-            this.recordcountBadge.description = BaseListController.localizedValues.kayitsayisi + " 0";
+            this.recordcountBadge.description = `${BaseListController.localizedValues.kayitsayisi} 0`;
         }
         //init filter object 
         this.filter = this.listPageOptions.storeFilterValues ?
@@ -456,7 +456,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * Go detail state with id param provided
     * @param id
     */
-    goToDetailState(id: string): ng.IPromise<any> {
+    goToDetailState(id: string, entity: TModel): ng.IPromise<any> {
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;
@@ -474,14 +474,14 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Init deletion model by unique key
      * @param id Unique id
      */
-    protected initDeleteModel(id: number): ng.IPromise<any> {
+    protected initDeleteModel(id: number, entity: TModel): ng.IPromise<any> {
         if (id === undefined || id === null || !id) return undefined;
 
         const confirmText = BaseListController.localizedValues.deleteconfirm;
         const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
             //call delete model
-            const deleteResult = this.deleteModel(id);
+            const deleteResult = this.deleteModel(id, entity);
             //removal of model depends on whether result is promise or void
             if (this.common.isPromise(deleteResult)) {
                 return deleteResult.then(() => {
@@ -498,7 +498,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * @param id Unique key
      * @description Remove item from grid datasource.Must be overrided to implament your deletion logic and call super.deleteModel();
      */
-    deleteModel(id: number | number[]): ng.IPromise<any> | void {
+    deleteModel(id: number | number[], entity: TModel | IBaseListModel<TModel>): ng.IPromise<any> | void {
         return undefined;
     }
     /**
@@ -510,9 +510,9 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const confirmText = BaseListController.localizedValues.deleteselected;
         const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
-            const keyArray: number[] = _.pluck(this.gridSeletedRows, 'id');
+            const keyArray: number[] = _.pluck(this.gridSeletedRows, this.constants.controller.DEFAULT_MODEL_ID_FIELD_NAME);
             //call delete model
-            const deleteResult = this.deleteModel(keyArray);
+            const deleteResult = this.deleteModel(keyArray, this.gridSeletedRows);
             //removal of model depends on whether result is promise or void
             if (this.common.isPromise(deleteResult)) {
                 return deleteResult.then(() => {

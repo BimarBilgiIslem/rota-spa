@@ -349,6 +349,12 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
              */
             scope.$watchCollection('items', (newValue?: ISelectModel[]): void => {
                 if (common.isAssigned(newValue)) {
+                    //convert enum obj to array
+                    if (!common.isArray(newValue)) {
+                        valuePropGetter = $parse(constants.select.OBJ_VALUE_PROP_NAME);
+                        newValue = common.convertEnumToArray(newValue);
+                    }
+
                     asyncModelRequestResult = common.promise(newValue);
                     setItems(newValue);
 
