@@ -30,6 +30,10 @@ a.mfb-component__button--main:hover {
     text-align: left !important;
 }
 
-.btn > i + span {
+.btn > i + span, .a > i + span {
     margin-left: 3px;
+}
+
+legend {
+    font-size: 16.5px;
 }

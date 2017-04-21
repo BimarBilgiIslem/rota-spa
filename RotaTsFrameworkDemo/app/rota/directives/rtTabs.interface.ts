@@ -26,7 +26,6 @@ interface ITab {
     tabViewName?: string;
     params?: any;
     disable?: boolean;
-    active?: boolean;
     activeState?: string;
     badge?: string;
     badgeType?: string;

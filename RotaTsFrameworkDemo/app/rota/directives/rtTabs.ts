@@ -26,6 +26,10 @@ class TabsController {
      */
     tabs: ITab[];
     /**
+     * Active tab index
+     */
+    activeIndex: number = 0;
+    /**
      * Tab selected event
      * @param tab Selected Tab
      */
@@ -84,10 +88,13 @@ class TabsController {
                 this.logger.console.warn({ message: state + ' not found' });
                 return;
             }
+            tab.index = i++;
             tab.badgeType = tab.badgeType || 'alert-info';
             tab.params = tab.params || {};
             tab.disable = tab.disable;
-            tab.active = this.isActive(tab) && !tab.disable;
+            if (this.isActive(tab) && !tab.disable) {
+                this.activeIndex = tab.index;
+            }
             tab.heading = tab.heading || state.hierarchicalMenu.title;
             tab.icon = tab.icon || state.hierarchicalMenu.menuIcon;
             if (state.sticky) {
@@ -96,7 +103,6 @@ class TabsController {
                 tab.tabViewName = 'nosticky';
                 this.isShowRelativeView = true;
             }
-            tab.index = ++i;
         });
     }
 }
@@ -122,9 +128,9 @@ function tabsDirective() {
             onSelected: '&'
         },
         scope: true,
-        template: '<div class="rt-tabs"><uib-tabset class="tab-container" type="{{tabvm.type}}" vertical="{{tabvm.vertical}}" ' +
+        template: '<div class="rt-tabs"><uib-tabset active="tabvm.activeIndex" class="tab-container" type="{{tabvm.type}}" vertical="{{tabvm.vertical}}" ' +
         'justified="{{tabvm.justified}}">' + '<uib-tab index="tab.index" class="tab" ng-repeat="tab in tabvm.tabs track by tab.state"' +
-        'active="tab.active" disable="tab.disable" ng-click="tabvm.go(tab)">' +
+        'disable="tab.disable" ng-click="tabvm.go(tab)">' +
         '<uib-tab-heading><i ng-class="[\'fa\', \'fa-\' + tab.icon]"></i> {{::tab.heading}}' +
         '<span ng-show="tab.badge" class="tabbadge badge" ng-class="tab.badgeType">{{tab.badge}}</span> </uib-tab-heading>' +
         '</uib-tab></uib-tabset>' +

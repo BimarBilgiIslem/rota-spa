@@ -6314,8 +6314,11 @@ a.mfb-component__button--main:hover {
 .form-horizontal .control-label {
   text-align: left !important; }
 
-.btn > i + span {
+.btn > i + span, .a > i + span {
   margin-left: 3px; }
+
+legend {
+  font-size: 16.5px; }
 
 /*custom classes*/
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -7705,9 +7708,9 @@ ul.contextmenu {
   position: absolute;
   background: #a70606;
   color: #fff;
-  padding: 3px 9px;
-  font-size: .85em;
-  border-radius: 4px;
+  padding: 5px 11px;
+  font-size: .95em;
+  border-radius: 3px;
   display: block;
   white-space: nowrap;
   box-shadow: 1px 1px rgba(191, 183, 183, 0.63);
@@ -7731,8 +7734,16 @@ ul.contextmenu {
   padding-bottom: 5px !important; }
 
 .avatar-small {
+  height: 22px;
+  width: 22px; }
+
+.avatar-medium {
   height: 35px;
   width: 35px; }
+
+.avatar-large {
+  height: 43px;
+  width: 43px; }
 
 .avatar-firstletter {
   border-radius: 50%;

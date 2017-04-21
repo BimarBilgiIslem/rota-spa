@@ -46,6 +46,7 @@ class Config extends BaseConfig<IMainConfig> {
             appVersion: constants.APP_VERSION,
             appTitle: constants.APP_TITLE,
             debugMode: environments.debugging,
+            host: this.getHostPath(location.protocol + "//" + location.host, environments.doms),
             logoImageName: constants.DEFAULT_LOGO_IMAGE_NAME,
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
             supportedLanguages: [{
@@ -103,6 +104,21 @@ class Config extends BaseConfig<IMainConfig> {
             }
         };
         this.config = config;
+    }
+    /**
+     * Extract dom key depending on provided doms in environments
+     * @param host Current host
+     * @param doms Defined host
+     */
+    private getHostPath(host: string, doms: IDictionary<string>): string {
+        for (let dom in doms) {
+            if (doms.hasOwnProperty(dom)) {
+                if (doms[dom].toLowerCase() === host.toLowerCase()) {
+                    return dom;
+                }
+            }
+        }
+        return null;
     }
 }
 //#endregion

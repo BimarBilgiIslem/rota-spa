@@ -280,8 +280,8 @@ class Routing implements IRouting {
      * @param state State
      */
     private registerState(state: IMenuModel, defaultParams?: IDictionary<any>): IRouting {
-        //only state name defined
-        if (!state.name) return this;
+        //only state name defined and host's name is matched
+        if (!state.name || (state.host && this.config.host !== state.host)) return this;
         //check if already defined
         if (this.getState(state.name)) {
             this.logger.console.warn({ message: 'state already registered ' + state.name });
@@ -377,7 +377,7 @@ class Routing implements IRouting {
                 }
                 const navMenu: INavMenuItem = {
                     text: menu.localizedTitle,
-                    url: menu.menuUrl || (menu.name && this.$state.href(menu.name, menu.params)),
+                    url: this.getMenuAbsoluteUrl(menu),
                     icon: menu.menuIcon,
                     parent: parent
                 }
@@ -605,6 +605,27 @@ class Routing implements IRouting {
      */
     toUrl(relativeUrl: string): string {
         return window.require.toUrl(relativeUrl);
+    }
+    /**
+     * Get defined baseurl of requirejs config
+     */
+    getBasePath(): string {
+        return this.toUrl('.');
+    }
+    /**
+     * Get absolute uri of menu 
+     * @param menu Menu
+     */
+    getMenuAbsoluteUrl(menu: IMenuModel): string {
+        const reluri = menu.menuUrl ||
+            (menu.name && this.$state.href(menu.name, menu.params)) ||
+            (menu.url && /[^?|:]*/.exec(menu.url as string)[0]);
+
+        if (menu.host && menu.host !== this.config.host) {
+            return this.toUrl(`${menu.host}/${reluri}`);
+        } else {
+            return reluri;
+        }
     }
     /**
      * Returns whether provided state is nested 

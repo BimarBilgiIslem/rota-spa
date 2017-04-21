@@ -23,7 +23,6 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
     constructor(environments: IGlobalEnvironment, constants: IConstants) {
         super();
         const config: ISecurityConfig = {
-            allowAnonymousAccess: environments.allowAnonymousAccess,
             logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout,
             idleTimeout: constants.security.IDLE_TIMEOUT,
             idleLogoffCountDown: constants.security.COUNT_DOWN_FOR_IDLE_TIMEOUT,

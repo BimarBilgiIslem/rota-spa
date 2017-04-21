@@ -159,15 +159,8 @@ serviceModule
 //#endregion
 
 //#region Initialize Security
-serviceModule.run(['Security', 'SecurityConfig', 'Logger', (security: ISecurity, securityconfig: ISecurityConfig, logger: ILogger) => {
-    //Log
-    logger.console.warn({
-        message: `Security is initiated with AllowAnonymousAccess ${securityconfig.allowAnonymousAccess ? 'true' : 'false'}`
-    });
-
-    if (!securityconfig.allowAnonymousAccess) {
-        security.initSecurity();
-    }
+serviceModule.run(['Security', (security: ISecurity) => {
+    security.initSecurity();
 }]);
 //#endregion
 

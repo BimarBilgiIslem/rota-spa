@@ -60,10 +60,6 @@ interface IGlobalEnvironment {
      */
     clockSkew?: number;
     /**
-     * Allow anouynmous access
-     */
-    allowAnonymousAccess: boolean;
-    /**
      * Elmah logging enabled client exceptions
      */
     elmahLoggingEnabled: boolean;
@@ -82,7 +78,7 @@ interface IGlobalEnvironment {
     /**
      * Cross Domain root Paths,like https://xdomain.com
      */
-    xDomPaths?: { [index: string]: string };
+    doms?: IDictionary<string>;
     /**
      * Logoff when idle timeout has reached by prompting user
      */
@@ -213,6 +209,15 @@ interface IMainConfig extends IBaseConfig {
      * Indicates that app is running in debug mode
      */
     debugMode?: boolean;
+    /**
+     * RequireJS path of cuurent host defined in global environment
+     */
+    host?: string;
+    /**
+    * Profile menu help link uri
+    * @description If not provided,help menu will be removed
+    */
+    helpLinkUri?: string;
     /**
      * Common event names
      */

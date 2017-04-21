@@ -85,6 +85,10 @@ interface IMenuItem {
      * Indicates that menu is added as quick menu
      */
     isQuickMenu?: boolean;
+    /**
+     * RequireJS path of menu uri host which is predefined in doms in GlobalEnvironment
+     */
+    host?: string;
 }
 /**
  * State that links states with menus

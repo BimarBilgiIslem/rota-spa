@@ -33,7 +33,7 @@ require.config({
         'angular-ui-router': './rota/core/angular-ui-router',
         'ct-ui-router-extras': './rota/lib/ct-ui-router-extras',
         'angular-local': './rota/core/angular-locale_tr-tr',
-        'angular-bootstrap': './rota/core/ui-bootstrap-tpls-2.3.0.min',
+        'angular-bootstrap': './rota/core/ui-bootstrap-tpls-2.5.0.min',
         'angular-sanitize': './rota/core/angular-sanitize',
         'angular-animate': './rota/core/angular-animate',
         'angular-cookies': './rota/core/angular-cookies.min',
@@ -238,7 +238,7 @@ if (window) {
     }
 
     const setCrossOriginPaths = () => {
-        const xpaths = env.xDomPaths;
+        const xpaths = env.doms;
         if (xpaths) {
             require.config({
                 paths: xpaths

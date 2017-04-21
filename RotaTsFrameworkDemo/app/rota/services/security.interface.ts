@@ -20,10 +20,6 @@
  */
 interface ISecurityConfig extends IBaseConfig {
     /**
-     * Flag that if app will be used with no authoirzation or not
-     */
-    allowAnonymousAccess?: boolean;
-    /**
    * Auhorized Companies 
    */
     authorizedCompanies?: ICompany[];

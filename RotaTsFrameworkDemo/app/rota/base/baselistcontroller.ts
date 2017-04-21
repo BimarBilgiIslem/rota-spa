@@ -519,6 +519,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                     keyArray.forEach((key) => {
                         this.gridData.deleteById(key);
                     });
+                    this.selectedcountBadge.show = false;
                 });
             }
             keyArray.forEach((key) => {

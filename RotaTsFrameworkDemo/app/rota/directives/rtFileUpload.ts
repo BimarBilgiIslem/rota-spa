@@ -25,6 +25,7 @@ interface IFileUploadAttributes extends ng.IAttributes {
 
 interface IFileUploadScope extends ng.IScope {
     selfile?: IFileInfo;
+    uploadFiles: (files: IFileInfo[]) => void;
 }
 //#endregion
 
@@ -65,15 +66,18 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger) {
                 return true;
             };
 
-            scope.$watch(attrs.ngModel, (file: IFileInfo) => {
-                if (file) {
+            scope.uploadFiles = (files: IFileInfo[]): void => {
+                if (!files || !files.length) return;
+                //upload 
+                files.forEach((file: IFileInfo): void => {
+                    //check ext
                     if (checkExt(file.name)) {
                         scope.selfile = file;
                         return;
                     }
-                }
-                scope.selfile = null;
-            });
+                    scope.selfile = null;
+                });
+            }
         }
     }
 
@@ -87,7 +91,7 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger) {
         'ph-i18n="rota.dosyaseciniz"/><span class="input-group-btn">' +
         '<div class="fileUpload btn btn-primary" ' +
         'uib-tooltip="{{::\'rota.tt_dosyasecmekicintiklayiniz\' | i18n}}"> ' +
-        '<i class="fa fa-upload"></i><input type="file" name="file" ngf-select class="upload"></div></span></div>'
+        '<i class="fa fa-upload"></i><input type="file" name="file" ngf-multiple="false" ngf-select="uploadFiles($files)" class="upload"></div></span></div>'
     };
     return directive;
 }

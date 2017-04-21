@@ -74,11 +74,11 @@ class RotaApp implements IRotaApp {
                 //Stricted due to error in ui - select https://github.com/angular-ui/ui-select/issues/1467
                 $animateProvider.classNameFilter(/rota-animate/);
                 //register xdom paths
-                if (!_.isEmpty(environment.xDomPaths)) {
+                if (!_.isEmpty(environment.doms)) {
                     const xdoms = ['self'];
-                    for (let xdom in environment.xDomPaths) {
-                        if (environment.xDomPaths.hasOwnProperty(xdom)) {
-                            let domUrl = environment.xDomPaths[xdom];
+                    for (let xdom in environment.doms) {
+                        if (environment.doms.hasOwnProperty(xdom)) {
+                            let domUrl = environment.doms[xdom];
                             if (domUrl) {
                                 //check trailing slash
                                 if (domUrl.slice(-1) !== '/') {
