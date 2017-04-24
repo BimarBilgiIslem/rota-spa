@@ -101,7 +101,9 @@ class Config extends BaseConfig<IMainConfig> {
             //Dashborad
             dashboardOptions: {
                 widgetLoadingTemplate: constants.dashboard.WIDGET_LOADING_TEMPLATE
-            }
+            },
+            //Max file upload size 
+            maxFileUploadSize: "20MB"
         };
         this.config = config;
     }

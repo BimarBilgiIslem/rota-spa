@@ -295,6 +295,10 @@ interface IMainConfig extends IBaseConfig {
      * Enable quick menu feature,default true
      */
     enableQuickMenu?: boolean;
+    /**
+     * Max file upload size,edfault 20 MB
+     */
+    maxFileUploadSize?: string;
 }
 /**
  * Main config provider

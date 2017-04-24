@@ -6300,6 +6300,9 @@ input[type="radio"] .styled:checked + label::after {
 .nav-tabs {
   margin-bottom: 6px; }
 
+.input-group .form-control {
+  height: 34px; }
+
 a.mfb-component__button--child:hover,
 a.mfb-component__button--main:hover {
   color: #ffffff !important; }

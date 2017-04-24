@@ -415,10 +415,14 @@ module.run([
             '           <h4><i class="fa fa-file"></i>&nbsp;{{::title}}</h4>' +
             '       </div>' +
             '       <div class="modal-body">' +
-            '           <rt-file-upload ng-model="model.file" required accept="{{allowedExtensions}}"></rt-file-upload>' +
-            '           <div ng-if="showImageCroppingArea && model.file" class="cropArea margin-top-5">' +
-            '               <img-crop area-type="square" image="model.file | ngfDataUrl" result-image="model.croppedDataUrl" ng-init="model.croppedDataUrl=\'\'"></img-crop>' +
-            '           </div>' +
+            '          <div class="row">' +
+            '              <div class="col-md-12">' +
+            '                 <rt-file-upload ng-diabled="true" ng-model="model.file" required accept="{{allowedExtensions}}"></rt-file-upload>' +
+            '                 <div ng-if="showImageCroppingArea && model.file" class="cropArea margin-top-5">' +
+            '                     <img-crop area-type="square" image="model.file | ngfDataUrl" result-image="model.croppedDataUrl" ng-init="model.croppedDataUrl=\'\'"></img-crop>' +
+            '                 </div>' +
+            '              </div>' +
+            '          </div>' +
             '       </div>' +
             '       <div class="modal-footer">' +
             '           <button type="button" class="btn btn-default" data-ng-click="dismiss()" i18n="rota.iptal">' +

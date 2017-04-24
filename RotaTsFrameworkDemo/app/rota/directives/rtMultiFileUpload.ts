@@ -22,8 +22,8 @@ interface IMultiFileUploadAttributes extends ng.IAttributes {
 
 interface IMultiFileUploadScope extends ng.IScope {
     accept?: string;
+    maxUploadSize: string;
     downloadLink?: string;
-    internalFiles: IFileInfo[];
     uploadFiles: (files: IFileInfo[]) => void;
     onUploaded: (file: { file: IFileInfo }) => ng.IPromise<IFileUploadResponseData>;
     remove: (file: IMultiFileUploadItem) => void;
@@ -47,13 +47,14 @@ interface IUploadedFile {
 
 //#region Directive
 function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
-    localization: ILocalization, logger: ILogger, common: ICommon, constants: IConstants, routing: IRouting) {
+    localization: ILocalization, logger: ILogger, common: ICommon, constants: IConstants, config: IMainConfig) {
     //link fn
     function link(scope: IMultiFileUploadScope, element: ng.IAugmentedJQuery, attrs: IMultiFileUploadAttributes, modelCtrl: ng.INgModelController): void {
 
         let files: IMultiFileUploadItem[] = [];
         let models: IBaseListModel<IFileModel>;
         const fileIdPropGetter = $parse(attrs.fileidProp);
+        scope.maxUploadSize = config.maxFileUploadSize;
         //#region Methods
         /**
          * Check extension
@@ -137,7 +138,7 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
                     $uploadedFile: {
                         name: file.name,
                         icon: common.getFaIcon(file.name.split('.').pop()),
-                        downloadLink: scope.downloadLink && (scope.downloadLink + '?fileId=' + fileIdPropGetter(file)),
+                        downloadLink: scope.downloadLink && (common.updateQueryStringParameter(scope.downloadLink, "fileId", fileIdPropGetter(file))),
                         isLoaded: true
                     }
                 }
@@ -196,7 +197,9 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
         },
         template: '<ul class="list-group rt-multi-file-upload">' +
         '<li class="list-group-item text-center" ng-hide=ngDisabled>' +
-        '<a uib-tooltip="{{::\'rota.dosyaekleaciklama\' | i18n}}" ngf-drag-over-class="bold" href style="display:block;padding:0 10px" ngf-drop="uploadFiles($files)" ngf-select-disabled=ngDisabled ngf-select="uploadFiles($files)" ngf-multiple="true" ngf-accept=accept ng-model="internalFiles"><i class="fa fa-file"></i>&nbsp;{{::\'rota.yenidosyaekle\' | i18n}}</a></li>' +
+        '<a uib-tooltip="{{::\'rota.dosyaekleaciklama\' | i18n}}" ngf-drag-over-class="bold" href style="display:block;padding:0 10px" ngf-drop="uploadFiles($files)" ' +
+        'ngf-select-disabled=ngDisabled ngf-select="uploadFiles($files)" ngf-multiple="true" ngf-accept=accept ngf-max-size=maxUploadSize>' +
+        '<i class="fa fa-file"></i>&nbsp;{{::\'rota.yenidosyaekle\' | i18n}}</a></li>' +
         '<li class="list-group-item rota-animate-rt-multiselect" ng-repeat="file in visibleItems">' +
         '<a href rt-download="{{file.$uploadedFile.downloadLink}}"><i ng-class="[\'fa\', \'fa-fw\', \'fa-\' + file.$uploadedFile.icon]"></i>&nbsp;{{file.$uploadedFile.name}}</a>' +
         '<a ng-hide="ngDisabled || !file.$uploadedFile.isLoaded" uib-tooltip="{{::\'rota.tt_sil\' | i18n}}" tooltip-append-to-body="true" href class="pull-right" ng-click="remove(file)"><i class="fa fa-minus-circle text-danger"></i></a>' +
@@ -208,7 +211,7 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
 
     return directive;
 }
-multiFileUploadDirective.$inject = ['$parse', '$q', 'Localization', 'Logger', 'Common', 'Constants', 'Routing'];
+multiFileUploadDirective.$inject = ['$parse', '$q', 'Localization', 'Logger', 'Common', 'Constants', 'Config'];
 //#endregion
 
 //#region Register

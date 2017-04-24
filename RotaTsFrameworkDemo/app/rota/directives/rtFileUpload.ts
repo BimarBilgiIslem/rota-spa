@@ -16,68 +16,51 @@
 
 //#region Interfaces
 interface IFileUploadAttributes extends ng.IAttributes {
-    ngModel: any;
-    accept?: string;
-    minSize?: number;
-    maxSize?: number;
-    required?: boolean;
 }
 
 interface IFileUploadScope extends ng.IScope {
-    selfile?: IFileInfo;
+    fileName: string;
     uploadFiles: (files: IFileInfo[]) => void;
+    accept?: string;
+    maxUploadSize: string;
 }
 //#endregion
 
 //#region Directive
-function fileUploadDirective(localization: ILocalization, logger: ILogger) {
-    function compile(tElement: ng.IAugmentedJQuery, tAttrs: IFileUploadAttributes) {
-        const $file = $('input[type=file]', tElement);
-        //Model
-        $file.attr('ng-model', tAttrs.ngModel);
-        //Accept
-        if (angular.isDefined(tAttrs.accept)) {
-            $file.attr('accept', tAttrs.accept);
-        }
-        //Min Size
-        if (angular.isDefined(tAttrs.minSize)) {
-            $file.attr('ngf-min-size', tAttrs.minSize);
-        }
-        //Max Size
-        if (angular.isDefined(tAttrs.maxSize)) {
-            $file.attr('ngf-max-size', tAttrs.maxSize);
-        }
-        //Required
-        if (angular.isDefined(tAttrs.required)) {
-            $file.attr('required', '');
-        }
-        return (scope: IFileUploadScope, element: ng.IAugmentedJQuery, attrs: IFileUploadAttributes, modelCtrl: ng.INgModelController): void => {
-            const checkExt = name => {
-                if (!attrs.accept) {
-                    return true;
-                }
-                var extensions = attrs.accept.replace(/\./g, '').split(',');
-                var ext = name.split('.').pop().toLowerCase();
-
-                if (extensions.indexOf(ext) === -1) {
-                    logger.toastr.warn({ message: localization.getLocal('rota.invalidfiletypemessage', attrs.accept, name) });
-                    return false;
-                }
+function fileUploadDirective(localization: ILocalization, logger: ILogger, config: IMainConfig) {
+    function link(scope: IFileUploadScope, element: ng.IAugmentedJQuery, attrs: IFileUploadAttributes, modelCtrl: ng.INgModelController): void {
+        scope.maxUploadSize = config.maxFileUploadSize;
+        /**
+         * Check extension
+         * @param name File Name
+         */
+        const checkExt = name => {
+            if (!scope.accept) {
                 return true;
-            };
-
-            scope.uploadFiles = (files: IFileInfo[]): void => {
-                if (!files || !files.length) return;
-                //upload 
-                files.forEach((file: IFileInfo): void => {
-                    //check ext
-                    if (checkExt(file.name)) {
-                        scope.selfile = file;
-                        return;
-                    }
-                    scope.selfile = null;
-                });
             }
+            var extensions = scope.accept.replace(/\./g, '').split(',');
+            var ext = name.split('.').pop().toLowerCase();
+
+            if (extensions.indexOf(ext) === -1) {
+                logger.toastr.warn({ message: localization.getLocal('rota.invalidfiletypemessage', scope.accept, name) });
+                return false;
+            }
+            return true;
+        };
+
+        scope.uploadFiles = (files: IFileInfo[]): void => {
+            if (!files || !files.length) return;
+            //upload 
+            files.forEach((file: IFileInfo): void => {
+                //check ext
+                if (checkExt(file.name)) {
+                    modelCtrl.$setViewValue(file);
+                    scope.fileName = file.name;
+                    return;
+                }
+                scope.fileName = null;
+                modelCtrl.$setViewValue(null);
+            });
         }
     }
 
@@ -85,17 +68,23 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger) {
     const directive = <ng.IDirective>{
         restrict: 'E',
         require: 'ngModel',
-        compile: compile,
-        template: '<div class="input-group rt-file-upload">' +
-        '<input ng-model="selfile.name" readonly type="text" class="form-control"' +
-        'ph-i18n="rota.dosyaseciniz"/><span class="input-group-btn">' +
-        '<div class="fileUpload btn btn-primary" ' +
-        'uib-tooltip="{{::\'rota.tt_dosyasecmekicintiklayiniz\' | i18n}}"> ' +
-        '<i class="fa fa-upload"></i><input type="file" name="file" ngf-multiple="false" ngf-select="uploadFiles($files)" class="upload"></div></span></div>'
+        scope: {
+            ngDisabled: '=?',
+            accept: '@'
+        },
+        link: link,
+        template: '<div class="input-group">' +
+        '<input ng-model="fileName" readonly type="text" class="form-control" ph-i18n="rota.dosyaseciniz"/>' +
+        '<span class="input-group-btn">' +
+        '<button type="button" ngf-multiple="false" ngf-select-disabled=ngDisabled ngf-accept=accept ' +
+        'ngf-select="uploadFiles($files)" ngf-max-size=maxUploadSize class="btn btn-primary" uib-tooltip="{{::\'rota.tt_dosyasecmekicintiklayiniz\' | i18n}}">' +
+        '<i class="fa fa-upload"></i>' +
+        '</button></span>' +
+        '</div>'
     };
     return directive;
 }
-fileUploadDirective.$inject = ['Localization', 'Logger'];
+fileUploadDirective.$inject = ['Localization', 'Logger', 'Config'];
 //#endregion
 
 //#region Register

@@ -11,6 +11,11 @@
     margin-bottom: 6px;
 }
 
+.input-group {
+    .form-control {
+        height: 34px;
+    }
+}
 //speed dial component override
 a.mfb-component__button--child:hover,
 a.mfb-component__button--main:hover {

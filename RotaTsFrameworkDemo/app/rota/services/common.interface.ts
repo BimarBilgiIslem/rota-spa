@@ -324,5 +324,12 @@ interface ICommon extends IBaseService {
      * Generate unique number
      */
     getRandomNumber(): string;
+    /**
+     * Update querystring of uri with provided key value
+     * @param uri
+     * @param key
+     * @param value
+     */
+    updateQueryStringParameter(uri: string, key: string, value: string): string;
 }
 //#endregion
