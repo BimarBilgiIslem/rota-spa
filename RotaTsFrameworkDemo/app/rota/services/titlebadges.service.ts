@@ -25,9 +25,16 @@ class TitleBadges implements ITitleBadges {
     //#endregion
 
     //#region Init
-    static $inject = ['Localization'];
-    constructor(private localization: ILocalization) {
+    static $inject = ['$rootScope', 'Localization', 'Constants'];
+    constructor(private $rootScope: IRotaRootScope,
+        private localization: ILocalization,
+        private constants: IConstants) {
         this.initBadges();
+        //clear badges when state changes
+        $rootScope.$on(constants.events.EVENT_STATE_CHANGE_SUCCESS,
+            () => {
+                this.clearBadges();
+            });
     }
     /**
      * Create all badges

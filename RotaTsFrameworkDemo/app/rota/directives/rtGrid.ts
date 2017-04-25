@@ -37,7 +37,7 @@ interface IGridDirectiveAttrs extends ng.IAttributes {
 function gridDirective(config: IMainConfig, common: ICommon) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IGridDirectiveAttrs) {
         const optionsName = common.isNullOrEmpty(cAttrs.gridOptions) ? config.gridDefaultOptionsName : cAttrs.gridOptions;
-
+        
         let featureList;
         switch (cAttrs.gridFeatureList) {
             case "standart":
@@ -51,7 +51,7 @@ function gridDirective(config: IMainConfig, common: ICommon) {
             default:
                 featureList = cAttrs.gridFeatureList;
         }
-        const htmlMarkup = `<div class="grid" ui-grid="${optionsName}" ${featureList}></div>`;
+        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${featureList}></div>`;
         cElement.append(htmlMarkup);
         return (): void => {
         }

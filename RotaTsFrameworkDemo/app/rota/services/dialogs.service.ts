@@ -308,9 +308,9 @@ class Dialogs implements IDialogs {
     showReport(options: IReportOptions): ng.IPromise<any> {
         const modalOptions: ng.ui.bootstrap.IModalSettings = {
             templateUrl: 'reportDialog.tpl.html',
-            controller: ['$scope', '$uibModalInstance', 'Common', 'options',
-                ($scope: IReportScope, $modalInstance: ng.ui.bootstrap.IModalServiceInstance, common: ICommon, options: IReportOptions) => {
-                    $scope.reportViewerUrl = options.reportViewerUrl + "?reportName=" + options.reportName;
+            controller: ['$scope', '$uibModalInstance', 'Common', 'options', 'Tokens',
+                ($scope: IReportScope, $modalInstance: ng.ui.bootstrap.IModalServiceInstance, common: ICommon, options: IReportOptions, tokens: ITokens) => {
+                    $scope.reportViewerUrl = options.reportViewerUrl + "?reportName=" + options.reportName + "&access_token=" + tokens.accessToken;
                     $scope.title = options.title || this.localization.getLocal('rota.raporonizleme');
                     $scope.message = options.message;
                     $scope.okText = options.okText || this.localization.getLocal('rota.raporukapat');

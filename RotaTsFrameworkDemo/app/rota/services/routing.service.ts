@@ -302,6 +302,7 @@ class Routing implements IRouting {
             controllerAs: this.routeconfig.contentControllerAlias,
             url: url,
             params: angular.extend(defaultParams, state.params),
+            isNestedState: isNestedState,
             resolve: {
                 stateInfo: (): IStateInfo => {
                     return {

@@ -336,14 +336,15 @@ class Logger implements ILogger {
      */
     get toastr(): IToastr { return this.logServices[LogServices.Toastr] as IToastr; }
     //#endregion
-    static $inject = ['$rootScope', '$log', '$document', '$timeout', 'Config', 'LoggerConfig', 'Localization'];
-    constructor($rootScope: ng.IRootScopeService,
-        $log: ng.ILogService,
-        $document: duScroll.IDocumentService,
-        $timeout: ng.ITimeoutService,
-        config: IMainConfig,
-        loggerconfig: ILoggerConfig,
-        localization: ILocalization) {
+    static $inject = ['$rootScope', '$log', '$document', '$timeout', 'Config', 'LoggerConfig', 'Localization', 'Constants'];
+    constructor(private $rootScope: ng.IRootScopeService,
+        private $log: ng.ILogService,
+        private $document: duScroll.IDocumentService,
+        private $timeout: ng.ITimeoutService,
+        private config: IMainConfig,
+        private loggerconfig: ILoggerConfig,
+        private localization: ILocalization,
+        private constants: IConstants) {
         loggerconfig.defaultTitles[LogType.Info] = localization.getLocal('rota.titleinfo');
         loggerconfig.defaultTitles[LogType.Warn] = localization.getLocal('rota.titlewarn');
         loggerconfig.defaultTitles[LogType.Success] = localization.getLocal('rota.titlesuccess');
@@ -353,6 +354,14 @@ class Logger implements ILogger {
         this.logServices = {};
         this.logServices[LogServices.Console] = new Console($log, config);
         this.logServices[LogServices.Notification] = new Notification(loggerconfig, $document, $timeout);
+        //clear notifications when state changes for only menu states
+        $rootScope.$on(constants.events.EVENT_STATE_CHANGE_SUCCESS,
+            (event: ng.IAngularEvent, toState: IRotaState) => {
+                if (!toState.isNestedState) {
+                    (this.logServices[LogServices.Notification] as INotification).removeAll();
+                }
+            });
+
         this.logServices[LogServices.Toastr] = new Toastr(loggerconfig);
     }
 }

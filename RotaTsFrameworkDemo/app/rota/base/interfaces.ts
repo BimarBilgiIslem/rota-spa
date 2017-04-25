@@ -393,6 +393,10 @@ interface IListPageOptions extends IModelPageOptions {
      * Store filter values while quiting state
      */
     storeFilterValues?: boolean;
+    /**
+     * Element to scroll to after searching completed
+     */
+    elementToScroll?: string;
 }
 /**
  * Widget Controller options
@@ -507,9 +511,22 @@ interface IListPageLocalization {
     deleteselected: string;
     kayitsayisi: string;
 }
+/**
+ * Base list controller
+ */
+interface IBaseListController<TModel extends IBaseCrudModel> extends IBaseModelController<TModel> {
+    options: IListPageOptions;
+    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>>;
+}
 //#endregion
 
 //#region BaseCrudController
+/**
+ * Base list controller
+ */
+interface IBaseCrudController<TModel extends IBaseCrudModel> extends IBaseModelController<TModel> {
+    options: ICrudPageOptions;
+}
 /**
  * base model filtering object for crud pages
  */
@@ -677,17 +694,23 @@ interface IBaseModalController {
 
 //#region Common
 /**
+ * Generic controller scope used by directives
+ */
+interface IControllerScope<TController extends IBaseController> {
+    vm: TController
+}
+/**
  * Bundle for all pages including all built-it and custom dependencies
  */
 interface IBundle {
     /**
      * System angular services and thirdparty services 
      */
-    systemBundles: { [s: string]: any };
+    systemBundles: IDictionary<any>;
     /**
      * User defined services
      */
-    customBundles: { [s: string]: any };
+    customBundles: IDictionary<any>;
 }
 /**
  * Parsers exception include notifictaion type and title

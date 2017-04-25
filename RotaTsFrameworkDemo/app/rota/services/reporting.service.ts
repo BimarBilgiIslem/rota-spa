@@ -25,7 +25,7 @@ import * as moment from "moment";
 class Reporting implements IReporting {
     serviceName = 'Reporting Service';
 
-    static $inject = ['$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants'];
+    static $inject = ['$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants', 'Tokens'];
     constructor(
         private $http: ng.IHttpService,
         private $q: ng.IQService,
@@ -35,7 +35,8 @@ class Reporting implements IReporting {
         private localization: ILocalization,
         private dialogs: IDialogs,
         private logger: ILogger,
-        private constants: IConstants) {
+        private constants: IConstants,
+        private tokens: ITokens) {
         if (!config.reportControllerUrl)
             this.logger.console.warn({ message: this.constants.errors.NO_REPORT_URL_PROVIDED });
         if (!config.reportViewerUrl)
@@ -77,7 +78,8 @@ class Reporting implements IReporting {
 
         return generateReportPromise.then(() => {
             const getReportUrl = this.config.reportControllerUrl + "/" + this.constants.server.ACTION_NAME_GET_REPORT +
-                "?displayReportName=" + options.displayReportName + "&reportDispositonType=" + options.reportDispositonType;
+                "?displayReportName=" + options.displayReportName + "&reportDispositonType=" + options.reportDispositonType +
+                "&access_token=" + this.tokens.accessToken;
             switch (options.reportDispositonType) {
                 case ReportDispositonTypes.Attachment:
                     window.location.replace(getReportUrl);

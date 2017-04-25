@@ -25,7 +25,7 @@ import { ObserableModel } from "./obserablemodel";
  * @abstract This is abstract controller class that must be inherited 
  * @param {TModel} is your custom model view.
  */
-abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseModelController<TModel> {
+abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseModelController<TModel>{
     //#region Statics,Members,Props
     //#region Static
     private static readonly defaultOptions: ICrudPageOptions = {
@@ -120,11 +120,9 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     get isNew(): boolean { return this.crudPageFlags.isNew; }
     set isNew(value: boolean) {
         this.crudPageFlags.isNew = value;
-        if (!this.stateInfo.isNestedState) {
-            this.editmodeBadge.show = !value && !this.crudPageOptions.readOnly;
-            this.newmodeBadge.show = value;
-            this.readOnlyBadge.show = this.crudPageOptions.readOnly && !value;
-        }
+        this.editmodeBadge.show = !value && !this.crudPageOptions.readOnly;
+        this.newmodeBadge.show = value;
+        this.readOnlyBadge.show = this.crudPageOptions.readOnly && !value;
     }
 
     //#region Badge Shortcuts
@@ -380,7 +378,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         });
         //final step,reset flags
         saveResult.finally(() => {
-            if (this.crudPageFlags.isCloning && !this.stateInfo.isNestedState)
+            if (this.crudPageFlags.isCloning)
                 this.cloningBadge.show = false;
             this.crudPageFlags.isCloning =
                 this.crudPageFlags.isSaving = false;
@@ -732,7 +730,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     loadedModel(model: TModel): void {
         super.loadedModel(model);
         //model not found in edit mode
-        if (!this.isNew && !this.stateInfo.isNestedState && !this.isAssigned(model)) {
+        if (!this.isNew && !this.isAssigned(model)) {
             this.notification.error({ message: BaseCrudController.localizedValues.modelbulunamadi });
             this.initNewModel();
             return;
@@ -740,9 +738,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         //set cloning warning & notify
         if (this.crudPageFlags.isCloning) {
             this.toastr.info({ message: BaseCrudController.localizedValues.kayitkopyalandi });
-            if (!this.stateInfo.isNestedState) {
-                this.cloningBadge.show = true;
-            }
+            this.cloningBadge.show = true;
         }
         this.resetForm(model);
         //autoSave process

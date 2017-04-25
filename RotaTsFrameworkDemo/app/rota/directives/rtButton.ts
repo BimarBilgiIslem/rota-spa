@@ -29,11 +29,12 @@ interface IButtonScope extends ng.IScope {
     doclick(e?: ng.IAngularEvent): void;
     click(e: ng.IAngularEvent): ng.IPromise<any> | any;
     isBusy: boolean;
+    elemToScroll?: string;
 }
 //#endregion
 
 //#region Directive
-function buttonDirective(hotkeys: ng.hotkeys.HotkeysProvider, localization: ILocalization, common: ICommon) {
+function buttonDirective($document: duScroll.IDocumentService, hotkeys: ng.hotkeys.HotkeysProvider, localization: ILocalization, common: ICommon) {
     const pendingText = localization.getLocal('rota.lutfenbekleyiniz');
 
     function compile(tElement: ng.IAugmentedJQuery, tAttrs: IButtonAttributes) {
@@ -74,6 +75,11 @@ function buttonDirective(hotkeys: ng.hotkeys.HotkeysProvider, localization: ILoc
             };
             const endAjax = () => {
                 setButtonAttrs({ caption: orjText, icon: orjIcon, disable: false });
+                //scroll if elem is defined
+                if (scope.elemToScroll) {
+                    const elem = document.getElementById(scope.elemToScroll);
+                    $document.duScrollToElement(angular.element(elem), 0, 750);
+                }
             };
             scope.doclick = e => {
                 const result = scope.click(e);
@@ -96,7 +102,8 @@ function buttonDirective(hotkeys: ng.hotkeys.HotkeysProvider, localization: ILoc
             icon: '@',
             color: '@',
             click: '&',
-            size: '@'
+            size: '@',
+            elemToScroll: '@'
         },
         templateUrl: (elem: ng.IAugmentedJQuery, attr: IButtonAttributes) => (angular.isDefined(attr.iconToRight) ?
             'rota/rtbutton-r.tpl.html' : 'rota/rtbutton-l.tpl.html'),
@@ -104,7 +111,7 @@ function buttonDirective(hotkeys: ng.hotkeys.HotkeysProvider, localization: ILoc
     };
     return directive;
 }
-buttonDirective.$inject = ['hotkeys', 'Localization', 'Common'];
+buttonDirective.$inject = ['$document', 'hotkeys', 'Localization', 'Common'];
 //#endregion
 
 //#region Register

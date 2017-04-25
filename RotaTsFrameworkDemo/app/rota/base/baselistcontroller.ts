@@ -23,7 +23,7 @@ import { BaseModelController } from "./basemodelcontroller"
  * @param {TModel} is your custom model view.
  */
 abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter extends IBaseListModelFilter>
-    extends BaseModelController<TModel> {
+    extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
     /**
@@ -131,7 +131,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const listOptions: IListPageOptions = angular.merge({}, BaseListController.defaultOptions,
             {
                 newItemParamName: configService.defaultNewItemParamName,
-                pageSize: configService.gridDefaultPageSize
+                pageSize: configService.gridDefaultPageSize,
+                elementToScroll: `grid_${configService.gridDefaultOptionsName}`
             }, options);
         return listOptions;
     }
@@ -144,10 +145,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         //merge options with defaults
         super(bundle, BaseListController.extendOptions(bundle, options));
         //set badge
-        if (!this.stateInfo.isNestedState) {
-            this.recordcountBadge.show = true;
-            this.recordcountBadge.description = `${BaseListController.localizedValues.kayitsayisi} 0`;
-        }
+        this.recordcountBadge.show = true;
+        this.recordcountBadge.description = `${BaseListController.localizedValues.kayitsayisi} 0`;
         //init filter object 
         this.filter = this.listPageOptions.storeFilterValues ?
             this.caching.sessionStorage.get<TModelFilter>(this.routing.currentUrl) || <TModelFilter>{} : <TModelFilter>{};
@@ -377,24 +376,22 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             });
         }
         //register datachanges
-        if (!this.stateInfo.isNestedState) {
-            gridApi.grid.registerDataChangeCallback((grid: uiGrid.IGridInstanceOf<any>) => {
-                this.recordcountBadge.description = BaseListController.localizedValues.kayitsayisi + " " +
-                    (this.listPageOptions.pagingEnabled ? this.gridOptions.totalItems.toString() : this.gridData.length.toString());
-            }, [this.uigridconstants.dataChange.ROW]);
-            //register selection changes
-            if (this.isAssigned(gridApi.selection)) {
-                const selChangedFn = () => {
-                    this.selectedcountBadge.show = !!this.gridSeletedRows.length;
-                    this.selectedcountBadge.description = this.gridSeletedRows.length.toString();
-                }
-                gridApi.selection.on.rowSelectionChanged(this.$scope, row => {
-                    selChangedFn();
-                });
-                gridApi.selection.on.rowSelectionChangedBatch(this.$scope, rows => {
-                    selChangedFn();
-                });
+        gridApi.grid.registerDataChangeCallback((grid: uiGrid.IGridInstanceOf<any>) => {
+            this.recordcountBadge.description = BaseListController.localizedValues.kayitsayisi + " " +
+                (this.listPageOptions.pagingEnabled ? this.gridOptions.totalItems.toString() : this.gridData.length.toString());
+        }, [this.uigridconstants.dataChange.ROW]);
+        //register selection changes
+        if (this.isAssigned(gridApi.selection)) {
+            const selChangedFn = () => {
+                this.selectedcountBadge.show = !!this.gridSeletedRows.length;
+                this.selectedcountBadge.description = this.gridSeletedRows.length.toString();
             }
+            gridApi.selection.on.rowSelectionChanged(this.$scope, row => {
+                selChangedFn();
+            });
+            gridApi.selection.on.rowSelectionChangedBatch(this.$scope, rows => {
+                selChangedFn();
+            });
         }
     }
 
@@ -442,11 +439,13 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * Starts getting model and binding
     * @param pager Paging pager
     */
-    initSearchModel(pager?: any): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>> {
+    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>> {
         let filter: TModelFilter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
             filter = angular.extend(filter, pager || this.getDefaultPagingFilter());
         }
+        //scroll
+        scrollToElem && this.$document.duScrollToElement(scrollToElem);
         return this.initModel(filter);
     }
     //#endregion

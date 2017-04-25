@@ -123,11 +123,6 @@ class BaseController extends InjectableObject implements IBaseController {
         }
         //Current url 
         this.stateInfo.url = this.routing.currentUrl;
-        //clear all notificaitons
-        if (!this.stateInfo.isNestedState) {
-            (this.logger.notification as INotification).removeAll();
-            this.titlebadges.clearBadges();
-        }
     }
     /**
      * Controller getting destroyed

@@ -23,7 +23,7 @@ function listButtonsDirective() {
         '<div class="rt-listbutton">' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton"  text-i18n="rota.ara" icon="search"' +
         'uib-tooltip="{{::\'rota.ara\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
-        ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" shortcut="ctrl+enter"></rt-button>&nbsp;' +
+        ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" elem-to-scroll="{{vm.options.elementToScroll}}" shortcut="ctrl+enter"></rt-button>&nbsp;' +
         '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
         '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\',\'pdfExport\')" text-i18n="rota.disariyaaktar"' +
         'uib-tooltip="{{::\'rota.disariyaaktar\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom"></rt-button>' +

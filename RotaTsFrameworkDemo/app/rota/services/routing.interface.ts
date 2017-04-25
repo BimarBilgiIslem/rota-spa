@@ -102,6 +102,10 @@ interface IRotaState extends ng.ui.IStickyState {
      * State controller url
      */
     controllerUrl?: string;
+    /**
+     * Is state nested ?
+     */
+    isNestedState?: boolean;
 }
 /**
  * Base menu viewmodel object 
