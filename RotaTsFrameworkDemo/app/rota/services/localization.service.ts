@@ -40,11 +40,11 @@ class Localization implements ILocalization {
     set currentLanguage(value: ILanguage) {
         if (value === this.currentLanguage) return;
 
-        if (!this.config.supportedLanguages.any(lang => lang.code === value.code)) {
+        if (!this.config.supportedLanguages.any(lang => lang.code === value.code.toLowerCase())) {
             throw new Error(`'${value.code}' not supported culture.(allowed 'en-us' or 'tr-tr')`);
         }
 
-        this.$window.localStorage.setItem(this.constants.localization.ACTIVE_LANG_STORAGE_NAME, value.code);
+        this.$window.localStorage.setItem(this.constants.localization.ACTIVE_LANG_STORAGE_NAME, value.code.toLowerCase());
         this.$window.location.reload();
     }
     //#endregion
@@ -60,7 +60,7 @@ class Localization implements ILocalization {
         private constants: IConstants,
         private currentUser: IUser) {
         //Init culture 
-        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === window.__CULTURE);
+        this._currentLanguage = this.config.supportedLanguages.firstOrDefault(lang => lang.code === window.__CULTURE.toLowerCase());
     }
     //#endregion
 

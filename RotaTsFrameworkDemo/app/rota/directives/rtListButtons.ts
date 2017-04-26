@@ -21,9 +21,20 @@ function listButtonsDirective() {
         replace: true,
         template:
         '<div class="rt-listbutton">' +
-        '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton"  text-i18n="rota.ara" icon="search"' +
+        '<div class="btn-group">' +
+        '<div class="btn-group" uib-dropdown auto-close="outsideClick" is-open="searchToggle">' +
+        '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton" text-i18n="rota.ara" icon="search"' +
         'uib-tooltip="{{::\'rota.ara\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
-        ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" elem-to-scroll="{{vm.options.elementToScroll}}" shortcut="ctrl+enter"></rt-button>&nbsp;' +
+        ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" elem-to-scroll="{{vm.options.elementToScroll}}" shortcut="ctrl+enter"></rt-button>' +
+        '<button uib-dropdown-toggle ng-if="vm.listPageOptions.listButtonVisibility.searchButton" type="button" class="btn btn-warning">' +
+        '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
+        '<ul class="dropdown-menu" uib-dropdown-menu>' +
+        '<li ng-if="vm.listPageOptions.listButtonVisibility.storeFilter"><a href ng-click="vm.options.storeFilterValues=!vm.options.storeFilterValues" ng-class="{\'bold\':vm.options.storeFilterValues}">' +
+        '<i class="fa fa-check fa-fw" ng-show="vm.options.storeFilterValues"></i>' +
+        '<i class="fa fa-fw" ng-hide="vm.options.storeFilterValues"></i>&nbsp;' +
+        '{{::"rota.filtrekaydet" | i18n}}</a></li>' +
+        '<li ng-if="vm.listPageOptions.listButtonVisibility.storeGridLayout"><a href ng-click="vm.saveGridLayout();$parent.searchToggle=false"><i class="fa fa-save fa-fw"></i>&nbsp;{{::"rota.gridlayoutkaydet" | i18n}}</a></li>' +
+        '</ul></div></div>&nbsp;' +
         '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
         '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\',\'pdfExport\')" text-i18n="rota.disariyaaktar"' +
         'uib-tooltip="{{::\'rota.disariyaaktar\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom"></rt-button>' +
@@ -37,11 +48,16 @@ function listButtonsDirective() {
         '<li><a href i18n="rota.aktarallpdf" ng-click="vm.exportGrid(\'all\',\'pdfExport\')"></a></li>' +
         '<li><a href i18n="rota.aktarekrandakipdf" ng-click="vm.exportGrid(\'visible\',\'pdfExport\')"></a></li>' +
         '<li><a href i18n="rota.aktarsecilipdf" ng-disabled="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',\'pdfExport\')"></a></li>' +
-        '</ul></div>' +
-        '&nbsp;' +
+        '</ul></div>&nbsp;<div class="btn-group"><div class="btn-group" uib-dropdown>' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.clearButton"  text-i18n="rota.temizle" icon="eraser" ' +
-        'uib-tooltip="{{::\'rota.temizle\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
-        'color="info" click="vm.clearAll()"></rt-button>&nbsp;' +
+        'uib-tooltip="{{::\'rota.gridfiltretemizle\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
+        'color="info" click="vm.clearAll()"></rt-button>' +
+        '<button uib-dropdown-toggle ng-if="vm.listPageOptions.listButtonVisibility.clearButton" type="button" class="btn btn-info">' +
+        '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
+        '<ul class="dropdown-menu" uib-dropdown-menu>' +
+        '<li ng-if="vm.listPageOptions.listButtonVisibility.storeFilter"><a href ng-click="vm.removeFilter()"><i class="fa fa-trash fa-fw"></i>&nbsp;{{::"rota.filtresil" | i18n}}</a></li>' +
+        '<li ng-if="vm.listPageOptions.listButtonVisibility.storeGridLayout"><a href ng-click="vm.removeGridLayout()"><i class="fa fa-trash fa-fw"></i>&nbsp;{{::"rota.gridlayoutsil" | i18n}}</a></li>' +
+        '</ul></div></div>&nbsp;' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.newButton"  text-i18n="rota.yenikayit" icon="plus" ' +
         'uib-tooltip="{{::\'rota.tt_yenikayit\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'color="success" click="vm.goToDetailState()" shortcut="ctrl+ins"></rt-button>&nbsp;' +

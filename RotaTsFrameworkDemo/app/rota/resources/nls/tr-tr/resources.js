@@ -1,5 +1,14 @@
 ﻿define({
     rota: {
+        gridlayoutsilindi: 'Kayıtlı grid layout bilgisi silindi',
+        gridlayoutsil: 'Kayıtlı grid layout bilgisini temizle',
+        gridlayoutkaydedildi: 'Grid layout kaydedildi',
+        gridlayoutkayithata: 'Grid layout kayıt edilemedi !',
+        gridlayoutkaydet: 'Grid layout kaydet',
+        gridfiltretemizle: 'Filtre ve listeyi temizler',
+        filtresil: 'Kayıtlı filtre kriterlerini temizle',
+        filtresilindi: 'Kayıtlı filtre silindi',
+        filtrekaydet: 'Filtre kriterlerini sakla',
         menuler: 'Menüler',
         devreyealimuyarisi: '{0} dk içinde bakım başlıyacaktır.Lütfen işinizi sonlandırıp uygulamadan çıkınız',
         kullanmayadevamet: 'Kullanmaya devam et',

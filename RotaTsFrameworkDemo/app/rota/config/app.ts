@@ -119,7 +119,7 @@ class RotaApp implements IRotaApp {
                     selCulture = localStorage.getItem(constants.localization.ACTIVE_LANG_STORAGE_NAME),
                     initialCulture = $window.__CULTURE;
 
-                if (userCulture && userCulture !== initialCulture && common.isNullOrEmpty(selCulture)) {
+                if (userCulture && userCulture.toLowerCase() !== initialCulture.toLowerCase() && common.isNullOrEmpty(selCulture)) {
                     //store culture and reload
                     localization.currentLanguage = { code: userCulture };
                 }

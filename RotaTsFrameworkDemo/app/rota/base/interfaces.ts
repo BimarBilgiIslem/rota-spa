@@ -413,6 +413,8 @@ interface IListButtonsVisibility {
     clearButton?: boolean;
     exportButton?: boolean;
     deleteSelected?: boolean;
+    storeFilter?: boolean;
+    storeGridLayout?: boolean;
 }
 /**
  * Crud page options given through constructor

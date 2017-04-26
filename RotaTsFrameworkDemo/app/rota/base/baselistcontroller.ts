@@ -44,7 +44,9 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             searchButton: true,
             clearButton: true,
             exportButton: true,
-            deleteSelected: true
+            deleteSelected: true,
+            storeFilter: true,
+            storeGridLayout: true
         },
         storeFilterValues: false
     }
@@ -110,14 +112,23 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Filter object
      */
     public filter: TModelFilter;
+    /**
+     * Storage name for stored filter
+     */
+    private readonly filterStorageName: string;
+    /**
+     * Storage name for store grid layout
+     */
+    private readonly gridLayoutStorageName: string;
     //#endregion
     //#endregion
 
     //#region Bundle Services
-    static injects = BaseModelController.injects.concat(['uiGridConstants', 'uiGridExporterConstants', 'Caching']);
+    static injects = BaseModelController.injects.concat(['$timeout', 'uiGridConstants', 'uiGridExporterConstants', 'Caching']);
     protected uigridconstants: uiGrid.IUiGridConstants;
     protected uigridexporterconstants: uiGrid.exporter.IUiGridExporterConstants;
     protected caching: ICaching;
+    protected $timeout: ng.ITimeoutService;
     //#endregion
 
     //#region Init
@@ -148,8 +159,10 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         this.recordcountBadge.show = true;
         this.recordcountBadge.description = `${BaseListController.localizedValues.kayitsayisi} 0`;
         //init filter object 
-        this.filter = this.listPageOptions.storeFilterValues ?
-            this.caching.sessionStorage.get<TModelFilter>(this.routing.currentUrl) || <TModelFilter>{} : <TModelFilter>{};
+        this.filterStorageName = `storedfilter_${this.stateInfo.stateName}`;
+        this.gridLayoutStorageName = `storedgridlayout_${this.stateInfo.stateName}`;
+        //init filter
+        this.initFilter();
         //set grid features
         this.initGrid();
     }
@@ -162,6 +175,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         this.uigridconstants = bundle.systemBundles["uigridconstants"];
         this.uigridexporterconstants = bundle.systemBundles["uigridexporterconstants"];
         this.caching = bundle.systemBundles["caching"];
+        this.$timeout = bundle.systemBundles["$timeout"];
     }
     /**
      * Store localized value for performance issues (called in basecontroller)
@@ -393,6 +407,19 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                 selChangedFn();
             });
         }
+        //restore
+        this.$timeout(() => {
+            try {
+                const storedState = this.caching.localStorage
+                    .get<uiGrid.saveState.IGridSavedState>(this.gridLayoutStorageName);
+                if (storedState) {
+                    gridApi.saveState.restore(this.$rootScope, storedState);
+                }
+            } catch (e) {
+                this.removeGridLayout();
+                this.logger.console.error({ message: 'grid layout restoring failed' });
+            }
+        });
     }
 
     /**
@@ -401,9 +428,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     clearAll(): void {
         this.clearGrid();
         this.filter = <TModelFilter>{};
-        if (this.listPageOptions.storeFilterValues) {
-            this.caching.sessionStorage.remove(this.routing.currentUrl);
-        }
     }
     /**
      * Clear grid
@@ -444,13 +468,13 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         if (this.listPageOptions.pagingEnabled) {
             filter = angular.extend(filter, pager || this.getDefaultPagingFilter());
         }
-        //scroll
+        //scroll to grid
         scrollToElem && this.$document.duScrollToElement(scrollToElem);
         return this.initModel(filter);
     }
     //#endregion
 
-    //#region Button Clicks
+    //#region rtListButtons Button Clicks
     /**
     * Go detail state with id param provided
     * @param id
@@ -459,12 +483,9 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;
-            //store filter values if any
+            //store filter 
             if (this.listPageOptions.storeFilterValues) {
-                const purgedFilters = _.omit(this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
-                this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME]);
-                if (!_.isEmpty(purgedFilters))
-                    this.caching.sessionStorage.store(this.routing.currentUrl, purgedFilters);
+                this.saveFilter();
             }
         }
         return this.routing.go(this.listPageOptions.editState, params);
@@ -528,6 +549,79 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         });
     }
 
+    //#endregion
+
+    //#region Filter Methods
+    /**
+     * Remove filter
+     */
+    removeFilter(): void {
+        this.caching.sessionStorage.remove(this.filterStorageName);
+        this.logger.toastr.info({ message: this.localization.getLocal("rota.filtresilindi") });
+    }
+    /**
+     * Save filter values
+     */
+    saveFilter(): void {
+        const purgedFilters = _.omit(this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
+        this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME]);
+        if (!_.isEmpty(purgedFilters))
+            this.caching.sessionStorage.store(this.routing.current.name, purgedFilters);
+    }
+    /**
+     * Init filter obj
+     */
+    initFilter(): void {
+        this.filter = <TModelFilter>{};
+        //store filter
+        const urls = this.caching.localStorage.get<string[]>(this.constants.controller.STORAGE_NAME_STORED_FILTER_URL) || [];
+        if (!this.listPageOptions.storeFilterValues)
+            this.listPageOptions.storeFilterValues = urls.indexOf(this.routing.current.name) > -1;
+
+        if (this.listPageOptions.storeFilterValues) {
+            this.filter = this.caching.sessionStorage.get<TModelFilter>(this.filterStorageName) || <TModelFilter>{};
+        }
+        //watch store filter
+        this.$scope.$watch<boolean>('vm.listPageOptions.storeFilterValues',
+            (value, oldValue) => {
+                if (oldValue !== value) {
+                    const index = urls.indexOf(this.routing.current.name);
+                    if (value) {
+                        index === -1 && urls.push(this.routing.current.name);
+                    } else {
+                        index > -1 && urls.splice(index, 1);
+                    }
+
+                    if (urls.length === 0) {
+                        this.caching.localStorage.remove(this.constants.controller.STORAGE_NAME_STORED_FILTER_URL);
+                    } else {
+                        this.caching.localStorage.store(this.constants.controller.STORAGE_NAME_STORED_FILTER_URL, urls);
+                    }
+                }
+            });
+    }
+    //#endregion
+
+    //#region Layout Methods
+    /**
+     * Save grid layout
+     */
+    saveGridLayout(): void {
+        try {
+            const savedState = this.gridApi.saveState.save();
+            this.caching.localStorage.store(this.gridLayoutStorageName, savedState);
+            this.logger.toastr.info({ message: this.localization.getLocal("rota.gridlayoutkaydedildi") });
+        } catch (e) {
+            this.logger.toastr.error({ message: this.localization.getLocal("rota.gridlayoutkayithata") });
+        }
+    }
+    /**
+     * Remove stored grid layout
+     */
+    removeGridLayout(): void {
+        this.caching.localStorage.remove(this.gridLayoutStorageName);
+        this.logger.toastr.info({ message: this.localization.getLocal("rota.gridlayoutsilindi") });
+    }
     //#endregion
 }
 

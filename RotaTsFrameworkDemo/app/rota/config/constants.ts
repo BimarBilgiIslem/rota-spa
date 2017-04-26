@@ -86,7 +86,7 @@ const rotaConstants: IConstants = {
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
         GRID_FULL_FEATUTE_LIST:
         'ui-grid-selection ui-grid-pinning ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
-        GRID_STANDART_FEATURE_LIST: 'ui-grid-pagination ui-grid-exporter',
+        GRID_STANDART_FEATURE_LIST: 'ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html
@@ -153,7 +153,8 @@ const rotaConstants: IConstants = {
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         },
-        ALLOWED_AVATAR_EXTENSIONS: '.png,.jpg'
+        ALLOWED_AVATAR_EXTENSIONS: '.png,.jpg',
+        STORAGE_NAME_STORED_FILTER_URL: 'urls_stored_filters'
     },
     //Shortcuts
     shortcuts: {

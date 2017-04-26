@@ -50,7 +50,7 @@ interface IConstants {
         HEADER_NAME_LANGUAGE: string;
         HEADER_NAME_ROLE_ID: string;
         HEADER_NAME_COMPANY_ID: string;
-        AJAX_TIMER_DELAY: number
+        AJAX_TIMER_DELAY: number;
     };
     events: {
         EVENT_LOGIN_CHANGED: string;
@@ -99,6 +99,7 @@ interface IConstants {
         DEFAULT_MODAL_CONTROLLER_NAME: string;
         DEFAULT_SPINNER_OPTIONS: SpinnerOptions;
         ALLOWED_AVATAR_EXTENSIONS: string;
+        STORAGE_NAME_STORED_FILTER_URL: string;
     };
     shortcuts: { GO_TO_FIRST_ROW_OF_GRID: string };
     errors: {

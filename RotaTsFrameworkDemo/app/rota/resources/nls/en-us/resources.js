@@ -1,6 +1,15 @@
 ﻿define({
     //#region Rota
     rota: {
+        gridlayoutsilindi: 'Stored grid layout removed',
+        gridlayoutsil: 'Remove stored grid layout',
+        gridlayoutkaydedildi: 'Grid layout saved',
+        gridlayoutkayithata: 'Grid layout saving failed !',
+        gridlayoutkaydet: 'Store grid layout',
+        gridfiltretemizle: 'Clear grid and filter',
+        filtresil: 'Remove stored filter',
+        filtresilindi: 'Stored filter removed',
+        filtrekaydet: 'Store filter values',
         menuler: 'Menus',
         devreyealimuyarisi: 'Maintanence will be held in {0} mins.Please get your job done and quit',
         sayfabulunamadi: 'Page not found !',
