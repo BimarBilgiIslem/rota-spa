@@ -356,8 +356,9 @@ class Logger implements ILogger {
         this.logServices[LogServices.Notification] = new Notification(loggerconfig, $document, $timeout);
         //clear notifications when state changes for only menu states
         $rootScope.$on(constants.events.EVENT_STATE_CHANGE_SUCCESS,
-            (event: ng.IAngularEvent, toState: IRotaState) => {
-                if (!toState.isNestedState) {
+            (event: ng.IAngularEvent, toState: IRotaState, toParams: ng.ui.IStateParamsService, fromState: IRotaState) => {
+                //remove all notifications on condition that state is not nested or reload in process
+                if (!toState.isNestedState || toState.name === fromState.name) {
                     (this.logServices[LogServices.Notification] as INotification).removeAll();
                 }
             });

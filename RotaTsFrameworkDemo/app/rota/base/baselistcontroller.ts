@@ -629,7 +629,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                 //get filter with paging values
                 filter = angular.extend(filter,
                     this.getDefaultPagingFilter(1,
-                        (!this.listPageOptions.pagingEnabled || rowType === this.uigridexporterconstants.ALL) && Number.MAX_VALUE));
+                        (!this.listPageOptions.pagingEnabled || rowType === this.uigridexporterconstants.ALL) && 999999));
                 //obtain grid fields and header text for server generation
                 const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
                     curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
