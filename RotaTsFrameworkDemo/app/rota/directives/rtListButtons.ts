@@ -41,9 +41,8 @@ function listButtonsDirective() {
         '<button type="button" class="btn btn-info dropdown-toggle" uib-dropdown-toggle>' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
         '<ul class="dropdown-menu" uib-dropdown-menu>' +
-        '<li><a href i18n="rota.aktarallcsv" ng-click="vm.exportGrid(\'all\',\'csvExport\')"></a></li>' +
-        '<li><a href i18n="rota.aktarekrandakicsv" ng-click="vm.exportGrid(\'visible\',\'csvExport\')"></a></li>' +
-        '<li><a href i18n="rota.aktarsecilicsv" ng-disabled="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',\'csvExport\')"></a></li>' +
+        '<li><a href i18n="rota.aktarallexcel" ng-click="vm.exportGrid(\'all\',\'excelExport\',true)"></a></li>' +
+        '<li><a href i18n="rota.aktarekrandakiexcel" ng-click="vm.exportGrid(\'visible\',\'excelExport\',true)"></a></li>' +
         '<li role="separator" class="divider"></li>' +
         '<li><a href i18n="rota.aktarallpdf" ng-click="vm.exportGrid(\'all\',\'pdfExport\')"></a></li>' +
         '<li><a href i18n="rota.aktarekrandakipdf" ng-click="vm.exportGrid(\'visible\',\'pdfExport\')"></a></li>' +

@@ -778,7 +778,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         return this.routing.changeUrl(params);
     }
     //#endregion
-
 }
 //Export
 export { BaseCrudController }

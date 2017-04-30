@@ -82,7 +82,8 @@ class Config extends BaseConfig<IMainConfig> {
                 getById: constants.server.ACTION_NAME_GET_BY_ID,
                 getList: constants.server.ACTION_NAME_LIST,
                 getPagedList: constants.server.ACTION_NAME_PAGED_LIST,
-                save: constants.server.ACTION_NAME_SAVE
+                save: constants.server.ACTION_NAME_SAVE,
+                exportList: constants.server.ACTION_NAME_EXPORT_LIST
             },
             //Grid settings
             gridDefaultPageSize: constants.grid.GRID_DEFAULT_PAGE_SIZE,

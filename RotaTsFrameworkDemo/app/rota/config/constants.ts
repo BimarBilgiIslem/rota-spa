@@ -55,6 +55,7 @@ const rotaConstants: IConstants = {
         ACTION_NAME_GET_BY_ID: 'getmodelbyid',
         ACTION_NAME_SAVE: 'savechanges',
         ACTION_NAME_DELETE: 'deletemodelbyid',
+        ACTION_NAME_EXPORT_LIST: 'exportmodel',
         //Reporting Service
         ACTION_NAME_SET_REPORT_FILTERS: 'setReportParameters',
         ACTION_NAME_GENERATE_REPORT: 'generateReport',

@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        exporttanimsiz:'Export is not implemented',
         gridlayoutsilindi: 'Stored grid layout removed',
         gridlayoutsil: 'Remove stored grid layout',
         gridlayoutkaydedildi: 'Grid layout saved',
@@ -71,9 +72,9 @@
         hayir: 'No',
         kopyalaniyor: 'Copying',
         disariyaaktar: 'Export',
-        aktarallcsv: 'All data .csv',
-        aktarekrandakicsv: 'Visible data .csv',
-        aktarsecilicsv: 'Selected data .csv',
+        aktarallexcel: 'All data .xls',
+        aktarekrandakiexcel: 'Visible data .xls',
+        aktarseciliexcel: 'Selected data .xls',
         aktarallpdf: 'All data .pdf',
         aktarekrandakipdf: 'Visible data .pdf',
         aktarsecilipdf: 'Selected data .pdf',

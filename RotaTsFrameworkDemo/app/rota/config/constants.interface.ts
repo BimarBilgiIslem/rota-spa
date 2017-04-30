@@ -41,6 +41,7 @@ interface IConstants {
         ACTION_NAME_DEFAULT_FILE_UPLOAD: string;
         ACTION_NAME_LIST: string;
         ACTION_NAME_PAGED_LIST: string;
+        ACTION_NAME_EXPORT_LIST: string;
         ACTION_NAME_GET_BY_ID: string;
         ACTION_NAME_SAVE: string;
         ACTION_NAME_DELETE: string;

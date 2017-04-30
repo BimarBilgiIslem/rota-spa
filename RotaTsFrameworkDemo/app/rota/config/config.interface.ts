@@ -164,6 +164,7 @@ interface ICrudActionNames {
     getList: string;
     getById: string;
     getPagedList: string;
+    exportList: string;
     save: string;
     delete: string;
 }

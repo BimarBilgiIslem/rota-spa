@@ -135,6 +135,8 @@ interface IBaseCrudApi<TModel extends IBaseCrudModel> extends IBaseApi {
      * @returns {ng.IPromise<any>}
      */
     delete(id: number, controller?: string): ng.IPromise<any>;
+
+    exportList(filter?: IBaseModelFilter, controller?: string): void;
 }
 //#endregion
 
@@ -325,6 +327,14 @@ interface IPagingListModel<TModel extends IBaseCrudModel> {
      * Total record count
      */
     total?: number;
+}
+/**
+ * Used for exporting grid on server including columns meta
+ */
+interface IExportOptions {
+    _fields: Array<string>;
+    _headers: Array<string>;
+    _exportType?: string;
 }
 /**
  * Obj Enum bind type 

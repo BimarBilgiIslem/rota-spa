@@ -376,7 +376,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * @param options Grid Columns
      * @returns {uiGrid.IColumnDef} ui-grid columns definition
      */
-    abstract getGridColumns(options: IGridOptions<TModel>): uiGrid.IColumnDef[];
+    abstract getGridColumns(options: IGridOptions<TModel>): uiGrid.IColumnDefOf<TModel>[];
     /**
      * Register grid api
      * @param gridApi
@@ -440,20 +440,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      */
     clearSelectedRows(): void {
         this.gridApi.selection.clearSelectedRows();
-    }
-    /**
-     * Export grid
-     * @param {string} rowTypes which rows to export, valid values are uiGridExporterConstants.ALL,
-     * @param {string} colTypes which columns to export, valid values are uiGridExporterConstants.ALL,
-     */
-    exportGrid(rowType: string, colTypes: string): void {
-        if (rowType === "all") {
-            this.dialogs.showConfirm({ message: this.localization.getLocal("rota.tumdataexportonay") }).then((): void => {
-                this.gridApi.exporter[colTypes](rowType, this.uigridexporterconstants.ALL);
-            });
-            return;
-        }
-        this.gridApi.exporter[colTypes](rowType, this.uigridexporterconstants.ALL);
     }
     //#endregion
 
@@ -548,7 +534,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             return undefined;
         });
     }
-
     //#endregion
 
     //#region Filter Methods
@@ -623,6 +608,55 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         this.logger.toastr.info({ message: this.localization.getLocal("rota.gridlayoutsilindi") });
     }
     //#endregion
+
+    //#region Export Grid
+    /**
+    * Export grid
+    * @param {string} rowTypes which rows to export, valid values are uiGridExporterConstants.ALL,
+    * @param {string} colTypes which columns to export, valid values are uiGridExporterConstants.ALL,
+    */
+    private exportGrid(rowType: string, colTypes: string, serverRender?: boolean): void {
+        //warn user for possible delay
+        let warnDelay = this.common.promise();
+        if (rowType === this.uigridexporterconstants.ALL) {
+            warnDelay = this.dialogs.showConfirm({ message: this.localization.getLocal("rota.tumdataexportonay") });
+        }
+        //export
+        warnDelay.then(() => {
+            //server generation
+            if (serverRender) {
+                let filter: TModelFilter = this.filter;
+                //get filter with paging values
+                filter = angular.extend(filter,
+                    this.getDefaultPagingFilter(1,
+                        (!this.listPageOptions.pagingEnabled || rowType === this.uigridexporterconstants.ALL) && Number.MAX_VALUE));
+                //obtain grid fields and header text for server generation
+                const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
+                    curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
+                    if (curr.displayName) {
+                        memo._headers.push(curr.displayName);
+                        memo._fields.push(curr.field || curr.name);
+                    }
+                    return memo;
+                }, { _fields: [], _headers: [], _exportType: colTypes });
+
+                const exportModel = angular.extend(filter, gridExportMeta);
+                //call export model
+                this.onExportModel(exportModel);
+            } else {
+                this.gridApi.exporter[colTypes](rowType, this.uigridexporterconstants.ALL);
+            }
+        });
+    }
+    /**
+     * Export model 
+     * @param filter Filter
+     */
+    onExportModel(filter: TModelFilter & IExportOptions): void {
+        this.toastr.warn({ message: this.localization.getLocal("rota.exporttanimsiz") });
+    }
+    //#endregion
+
 }
 
 export { BaseListController }

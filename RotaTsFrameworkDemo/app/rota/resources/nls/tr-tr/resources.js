@@ -1,5 +1,6 @@
 ﻿define({
     rota: {
+        exporttanimsiz: 'Bu export tanımlanmamış',
         gridlayoutsilindi: 'Kayıtlı grid layout bilgisi silindi',
         gridlayoutsil: 'Kayıtlı grid layout bilgisini temizle',
         gridlayoutkaydedildi: 'Grid layout kaydedildi',
@@ -69,9 +70,9 @@
         hayir: 'Hayır',
         kopyalaniyor: 'Kopyalanıyor',
         disariyaaktar: 'Dışarıya Aktar',
-        aktarallcsv: 'Tüm data .csv',
-        aktarekrandakicsv: 'Ekrandaki data .csv',
-        aktarsecilicsv: 'Seçili data .csv',
+        aktarallexcel: 'Tüm data .xls',
+        aktarekrandakiexcel: 'Ekrandaki data .xls',
+        aktarseciliexcel: 'Seçili data .xls',
         aktarallpdf: 'Tüm data .pdf',
         aktarekrandakipdf: 'Ekrandaki data .pdf',
         aktarsecilipdf: 'Seçili data .pdf',

@@ -32,6 +32,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
     //#region Props
     $q: angular.IQService;
     $http: ng.IHttpService;
+    $httpParamSerializer: (object: any) => string;
     uploader: ng.angularFileUpload.IUploadService;
     common: ICommon;
     config: IMainConfig;
@@ -42,7 +43,8 @@ class BaseApi extends InjectableObject implements IBaseApi {
     //#endregion
 
     //#region Init
-    static injects = InjectableObject.injects.concat(['$q', '$http', 'Config', 'Common', 'Localization', 'Caching', 'Logger', 'Upload', 'Constants']);
+    static injects = InjectableObject.injects.concat(['$q', '$http', '$httpParamSerializer', 'Config', 'Common',
+        'Localization', 'Caching', 'Logger', 'Upload', 'Constants']);
     /**
    * Init bundle
    * @param bundle
@@ -51,6 +53,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
         super.initBundle(bundle);
         this.$q = bundle.systemBundles['$q'];
         this.$http = bundle.systemBundles['$http'];
+        this.$httpParamSerializer = bundle.systemBundles['$httpparamserializer'];
         this.config = bundle.systemBundles['config'];
         this.common = bundle.systemBundles['common'];
         this.localization = bundle.systemBundles['localization'];
