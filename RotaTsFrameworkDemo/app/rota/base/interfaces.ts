@@ -334,7 +334,16 @@ interface IPagingListModel<TModel extends IBaseCrudModel> {
 interface IExportOptions {
     _fields: Array<string>;
     _headers: Array<string>;
-    _exportType?: string;
+    _exportType?: ModelExports;
+    _fileName?: string;
+}
+/**
+ * Model exports
+ */
+const enum ModelExports {
+    Excel = 1,
+    Pdf = 2,
+    Csv = 4
 }
 /**
  * Obj Enum bind type 
@@ -407,6 +416,10 @@ interface IListPageOptions extends IModelPageOptions {
      * Element to scroll to after searching completed
      */
     elementToScroll?: string;
+    /**
+     * Available export types
+     */
+    modelExports?: ModelExports;
 }
 /**
  * Widget Controller options
@@ -582,13 +595,6 @@ interface ICrudPageFlags {
      * Copying flag
      */
     isCloning?: boolean;
-}
-/**
- * Navigation direction for navigation buttons on crudButtons
- */
-const enum NavigationDirection {
-    Prev,
-    Next
 }
 /**
  * Localized values for crud page

@@ -117,6 +117,12 @@ export interface IRotaApp {
      */
     run(fn: any[]): IRotaApp;
     /**
+   * Sets home page settings
+   * @param options Options
+   * @returns {IRotaApp}
+   */
+    setHomePage(options: IHomePageOptions): IRotaApp;
+    /**
      * Define a state rule providing the url
      * @description When from url is requested,go to url defined in to param
      * @param redirections List of reddirections including from and to paths

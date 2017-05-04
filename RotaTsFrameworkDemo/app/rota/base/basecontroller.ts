@@ -198,6 +198,14 @@ class BaseController extends InjectableObject implements IBaseController {
     broadcast(eventName: string, ...params: any[]): void {
         this.$scope.$broadcast(eventName, ...params);
     }
+    /**
+     * Check enum flag operation
+     * @param value Enum flags
+     * @param flag Value
+     */
+    checkEnumFlag(value: number, flag: number): boolean {
+        return !!(value & flag);
+    }
     //#endregion
 
     //#region Form methods

@@ -16,6 +16,7 @@
 
 //#region Imports
 import { BaseModelController } from "./basemodelcontroller"
+import * as s from "underscore.string";
 //#endregion
 /**
  * Base List Controller
@@ -39,6 +40,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         pagingEnabled: true,
         editState: undefined,
         showMesssage: true,
+        modelExports: ModelExports.Pdf,
         listButtonVisibility: {
             newButton: true,
             searchButton: true,
@@ -291,7 +293,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             //Data
             data: [] as Array<TModel>,
             //Pager
-            paginationPageSizes: [25, 50, 75],
+            paginationPageSizes: [25, 50, 75, 150],
             paginationPageSize: this.listPageOptions.pageSize,
             useExternalPagination: true,
             //Export
@@ -306,7 +308,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             exporterPdfDefaultStyle: { fontSize: 9 },
             exporterPdfTableStyle: { margin: [5, 5, 5, 5] },
             exporterPdfTableHeaderStyle: { fontSize: 10, bold: true, italics: true, color: 'red' },
-            exporterPdfHeader: { text: this.routing.activeMenu.name, style: 'headerStyle' },
+            exporterPdfHeader: { text: this.routing.activeMenu.localizedTitle, style: 'headerStyle' },
             exporterPdfFooter: (currentPage: number, pageCount: number) => {
                 return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
             },
@@ -329,8 +331,14 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      */
     getDefaultPagingFilter(pageIndex?: number, pageSize?: number): any {
         const filter = {};
-        filter[this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME] = pageIndex || 1;
-        filter[this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME] = pageSize || this.listPageOptions.pageSize;
+        //if paging disabled,set max values
+        if (!this.listPageOptions.pagingEnabled) {
+            pageIndex = 1, pageSize = this.constants.grid.GRID_MAX_PAGE_SIZE;
+        }
+
+        filter[this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME] = pageIndex || this.gridOptions.paginationCurrentPage || 1;
+        filter[this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME] = pageSize || this.gridOptions.paginationPageSize ||
+            this.listPageOptions.pageSize;
         return filter;
     }
     //#endregion
@@ -542,6 +550,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      */
     removeFilter(): void {
         this.caching.sessionStorage.remove(this.filterStorageName);
+        this.filter = <TModelFilter>{};
         this.logger.toastr.info({ message: this.localization.getLocal("rota.filtresilindi") });
     }
     /**
@@ -551,7 +560,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const purgedFilters = _.omit(this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
         this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME]);
         if (!_.isEmpty(purgedFilters))
-            this.caching.sessionStorage.store(this.routing.current.name, purgedFilters);
+            this.caching.sessionStorage.store(this.filterStorageName, purgedFilters);
     }
     /**
      * Init filter obj
@@ -615,7 +624,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * @param {string} rowTypes which rows to export, valid values are uiGridExporterConstants.ALL,
     * @param {string} colTypes which columns to export, valid values are uiGridExporterConstants.ALL,
     */
-    private exportGrid(rowType: string, colTypes: string, serverRender?: boolean): void {
+    private exportGrid(rowType: string, exportType: ModelExports): void {
         //warn user for possible delay
         let warnDelay = this.common.promise();
         if (rowType === this.uigridexporterconstants.ALL) {
@@ -623,28 +632,40 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         }
         //export
         warnDelay.then(() => {
-            //server generation
-            if (serverRender) {
-                let filter: TModelFilter = this.filter;
-                //get filter with paging values
-                filter = angular.extend(filter,
-                    this.getDefaultPagingFilter(1,
-                        (!this.listPageOptions.pagingEnabled || rowType === this.uigridexporterconstants.ALL) && 999999));
-                //obtain grid fields and header text for server generation
-                const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
-                    curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
-                    if (curr.displayName) {
-                        memo._headers.push(curr.displayName);
-                        memo._fields.push(curr.field || curr.name);
-                    }
-                    return memo;
-                }, { _fields: [], _headers: [], _exportType: colTypes });
+            switch (exportType) {
+                case ModelExports.Csv:
+                    this.gridApi.exporter.csvExport(rowType, this.uigridexporterconstants.ALL);
+                    break;
+                case ModelExports.Pdf:
+                    this.gridApi.exporter.pdfExport(rowType, this.uigridexporterconstants.ALL);
+                    break;
+                case ModelExports.Excel:
+                    let filter: TModelFilter = this.filter;
+                    //get filter with paging values
+                    filter = angular.extend(filter,
+                        this.getDefaultPagingFilter(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
+                    //obtain grid fields and header text for server generation
+                    const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
+                        curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
+                        if (curr.displayName) {
+                            memo._headers.push(curr.displayName);
+                            memo._fields.push((curr.field || curr.name).toLowerCase());
+                        }
+                        return memo;
+                    }, {
+                            _fields: [],
+                            _headers: [],
+                            _exportType: exportType,
+                            _fileName: `${s.slugify(this.routing.activeMenu.localizedTitle)}.xlsx`
+                        });
 
-                const exportModel = angular.extend(filter, gridExportMeta);
-                //call export model
-                this.onExportModel(exportModel);
-            } else {
-                this.gridApi.exporter[colTypes](rowType, this.uigridexporterconstants.ALL);
+                    const exportModel = angular.extend(filter, gridExportMeta);
+                    //call export model
+                    this.onExportModel(exportModel);
+                    break;
+                default:
+                    this.gridApi.exporter.pdfExport(rowType, this.uigridexporterconstants.ALL);
+                    break;
             }
         });
     }
@@ -656,7 +677,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         this.toastr.warn({ message: this.localization.getLocal("rota.exporttanimsiz") });
     }
     //#endregion
-
 }
 
 export { BaseListController }

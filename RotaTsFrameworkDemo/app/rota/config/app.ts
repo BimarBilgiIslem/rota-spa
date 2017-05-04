@@ -279,6 +279,24 @@ class RotaApp implements IRotaApp {
         return this;
     }
     /**
+    * Sets home page settings
+    * @param options Options
+    * @returns {IRotaApp}
+    */
+    setHomePage(options: IHomePageOptions): IRotaApp {
+        this.configure([
+            "$urlRouterProvider", "RouteConfigProvider", "ConfigProvider",
+            ($urlRouterProvider: ng.ui.IUrlRouterProvider, routeConfig: IRouteConfigProvider, config: IMainConfigProvider) => {
+                if (options.url) {
+                    //just redirect to home page when "/" is active state
+                    $urlRouterProvider.when("/", options.url);
+                }
+                config.config.homePageOptions = options;
+            }
+        ]);
+        return this;
+    }
+    /**
      * Define a state rule providiing the url 
      * @param redirections List of reddirections including from and to paths
      */

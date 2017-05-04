@@ -14,7 +14,7 @@
 @import url(vendor-css/hotkeys.min.css);
 @import url(vendor-css/select.min.css);
 @import url(vendor-css/datetimepicker.css);
-@import url(vendor-css/ui-grid.css);
+@import url(vendor-css/ui-grid.min.css);
 @import url(vendor-css/mfb.min.css);
 @import url(vendor-css/ng-img-crop.css);
 @import url(vendor-css/ivh-treeview.css);

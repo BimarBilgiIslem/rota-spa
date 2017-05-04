@@ -104,7 +104,8 @@ const rotaConstants: IConstants = {
         'ng-click="grid.appScope.vm.initDeleteModel(row.entity[\'id\'],row.entity)" uib-tooltip=\'Sil\'' +
         ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a>',
         GRID_PAGE_INDEX_FIELD_NAME: 'pageIndex',
-        GRID_PAGE_SIZE_FIELD_NAME: 'pageSize'
+        GRID_PAGE_SIZE_FIELD_NAME: 'pageSize',
+        GRID_MAX_PAGE_SIZE: 999999
     },
     tree: {
         //rtTree
