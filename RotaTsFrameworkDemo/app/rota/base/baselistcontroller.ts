@@ -299,7 +299,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             //Export
             exporterSuppressColumns: [],
             exporterAllDataFn: (): ng.IPromise<any> => {
-                const result = this.initSearchModel(this.getDefaultPagingFilter(1, this.gridOptions.totalItems));
+                const result = this.initSearchModel(this.getPagingFilter(1, this.gridOptions.totalItems));
                 return (result as ng.IPromise<IPagingListModel<TModel>>).then(() => {
                     this.gridOptions.useExternalPagination = false;
                 });
@@ -329,7 +329,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     /**
      * Get paging filter obj depending on params
      */
-    getDefaultPagingFilter(pageIndex?: number, pageSize?: number): any {
+    getPagingFilter(pageIndex?: number, pageSize?: number): any {
         const filter = {};
         //if paging disabled,set max values
         if (!this.listPageOptions.pagingEnabled) {
@@ -394,7 +394,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         if (this.listPageOptions.pagingEnabled) {
             gridApi.pagination.on.paginationChanged(this.$scope, (currentPage: number, pageSize: number) => {
                 if (this.gridOptions.useExternalPagination)
-                    this.initSearchModel(this.getDefaultPagingFilter(currentPage, pageSize));
+                    this.initSearchModel(this.getPagingFilter(currentPage, pageSize));
             });
         }
         //register datachanges
@@ -460,7 +460,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>> {
         let filter: TModelFilter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
-            filter = angular.extend(filter, pager || this.getDefaultPagingFilter());
+            filter = angular.extend(filter, pager || this.getPagingFilter(1));
         }
         //scroll to grid
         scrollToElem && this.$document.duScrollToElement(scrollToElem);
@@ -524,7 +524,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const confirmText = BaseListController.localizedValues.deleteselected;
         const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
-            const keyArray: number[] = _.pluck(this.gridSeletedRows, this.constants.controller.DEFAULT_MODEL_ID_FIELD_NAME);
+            const keyArray: number[] = _.pluck(this.gridSeletedRows, this.listPageOptions.pkModelFieldName);
             //call delete model
             const deleteResult = this.deleteModel(keyArray, this.gridSeletedRows);
             //removal of model depends on whether result is promise or void
@@ -643,7 +643,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                     let filter: TModelFilter = this.filter;
                     //get filter with paging values
                     filter = angular.extend(filter,
-                        this.getDefaultPagingFilter(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
+                        this.getPagingFilter(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
                     //obtain grid fields and header text for server generation
                     const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
                         curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {

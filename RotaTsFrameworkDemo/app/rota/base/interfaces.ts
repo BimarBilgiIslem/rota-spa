@@ -372,6 +372,10 @@ interface IBasePageOptions {
 */
 interface IModelPageOptions extends IBasePageOptions {
     /**
+     * Model primary key field name,default "id"
+     */
+    pkModelFieldName?: string;
+    /**
     * New item field name ,default 'new'
     */
     newItemParamValue?: string;

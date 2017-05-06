@@ -351,7 +351,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         (this.notification as INotification).removeAll(true);
         //validate and save model 
         const saveResult = this.parseAndSaveModel(options);
-        saveResult.then((model: TModel): void => {
+        saveResult.then((model: TModel & IObserableModel<TModel>): void => {
             //if it gets here,saving is completed
             //Finally run after save event
             this.afterSaveModel(options);
@@ -416,7 +416,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                         if (this.isAssigned(data.entity)) {
                             //call loadedModel
                             this.loadedModel(this.model = this.setModel(<TModel>data.entity));
-                            defer.resolve(<TModel>data.entity);
+                            defer.resolve(this.model);
                         } else {
                             defer.reject({ message: 'no model returned', logType: LogType.Warn });
                         }
@@ -710,7 +710,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         //delete prev reference 
         if (this.model) delete this._model;
         //create new obserable model 
-        const oModel = new ObserableModel(model);
+        const oModel = new ObserableModel(model, this.crudPageOptions.pkModelFieldName);
         //set model chnages event for edit mode
         if (!this.isNew) {
             //set readonly

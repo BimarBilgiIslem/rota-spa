@@ -98,10 +98,10 @@ const rotaConstants: IConstants = {
         GRID_ROW_FORMATTER_ATTR: "ng-class='grid.options.rowFormatter(row)'",
         GRID_CONTEXT_MENU_ATTR: "context-menu='contextmenu.html'",
         GRID_EDIT_BUTTON_HTML:
-        '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity)"' +
+        '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[grid.appScope.vm.listPageOptions.pkModelFieldName],row.entity)"' +
         ' uib-tooltip=\'Detay\' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a>',
         GRID_DELETE_BUTTON_HTML: '<a class="btn btn-danger btn-xs" ' +
-        'ng-click="grid.appScope.vm.initDeleteModel(row.entity[\'id\'],row.entity)" uib-tooltip=\'Sil\'' +
+        'ng-click="grid.appScope.vm.initDeleteModel(row.entity[grid.appScope.vm.listPageOptions.pkModelFieldName],row.entity)" uib-tooltip=\'Sil\'' +
         ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a>',
         GRID_PAGE_INDEX_FIELD_NAME: 'pageIndex',
         GRID_PAGE_SIZE_FIELD_NAME: 'pageSize',
