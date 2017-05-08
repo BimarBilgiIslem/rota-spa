@@ -24,6 +24,10 @@ import { ObserableModel } from "./obserablemodel";
 class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelController<TModel>
     implements IBaseModalController {
     //#region Statics,Members,Props
+    private static readonly defaultOptions: IModalPageOptions = {
+        initializeModel: true
+    }
+
     static injects = BaseModelController.injects.concat(['$uibModalInstance', 'instanceOptions']);
     /**
      * Modal instance
@@ -48,6 +52,12 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      * @returns {} 
      */
     get params(): any { return this.instanceOptions.params }
+
+    /**
+    * Modal Page options
+    * @returns {IModalPageOptions} 
+    */
+    get modalPageOptions(): IModalPageOptions { return this.options as IModalPageOptions }
     //#endregion
 
     //#region InjcetableObject
@@ -69,11 +79,24 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
     //#endregion
 
     //#region Init
-    constructor(bundle: IBundle, options?: IModalPageOptions) {
-        super(bundle, options);
-        const modalPageOptions = this.common.extend<IModalPageOptions>({ initializeModel: true }, options);
+    /**
+     * Extend crud page options with user options
+     * @param bundle Service Bundle
+     * @param options User options
+     */
+    private static extendOptions(bundle: IBundle, options?: IModalPageOptions): IModalPageOptions {
+        const instanceOptions = bundle.systemBundles["instanceoptions"] as IModalInstanceOptions;
+        const modalPageOptions: IModalPageOptions = angular.merge({}, BaseModalController.defaultOptions,
+            {
+                pkModelFieldName: instanceOptions.pkModelFieldName
+            }, options);
+        return modalPageOptions;
+    }
 
-        if (modalPageOptions.initializeModel) {
+    constructor(bundle: IBundle, options?: IModalPageOptions) {
+        super(bundle, BaseModalController.extendOptions(bundle, options));
+
+        if (this.modalPageOptions.initializeModel) {
             this.initModel();
         }
     }
@@ -109,7 +132,7 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      */
     setModel(model: TModel): TModel & IObserableModel<TModel> {
         if (!(model instanceof ObserableModel)) {
-            return <any>new ObserableModel<TModel>(model);
+            return <any>new ObserableModel<TModel>(model, this.modalPageOptions.pkModelFieldName);
         }
         return <any>model;
     }

@@ -499,11 +499,11 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             //removal of model depends on whether result is promise or void
             if (this.common.isPromise(deleteResult)) {
                 return deleteResult.then(() => {
-                    this.gridData.deleteById(id);
+                    this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === id);
                     this.gridOptions.totalItems--;
                 });
             }
-            this.gridData.deleteById(id);
+            this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === id);
             return undefined;
         });
     }
@@ -531,13 +531,13 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             if (this.common.isPromise(deleteResult)) {
                 return deleteResult.then(() => {
                     keyArray.forEach((key) => {
-                        this.gridData.deleteById(key);
+                        this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === key);
                     });
                     this.selectedcountBadge.show = false;
                 });
             }
             keyArray.forEach((key) => {
-                this.gridData.deleteById(key);
+                this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === key);
             });
             return undefined;
         });

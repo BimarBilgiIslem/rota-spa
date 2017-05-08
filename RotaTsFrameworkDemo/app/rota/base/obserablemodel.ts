@@ -26,7 +26,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     private static idField = constants.controller.DEFAULT_MODEL_ID_FIELD_NAME;
     private static modelStateField = "modelState";
     private static modifiedPropsField = "modifiedProperties";
-    private static stdFields = [ObserableModel.idField, ObserableModel.modelStateField];
+    private _stdFields = [ObserableModel.idField, ObserableModel.modelStateField];
     //#endregion
 
     //#region Standart Crud Props
@@ -158,7 +158,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         //get properties 
         const allValues = _.chain(this)
             .keys()
-            .union(ObserableModel.stdFields)
+            .union(this._stdFields)
             .filter(key => { return !_s.startsWith(key, '$$') && !_s.startsWith(key, '_') })
             .reduce((memo, curr) => {
                 if (curr === this._pkFieldName) {
@@ -189,7 +189,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
 
         if (!_.isEmpty(jsonModel) && onlyChanges) {
             jsonModel[this._pkFieldName] = this.id;
-            jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, ObserableModel.stdFields);
+            jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, this._stdFields);
         }
 
         return jsonModel as TModel;
@@ -232,7 +232,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     private initProperties(values?: IDictionary<any>): void {
         this._values = {};
         //remove standart fields
-        const purgedModel = _.omit(values || this._orginalValues, ObserableModel.stdFields);
+        const purgedModel = _.omit(values || this._orginalValues, this._stdFields);
         //define prop map 
         const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptorMap => {
             //check array
@@ -276,7 +276,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         this[`_${_pkFieldName}`] = 0;
         //replace id field name
         if (_pkFieldName !== ObserableModel.idField) {
-            ObserableModel.stdFields[0] = _pkFieldName;
+            this._stdFields[0] = _pkFieldName;
         }
         this._modelState = ModelStates.Detached;
         this._gui = _.uniqueId('model_');
