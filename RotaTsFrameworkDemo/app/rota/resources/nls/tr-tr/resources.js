@@ -1,5 +1,8 @@
 ﻿define({
     rota: {
+        tarihseciniz: 'Tarih seçiniz',
+        ayseciniz: 'Ay seçiniz',
+        yilseciniz: 'Yıl seçiniz',
         exporttanimsiz: 'Bu export tanımlanmamış',
         gridlayoutsilindi: 'Kayıtlı grid layout bilgisi silindi',
         gridlayoutsil: 'Kayıtlı grid layout bilgisini temizle',

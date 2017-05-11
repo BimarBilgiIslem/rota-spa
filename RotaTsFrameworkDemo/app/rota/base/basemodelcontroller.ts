@@ -16,7 +16,6 @@
 
 //#region Imports
 import { BaseController } from "./basecontroller"
-import constants = require('config/constants')
 //#endregion
 /**
  * This controller is used for loading the any model data remotely or localy
@@ -27,12 +26,6 @@ import constants = require('config/constants')
  * Model abstraction methods
  */
 abstract class BaseModelController<TModel extends IBaseCrudModel> extends BaseController {
-    //#region Static
-    private static readonly defaultModelPageOptions: IModelPageOptions = {
-        pkModelFieldName: constants.controller.DEFAULT_MODEL_ID_FIELD_NAME
-    }
-    //#endregion
-
     //#region Props
     protected _model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>;
     modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
@@ -46,7 +39,7 @@ abstract class BaseModelController<TModel extends IBaseCrudModel> extends BaseCo
 
     //#region Init
     constructor(bundle: IBundle, options?: IModelPageOptions) {
-        super(bundle, angular.extend(BaseModelController.defaultModelPageOptions, options));
+        super(bundle, options);
     }
     /**
     * Update bundle

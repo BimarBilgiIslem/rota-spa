@@ -499,11 +499,11 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             //removal of model depends on whether result is promise or void
             if (this.common.isPromise(deleteResult)) {
                 return deleteResult.then(() => {
-                    this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === id);
+                    this.gridData.deleteById(id);
                     this.gridOptions.totalItems--;
                 });
             }
-            this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === id);
+            this.gridData.deleteById(id);
             return undefined;
         });
     }
@@ -524,20 +524,20 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const confirmText = BaseListController.localizedValues.deleteselected;
         const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
-            const keyArray: number[] = _.pluck(this.gridSeletedRows, this.listPageOptions.pkModelFieldName);
+            const keyArray: number[] = _.pluck(this.gridSeletedRows, 'id');
             //call delete model
             const deleteResult = this.deleteModel(keyArray, this.gridSeletedRows);
             //removal of model depends on whether result is promise or void
             if (this.common.isPromise(deleteResult)) {
                 return deleteResult.then(() => {
                     keyArray.forEach((key) => {
-                        this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === key);
+                        this.gridData.deleteById(key);
                     });
                     this.selectedcountBadge.show = false;
                 });
             }
             keyArray.forEach((key) => {
-                this.gridData.delete(item => item[this.listPageOptions.pkModelFieldName] === key);
+                this.gridData.deleteById(key);
             });
             return undefined;
         });

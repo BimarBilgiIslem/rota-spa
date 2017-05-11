@@ -160,10 +160,6 @@ interface IModalInstanceOptions {
      * Optional services to be injected 
      */
     services?: string[];
-    /**
-     * Primary Key field name of model
-     */
-    pkModelFieldName?: string;
 }
 /**
  * Modal options

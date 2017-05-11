@@ -25,6 +25,8 @@ import * as moment from "moment";
 export interface IDateTimeDirectiveAttrs extends ng.IAttributes {
     dateFormat: "day" | "time" | "month" | "year";
     minuteStep: number;
+    placeholder: string;
+    phI18n: string;
 }
 /**
  * Datetime scope
@@ -42,9 +44,12 @@ interface IDatetimeScope extends ng.IScope {
 //#endregion
 
 //#region Ui-DateTime wrapper
-function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConfig, common: ICommon, constants: IConstants) {
+function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConfig,
+    common: ICommon, constants: IConstants, localization: ILocalization) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IDateTimeDirectiveAttrs) {
         //#region DOM manupulations
+        let phReskey = 'rota.tarihseciniz';
+
         const $input = $('input', cElement),
             $datetimepicker = $('datetimepicker', cElement),
             minStep = cAttrs.minuteStep || config.datetimeFormat.datePickerTimeMinStep;
@@ -65,15 +70,19 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
             case "month":
                 startView = minView = "month";
                 format = config.datetimeFormat.monthFormat;
+                phReskey = 'rota.ayseciniz';
                 break;
             case "year":
                 startView = minView = "year";
                 format = config.datetimeFormat.yearFormat;
+                phReskey = 'rota.yilseciniz';
                 break;
         }
         //set formats
         $datetimepicker.attr('data-datetimepicker-config', `{startView:'${startView}',minView:'${minView}',minuteStep:${minStep}}`);
         $input.attr('data-date-time-input', format);
+        //placeholder
+        $input.attr('placeholder', (cAttrs.placeholder || localization.getLocal(cAttrs.phI18n || phReskey)));
         //#endregion
 
         return (scope: IDatetimeScope, element: ng.IAugmentedJQuery, attrs: IDateTimeDirectiveAttrs, modelCtrl: ng.INgModelController): void => {
@@ -234,7 +243,7 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
     //#endregion
 }
 //#region Injections
-dateTimePickerDirective.$inject = ['$timeout', 'Config', 'Common', 'Constants'];
+dateTimePickerDirective.$inject = ['$timeout', 'Config', 'Common', 'Constants', 'Localization'];
 //#endregion
 //#endregion
 

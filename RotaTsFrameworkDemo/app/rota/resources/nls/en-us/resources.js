@@ -1,7 +1,10 @@
 ﻿define({
     //#region Rota
     rota: {
-        exporttanimsiz:'Export is not implemented',
+        tarihseciniz: 'Choose a date',
+        ayseciniz: 'Choose a month',
+        yilseciniz: 'Choose a year',
+        exporttanimsiz: 'Export is not implemented',
         gridlayoutsilindi: 'Stored grid layout removed',
         gridlayoutsil: 'Remove stored grid layout',
         gridlayoutkaydedildi: 'Grid layout saved',

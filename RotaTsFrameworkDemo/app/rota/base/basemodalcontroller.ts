@@ -85,11 +85,7 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      * @param options User options
      */
     private static extendOptions(bundle: IBundle, options?: IModalPageOptions): IModalPageOptions {
-        const instanceOptions = bundle.systemBundles["instanceoptions"] as IModalInstanceOptions;
-        const modalPageOptions: IModalPageOptions = angular.merge({}, BaseModalController.defaultOptions,
-            {
-                pkModelFieldName: instanceOptions.pkModelFieldName
-            }, options);
+        const modalPageOptions: IModalPageOptions = angular.merge({}, BaseModalController.defaultOptions, options);
         return modalPageOptions;
     }
 
@@ -132,9 +128,9 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      */
     setModel(model: TModel): TModel & IObserableModel<TModel> {
         if (!(model instanceof ObserableModel)) {
-            return <any>new ObserableModel<TModel>(model, this.modalPageOptions.pkModelFieldName);
+            return new ObserableModel<TModel>(model) as any;
         }
-        return <any>model;
+        return model as any;
     }
     //#endregion
 }

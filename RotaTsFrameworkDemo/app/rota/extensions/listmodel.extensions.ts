@@ -161,7 +161,7 @@ Array.prototype["add"] = function (model: IBaseCrudModel | IObserableModel<IBase
  * Register callback event for all collection changes
  * @param callback Callback method
  */
-Array.prototype["subscribeCollectionChanged"] = function (callback: IModelCollectionChangedEvent, includeAllChanges?: boolean): void {
+Array.prototype["subscribeCollectionChanged"] = function (callback: IModelCollectionChangedEvent): void {
     if (!this._collectionChangedEvents) this._collectionChangedEvents = [];
     this._collectionChangedEvents.push(callback);
 }

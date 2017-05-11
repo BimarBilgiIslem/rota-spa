@@ -190,11 +190,6 @@ interface IBaseCrudModel extends IBaseModel {
  */
 interface IObserableModel<TModel extends IBaseCrudModel> extends IBaseCrudModel {
     /**
-     * Extend model 
-     * @param source Source model 
-     */
-    extendModel?: (source: TModel) => void;
-    /**
       * Restore model to orginal values
       */
     revertOriginal?: () => void;
@@ -371,10 +366,6 @@ interface IBasePageOptions {
 * BaseModelPage options
 */
 interface IModelPageOptions extends IBasePageOptions {
-    /**
-     * Model primary key field name,default "id"
-     */
-    pkModelFieldName?: string;
     /**
     * New item field name ,default 'new'
     */

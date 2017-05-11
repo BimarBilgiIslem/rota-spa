@@ -151,7 +151,7 @@
                             }
 
                             menu.css({
-                                position: 'fixed',
+                                position: 'absolute',
                                 top: 0,
                                 left: 0,
                                 transform: $interpolate('translate({{x}}px, {{y}}px)')({

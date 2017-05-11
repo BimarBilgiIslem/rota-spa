@@ -17,23 +17,23 @@
 import * as _ from "underscore";
 import * as _s from "underscore.string";
 import * as moment from "moment";
-import constants = require('config/constants')
 /**
  * Obserablemodel responsible for tracking property changes and managing modelState algorithm
  */
 class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IObserableModel<TModel> {
     //#region Statics
-    private static idField = constants.controller.DEFAULT_MODEL_ID_FIELD_NAME;
+    private static idField = "id";
     private static modelStateField = "modelState";
     private static modifiedPropsField = "modifiedProperties";
-    private _stdFields = [ObserableModel.idField, ObserableModel.modelStateField];
+    private static stdFields = [ObserableModel.idField, ObserableModel.modelStateField];
     //#endregion
 
     //#region Standart Crud Props
-    get id(): number { return this[`_${this._pkFieldName}`] }
+    private _id: number;
+    get id(): number { return this._id }
     set id(value: number) {
         if (this._readonly) return;
-        this[`_${this._pkFieldName}`] = value;
+        this._id = value;
     }
 
     private _modelState: ModelStates;
@@ -46,7 +46,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
 
         switch (value) {
             case ModelStates.Added:
-                this._values[this._pkFieldName] = 0;
+                this._values[ObserableModel.idField] = 0;
                 break;
             case ModelStates.Deleted:
                 if (oldState === ModelStates.Detached) return;
@@ -54,8 +54,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
                     value = ModelStates.Detached;
                     break;
                 }
-                if (this._values[this._pkFieldName] === 0)
-                    throw new Error(`id must be valid when state set to deleted ${this._pkFieldName}`);
+                if (this._values[ObserableModel.idField] === 0)
+                    throw new Error("id must be valid when state set to deleted");
                 //set all child models state
                 _.each(this._values, (childItem): void => {
                     if (_.isArray(childItem)) {
@@ -113,16 +113,6 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         return value;
     }
     /**
-     * Extend model with source param 
-     * @param source Source Model
-     */
-    extendModel(source: IObserableModel<TModel>): void {
-        this[`_${this._pkFieldName}`] = source[`_${this._pkFieldName}`];
-        this._modelState = source.modelState;
-        this.initProperties(source.toJson());
-        this.fireDataChangedEvent(this.modelState);
-    }
-    /**
      * Remove item setting Deleted state
      */
     remove(): void {
@@ -158,14 +148,10 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         //get properties 
         const allValues = _.chain(this)
             .keys()
-            .union(this._stdFields)
+            .union(ObserableModel.stdFields)
             .filter(key => { return !_s.startsWith(key, '$$') && !_s.startsWith(key, '_') })
             .reduce((memo, curr) => {
-                if (curr === this._pkFieldName) {
-                    memo[curr] = this.id;
-                } else {
-                    memo[curr] = this[curr];
-                }
+                memo[curr] = this[curr];
                 return memo;
             }, {})
             .value();
@@ -188,8 +174,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         });
 
         if (!_.isEmpty(jsonModel) && onlyChanges) {
-            jsonModel[this._pkFieldName] = this.id;
-            jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, this._stdFields);
+            jsonModel[ObserableModel.idField] = this.id;
+            jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, ObserableModel.stdFields);
         }
 
         return jsonModel as TModel;
@@ -229,15 +215,20 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      * Set all literal props to property
      * @param crudModel
      */
-    private initProperties(values?: IDictionary<any>): void {
+    private initProperties(): void {
         this._values = {};
+        //set standart field
+        if (this._orginalValues[ObserableModel.idField])
+            this._id = this._orginalValues[ObserableModel.idField];
+        if (this._orginalValues[ObserableModel.modelStateField])
+            this._modelState = this._orginalValues[ObserableModel.modelStateField];
         //remove standart fields
-        const purgedModel = _.omit(values || this._orginalValues, this._stdFields);
+        const purgedModel = _.omit(this._orginalValues, ObserableModel.stdFields);
         //define prop map 
         const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptorMap => {
             //check array
             if (_.isArray(value)) {
-                const subModels = ([] as IBaseListModel<IBaseCrudModel>);
+                const subModels: IBaseListModel<IBaseCrudModel> = [];
                 _.each<IBaseCrudModel>(value, jModel => { subModels.add(new ObserableModel(jModel)) });
                 this._values[key] = subModels;
             } else {
@@ -270,14 +261,10 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         Object.defineProperties(this, modelPropsMap);
     }
 
-    constructor(initialValues?: any, private _pkFieldName: string = ObserableModel.idField) {
+    constructor(initialValues?: any) {
         super();
         //set initial values
-        this[`_${_pkFieldName}`] = 0;
-        //replace id field name
-        if (_pkFieldName !== ObserableModel.idField) {
-            this._stdFields[0] = _pkFieldName;
-        }
+        this._id = 0;
         this._modelState = ModelStates.Detached;
         this._gui = _.uniqueId('model_');
         this._values =
@@ -286,15 +273,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         this.__readonly = false;
 
         if (!initialValues) return;
-
-        this._orginalValues = (initialValues instanceof ObserableModel) ?
-            (initialValues as IObserableModel<TModel>).toJson() : initialValues;
-
-        if (initialValues[_pkFieldName])
-            this[`_${_pkFieldName}`] = initialValues[_pkFieldName];
-        if (initialValues[ObserableModel.modelStateField])
-            this._modelState = initialValues[ObserableModel.modelStateField];
-
+        this._orginalValues = initialValues instanceof ObserableModel ? initialValues.toJson() : initialValues;
+        //init
         this.initProperties();
     }
     //#endregion

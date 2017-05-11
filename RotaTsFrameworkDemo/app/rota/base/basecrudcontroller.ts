@@ -707,27 +707,14 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param model
      */
     setModel(model: TModel): TModel & IObserableModel<TModel> {
-        //delete prev reference 
-        if (this.model) delete this._model;
         //create new obserable model 
-        const oModel = new ObserableModel(model, this.crudPageOptions.pkModelFieldName);
-        //set model chnages event for edit mode
-        if (!this.isNew) {
-            //set readonly
-            oModel._readonly = this.crudPageOptions.readOnly;
-            //track prop changes
-            oModel.subscribeDataChanged((): void => {
-                this.isModelDirty =
-                    this.dirtyBadge.show = true;
-            });
-        }
-        return (oModel) as any;
+        return new ObserableModel<TModel>(model) as any;
     }
     /**
      * Do some stuff after model loaded
      * @param model Model
      */
-    loadedModel(model: TModel): void {
+    loadedModel(model: TModel & IObserableModel<TModel>): void {
         super.loadedModel(model);
         //model not found in edit mode
         if (!this.isNew && !this.isAssigned(model)) {
@@ -740,7 +727,16 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             this.toastr.info({ message: BaseCrudController.localizedValues.kayitkopyalandi });
             this.cloningBadge.show = true;
         }
-        this.resetForm(model);
+        //set model chnages event for edit mode
+        if (!this.isNew) {
+            //set readonly
+            model._readonly = this.crudPageOptions.readOnly;
+            //track prop changes
+            model.subscribeDataChanged((): void => {
+                this.isModelDirty =
+                    this.dirtyBadge.show = true;
+            });
+        }
         //autoSave process
         if (this.crudPageOptions.autoSave && !this.crudPageOptions.readOnly)
             this.startAutoSave();
@@ -748,6 +744,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         if (this.crudPageOptions.readOnly && !this.isNew) {
             this.logger.notification.info({ message: BaseCrudController.localizedValues.okumamoduuyari });
         }
+        //reset form
+        this.resetForm(model);
     }
     /**
     * @abstract Get model
