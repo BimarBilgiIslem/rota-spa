@@ -18,6 +18,7 @@
 //http://stackoverflow.com/a/36201892/1016147
 function draggableModalDirective() {
     function link($scope: ng.IScope, element: ng.IAugmentedJQuery): void {
+        const canmaximized = element.parent().hasClass('canmaximized');
         var draggableStr = "draggableModal";
         var header = $(".modal-header", element);
 
@@ -34,6 +35,13 @@ function draggableModalDirective() {
                 modalDialog.removeClass(draggableStr);
             });
         });
+
+        if (canmaximized) {
+            header.on('dblclick',
+                () => {
+                    element.parent().toggleClass('modal-fullscreen');
+                });
+        }
     }
 
     //#region Directive Definition

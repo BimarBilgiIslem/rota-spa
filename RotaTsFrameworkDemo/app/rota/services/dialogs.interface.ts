@@ -160,6 +160,10 @@ interface IModalInstanceOptions {
      * Optional services to be injected 
      */
     services?: string[];
+    /**
+     * Converts obj to obserable model
+     */
+    convertToObserableModel?: boolean;
 }
 /**
  * Modal options
@@ -190,6 +194,14 @@ interface IModalOptions extends ng.ui.bootstrap.IModalSettings {
      * Optional suffix of modal window class. The value used is appended to the `modal-` class, i.e. a value of `sm` gives `modal-sm`.
      */
     size?: 'sm' | 'md' | 'lg';
+    /**
+     * Modal will be opened at window size on init
+     */
+    isMaximized?: boolean;
+    /**
+     * Modal is able to be maximized by double-clicking the header
+     */
+    canMaximized?: boolean;
     /**
      * Set if you'd like to the modal appear at the left or right sides,default false
      */

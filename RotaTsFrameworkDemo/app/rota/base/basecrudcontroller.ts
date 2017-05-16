@@ -204,10 +204,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             (!this.common.isDefined(this.$stateParams.readonly) || this.$stateParams.readonly);
         //set form is new/edit mode
         this.isNew = this.id === this.crudPageOptions.newItemParamValue;
-        //register catch changes
-        if (this.crudPageOptions.checkDirtyOnExit) {
-            this.registerDirtyCheckEvent();
-        }
         //initialize getting model
         this.initModel();
     }
@@ -220,35 +216,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         this.$interval = bundle.systemBundles["$interval"];
         this.$timeout = bundle.systemBundles["$timeout"];
         this.caching = bundle.systemBundles["caching"];
-    }
-    /**
-     * Register event that catch model dirty while quiting
-     */
-    private registerDirtyCheckEvent(): void {
-        this.on(this.constants.events.EVENT_STATE_CHANGE_START,
-            (event: ng.IAngularEvent, toState: IRotaState, toParams: ng.ui.IStateParamsService, fromState: IRotaState) => {
-                const menu = this.routing.getActiveMenu(toState);
-                if (menu !== this.routing.activeMenu && this.isModelDirty &&
-                    this.model.modelState !== ModelStates.Deleted && this.isFormValid) {
-                    event.preventDefault();
-                    this.dialogs.showConfirm({
-                        message:
-                        BaseCrudController.localizedValues.crudonay,
-                        cancelText: BaseCrudController.localizedValues.onayHayir,
-                        okText: BaseCrudController.localizedValues.onayEvet
-                    }).then(() => {
-                        //save and go to state
-                        this.initSaveModel().then(() => {
-                            this.routing.go(toState.name, toParams);
-                        });
-                    }).catch((reason: string) => {
-                        if (reason !== 'dismiss') {
-                            this.resetForm();
-                            this.routing.go(toState.name, toParams);
-                        }
-                    });
-                }
-            });
     }
     /**
      * Store localized value for performance issues (called in basecontroller)
@@ -639,6 +606,38 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     //#endregion
 
     //#region BaseController
+    /**
+    * Register event that catch model dirty while quiting
+    */
+    onExit(event: angular.IAngularEvent,
+        toState: IRotaState,
+        toParams: angular.ui.IStateParamsService,
+        fromState: IRotaState): void {
+        if (!this.crudPageOptions.checkDirtyOnExit) return;
+        //check form is valid
+        if (this.isFormValid && this.isModelDirty && this.model.modelState !== ModelStates.Deleted) {
+            //stop state exiting
+            event.preventDefault();
+            //confirm save changes 
+            this.dialogs.showConfirm({
+                message:
+                BaseCrudController.localizedValues.crudonay,
+                cancelText: BaseCrudController.localizedValues.onayHayir,
+                okText: BaseCrudController.localizedValues.onayEvet
+            }).then(() => {
+                //save and go to state
+                this.initSaveModel().then(() => {
+                    this.routing.go(toState.name, toParams);
+                });
+            }).catch((reason: string) => {
+                //no action when closed by clicking cross sign
+                if (reason !== 'dismiss') {
+                    this.resetForm();
+                    this.routing.go(toState.name, toParams);
+                }
+            });
+        }
+    }
     /**
     * Form invalid flag changes
     * @param invalidFlag Invalid flag of main form

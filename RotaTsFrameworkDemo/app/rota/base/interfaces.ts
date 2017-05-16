@@ -34,6 +34,14 @@ interface IBaseConfigProvider<TConfig extends IBaseConfig> {
  * Dummy Base controller inhereted by all controller types
  */
 interface IBaseController {
+    /**
+     * Called while menu is being changed
+     * @param event Event
+     * @param toState State to transition
+     * @param toParams State params
+     * @param fromState Stata from which transition
+     */
+    onExit?: (event: ng.IAngularEvent, toState: IRotaState, toParams: ng.ui.IStateParamsService, fromState: IRotaState) => void;
 }
 /**
  * Model controller interface

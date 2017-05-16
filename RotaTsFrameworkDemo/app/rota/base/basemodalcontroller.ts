@@ -110,7 +110,9 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      * Close modal with dismiss
      */
     closeModal(): void {
-        this.model.revertOriginal();
+        if (this.instanceOptions.convertToObserableModel) {
+            this.model.revertOriginal();
+        }
         this.$uibModalInstance.dismiss(this.model);
     }
     //#endregion
@@ -119,7 +121,7 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
     /**
      * Get model
      */
-    getModel(): TModel {
+    getModel(): ng.IPromise<TModel> | TModel {
         return this.instanceOptions.model;
     }
     /**
@@ -127,7 +129,10 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      * @param model Literal model
      */
     setModel(model: TModel): TModel & IObserableModel<TModel> {
-        if (!(model instanceof ObserableModel)) {
+        if (model instanceof ObserableModel) {
+            return model as any;
+        }
+        if (this.instanceOptions.convertToObserableModel) {
             return new ObserableModel<TModel>(model) as any;
         }
         return model as any;

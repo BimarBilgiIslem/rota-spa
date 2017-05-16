@@ -670,7 +670,7 @@ var config = ($provide: ng.auto.IProvideService,
     });
     //Sticky mode log monitoring
     $stickyStateProvider.enableDebug(false);
-
+    //Enable Html5 mode
     $locationProvider.html5Mode(true);
 }
 config.$inject = ['$provide', '$stateProvider', '$urlRouterProvider', '$stickyStateProvider', '$locationProvider', 'Constants'];

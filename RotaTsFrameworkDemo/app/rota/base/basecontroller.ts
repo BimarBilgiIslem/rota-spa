@@ -115,6 +115,19 @@ class BaseController extends InjectableObject implements IBaseController {
         //init 
         this.events = [];
         this.on("$destroy", this.destroy.bind(this));
+        //hook on state exiting
+        if (this.isAssigned((this as IBaseController).onExit)) {
+            this.on(this.constants.events.EVENT_STATE_CHANGE_START,
+                (event: ng.IAngularEvent,
+                    toState: IRotaState,
+                    toParams: ng.ui.IStateParamsService,
+                    fromState: IRotaState) => {
+                    const menu = this.routing.getActiveMenu(toState);
+                    if (menu !== this.routing.activeMenu) {
+                        (this as IBaseController).onExit(event, toState, toParams, fromState);
+                    }
+                });
+        }
         //save localization
         this.storeLocalization();
         //Scroll

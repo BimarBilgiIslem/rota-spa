@@ -7669,7 +7669,7 @@ ul.contextmenu {
   .modal .modal-footer {
     border-top: none; }
   .modal.viewport .modal-body {
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 165px);
     overflow-y: auto; }
   .modal.left .modal-dialog,
   .modal.right .modal-dialog {
@@ -7706,6 +7706,17 @@ ul.contextmenu {
     transition: opacity 0.3s linear, right 0.3s ease-out; }
   .modal.right.fade.in .modal-dialog {
     right: 0; }
+  .modal.modal-fullscreen .modal-dialog {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    left: 0 !important;
+    top: 0 !important; }
+  .modal.modal-fullscreen .modal-content {
+    height: auto;
+    min-height: 100%;
+    border-radius: 0; }
 
 .rt-callout {
   position: absolute;

@@ -54,13 +54,19 @@ class Dialogs implements IDialogs {
             backdrop: 'static',
             size: 'md',
             animation: false,
+            isMaximized: false,
+            viewPortSize: false,
+            canMaximized: false,
             bindToController: true,
             controllerAs: this.constants.routing.CONTROLLER_ALIAS_NAME,
             templateUrl: '',
-            windowClass: ''
+            windowClass: '',
+            instanceOptions: {
+                convertToObserableModel: true
+            }
         }
         //merge default options
-        const modalOptions: IModalOptions = angular.extend(defaultModalOptions, options, { templateUrl: templateFilePath });
+        const modalOptions: IModalOptions = angular.merge(defaultModalOptions, options, { templateUrl: templateFilePath });
         //sidebar
         if (options.isSideBar) {
             modalOptions.windowClass += ` ${options.sideBarPosition || "left"}`;
@@ -70,6 +76,20 @@ class Dialogs implements IDialogs {
         if (options.viewPortSize) {
             modalOptions.windowClass += " viewport";
         }
+        //fullscreen
+        if (options.isMaximized) {
+            modalOptions.windowClass += " modal-fullscreen";
+        }
+
+        if ((options.isMaximized || options.canMaximized) && options.isSideBar) {
+            throw new Error("sidebar and maximized features can not be used at the same time");
+        }
+
+        //can be toggled to maximized
+        if (options.canMaximized) {
+            modalOptions.windowClass += " canmaximized";
+        }
+
         //resolve data
         modalOptions.resolve = {
             instanceOptions: () => modalOptions.instanceOptions,

@@ -145,7 +145,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             {
                 newItemParamName: configService.defaultNewItemParamName,
                 pageSize: configService.gridDefaultPageSize,
-                elementToScroll: `grid_${configService.gridDefaultOptionsName}`
+                elementToScroll: window.__IS_TOUCHABLE && `grid_${configService.gridDefaultOptionsName}`
             }, options);
         return listOptions;
     }

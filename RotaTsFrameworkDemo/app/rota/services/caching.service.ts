@@ -14,120 +14,56 @@
  * limitations under the License.
  */
 
-//#region Cachers
+//#region Storage Class
 /**
- * LocalStorage 
+ * Generic cachers class
  */
-class LocalStorage implements ICacher {
-    constructor(private logger: ILogger, private storage: Storage) { }
+class Storage implements ICacher {
 
-    get isAvailable(): boolean { return !!this.storage; }
+    constructor(private storage: IStorage, private base64?: IBase64) { }
 
-    get<TModel extends IBaseModel>(key: string): TModel {
-        let data = this.storage.getItem(key);
-        if (data) {
-            const model = JSON.parse(data);
-            this.logger.console.log({ message: 'localstorage cache restored with key ' + key, data: model });
-            return model as TModel;
+    get<TModel extends IBaseModel>(key: string, defaultValue?: TModel): TModel {
+        try {
+            const data = this.storage.getItem(key);
+            if (data) {
+                const decoded = this.base64 ? this.base64.decode(data) : data;
+                const model = JSON.parse(decoded);
+                this.log(`${key} retrived from storage`, model);
+                return model as TModel;
+            }
+        } catch (e) {
+            this.log(key + " can not be retrived from storage.", e);
+            //remove if failed
+            this.remove(key);
+            return defaultValue;
         }
-        return null;
+        return defaultValue;
     }
 
-    store(key: string, value: any): void {
-        const strData: string = JSON.stringify(value);
-        this.storage.setItem(key, strData);
-        this.logger.console.log({ message: 'localstorage cache created with key ' + key, data: value });
+    store<TModel extends IBaseModel>(key: string, value: TModel): void {
+        if (value === undefined || value === null) {
+            this.log(`${key} not stored due to undefined or null`);
+            return;
+        };
+        try {
+            const strData: string = JSON.stringify(value);
+            this.storage.setItem(key, this.base64 ? this.base64.encode(strData) : strData);
+            this.log(`${key} stored`, value);
+        } catch (e) {
+            this.log(`${key} can not be stored`, e);
+        }
     }
 
     remove(key: string): void {
         this.storage.removeItem(key);
-        this.logger.console.log({ message: 'localstorage cache removed with key ' + key });
+        this.log(`${key} removed`);
     }
+
+    log(message: string, data?: any): void { }
+
+    get isAvailable(): boolean { return !!this.storage.setItem }
 }
-/**
- * Session Storage
- */
-class SessionStorage implements ICacher {
-    constructor(private logger: ILogger, private storage: Storage) { }
 
-    get isAvailable(): boolean { return !!this.storage; }
-
-    get<TModel extends IBaseModel>(key: string): TModel {
-        let data = this.storage.getItem(key);
-        if (data) {
-            const model = JSON.parse(data);
-            this.logger.console.log({ message: 'sessionstorage cache restored with key ' + key, data: model });
-            return model as TModel;
-        }
-        return null;
-    }
-
-    store(key: string, value: any): void {
-        const strData: string = JSON.stringify(value);
-        this.storage.setItem(key, strData);
-        this.logger.console.log({ message: 'sessionstorage cache created with key ' + key, data: value });
-    }
-
-    remove(key: string): void {
-        this.storage.removeItem(key);
-        this.logger.console.log({ message: 'sessionstorage cache removed with key ' + key });
-    }
-}
-/**
- * Cache Storage
- */
-class CacheStorage implements ICacher {
-
-    constructor(private logger: ILogger, private cacheObject: ng.ICacheObject) { }
-
-    get isAvailable(): boolean { return !!this.cacheObject; }
-
-    get<TModel extends IBaseModel>(key: string): TModel {
-        const data = this.cacheObject.get<TModel>(key);
-        if (data) {
-            this.logger.console.log({ message: 'cachestorage cache restored with key ' + key, data: data });
-            return data;
-        }
-        return null;
-    }
-
-    store(key: string, value: any): void {
-        this.cacheObject.put(key, value);
-        this.logger.console.log({ message: 'cachestorage cache created with key ' + key, data: value });
-    }
-
-    remove(key: string): void {
-        this.cacheObject.remove(key);
-        this.logger.console.log({ message: 'cachestorage cache removed with key ' + key });
-    }
-}
-/**
- * Cookie Storage
- */
-class CookieStorage implements ICacher {
-
-    constructor(private logger: ILogger, private cookies: angular.cookies.ICookiesService) { }
-
-    get isAvailable(): boolean { return !!this.cookies; }
-
-    get<TModel extends IBaseModel>(key: string): TModel {
-        let data: any = this.cookies.get(key);
-        if (data) {
-            data = JSON.parse(data);
-            return data;
-        }
-        return null;
-    }
-
-    store(key: string, value: any): void {
-        const strData: string = JSON.stringify(value);
-        this.cookies.put(key, strData);
-    }
-
-    remove(key: string): void {
-        this.cookies.remove(key);
-    }
-}
 //#endregion
 
 //#region Caching Service
@@ -149,16 +85,28 @@ class Caching implements ICaching {
     //#endregion
 
     //#region Init
-    static $inject = ['$window', '$cacheFactory', '$cookies', 'Logger'];
+    static $inject = ['$window', '$cacheFactory', '$cookies', 'Logger', 'Base64', 'Config'];
     constructor($window: ng.IWindowService, $cacheFactory: ng.ICacheFactoryService,
-        $cookies: angular.cookies.ICookiesService, logger: ILogger) {
+        $cookies: angular.cookies.ICookiesService, logger: ILogger, base64: IBase64, config: IMainConfig) {
         this.cachers = {};
-        this.cachers[CacherType.CacheStorage] = new CacheStorage(logger, $cacheFactory(Caching.cacheId));
-        this.cachers[CacherType.LocalStorage] = new LocalStorage(logger, $window.localStorage);
-        this.cachers[CacherType.SessionStorage] = new SessionStorage(logger, $window.sessionStorage);
-        this.cachers[CacherType.CookieStorage] = new CookieStorage(logger, $cookies);
+        //define cachers
+        const encoder = config.encodeStorageValues && base64;
+        this.cachers[CacherType.LocalStorage] = new Storage($window.localStorage, encoder);
+        this.cachers[CacherType.SessionStorage] = new Storage($window.sessionStorage, encoder);
+        const cacheFactory = $cacheFactory(Caching.cacheId);
+        this.cachers[CacherType.CacheStorage] = new Storage({
+            getItem: cacheFactory.get,
+            setItem: cacheFactory.put,
+            removeItem: cacheFactory.remove
+        }, encoder);
+        this.cachers[CacherType.CookieStorage] = new Storage({
+            getItem: $cookies.get,
+            setItem: $cookies.put,
+            removeItem: $cookies.remove
+        }, encoder);
         //fallback to cookiestorage
         for (let i = CacherType.LocalStorage; i <= CacherType.CookieStorage; i++) {
+            this.cachers[i].log = (message, data) => logger.console.log({ message: message, data: data });
             if (!this.cachers[i].isAvailable) {
                 this.cachers[i] = this.cookieStorage;
             }
@@ -173,4 +121,4 @@ var module: ng.IModule = angular.module('rota.services.caching', []);
 module.service('Caching', Caching);
 //#endregion
 
-export {Caching}
+export { Caching }

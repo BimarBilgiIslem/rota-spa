@@ -23,7 +23,7 @@ interface ICacher {
      * @param key Cache key 
      * @returns {TModel} 
      */
-    get<TModel extends IBaseModel>(key: string): TModel;
+    get<TModel extends IBaseModel>(key: string, defaultValue?: TModel): TModel;
     /**
      * Store cache by key 
      * @param key Key value
@@ -36,9 +36,20 @@ interface ICacher {
      */
     remove(key: string): void;
     /**
+     * Log caching
+     * @param message 
+     */
+    log(message: string, data?: any): void;
+    /**
      * Returns implemented storage type is available
      */
     isAvailable: boolean;
+}
+
+interface IStorage {
+    getItem(key: string): string | null;
+    removeItem(key: string): void;
+    setItem(key: string, data: string): void;
 }
 /**
  * Caching service

@@ -300,6 +300,10 @@ interface IMainConfig extends IBaseConfig {
      * Max file upload size,edfault 20 MB
      */
     maxFileUploadSize?: string;
+    /**
+    * Encodes all storages values with Base64 encoding,default true for prod
+    */
+    encodeStorageValues?: boolean;
 }
 /**
  * Main config provider

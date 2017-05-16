@@ -26,7 +26,7 @@
     }
 
     &.viewport .modal-body {
-        max-height: calc(100vh - 140px);
+        max-height: calc(100vh - 165px);
         overflow-y: auto;
     }
 
@@ -77,5 +77,20 @@
 
     &.right.fade.in .modal-dialog {
         right: 0;
+    }
+    //full screen
+    &.modal-fullscreen .modal-dialog {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        left: 0 !important;
+        top: 0 !important;
+    }
+
+    &.modal-fullscreen .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
     }
 }

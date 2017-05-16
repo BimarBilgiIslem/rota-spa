@@ -49,6 +49,7 @@ class Config extends BaseConfig<IMainConfig> {
             host: this.getHostPath(location.protocol + "//" + location.host, environments.doms),
             logoImageName: constants.DEFAULT_LOGO_IMAGE_NAME,
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
+            encodeStorageValues: !environments.debugging,
             supportedLanguages: [{
                 code: constants.localization.DEFAULT_LANGUAGE,
                 fullname: constants.localization.DEFAULT_LANGUAGE_DISPLAY_NAME
