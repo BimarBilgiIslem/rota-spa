@@ -245,6 +245,10 @@ interface IMainConfig extends IBaseConfig {
      */
     supportedLanguages?: ILanguage[];
     /**
+     * Flag that indicates application will support multi language,default true
+     */
+    enableMultiLanguage?: boolean;
+    /**
      * User predefined language
      */
     culture?: ISupportedCultures;

@@ -50,6 +50,7 @@ class Config extends BaseConfig<IMainConfig> {
             logoImageName: constants.DEFAULT_LOGO_IMAGE_NAME,
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
             encodeStorageValues: !environments.debugging,
+            enableMultiLanguage: true,
             supportedLanguages: [{
                 code: constants.localization.DEFAULT_LANGUAGE,
                 fullname: constants.localization.DEFAULT_LANGUAGE_DISPLAY_NAME
