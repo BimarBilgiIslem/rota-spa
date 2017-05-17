@@ -396,7 +396,7 @@ class Routing implements IRouting {
         const rootMenus = this.getMenusByParentId();
 
         if (!rootMenus.length) {
-            throw new Error(this.constants.errors.NOT_ROOT_MENU_FOUND);
+            this.logger.console.error({ message: this.constants.errors.NOT_ROOT_MENU_FOUND });
         }
         //generate menus recursively
         return this.createHierarchicalMenusRecursive(rootMenus);
