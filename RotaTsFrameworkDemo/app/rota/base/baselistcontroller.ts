@@ -287,9 +287,10 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             enableColumnResizing: true,
             rowTemplateAttrs: [],
             //Row selection
-            enableRowSelection: false,
+            enableRowHeaderSelection: false,
+            enableRowSelection: true,
             enableSelectAll: true,
-            multiSelect: true,
+            multiSelect: false,
             //Data
             data: [] as Array<TModel>,
             //Pager
@@ -403,7 +404,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                 (this.listPageOptions.pagingEnabled ? this.gridOptions.totalItems.toString() : this.gridData.length.toString());
         }, [this.uigridconstants.dataChange.ROW]);
         //register selection changes
-        if (this.isAssigned(gridApi.selection)) {
+        if (this.isAssigned(gridApi.selection) && this.gridOptions.multiSelect) {
             const selChangedFn = () => {
                 this.selectedcountBadge.show = !!this.gridSeletedRows.length;
                 this.selectedcountBadge.description = this.gridSeletedRows.length.toString();
@@ -473,7 +474,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * Go detail state with id param provided
     * @param id
     */
-    goToDetailState(id: string, entity: TModel): ng.IPromise<any> {
+    goToDetailState(id: string, entity?: TModel, row?: uiGrid.IGridRowOf<TModel>): ng.IPromise<any> {
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;

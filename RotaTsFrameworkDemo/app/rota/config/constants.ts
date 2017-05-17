@@ -87,21 +87,22 @@ const rotaConstants: IConstants = {
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
         GRID_FULL_FEATUTE_LIST:
         'ui-grid-selection ui-grid-pinning ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
-        GRID_STANDART_FEATURE_LIST: 'ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
+        GRID_STANDART_FEATURE_LIST: 'ui-grid-selection ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html
         */
         GRID_CUSTOM_ROW_TEMPLATE: '<div {0}><div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns ' +
         'track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + \'-\' + col.uid + \'-cell\'" class="ui-grid-cell" ' +
-        'ng-class="{ \'ui-grid-row-header-cell\':col.isRowHeader}" role="{{col.isRowHeader ? \'rowheader\' : \'gridcell\'}}" ui-grid-cell></div></div>',
+        'ng-class="{ \'ui-grid-row-header-cell\':col.isRowHeader}" role="{{col.isRowHeader ? \'rowheader\' : \'gridcell\'}}" ' +
+        'ui-grid-cell></div></div>',
         GRID_ROW_FORMATTER_ATTR: "ng-class='grid.options.rowFormatter(row)'",
-        GRID_CONTEXT_MENU_ATTR: "context-menu='contextmenu.html'",
+        GRID_CONTEXT_MENU_ATTR: "context-menu='contextmenu.html' rt-grid-right-click-sel",
         GRID_EDIT_BUTTON_HTML:
-        '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity)"' +
-        ' uib-tooltip=\'Detay\' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a>',
+        '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row)"' +
+        ' uib-tooltip="{{::\'rota.detay\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a>',
         GRID_DELETE_BUTTON_HTML: '<a class="btn btn-danger btn-xs" ' +
-        'ng-click="grid.appScope.vm.initDeleteModel(row.entity[\'id\'],row.entity)" uib-tooltip=\'Sil\'' +
+        'ng-click="grid.appScope.vm.initDeleteModel(row.entity[\'id\'],row.entity)" uib-tooltip="{{::\'rota.sil\' | i18n}}"' +
         ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a>',
         GRID_PAGE_INDEX_FIELD_NAME: 'pageIndex',
         GRID_PAGE_SIZE_FIELD_NAME: 'pageSize',

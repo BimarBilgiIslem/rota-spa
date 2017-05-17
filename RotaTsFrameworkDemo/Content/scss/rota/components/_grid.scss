@@ -5,14 +5,14 @@
 }
 
 .ui-grid-row:nth-child(odd):hover .ui-grid-cell {
-    background: #A9C7DD;
+    background: #faefca;
 }
 
 .ui-grid-row:nth-child(even):hover .ui-grid-cell {
-    background: #A9C7DD;
+    background: #faefca;
 }
 
-.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
+.ui-grid-row-selected > [ui-grid-row] .ui-grid-cell {
     background-color: #A9C7DD !important;
 }
 

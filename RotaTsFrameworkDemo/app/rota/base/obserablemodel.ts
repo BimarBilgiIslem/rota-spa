@@ -47,6 +47,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         switch (value) {
             case ModelStates.Added:
                 this._values[ObserableModel.idField] = 0;
+                //set all child as added
+                this.setChildModelState(ModelStates.Added);
                 break;
             case ModelStates.Deleted:
                 if (oldState === ModelStates.Detached) return;
@@ -56,15 +58,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
                 }
                 if (this._values[ObserableModel.idField] === 0)
                     throw new Error("id must be valid when state set to deleted");
-                //set all child models state
-                _.each(this._values, (childItem): void => {
-                    if (_.isArray(childItem)) {
-                        _.each(childItem, (item: IBaseCrudModel) => {
-                            if (item.modelState)
-                                item.modelState = value;
-                        });
-                    }
-                });
+                //set all child as deleted
+                this.setChildModelState(ModelStates.Deleted);
                 break;
             case ModelStates.Modified:
                 if (oldState !== ModelStates.Unchanged)
@@ -106,6 +101,24 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     //#endregion
 
     //#region Methods
+    /**
+     * Sets all child models' states 
+     * @param modelState ModelState 
+     */
+    setChildModelState(modelState: ModelStates): void {
+        _.each(this._values, (childItem): void => {
+            if (_.isArray(childItem)) {
+                _.each(childItem, (item: IBaseCrudModel) => {
+                    if (item.modelState)
+                        item.modelState = modelState;
+                });
+            }
+        });
+    }
+    /**
+     * get value depending on prop type 
+     * @param value Prop value
+     */
     extractValue(value: any): any {
         if (moment.isDate(value)) {
             return new Date(value);

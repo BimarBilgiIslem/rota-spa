@@ -132,7 +132,7 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
         if (model instanceof ObserableModel) {
             return model as any;
         }
-        if (this.instanceOptions.convertToObserableModel) {
+        if (!(this.instanceOptions.convertToObserableModel === false)) {
             return new ObserableModel<TModel>(model) as any;
         }
         return model as any;

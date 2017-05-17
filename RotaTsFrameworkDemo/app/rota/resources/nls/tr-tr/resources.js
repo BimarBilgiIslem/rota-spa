@@ -164,7 +164,7 @@
         yenile: "Yenile",
         geridon: "Bir önceki sayfaya dön",
         sil: "Sil",
-        Detay: "Detay",
+        detay: "Detay",
         tamam: 'Tamam',
         ekle: "Ekle",
         guncelle: "Güncelle",

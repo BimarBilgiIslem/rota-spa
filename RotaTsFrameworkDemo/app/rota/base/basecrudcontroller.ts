@@ -283,12 +283,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
    * @param clonedModel Model to be cloned
    */
     newModel(clonedModel?: TModel): ng.IPromise<TModel> | TModel {
-        if (clonedModel) {
-            clonedModel.id = 0;
-            clonedModel.modelState = ModelStates.Added;
-            return clonedModel;
-        }
-        return <TModel>{ modelState: ModelStates.Added };
+        return clonedModel || <TModel>{ modelState: ModelStates.Added };
     }
     //#endregion
 
@@ -345,9 +340,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         });
         //final step,reset flags
         saveResult.finally(() => {
-            if (this.crudPageFlags.isCloning)
-                this.cloningBadge.show = false;
-            this.crudPageFlags.isCloning =
+            this.cloningBadge.show =
+                this.crudPageFlags.isCloning =
                 this.crudPageFlags.isSaving = false;
             this.logger.console.log({ message: 'save process completed' });
         });
@@ -378,7 +372,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                             return;
                         }
                         //model is not 'new' anymore
-                        this.isNew = false;
+                        this.crudPageFlags.isCloning =
+                            this.isNew = false;
                         //set model from result of saving
                         if (this.isAssigned(data.entity)) {
                             //call loadedModel
@@ -723,6 +718,9 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         }
         //set cloning warning & notify
         if (this.crudPageFlags.isCloning) {
+            //set modelstate to Added if cloning
+            model.modelState = ModelStates.Added;
+            //set UI cloning
             this.toastr.info({ message: BaseCrudController.localizedValues.kayitkopyalandi });
             this.cloningBadge.show = true;
         }

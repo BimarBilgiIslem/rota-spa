@@ -67,7 +67,7 @@ function listButtonsDirective() {
         '<rt-button  text-i18n="rota.secilikayitlarisil" icon="remove" color="danger" click="vm.initDeleteSelectedModels()" ' +
         'uib-tooltip="{{::\'rota.secilikayitlarisil\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'shortcut="ctrl+shift+del" ' +
-        'ng-if="vm.listPageOptions.listButtonVisibility.deleteSelected && vm.gridSeletedRows.length"></rt-button>' +
+        'ng-if="vm.listPageOptions.listButtonVisibility.deleteSelected && vm.gridOptions.multiSelect && vm.gridSeletedRows.length"></rt-button>' +
         '</div>'
     };
     return directive;

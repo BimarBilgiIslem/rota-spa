@@ -37,7 +37,7 @@ interface IGridDirectiveAttrs extends ng.IAttributes {
 function gridDirective(config: IMainConfig, common: ICommon) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IGridDirectiveAttrs) {
         const optionsName = common.isNullOrEmpty(cAttrs.gridOptions) ? config.gridDefaultOptionsName : cAttrs.gridOptions;
-        
+
         let featureList;
         switch (cAttrs.gridFeatureList) {
             case "standart":
@@ -71,9 +71,37 @@ gridDirective.$inject = ['Config', 'Common'];
 //#endregion
 //#endregion
 
+//#region RightClick Selection
+/**
+ * This directive is to activate (select) the row on which context menu is clicked
+ */
+function gridRightClickSelectionDirective() {
+    function link(scope: ng.IScope, element: ng.IAugmentedJQuery) {
+        element.bind('contextmenu', event => {
+            scope.$apply(() => {
+                const selectedRow = (scope.$parent.$parent as any).row;
+                //only single selection active
+                if (selectedRow && selectedRow.grid && !selectedRow.grid.options.multiSelect) {
+                    selectedRow.grid.api.selection.clearSelectedRows();   
+                    selectedRow.setSelected(true);
+                }
+            });
+        });
+    }
+    //#region Directive Definition
+    const directive = <ng.IDirective>{
+        link: link
+    };
+    return directive;
+    //#endregion
+}
+//#endregion
+
+
 //#region Register
 angular.module('rota.directives.rtgrid', [])
     .directive('rtGrid', gridDirective)
+    .directive('rtGridRightClickSel', gridRightClickSelectionDirective)
     .run(["i18nService", "Localization", (i18nService, localization: ILocalization) => {
         //i18nService service ui-grid localization service - not defined in .d file
         const lang = localization.currentLanguage.code.substr(0, 2);
