@@ -75,7 +75,6 @@ class Config extends BaseConfig<IMainConfig> {
                 ajaxFinished: constants.events.EVENT_AJAX_FINISHED,
                 ajaxStarted: constants.events.EVENT_AJAX_STARTED,
                 loginRequired: constants.events.EVENT_LOGIN_REQIRED,
-                menuChanged: constants.events.EVENT_MENU_CHANGED,
                 modelLoaded: constants.events.EVENT_MODEL_LOADED
             },
             //Crud api action names

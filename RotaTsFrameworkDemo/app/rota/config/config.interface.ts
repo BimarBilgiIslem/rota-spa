@@ -130,10 +130,6 @@ interface IEvents {
      */
     ajaxFinished: string;
     /**
-     * Fired when menu changed programtically/manually
-     */
-    menuChanged: string;
-    /**
      * Fired when model loaded in BaseModelController
      */
     modelLoaded: string;

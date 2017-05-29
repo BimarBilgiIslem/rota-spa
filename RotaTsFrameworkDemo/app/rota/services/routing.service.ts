@@ -172,11 +172,12 @@ class Routing implements IRouting {
                 const menu = this.getActiveMenu(toState);
                 if (toState.name === this.constants.routing.SHELL_STATE_NAME || menu !== this.activeMenu) {
                     this._activeMenu = menu;
+                    //set breadcrumb only when menu changes
+                    setBreadcrumb();
                 }
             }
 
             setActiveMenu();
-            setBreadcrumb();
         });
 
         this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {

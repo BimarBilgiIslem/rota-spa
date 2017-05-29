@@ -58,7 +58,6 @@ interface IConstants {
         EVENT_AJAX_FINISHED: string;
         EVENT_AJAX_STARTED: string;
         EVENT_LOGIN_REQIRED: string;
-        EVENT_MENU_CHANGED: string;
         EVENT_MODEL_LOADED: string;
         EVENT_STATE_CHANGE_START: string;
         EVENT_STATE_CHANGE_SUCCESS: string;

@@ -31,7 +31,11 @@
             $rootScope.$broadcast('context-menu/close');
         }
 
-        return { cancelAll: cancelAll, eventBound: false };
+        function closeContextMenu() {
+            $rootScope.$broadcast('context-menu/closed');
+        }
+
+        return { cancelAll: cancelAll, closeContextMenu: closeContextMenu, eventBound: false };
 
     }]);
 
@@ -82,6 +86,7 @@
 
                             if (event.which === KEY_LEFT) {
                                 contextMenu.cancelAll();
+                                contextMenu.closeContextMenu();
                                 scope.$apply();
                             }
                         });
@@ -98,7 +103,7 @@
 
                         if (scope.menu) {
                             scope.menu.remove();
-                            scope.menu     = null;
+                            scope.menu = null;
                             scope.position = null;
                         }
 
@@ -142,12 +147,12 @@
                         $templateRequest($sce.getTrustedResourceUrl(attributes.contextMenu)).then(function then(template) {
 
                             var compiled = $compile(template)($angular.extend(getModel())),
-                                menu     = $angular.element(compiled);
+                                menu = $angular.element(compiled);
 
                             // Determine whether to append new, or replace an existing.
                             switch (strategy) {
-                                case ('append'): angular.element($document.body).append(menu); break;
-                                default: scope.menu.replaceWith(menu); break;
+                            case ('append'): angular.element($document.body).append(menu); break;
+                            default: scope.menu.replaceWith(menu); break;
                             }
 
                             menu.css({

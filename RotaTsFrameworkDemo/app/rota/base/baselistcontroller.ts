@@ -288,7 +288,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             rowTemplateAttrs: [],
             //Row selection
             enableRowHeaderSelection: false,
-            enableRowSelection: true,
+            enableRowSelection: false,
             enableSelectAll: true,
             multiSelect: false,
             //Data
@@ -358,6 +358,10 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         }
         if (this.isAssigned(this.gridOptions.showContextMenu)) {
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_CONTEXT_MENU_ATTR);
+            if (!this.gridOptions.multiSelect) {
+                this.gridOptions.enableRowSelection = true;
+                this.on("context-menu/closed", () => this.gridApi.selection.clearSelectedRows());
+            }
         }
         //Set row template
         if (this.gridOptions.rowTemplateAttrs.length) {

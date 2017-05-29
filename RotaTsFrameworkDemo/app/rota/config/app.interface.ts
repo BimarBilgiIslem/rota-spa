@@ -88,6 +88,12 @@ export interface IRotaApp {
      */
     setNavMenus(menus: IMenuModel[]): IRotaApp;
     /**
+     * Add menus
+     * @param fn Callback function with current user and company
+     * @returns {IMenuModel[]}
+     */
+    setNavMenus(fn: (currentUser: IUser, currentCompany: ICompany) => IMenuModel[]): IRotaApp;
+    /**
      * Extend resources with dynamic resources from DB or else
      * @param dynamicresource Dynamic resource object
      */

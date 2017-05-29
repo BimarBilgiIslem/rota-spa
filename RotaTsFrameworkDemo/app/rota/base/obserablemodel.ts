@@ -84,7 +84,9 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
             .each(item => item._readonly = value);
         this.__readonly = value;
     }
-
+    /**
+     * Orjinal values
+     */
     public _orginalValues: TModel;
     /**
      * Globally unique id

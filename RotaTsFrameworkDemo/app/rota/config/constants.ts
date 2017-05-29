@@ -74,7 +74,6 @@ const rotaConstants: IConstants = {
         EVENT_AJAX_FINISHED: 'rota:ajaxFinished',
         EVENT_AJAX_STARTED: 'rota:ajaxStarted',
         EVENT_LOGIN_REQIRED: 'rota:loginRequired',
-        EVENT_MENU_CHANGED: 'rota:menuChanged',
         EVENT_MODEL_LOADED: 'rota:modelLoaded',
         EVENT_STATE_CHANGE_START: '$stateChangeStart',
         EVENT_STATE_CHANGE_SUCCESS: '$stateChangeSuccess',

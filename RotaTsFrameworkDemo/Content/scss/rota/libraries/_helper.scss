@@ -13,6 +13,15 @@
 .bold {
     font-weight: bold;
 }
+
+.small-2x {
+    font-size: 70%;
+}
+
+.small-3x {
+    font-size: 55%;
+}
+
 //margins-paddings
 @each $unit in $unit-values {
     @include directional_content(margin,$unit);
@@ -138,4 +147,3 @@
         background: darken($dropdown-bg,30%);
     }
 }
-

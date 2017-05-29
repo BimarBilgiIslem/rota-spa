@@ -179,9 +179,9 @@ const enum ModelStates {
  */
 interface IBaseCrudModel extends IBaseModel {
     /**
-     * Model id
+     * Model unique id
      */
-    id: number;
+    id?: number;
     /**
      * Model state
      * @description Should be used along with entityframework entity state

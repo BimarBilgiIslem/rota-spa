@@ -38,7 +38,7 @@ function crudButtonsDirective() {
         '</div>' +
         '<div class="btn-group">' +
         '<rt-button ng-if="vm.crudPageOptions.crudButtonsVisibility.revertBackButton" text-i18n="rota.gerial"  icon="refresh" color="warning" click="vm.revertBack()" shortcut="shift+del" ' +
-        'uib-tooltip="{{::\'rota.tt_gerial\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ng-disabled="vm.isNew || !vm.isModelDirty"></rt-button>' +
+        'uib-tooltip="{{::\'rota.tt_gerial\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ng-disabled="!vm.isModelDirty"></rt-button>' +
         '<rt-button ng-if="vm.crudPageOptions.crudButtonsVisibility.deleteButton" text-i18n="rota.sil"  icon="remove" color="danger" click="vm.initDeleteModel()" shortcut="ctrl+del" ' +
         'uib-tooltip="{{::\'rota.tt_sil\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ng-disabled="vm.isNew"></rt-button>' +
         '</div>' +

@@ -243,10 +243,20 @@ class RotaApp implements IRotaApp {
      * Add menus
      * @param menus Navigational menus
      */
-    setNavMenus(menus: IMenuModel[]): IRotaApp {
-        this.run(["Routing", (routing: IRouting) => {
-            routing.addMenus(menus);
-        }]);
+    setNavMenus(menus: IMenuModel[]): IRotaApp;
+    setNavMenus(fn: (currentUser: IUser, currentCompany: ICompany) => IMenuModel[]): IRotaApp;
+    setNavMenus(args: any): IRotaApp {
+        this.run(["Routing", "CurrentUser", "CurrentCompany",
+            (routing: IRouting, currentUser: IUser, currentCompany: ICompany) => {
+                let menus: IMenuModel[];
+                if (angular.isArray(args)) {
+                    menus = args;
+                }
+                if (angular.isFunction(args)) {
+                    menus = args(currentUser, currentCompany);
+                }
+                routing.addMenus(menus);
+            }]);
         return this;
     }
     /**

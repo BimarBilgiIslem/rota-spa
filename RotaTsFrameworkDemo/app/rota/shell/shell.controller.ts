@@ -121,6 +121,14 @@ class ShellController {
             controllerAs: 'profilevm'
         });
     }
+    /**
+     * Set Mbf visibility
+     * @description Only visible in main page on mobile device.
+     */
+    isMbfVisible(): boolean {
+        return (!window.__IS_TOUCHABLE || this.isHomePage) &&
+            this.config.enableQuickMenu && this.routing.quickMenus.length > 0;
+    }
     //#endregion
 }
 //#endregion

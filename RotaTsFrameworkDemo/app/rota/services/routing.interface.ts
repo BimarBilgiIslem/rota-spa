@@ -215,6 +215,10 @@ interface IRouting extends IBaseService {
      */
     navMenus: INavMenuItem[];
     /**
+     * QuickMenus
+     */
+    quickMenus: IQuickMenu[];
+    /**
      * Hierarchical menus & states
      */
     hierarchicalMenus: IHierarchicalMenu[];
