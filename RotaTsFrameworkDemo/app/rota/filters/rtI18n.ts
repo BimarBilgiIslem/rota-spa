@@ -16,7 +16,7 @@
 
 const i18NFilter = [
     'Localization', (localization: ILocalization) => {
-        return (key: string) => localization.getLocal(key) || 'Resource (' + key + ')';
+        return (key: string, ...params: any[]) => localization.getLocal(key, ...params) || 'Resource (' + key + ')';
     }
 ];
 //Register

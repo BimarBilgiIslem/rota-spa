@@ -23,7 +23,8 @@ function listButtonsDirective() {
         '<div class="rt-listbutton">' +
         '<div class="btn-group">' +
         '<div class="btn-group" uib-dropdown auto-close="outsideClick" is-open="searchToggle">' +
-        '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton" text-i18n="rota.ara" icon="search"' +
+        '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton" ' +
+        'text="{{vm.listPageOptions.refreshInterval ? \'rota.yenileniyor\' : \'rota.ara\' | i18n:vm.listPageOptions.refreshInterval}}" icon="search"' +
         'uib-tooltip="{{::\'rota.ara\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" elem-to-scroll="{{vm.options.elementToScroll}}" shortcut="ctrl+enter"></rt-button>' +
         '<button uib-dropdown-toggle ng-if="vm.listPageOptions.listButtonVisibility.searchButton" type="button" class="btn btn-warning">' +
@@ -34,6 +35,25 @@ function listButtonsDirective() {
         '<i class="fa fa-fw" ng-hide="vm.options.storeFilterValues"></i>&nbsp;' +
         '{{::"rota.filtrekaydet" | i18n}}</a></li>' +
         '<li ng-if="vm.listPageOptions.listButtonVisibility.storeGridLayout"><a href ng-click="vm.saveGridLayout();$parent.searchToggle=false"><i class="fa fa-save fa-fw"></i>&nbsp;{{::"rota.gridlayoutkaydet" | i18n}}</a></li>' +
+        '<li class="dropdown-submenu" ng-if="vm.listPageOptions.enableRefresh">' +
+        '<a href><i class="fa fa-clock-o fa-fw"></i>&nbsp;{{::"rota.refreshgrid" | i18n}}</a>' +
+        '<ul uib-dropdown-menu>' +
+        '<li>' +
+        '<a href ng-click="vm.listPageOptions.refreshInterval=null">' +
+        '<i class="fa fa-check fa-fw" ng-show="!vm.isAssigned(vm.listPageOptions.refreshInterval)"></i>' +
+        '<i class="fa fa-fw" ng-hide="!vm.isAssigned(vm.listPageOptions.refreshInterval)"></i>&nbsp;' +
+        '{{::"rota.yok" | i18n}}' +
+        '</a>' +
+        '</li>' +
+        '<li ng-repeat="interval in vm.constants.controller.GRID_REFRESH_INTERVALS">' +
+        '<a href ng-click="vm.listPageOptions.refreshInterval=interval">' +
+        '<i class="fa fa-check fa-fw" ng-show="vm.listPageOptions.refreshInterval===interval"></i>' +
+        '<i class="fa fa-fw" ng-hide="vm.listPageOptions.refreshInterval===interval"></i>&nbsp;' +
+        '{{::"rota.refreshinmin" | i18n:interval}}' +
+        '</a>' +
+        '</li>' +
+        '</ul>' +
+        '</li>' +
         '</ul></div></div>&nbsp;' +
         '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
         '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\',\'pdfExport\')" text-i18n="rota.disariyaaktar"' +

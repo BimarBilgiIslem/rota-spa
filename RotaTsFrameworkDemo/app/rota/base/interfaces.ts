@@ -412,17 +412,29 @@ interface IListPageOptions extends IModelPageOptions {
      */
     listButtonVisibility?: IListButtonsVisibility;
     /**
-     * Store filter values while quiting state
+     * Store filter values while quiting state,default false
      */
     storeFilterValues?: boolean;
+    /**
+     * Storage type of filter,default sessionStorage
+     */
+    storefilterLocation?: CacherType;
     /**
      * Element to scroll to after searching completed
      */
     elementToScroll?: string;
     /**
-     * Available export types
+     * Available export types,default pdf
      */
     modelExports?: ModelExports;
+    /**
+     * Refresh list interval,default null
+     */
+    refreshInterval?: 1 | 3 | 5 | 10;
+    /**
+     * Enable refresh list,default false
+     */
+    enableRefresh?: boolean;
 }
 /**
  * Widget Controller options
@@ -538,6 +550,9 @@ interface IListPageLocalization {
     deleteconfirmtitle: string;
     deleteselected: string;
     kayitsayisi: string;
+    filterrestored: string;
+    filtersaved: string;
+    refreshing: string;
 }
 /**
  * Base list controller

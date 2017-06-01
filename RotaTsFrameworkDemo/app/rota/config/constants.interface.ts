@@ -100,6 +100,7 @@ interface IConstants {
         DEFAULT_SPINNER_OPTIONS: SpinnerOptions;
         ALLOWED_AVATAR_EXTENSIONS: string;
         STORAGE_NAME_STORED_FILTER_URL: string;
+        GRID_REFRESH_INTERVALS: number[];
     };
     shortcuts: { GO_TO_FIRST_ROW_OF_GRID: string };
     errors: {

@@ -1,6 +1,6 @@
 ﻿<!--Header-->
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div ng-class="{container:!shellvm.routing.activeMenu.isFullScreen}">
+    <div ng-class="{container:!(shellvm.routing.activeMenu.isFullScreen || shellvm.config.enableContainerFluid)}">
         <div class="navbar-header">
             <!--Nav hamburger menu-->
             <a href class="navbar-toggle" ng-click="shellvm.showNavMenu()">

@@ -1,5 +1,5 @@
 ﻿<section id="sub-header">
-    <div ng-class="shellvm.routing.activeMenu.isFullScreen ? 'fullscreen' : 'container'">
+    <div ng-class="shellvm.config.enableContainerFluid || shellvm.routing.activeMenu.isFullScreen ? 'fullscreen' : 'container'">
         <div class="content-header">
             <!--Badges-->
             <ui-view name="badges"></ui-view>
@@ -14,7 +14,7 @@
         </div>
     </div>
 </section>
-<article ng-class="shellvm.routing.activeMenu.isFullScreen ? 'container-fluid' : 'container'">
+<article ng-class="shellvm.config.enableContainerFluid || shellvm.routing.activeMenu.isFullScreen ? 'container-fluid' : 'container'">
     <!--Content-->
     <div id="content-body">
         <!--Notifications-->

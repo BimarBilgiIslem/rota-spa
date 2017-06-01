@@ -1,6 +1,13 @@
 ﻿define({
     //#region Rota
     rota: {
+        refreshinprogress: 'Refreshing the list',
+        filtrekayitedildi: 'Filter stored',
+        filtreyuklendi: 'Filter restored',
+        yenileniyor: 'Refreshing in {0} mins.',
+        yok: 'None',
+        refreshinmin: 'in every {0} mins',
+        refreshgrid: 'Refresh automatically',
         tarihseciniz: 'Choose a date',
         ayseciniz: 'Choose a month',
         yilseciniz: 'Choose a year',

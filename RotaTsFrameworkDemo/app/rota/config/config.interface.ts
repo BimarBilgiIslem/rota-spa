@@ -304,6 +304,10 @@ interface IMainConfig extends IBaseConfig {
     * Encodes all storages values with Base64 encoding,default true for prod
     */
     encodeStorageValues?: boolean;
+    /**
+     * Use enableContainerFluid for a full width container, spanning the entire width of your viewport.
+     */
+    enableContainerFluid?: boolean;
 }
 /**
  * Main config provider

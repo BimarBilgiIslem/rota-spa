@@ -31,11 +31,7 @@
             $rootScope.$broadcast('context-menu/close');
         }
 
-        function closeContextMenu() {
-            $rootScope.$broadcast('context-menu/closed');
-        }
-
-        return { cancelAll: cancelAll, closeContextMenu: closeContextMenu, eventBound: false };
+        return { cancelAll: cancelAll, eventBound: false };
 
     }]);
 
@@ -86,7 +82,6 @@
 
                             if (event.which === KEY_LEFT) {
                                 contextMenu.cancelAll();
-                                contextMenu.closeContextMenu();
                                 scope.$apply();
                             }
                         });

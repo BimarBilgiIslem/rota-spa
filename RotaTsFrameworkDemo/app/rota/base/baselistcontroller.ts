@@ -41,6 +41,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         editState: undefined,
         showMesssage: true,
         modelExports: ModelExports.Pdf,
+        storeFilterValues: false,
+        storefilterLocation: CacherType.SessionStorage,
         listButtonVisibility: {
             newButton: true,
             searchButton: true,
@@ -49,8 +51,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             deleteSelected: true,
             storeFilter: true,
             storeGridLayout: true
-        },
-        storeFilterValues: false
+        }
     }
     //#endregion
 
@@ -122,11 +123,19 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Storage name for store grid layout
      */
     private readonly gridLayoutStorageName: string;
+    /**
+     * BuiltIn timeout service
+     */
+    protected $interval: ng.IIntervalService;
+    /**
+     * Refresh interval promise
+     */
+    private autoRefreshPromise: IP<any>;
     //#endregion
     //#endregion
 
     //#region Bundle Services
-    static injects = BaseModelController.injects.concat(['$timeout', 'uiGridConstants', 'uiGridExporterConstants', 'Caching']);
+    static injects = BaseModelController.injects.concat(['$timeout', '$interval', 'uiGridConstants', 'uiGridExporterConstants', 'Caching']);
     protected uigridconstants: uiGrid.IUiGridConstants;
     protected uigridexporterconstants: uiGrid.exporter.IUiGridExporterConstants;
     protected caching: ICaching;
@@ -157,9 +166,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     constructor(bundle: IBundle, options?: IListPageOptions) {
         //merge options with defaults
         super(bundle, BaseListController.extendOptions(bundle, options));
-        //set badge
-        this.recordcountBadge.show = true;
-        this.recordcountBadge.description = `${BaseListController.localizedValues.kayitsayisi} 0`;
         //init filter object 
         this.filterStorageName = `storedfilter_${this.stateInfo.stateName}`;
         this.gridLayoutStorageName = `storedgridlayout_${this.stateInfo.stateName}`;
@@ -167,6 +173,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         this.initFilter();
         //set grid features
         this.initGrid();
+        //set refresh grid process
+        this.initRefresh();
     }
     /**
      * Update bundle
@@ -178,6 +186,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         this.uigridexporterconstants = bundle.systemBundles["uigridexporterconstants"];
         this.caching = bundle.systemBundles["caching"];
         this.$timeout = bundle.systemBundles["$timeout"];
+        this.$interval = bundle.systemBundles["$interval"];
     }
     /**
      * Store localized value for performance issues (called in basecontroller)
@@ -190,7 +199,10 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             deleteconfirm: this.localization.getLocal('rota.deleteconfirm'),
             deleteconfirmtitle: this.localization.getLocal('rota.deleteconfirmtitle'),
             deleteselected: this.localization.getLocal('rota.onaysecilikayitlarisil'),
-            kayitsayisi: this.localization.getLocal('rota.kayitsayisi')
+            kayitsayisi: this.localization.getLocal('rota.kayitsayisi'),
+            filterrestored: this.localization.getLocal('rota.filtreyuklendi'),
+            filtersaved: this.localization.getLocal('rota.filtrekayitedildi'),
+            refreshing: this.localization.getLocal('rota.refreshinprogress'),
         };
     }
     //#endregion
@@ -242,6 +254,10 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         }
         if (recCount === 0 && this.isActiveState() && this.listPageOptions.showMesssage) {
             this.toastr.warn({ message: BaseListController.localizedValues.kayitbulunamadi });
+        }
+        //store filter 
+        if (this.listPageOptions.storeFilterValues) {
+            this.saveFilter(this.filter);
         }
     }
     //#endregion
@@ -360,7 +376,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_CONTEXT_MENU_ATTR);
             if (!this.gridOptions.multiSelect) {
                 this.gridOptions.enableRowSelection = true;
-                this.on("context-menu/closed", () => this.gridApi.selection.clearSelectedRows());
             }
         }
         //Set row template
@@ -404,6 +419,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         }
         //register datachanges
         gridApi.grid.registerDataChangeCallback((grid: uiGrid.IGridInstanceOf<any>) => {
+            //set rc badge
+            this.recordcountBadge.show = true;
             this.recordcountBadge.description = BaseListController.localizedValues.kayitsayisi + " " +
                 (this.listPageOptions.pagingEnabled ? this.gridOptions.totalItems.toString() : this.gridData.length.toString());
         }, [this.uigridconstants.dataChange.ROW]);
@@ -482,10 +499,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;
-            //store filter 
-            if (this.listPageOptions.storeFilterValues) {
-                this.saveFilter();
-            }
         }
         return this.routing.go(this.listPageOptions.editState, params);
     }
@@ -554,18 +567,38 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Remove filter
      */
     removeFilter(): void {
-        this.caching.sessionStorage.remove(this.filterStorageName);
-        this.filter = <TModelFilter>{};
-        this.logger.toastr.info({ message: this.localization.getLocal("rota.filtresilindi") });
+        this.caching.cachers[this.listPageOptions.storefilterLocation].remove(this.filterStorageName);
+        this.filter = this.getFilter();
+        if (this.listPageOptions.showMesssage) {
+            this.logger.toastr.info({ message: this.localization.getLocal("rota.filtresilindi") });
+        }
     }
     /**
      * Save filter values
      */
-    saveFilter(): void {
-        const purgedFilters = _.omit(this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
+    saveFilter(filter?: TModelFilter): void {
+        const purgedFilters = _.omit(filter || this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
         this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME]);
-        if (!_.isEmpty(purgedFilters))
-            this.caching.sessionStorage.store(this.filterStorageName, purgedFilters);
+        if (!_.isEmpty(purgedFilters)) {
+            this.caching.cachers[this.listPageOptions.storefilterLocation].store(this.filterStorageName, purgedFilters);
+            if (this.listPageOptions.showMesssage) {
+                this.logger.toastr.info({ message: BaseListController.localizedValues.filtersaved });
+            }
+        }
+    }
+    /**
+     * Filter restore
+     */
+    getFilter(): TModelFilter {
+        let filter: TModelFilter;
+        if (this.listPageOptions.storeFilterValues) {
+            filter = this.caching.cachers[this.listPageOptions.storefilterLocation]
+                .get<TModelFilter>(this.filterStorageName);
+            if (this.listPageOptions.showMesssage) {
+                this.logger.toastr.info({ message: BaseListController.localizedValues.filterrestored });
+            }
+        }
+        return filter || <TModelFilter>{};
     }
     /**
      * Init filter obj
@@ -576,10 +609,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         const urls = this.caching.localStorage.get<string[]>(this.constants.controller.STORAGE_NAME_STORED_FILTER_URL) || [];
         if (!this.listPageOptions.storeFilterValues)
             this.listPageOptions.storeFilterValues = urls.indexOf(this.routing.current.name) > -1;
-
-        if (this.listPageOptions.storeFilterValues) {
-            this.filter = this.caching.sessionStorage.get<TModelFilter>(this.filterStorageName) || <TModelFilter>{};
-        }
+        //get filter obj
+        this.filter = this.getFilter();
         //watch store filter
         this.$scope.$watch<boolean>('vm.listPageOptions.storeFilterValues',
             (value, oldValue) => {
@@ -680,6 +711,28 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      */
     onExportModel(filter: TModelFilter & IExportOptions): void {
         this.toastr.warn({ message: this.localization.getLocal("rota.exporttanimsiz") });
+    }
+    //#endregion
+
+    //#region Refresh Grid
+    initRefresh(): void {
+        if (!this.listPageOptions.enableRefresh) return;
+
+        let autoRefreshPromise: IP<any>;
+        this.$scope.$watch<number>('vm.listPageOptions.refreshInterval',
+            (value, oldValue) => {
+                if (oldValue !== value) {
+                    autoRefreshPromise && this.$interval.cancel(autoRefreshPromise);
+                    if (angular.isNumber(value)) {
+                        autoRefreshPromise = this.$interval(() => {
+                            if (this.listPageOptions.showMesssage) {
+                                this.logger.toastr.info({ message: BaseListController.localizedValues.refreshing });
+                            }
+                            this.initSearchModel();
+                        }, value * 60 * 1000);
+                    }
+                }
+            });
     }
     //#endregion
 }

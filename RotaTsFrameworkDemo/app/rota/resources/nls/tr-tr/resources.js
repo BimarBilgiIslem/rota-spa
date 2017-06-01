@@ -1,5 +1,12 @@
 ﻿define({
     rota: {
+        refreshinprogress: 'Liste yenileniyor',
+        filtrekayitedildi: 'Filtre saklandı',
+        filtreyuklendi: 'Filtre yüklendi',
+        yenileniyor: 'Her {0} dk.da yenileniyor',
+        yok: 'Yok',
+        refreshinmin: 'Her {0} dk.da',
+        refreshgrid: 'Listeyi yenile',
         tarihseciniz: 'Tarih seçiniz',
         ayseciniz: 'Ay seçiniz',
         yilseciniz: 'Yıl seçiniz',

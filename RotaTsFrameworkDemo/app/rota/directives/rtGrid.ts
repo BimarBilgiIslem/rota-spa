@@ -81,7 +81,7 @@ function gridRightClickSelectionDirective() {
             scope.$apply(() => {
                 const selectedRow = (scope.$parent.$parent as any).row;
                 //only single selection active
-                if (selectedRow && selectedRow.grid && !selectedRow.grid.options.multiSelect) {
+                if (selectedRow && selectedRow.grid) {
                     selectedRow.grid.api.selection.clearSelectedRows();   
                     selectedRow.setSelected(true);
                 }
