@@ -120,9 +120,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     get isNew(): boolean { return this.crudPageFlags.isNew; }
     set isNew(value: boolean) {
         this.crudPageFlags.isNew = value;
-        this.editmodeBadge.show = !value && !this.crudPageOptions.readOnly;
-        this.newmodeBadge.show = value;
-        this.readOnlyBadge.show = this.crudPageOptions.readOnly && !value;
     }
 
     //#region Badge Shortcuts
@@ -749,6 +746,10 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         if (this.crudPageOptions.readOnly && !this.isNew) {
             this.logger.notification.info({ message: BaseCrudController.localizedValues.okumamoduuyari });
         }
+        //set badges
+        this.editmodeBadge.show = !this.isNew && !this.crudPageOptions.readOnly;
+        this.newmodeBadge.show = this.isNew;
+        this.readOnlyBadge.show = this.crudPageOptions.readOnly && !this.isNew;
         //reset form
         this.resetForm(model);
     }
