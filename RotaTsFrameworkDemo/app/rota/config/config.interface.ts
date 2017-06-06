@@ -308,6 +308,10 @@ interface IMainConfig extends IBaseConfig {
      * Use enableContainerFluid for a full width container, spanning the entire width of your viewport.
      */
     enableContainerFluid?: boolean;
+    /**
+     * Spinner options
+     */
+    spinnerOptions?: SpinnerOptions;
 }
 /**
  * Main config provider

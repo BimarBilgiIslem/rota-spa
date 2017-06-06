@@ -53,7 +53,8 @@ class BaseController extends InjectableObject implements IBaseController {
 
     //#region Bundle Services
     static injects = InjectableObject.injects.concat(['$document', '$rootScope', '$scope', '$window', '$stateParams',
-        'Logger', 'Common', 'Dialogs', 'Routing', 'Config', 'Localization', 'stateInfo', 'hotkeys', 'TitleBadges', 'Constants']);
+        'Logger', 'Common', 'Dialogs', 'Routing', 'Config', 'Localization', 'stateInfo', 'hotkeys', 'TitleBadges',
+        'Constants', 'CurrentUser', 'CurrentCompany']);
     //system services
     protected $rootScope: IRotaRootScope;
     protected $scope: ng.IScope;
@@ -98,6 +99,14 @@ class BaseController extends InjectableObject implements IBaseController {
      * Localization service
      */
     protected localization: ILocalization;
+    /**
+     * Current principal
+     */
+    protected currentUser: IUser;
+    /**
+     * Selected company if available
+     */
+    protected currentCompany: ICompany;
     //#endregion
 
     //#region Init
@@ -176,6 +185,8 @@ class BaseController extends InjectableObject implements IBaseController {
         this.stateInfo = bundle.systemBundles["stateinfo"];
         this.titlebadges = bundle.systemBundles["titlebadges"];
         this.constants = bundle.systemBundles["constants"];
+        this.currentUser = bundle.systemBundles["currentuser"];
+        this.currentCompany = bundle.systemBundles["currentcompany"];
     }
 
     //#endregion

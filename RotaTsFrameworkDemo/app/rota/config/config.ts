@@ -69,6 +69,7 @@ class Config extends BaseConfig<IMainConfig> {
                 datePickerTimeMinStep: constants.localization.MIN_STEP,
                 useTimeZoneOffSet: false
             },
+            spinnerOptions: constants.controller.DEFAULT_SPINNER_OPTIONS,
             //Event names
             eventNames: {
                 userLoginChanged: constants.events.EVENT_LOGIN_CHANGED,

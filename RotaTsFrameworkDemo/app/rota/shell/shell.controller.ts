@@ -78,8 +78,6 @@ class ShellController {
         this.$rootScope.$on(this.config.eventNames.ajaxFinished, () => {
             this._isBusy = false;
         });
-        //spinner settings
-        this._spinnerOptions = this.constants.controller.DEFAULT_SPINNER_OPTIONS;
     }
     /**
      * Set active menu & app title
