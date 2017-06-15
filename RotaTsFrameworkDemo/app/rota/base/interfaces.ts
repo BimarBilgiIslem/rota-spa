@@ -541,6 +541,10 @@ interface IGridOptions<TModel extends IBaseCrudModel> extends uiGrid.IGridOption
      */
     enableRowClickToEdit?: boolean;
     /**
+     * Enables row double click to go to detail state
+     */
+    enableRowDoubleClickToEdit?: boolean;
+    /**
      * Custom row template attibutes
      */
     rowTemplateAttrs?: string[];

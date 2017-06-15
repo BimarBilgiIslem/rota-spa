@@ -381,6 +381,9 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         if (this.gridOptions.enableRowClickToEdit) {
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_ROW_CLICK_EDIT_ATTR);
         }
+        if (this.gridOptions.enableRowDoubleClickToEdit && !this.common.isMobileOrTablet()) {
+            this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_ROW_DOUBLE_CLICK_EDIT_ATTR);
+        }
         //Set row template
         if (this.gridOptions.rowTemplateAttrs.length) {
             this.gridOptions.rowTemplate = this.constants.grid.GRID_CUSTOM_ROW_TEMPLATE

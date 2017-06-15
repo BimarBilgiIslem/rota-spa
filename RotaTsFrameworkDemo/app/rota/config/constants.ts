@@ -96,7 +96,8 @@ const rotaConstants: IConstants = {
         'ng-class="{ \'ui-grid-row-header-cell\':col.isRowHeader}" role="{{col.isRowHeader ? \'rowheader\' : \'gridcell\'}}" ' +
         'ui-grid-cell></div></div>',
         GRID_ROW_FORMATTER_ATTR: "ng-class='grid.options.rowFormatter(row)'",
-        GRID_ROW_CLICK_EDIT_ATTR: "ng-click=\"grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row)\"",
+        GRID_ROW_CLICK_EDIT_ATTR: "ng-click=\"grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)\"",
+        GRID_ROW_DOUBLE_CLICK_EDIT_ATTR: "ng-dblclick=\"grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)\"",
         GRID_CONTEXT_MENU_ATTR: "context-menu='contextmenu.html' rt-grid-right-click-sel",
         GRID_EDIT_BUTTON_HTML:
         '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)"' +
