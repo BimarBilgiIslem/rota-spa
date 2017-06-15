@@ -295,7 +295,6 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * Default grid options
     */
     protected getDefaultGridOptions(): IGridOptions<TModel> {
-        //ui-grid/ui-grid-row
         return {
             showEditButton: true,
             showDeleteButton: true,
@@ -307,6 +306,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             enableRowSelection: false,
             enableSelectAll: true,
             multiSelect: false,
+            enableRowClickToEdit: this.common.isMobileOrTablet(),
             //Data
             data: [] as Array<TModel>,
             //Pager
@@ -372,11 +372,14 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
         if (this.isAssigned(this.gridOptions.rowFormatter)) {
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_ROW_FORMATTER_ATTR);
         }
-        if (this.isAssigned(this.gridOptions.showContextMenu)) {
+        if (this.gridOptions.showContextMenu) {
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_CONTEXT_MENU_ATTR);
             if (!this.gridOptions.multiSelect) {
                 this.gridOptions.enableRowSelection = true;
             }
+        }
+        if (this.gridOptions.enableRowClickToEdit) {
+            this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_ROW_CLICK_EDIT_ATTR);
         }
         //Set row template
         if (this.gridOptions.rowTemplateAttrs.length) {
@@ -495,7 +498,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * Go detail state with id param provided
     * @param id
     */
-    goToDetailState(id: string, entity?: TModel, row?: uiGrid.IGridRowOf<TModel>): ng.IPromise<any> {
+    goToDetailState(id: string, entity?: TModel, row?: uiGrid.IGridRowOf<TModel>, $event?: ng.IAngularEvent): ng.IPromise<any> {
+        this.common.preventClick($event);
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;
@@ -506,7 +510,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Init deletion model by unique key
      * @param id Unique id
      */
-    protected initDeleteModel(id: number, entity: TModel): ng.IPromise<any> {
+    protected initDeleteModel(id: number, entity: TModel, $event?: ng.IAngularEvent): ng.IPromise<any> {
+        this.common.preventClick($event);
         if (id === undefined || id === null || !id) return undefined;
 
         const confirmText = BaseListController.localizedValues.deleteconfirm;

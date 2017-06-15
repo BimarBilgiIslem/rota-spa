@@ -331,5 +331,9 @@ interface ICommon extends IBaseService {
      * @param value
      */
     updateQueryStringParameter(uri: string, key: string, value: string): string;
+    /**
+    * Flag that device is mobile or tablet
+    */
+    isMobileOrTablet(): boolean;
 }
 //#endregion

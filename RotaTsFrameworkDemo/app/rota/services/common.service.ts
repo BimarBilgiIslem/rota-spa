@@ -380,6 +380,12 @@ class Common implements ICommon {
             return uri + separator + key + "=" + value;
         }
     }
+    /**
+     * Flag that device is mobile or tablet
+     */
+    isMobileOrTablet(): boolean {
+        return window.__IS_TOUCHABLE;
+    }
     //#endregion
 
     //#region Model Utils

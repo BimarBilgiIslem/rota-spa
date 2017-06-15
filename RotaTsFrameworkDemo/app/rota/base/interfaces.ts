@@ -537,6 +537,10 @@ interface IGridOptions<TModel extends IBaseCrudModel> extends uiGrid.IGridOption
      */
     showContextMenu?: boolean;
     /**
+     * Enables row click to go to detail state
+     */
+    enableRowClickToEdit?: boolean;
+    /**
      * Custom row template attibutes
      */
     rowTemplateAttrs?: string[];

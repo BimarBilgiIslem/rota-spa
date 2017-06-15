@@ -72,6 +72,7 @@ interface IConstants {
         GRID_CUSTOM_ROW_TEMPLATE: string;
         GRID_ROW_FORMATTER_ATTR: string;
         GRID_CONTEXT_MENU_ATTR: string;
+        GRID_ROW_CLICK_EDIT_ATTR: string;
         GRID_EDIT_BUTTON_HTML: string;
         GRID_DELETE_BUTTON_HTML: string;
         GRID_PAGE_INDEX_FIELD_NAME: string;
