@@ -46,7 +46,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
 
         switch (value) {
             case ModelStates.Added:
-                this._values[ObserableModel.idField] = 0;
+                this._id = 0;
                 //set all child as added
                 this.setChildModelState(ModelStates.Added);
                 break;
@@ -56,7 +56,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
                     value = ModelStates.Detached;
                     break;
                 }
-                if (this._values[ObserableModel.idField] === 0)
+                if (this._id === 0)
                     throw new Error("id must be valid when state set to deleted");
                 //set all child as deleted
                 this.setChildModelState(ModelStates.Deleted);
@@ -85,6 +85,10 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         this.__readonly = value;
     }
     /**
+     * Is Model dirty 
+     */
+    public _isDirty: boolean;
+    /**
      * Orjinal values
      */
     public _orginalValues: TModel;
@@ -111,9 +115,10 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         _.each(this._values, (childItem): void => {
             if (_.isArray(childItem)) {
                 _.each(childItem, (item: IBaseCrudModel) => {
-                    if (item.modelState)
-                        item.modelState = modelState;
+                    item.modelState = modelState;
                 });
+            } else if (_.isObject(childItem)) {
+                childItem.modelState = modelState;
             }
         });
     }
@@ -121,10 +126,44 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      * get value depending on prop type 
      * @param value Prop value
      */
-    extractValue(value: any): any {
+    private mapProperty(value: any): any {
+        //if value is array,converto to ObserableModel array
+        if (_.isArray(value)) {
+            const subModels: IBaseListModel<IBaseCrudModel> = [];
+            //set parent model
+            subModels.parentModel = this;
+            //listen collection for further addition/deletion
+            subModels.subscribeCollectionChanged((action?: ModelStates, value?: IBaseCrudModel) => {
+                this.fireDataChangedEvent();
+            });
+            //iterate nested models
+            for (let jsubModel of value) {
+                subModels.add(new ObserableModel(jsubModel, this));
+            }
+            return subModels;
+        } else
+            //if value is literal obj,convert to ObserableModel
+            if (_.isObject(value)) {
+                const navModel = new ObserableModel(value, this);
+                //register datachange event to notify parent model
+                navModel.subscribeDataChanged((action?: ModelStates, value?: any, oldValue?: any, key?: string) => {
+                    this.fireDataChangedEvent(action, value, oldValue, key);
+                });
+                return navModel;
+            }
+        //otherwise,return primitive type
+        return this.extractValue(value);
+    }
+    /**
+     * Extract value depending on value type
+     * @param value
+     */
+    private extractValue(value: any): any {
+        //if value is date,create new date instance
         if (moment.isDate(value)) {
             return new Date(value);
         }
+        //otherwise,return primitive type
         return value;
     }
     /**
@@ -138,20 +177,13 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      */
     revertOriginal(): void {
         this.initProperties();
-        //bind events for nested fresh models
-        for (let event of this._dataChangeEvents) {
-            const subCollections = _.filter<IBaseListModel<TModel>>(this._values, item => _.isArray(item));
-            _.each(subCollections, items => {
-                items.subscribeCollectionChanged(event);
-            });
-        }
     }
     /**
     * Clone model with orginal values
     * @returns {IBaseCrudModel}
     */
     cloneModel(): TModel & IObserableModel<TModel> {
-        const newModel = new ObserableModel(this._values);
+        const newModel = new ObserableModel(this._orginalValues);
         return <any>newModel;
     }
     /**
@@ -160,18 +192,18 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      */
     toJson(onlyChanges?: boolean): TModel {
         const jsonModel = {}, modifiedProps = [];
-        //get properties 
+        //get properties of this object itself
         const allValues = _.chain(this)
             .keys()
             .union(ObserableModel.stdFields)
             .filter(key => { return !_s.startsWith(key, '$$') && !_s.startsWith(key, '_') })
-            .reduce((memo, curr) => {
+            .reduce<_.Dictionary<any>>((memo, curr) => {
                 memo[curr] = this[curr];
                 return memo;
             }, {})
             .value();
-        //convert literal obj recursivly
-        _.each(<_.Dictionary<any>>allValues, (value, key) => {
+        //convert literal obj recursively
+        _.each(allValues, (value, key) => {
             if (_.isArray(value)) {
                 const jArray = _.chain(value)
                     .filter((item: IBaseCrudModel) => item.modelState !== ModelStates.Detached)
@@ -180,6 +212,11 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
                     .value();
                 if (!onlyChanges || jArray.length)
                     jsonModel[key] = jArray;
+            } else if (_.isObject(value)) {
+                if (!onlyChanges || (value.modelState !== ModelStates.Detached && value.modelState !== ModelStates.Unchanged)) {
+                    const navigationalModel = (value as IObserableModel<IBaseCrudModel>).toJson(onlyChanges);
+                    jsonModel[key] = navigationalModel;
+                }
             } else {
                 if (!onlyChanges || this.modelState === ModelStates.Added || this._orginalValues[key] !== value) {
                     jsonModel[key] = this.extractValue(value);
@@ -188,7 +225,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
             }
         });
 
-        if (!_.isEmpty(jsonModel) && onlyChanges) {
+        if (!_.isEmpty(jsonModel) && onlyChanges && this.modelState !== ModelStates.Added) {
             jsonModel[ObserableModel.idField] = this.id;
             jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, ObserableModel.stdFields);
         }
@@ -207,11 +244,6 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      */
     subscribeDataChanged(callback: IModelDataChangedEvent): void {
         this._dataChangeEvents.push(callback);
-        //register dataChanged event for nested models
-        const subCollections = _.filter<IBaseListModel<IBaseCrudModel>>(this._values, item => _.isArray(item));
-        _.each(subCollections, items => {
-            items.subscribeCollectionChanged(callback);
-        });
     }
     /**
      * Fire data chanfed event
@@ -219,7 +251,9 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      * @param value Value
      * @param modelState modelstate of model
      */
-    private fireDataChangedEvent(action?: ModelStates, key?: string, newValue?: any, oldValue?: any): void {
+    public fireDataChangedEvent(action?: ModelStates, key?: string, newValue?: any, oldValue?: any): void {
+        this._isDirty = true;
+
         if (this._dataChangeEvents) {
             for (let i = 0; i < this._dataChangeEvents.length; i++) {
                 this._dataChangeEvents[i].call(this, action, newValue, oldValue, key);
@@ -232,6 +266,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      */
     private initProperties(): void {
         this._values = {};
+        this._isDirty = false;
         //set standart field
         if (this._orginalValues[ObserableModel.idField])
             this._id = this._orginalValues[ObserableModel.idField];
@@ -241,15 +276,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         const purgedModel = _.omit(this._orginalValues, ObserableModel.stdFields);
         //define prop map 
         const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptorMap => {
-            //check array
-            if (_.isArray(value)) {
-                const subModels: IBaseListModel<IBaseCrudModel> = [];
-                _.each<IBaseCrudModel>(value, jModel => { subModels.add(new ObserableModel(jModel)) });
-                this._values[key] = subModels;
-            } else {
-                //set private 
-                this._values[key] = this.extractValue(value);
-            }
+            //convert array or nav props to obserable
+            this._values[key] = this.mapProperty(value);
 
             const propMap: PropertyDescriptorMap = {
                 enumerable: true,
@@ -276,16 +304,17 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         Object.defineProperties(this, modelPropsMap);
     }
 
-    constructor(initialValues?: any) {
+    constructor(initialValues?: any, public _parentModel?: IObserableModel<IBaseCrudModel>) {
         super();
         //set initial values
         this._id = 0;
         this._modelState = ModelStates.Detached;
         this._gui = _.uniqueId('model_');
-        this._values =
-            this._orginalValues = {} as TModel;
+        this._values = {} as TModel;
+        this._orginalValues = {} as TModel;
         this._dataChangeEvents = [];
-        this.__readonly = false;
+        this._isDirty =
+            this.__readonly = false;
 
         if (!initialValues) return;
         this._orginalValues = initialValues instanceof ObserableModel ? initialValues.toJson() : initialValues;

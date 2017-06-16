@@ -81,11 +81,11 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     /**
      * Model dirty flag
      */
-    isModelDirty: boolean;
+    private isModelDirty: boolean;
     /**
      * AutoSave promise
      */
-    autoSavePromise: IP<any>;
+    private autoSavePromise: IP<any>;
     //#endregion
 
     //#region Props

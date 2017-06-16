@@ -239,6 +239,10 @@ interface IObserableModel<TModel extends IBaseCrudModel> extends IBaseCrudModel 
      * Globally model identifier 
      */
     _gui?: string;
+    /**
+     * Is Model dirty 
+     */
+    _isDirty?: boolean;
 }
 /**
  * Includes crudmodel & obserable models and extends array with model functions
@@ -248,6 +252,10 @@ interface IBaseListModel<TModel extends IBaseCrudModel> extends Array<TModel & I
     * Readonly 
     */
     _readonly?: boolean;
+    /**
+     * Parent Model of array
+     */
+    parentModel?: IObserableModel<IBaseCrudModel>;
     /**
      * Register callback event for data change
      * @param callback Callback method

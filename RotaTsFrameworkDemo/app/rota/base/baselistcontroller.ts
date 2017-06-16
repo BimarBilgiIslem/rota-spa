@@ -307,6 +307,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
             enableSelectAll: true,
             multiSelect: false,
             enableRowClickToEdit: this.common.isMobileOrTablet(),
+            enableRowDoubleClickToEdit: !this.common.isMobileOrTablet(),
             //Data
             data: [] as Array<TModel>,
             //Pager

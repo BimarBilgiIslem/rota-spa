@@ -126,7 +126,7 @@ Array.prototype["add"] = function (model: IBaseCrudModel | IObserableModel<IBase
         return this;
     //convert literal to obserable 
     if (!(model instanceof ObserableModel)) {
-        model = new ObserableModel(model);
+        model = new ObserableModel(model, this.parentModel);
     }
     //set readonly - this is hack for rtMultiSelect.
     (model as IObserableModel<IBaseCrudModel>)._readonly = this._readonly;
@@ -154,7 +154,6 @@ Array.prototype["add"] = function (model: IBaseCrudModel | IObserableModel<IBase
         (model as IObserableModel<IBaseCrudModel>).acceptChanges();
         model.modelState = ModelStates.Added;
     }
-
     return this;
 }
 /**
@@ -165,3 +164,13 @@ Array.prototype["subscribeCollectionChanged"] = function (callback: IModelCollec
     if (!this._collectionChangedEvents) this._collectionChangedEvents = [];
     this._collectionChangedEvents.push(callback);
 }
+
+/*
+//trigger events
+    if (this._collectionChangedEvents) {
+        for (let i = 0; i < this._collectionChangedEvents.length; i++) {
+            const callbackItem = this._collectionChangedEvents[i];
+            callbackItem.call(this, ModelStates.Added, model);
+        }
+    }
+*/
