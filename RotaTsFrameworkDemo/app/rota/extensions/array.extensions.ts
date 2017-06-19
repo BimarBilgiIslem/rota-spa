@@ -20,6 +20,18 @@
 declare global {
     interface Array<T> {
         /**
+       * Find model in collection by id
+       * @param id Model id
+       * @returns {TModel} 
+       */
+        findById?: (id: number) => T;
+        /**
+         * Find index of provided predicate
+         * @param callback Iterator function
+         * @returns {number} 
+         */
+        findIndex?: (callback?: _.ListIterator<T, boolean>) => number;
+        /**
          * Delete item from list
          * @param item Item
          */
@@ -29,6 +41,13 @@ declare global {
          * @param callback Iterator function
          */
         delete(callback?: _.ListIterator<T, boolean>): void;
+        /**
+         * Delete model by id
+         * @description Deletes item from list
+         * @param id Model id
+         * @returns {IBaseListModel<TModel>}
+         */
+        deleteById?: (id: number) => Array<T>;
         /**
          *  Returns true if any of the values in the list pass the iterator truth test.
          * @param fn Iteratır function
@@ -61,7 +80,23 @@ declare global {
         sum?: (fn: _.ListIterator<T, number>) => number;
     }
 }
-
+/**
+ * Find model by its id
+ * @param id 
+ * @returns {} 
+ */
+Array.prototype["findById"] = function (id) {
+    const item = _.findWhere(this, { id: id });
+    return item;
+};
+/**
+ * Find index of provided predicate
+ * @param callback Iterator function
+ * @returns {number} 
+ */
+Array.prototype["findIndex"] = function (callback: _.ListIterator<{}, boolean>) {
+    return _.findIndex(this, callback);
+};
 /**
 * Delete item of array
 * @param args Iterator function or item itself to be deleted
@@ -79,6 +114,20 @@ Array.prototype["delete"] = function (...args: any[]): void {
         index > -1 && this.splice(index, 1);
     }
 }
+/**
+ * Delete item by its id field
+ * @param id 
+ * @returns {} 
+ */
+Array.prototype["deleteById"] = function (id) {
+    var _this = this;
+    var items = _.where(this, { id: id });
+    items.forEach(function (item) {
+        var index = _this.indexOf(item);
+        index > -1 && _this.splice(index, 1);
+    });
+    return this;
+};
 /**
  * Get count in the list pass the iterator truth test.
  * @param callback Iterator fuction

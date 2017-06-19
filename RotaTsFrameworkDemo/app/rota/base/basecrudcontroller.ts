@@ -329,6 +329,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         });
         //if there is error in save response,dispacth errorModel method
         saveResult.catch((error: IParserException): void => {
+            if (!error) return;
             const parserErrorMsg = error.message ||
                 (error.messageI18N && this.localization.getLocal(error.messageI18N));
             if (this.common.isNullOrEmpty(parserErrorMsg)) return;

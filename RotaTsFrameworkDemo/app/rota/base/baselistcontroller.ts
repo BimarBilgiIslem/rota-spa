@@ -23,7 +23,7 @@ import * as s from "underscore.string";
  * @description This base class should be inherited for all controllers using restful services
  * @param {TModel} is your custom model view.
  */
-abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter extends IBaseListModelFilter>
+abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter>
     extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
@@ -74,8 +74,8 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Model object
      * @returns {TModel}
      */
-    get model(): IBaseListModel<TModel> | IPagingListModel<TModel> { return <IBaseListModel<TModel> | IPagingListModel<TModel>>this._model; }
-    set model(value: IBaseListModel<TModel> | IPagingListModel<TModel>) {
+    get model(): TModel[] | IPagingListModel<TModel> { return <TModel[] | IPagingListModel<TModel>>this._model; }
+    set model(value: TModel[] | IPagingListModel<TModel>) {
         if (this.isAssigned(value)) {
             this._model = value;
         }
@@ -100,12 +100,12 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Grid data
      * @returns {IBaseListModel<TModel>}
      */
-    get gridData(): IBaseListModel<TModel> { return <IBaseListModel<TModel>>this.gridOptions.data; }
+    get gridData(): TModel[] { return this.gridOptions.data as TModel[]; }
     /**
      * Selected rows
      * @returns {} 
      */
-    get gridSeletedRows(): IBaseListModel<TModel> {
+    get gridSeletedRows(): TModel[] {
         if (this.isAssigned(this.gridApi) && this.isAssigned(this.gridApi.selection)) {
             return this.gridApi.selection.getSelectedRows();
         }
@@ -212,13 +212,13 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * @abstract Get model
     * @param args Model
     */
-    abstract getModel(modelFilter?: TModelFilter): ng.IPromise<IBaseListModel<TModel>> |
-        IBaseListModel<TModel> | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
+    abstract getModel(modelFilter?: TModelFilter): ng.IPromise<TModel[]> |
+                                                   TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
     /**
      * Check if model is null ,set it empty array for grid
      * @param model Model
      */
-    protected setModel(model: IBaseListModel<TModel> | IPagingListModel<TModel>): IBaseListModel<TModel> | IPagingListModel<TModel> {
+    protected setModel(model: TModel[] | IPagingListModel<TModel>): TModel[] | IPagingListModel<TModel> {
         const modelData = this.listPageOptions.pagingEnabled ? (<IPagingListModel<TModel>>model).data : model;
 
         if (this.common.isArray(modelData)) {
@@ -230,15 +230,15 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * Override loadedMethod to show notfound message
      * @param model Model
      */
-    public loadedModel(model: IBaseListModel<TModel> | IPagingListModel<TModel>): void {
+    public loadedModel(model: TModel[] | IPagingListModel<TModel>): void {
         //set grid datasource
         if (this.listPageOptions.pagingEnabled) {
             this.gridOptions.totalItems = (<IPagingListModel<TModel>>model).total || 0;
             this.gridOptions.data = (<IPagingListModel<TModel>>model).data;
             super.loadedModel((<IPagingListModel<TModel>>model).data);
         } else {
-            this.gridOptions.data = <IBaseListModel<TModel>>model;
-            super.loadedModel(<IBaseListModel<TModel>>model);
+            this.gridOptions.data = <TModel[]>model;
+            super.loadedModel(<TModel[]>model);
         }
         //set warnings and recordcount 
         let recCount = 0;
@@ -249,7 +249,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
                     throw new Error(this.constants.errors.NO_TOTAL_PROP_PROVIDED);
                 }
             } else {
-                recCount = (<IBaseListModel<TModel>>model).length;
+                recCount = (<TModel[]>model).length;
             }
         }
         if (recCount === 0 && this.isActiveState() && this.listPageOptions.showMesssage) {
@@ -486,7 +486,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
     * Starts getting model and binding
     * @param pager Paging pager
     */
-    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>> {
+    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[]> | ng.IPromise<IPagingListModel<TModel>> {
         let filter: TModelFilter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
             filter = angular.extend(filter, pager || this.getPagingFilter(1));
@@ -539,7 +539,7 @@ abstract class BaseListController<TModel extends IBaseCrudModel, TModelFilter ex
      * @param id Unique key
      * @description Remove item from grid datasource.Must be overrided to implament your deletion logic and call super.deleteModel();
      */
-    deleteModel(id: number | number[], entity: TModel | IBaseListModel<TModel>): ng.IPromise<any> | void {
+    deleteModel(id: number | number[], entity: TModel | TModel[]): ng.IPromise<any> | void {
         return undefined;
     }
     /**

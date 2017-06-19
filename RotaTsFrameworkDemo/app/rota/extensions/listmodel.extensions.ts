@@ -139,7 +139,6 @@ Array.prototype["add"] = function (model: IBaseCrudModel | IObserableModel<IBase
     //register model changes event
     const self = this;
     (model as IObserableModel<IBaseCrudModel>).subscribeDataChanged(function (action?: ModelStates): void {
-        //only added or deleted model changes events accepted 
         if (self._collectionChangedEvents) {
             for (let i = 0; i < self._collectionChangedEvents.length; i++) {
                 const callbackItem = self._collectionChangedEvents[i];

@@ -58,6 +58,10 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
                 }
                 if (this._id === 0)
                     throw new Error("id must be valid when state set to deleted");
+
+                if (oldState === ModelStates.Modified) {
+                    this.revertOriginal();
+                }
                 //set all child as deleted
                 this.setChildModelState(ModelStates.Deleted);
                 break;
@@ -132,8 +136,8 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
             const subModels: IBaseListModel<IBaseCrudModel> = [];
             //set parent model
             subModels.parentModel = this;
-            //listen collection for further addition/deletion
-            subModels.subscribeCollectionChanged((action?: ModelStates, value?: IBaseCrudModel) => {
+            //listen collection for signal of model is being changed
+            subModels.subscribeCollectionChanged(() => {
                 this.fireDataChangedEvent();
             });
             //iterate nested models
@@ -225,9 +229,12 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
             }
         });
 
-        if (!_.isEmpty(jsonModel) && onlyChanges && this.modelState !== ModelStates.Added) {
+        if (!_.isEmpty(jsonModel) && onlyChanges) {
             jsonModel[ObserableModel.idField] = this.id;
-            jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, ObserableModel.stdFields);
+
+            if (this.modelState === ModelStates.Modified) {
+                jsonModel[ObserableModel.modifiedPropsField] = _.difference(modifiedProps, ObserableModel.stdFields);
+            }
         }
 
         return jsonModel as TModel;

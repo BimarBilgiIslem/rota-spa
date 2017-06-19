@@ -25,10 +25,10 @@ import { BaseController } from "./basecontroller"
  * Providing model life cycle methods
  * Model abstraction methods
  */
-abstract class BaseModelController<TModel extends IBaseCrudModel> extends BaseController {
+abstract class BaseModelController<TModel extends IBaseModel> extends BaseController {
     //#region Props
-    protected _model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>;
-    modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
+    protected _model: TModel | TModel[] | IPagingListModel<TModel>;
+    modelPromise: ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>>;
     //#endregion
 
     //#region Bundle Services
@@ -58,13 +58,13 @@ abstract class BaseModelController<TModel extends IBaseCrudModel> extends BaseCo
      * @abstract Abstract get model method
      * @param args Optional params
      */
-    abstract getModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<IBaseListModel<TModel>> |
-        IBaseListModel<TModel> | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
+    abstract getModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<TModel[]> |
+        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
     /**
      * Loaded model method triggered at last
      * @param model
      */
-    protected loadedModel(model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>): void {
+    protected loadedModel(model: TModel | TModel[] | IPagingListModel<TModel>): void {
         //send broadcast
         this.$rootScope.$broadcast(this.config.eventNames.modelLoaded, model);
     }
@@ -72,33 +72,33 @@ abstract class BaseModelController<TModel extends IBaseCrudModel> extends BaseCo
     * Set model for some optional modifications
     * @param model Model
     */
-    protected setModel(model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>): TModel | IBaseListModel<TModel> | IPagingListModel<TModel> {
+    protected setModel(model: TModel | TModel[] | IPagingListModel<TModel>): TModel | TModel[] | IPagingListModel<TModel> {
         return model;
     }
     /**
      * Overridable model definition method
      * @param modelFilter Optional Model filter 
      */
-    defineModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<IBaseListModel<TModel>> |
-        IBaseListModel<TModel> | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel> {
+    defineModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<TModel[]> |
+        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel> {
         return this.getModel(modelFilter);
     }
     /**
      * Initiates getting data
      * @param args Optional params
      */
-    protected initModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>> {
+    protected initModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>> {
         const d = this.$q.defer();
         const defineModelResult = this.defineModel(modelFilter);
 
-        const processModel = (model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>): void => {
+        const processModel = (model: TModel | TModel[] | IPagingListModel<TModel>): void => {
             //call modelloaded event
             this.loadedModel(this._model = this.setModel(model));
             d.resolve(model);
         }
 
         if (this.common.isPromise(defineModelResult)) {
-            (defineModelResult as ng.IPromise<any>).then((data: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>) => {
+            (defineModelResult as ng.IPromise<any>).then((data: TModel | TModel[] | IPagingListModel<TModel>) => {
                 processModel(data);
             }, (reason: any) => {
                 //TODO: can be changed depending on server excepion response

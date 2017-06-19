@@ -163,6 +163,10 @@ interface IBaseReportFilter extends IBaseModelFilter {
  * Base model 
  */
 interface IBaseModel {
+    /**
+     * Model unique id
+     */
+    id?: number;
 }
 /**
  * Model states equivalent to Entity framework entity state
@@ -178,10 +182,6 @@ const enum ModelStates {
  * Base crud model
  */
 interface IBaseCrudModel extends IBaseModel {
-    /**
-     * Model unique id
-     */
-    id?: number;
     /**
      * Model state
      * @description Should be used along with entityframework entity state
@@ -265,12 +265,6 @@ interface IBaseListModel<TModel extends IBaseCrudModel> extends Array<TModel & I
      * Restore all added models to orginal values
      */
     revertOriginal?: () => void;
-    /**
-    * Find model in collection by id
-    * @param id Model id
-    * @returns {TModel} 
-    */
-    findById?: (id: number) => TModel & IObserableModel<TModel>;
     /** 
     * Find model in collection by gui
     * @param gui Model Gui
@@ -291,13 +285,6 @@ interface IBaseListModel<TModel extends IBaseCrudModel> extends Array<TModel & I
      * @returns {IBaseListModel<TModel>}
      */
     removeById?: (id: number) => IBaseListModel<TModel>;
-    /**
-    * Delete model by id
-     * @description Deletes item from list
-    * @param id Model id
-    * @returns {IBaseListModel<TModel>}
-    */
-    deleteById?: (id: number) => IBaseListModel<TModel>;
     /**
      * Remove all items
      * @returns {IBaseListModel<TModel>}
@@ -329,11 +316,11 @@ interface IModelCollectionChangedEvent {
 /**
  * Base paing model for all listing pages
  */
-interface IPagingListModel<TModel extends IBaseCrudModel> {
+interface IPagingListModel<TModel extends IBaseModel> {
     /**
      * Grid current page data
      */
-    data: IBaseListModel<TModel>;
+    data: TModel[];
     /**
      * Total record count
      */
@@ -524,7 +511,7 @@ interface IBaseListModelFilter extends IBaseModelFilter {
 /**
  * Grid options include button options
  */
-interface IGridOptions<TModel extends IBaseCrudModel> extends uiGrid.IGridOptionsOf<TModel> {
+interface IGridOptions<TModel extends IBaseModel> extends uiGrid.IGridOptionsOf<TModel> {
     /**
      * Flag that show edit button on grid 
      */
