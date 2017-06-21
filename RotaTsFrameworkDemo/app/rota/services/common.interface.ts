@@ -242,7 +242,7 @@ interface ICommon extends IBaseService {
     * Check whether model is valid obserable
     * @param model
     */
-    isObserableModel(model: any): model is IObserableModel<IBaseCrudModel>;
+    isObserableModel<T extends IBaseCrudModel>(model: any): model is IObserableModel<T>;
     /**
      * Get a new crud model 
      * @param props

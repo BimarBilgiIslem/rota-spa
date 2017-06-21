@@ -410,9 +410,12 @@ class Common implements ICommon {
     isCrudModel(model: any): model is IBaseCrudModel {
         return this.isAssigned(model) && this.isAssigned(model.modelState);
     }
-
-    isObserableModel(model: any): model is IObserableModel<IBaseCrudModel> {
-        return this.isAssigned(model) && this.isAssigned(model._gui);
+    /**
+     * Check agaist model is obserable instance
+     * @param model
+     */
+    isObserableModel<T extends IBaseCrudModel>(model: any): model is IObserableModel<T> {
+        return model instanceof ObserableModel;
     }
     //#endregion
 }

@@ -163,13 +163,3 @@ Array.prototype["subscribeCollectionChanged"] = function (callback: IModelCollec
     if (!this._collectionChangedEvents) this._collectionChangedEvents = [];
     this._collectionChangedEvents.push(callback);
 }
-
-/*
-//trigger events
-    if (this._collectionChangedEvents) {
-        for (let i = 0; i < this._collectionChangedEvents.length; i++) {
-            const callbackItem = this._collectionChangedEvents[i];
-            callbackItem.call(this, ModelStates.Added, model);
-        }
-    }
-*/

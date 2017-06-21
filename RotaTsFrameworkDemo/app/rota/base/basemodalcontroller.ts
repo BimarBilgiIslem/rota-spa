@@ -21,7 +21,7 @@ import { ObserableModel } from "./obserablemodel";
 /**
  * Base Modal controller
  */
-class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelController<TModel>
+class BaseModalController<TModel extends IBaseModel> extends BaseModelController<TModel>
     implements IBaseModalController {
     //#region Statics,Members,Props
     private static readonly defaultOptions: IModalPageOptions = {
@@ -41,8 +41,8 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
     * Model object
     * @returns {TModel}
     */
-    get model(): TModel & IObserableModel<TModel> { return this._model as TModel & IObserableModel<TModel>; }
-    set model(value: TModel & IObserableModel<TModel>) {
+    get model(): TModel { return this._model as TModel; }
+    set model(value: TModel) {
         if (this.isAssigned(value)) {
             this._model = value;
         }
@@ -110,7 +110,7 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      * Close modal with dismiss
      */
     closeModal(): void {
-        if (this.instanceOptions.convertToObserableModel) {
+        if (this.instanceOptions.convertToObserableModel && this.common.isObserableModel(this.model)) {
             this.model.revertOriginal();
         }
         this.$uibModalInstance.dismiss(this.model);
@@ -128,12 +128,12 @@ class BaseModalController<TModel extends IBaseCrudModel> extends BaseModelContro
      * Convert model to obserable 
      * @param model Literal model
      */
-    setModel(model: TModel): TModel & IObserableModel<TModel> {
-        if (model instanceof ObserableModel) {
+    setModel(model: TModel): TModel {
+        if (this.common.isObserableModel(model)) {
             return model as any;
         }
         if (!(this.instanceOptions.convertToObserableModel === false)) {
-            return new ObserableModel<TModel>(model) as any;
+            return new ObserableModel(model) as any;
         }
         return model as any;
     }

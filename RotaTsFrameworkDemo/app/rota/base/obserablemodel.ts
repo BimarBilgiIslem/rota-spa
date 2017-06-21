@@ -48,7 +48,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
             case ModelStates.Added:
                 this._id = 0;
                 //set all child as added
-                this.setChildModelState(ModelStates.Added);
+                this.iterateNavigationalModels(model => model.modelState = ModelStates.Added);
                 break;
             case ModelStates.Deleted:
                 if (oldState === ModelStates.Detached) return;
@@ -63,7 +63,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
                     this.revertOriginal();
                 }
                 //set all child as deleted
-                this.setChildModelState(ModelStates.Deleted);
+                this.iterateNavigationalModels(model => model.modelState = ModelStates.Deleted);
                 break;
             case ModelStates.Modified:
                 if (oldState !== ModelStates.Unchanged)
@@ -83,9 +83,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     set _readonly(value: boolean) {
         if (this.__readonly === value) return;
         //set child array 
-        _.chain(this._values)
-            .filter(item => _.isArray(item))
-            .each(item => item._readonly = value);
+        this.iterateNavigationalModels(model => model._readonly = value);
         this.__readonly = value;
     }
     /**
@@ -112,17 +110,19 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
 
     //#region Methods
     /**
-     * Sets all child models' states 
-     * @param modelState ModelState 
+     * Iterate navigational models
+     * @param cb Callback
      */
-    setChildModelState(modelState: ModelStates): void {
+    private iterateNavigationalModels(cb: (model: IObserableModel<IBaseCrudModel>) => void): void {
         _.each(this._values, (childItem): void => {
             if (_.isArray(childItem)) {
-                _.each(childItem, (item: IBaseCrudModel) => {
-                    item.modelState = modelState;
+                _.each(childItem, (item: IObserableModel<IBaseCrudModel>) => {
+                    if (item instanceof ObserableModel) {
+                        cb(item);
+                    }
                 });
-            } else if (_.isObject(childItem)) {
-                childItem.modelState = modelState;
+            } else if (childItem instanceof ObserableModel) {
+                cb(childItem);
             }
         });
     }
@@ -210,16 +210,19 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         _.each(allValues, (value, key) => {
             if (_.isArray(value)) {
                 const jArray = _.chain(value)
+                    .filter(item => item instanceof ObserableModel)
                     .filter((item: IBaseCrudModel) => item.modelState !== ModelStates.Detached)
                     .map<IObserableModel<IBaseCrudModel>>((item: IObserableModel<IBaseCrudModel>) => item.toJson(onlyChanges))
                     .filter(item => !_.isEmpty(item))
                     .value();
                 if (!onlyChanges || jArray.length)
                     jsonModel[key] = jArray;
-            } else if (_.isObject(value)) {
-                if (!onlyChanges || (value.modelState !== ModelStates.Detached && value.modelState !== ModelStates.Unchanged)) {
+            } else if (value instanceof ObserableModel) {
+                if (value.modelState !== ModelStates.Detached) {
                     const navigationalModel = (value as IObserableModel<IBaseCrudModel>).toJson(onlyChanges);
-                    jsonModel[key] = navigationalModel;
+                    if (!onlyChanges || !_.isEmpty(navigationalModel)) {
+                        jsonModel[key] = navigationalModel;
+                    }
                 }
             } else {
                 if (!onlyChanges || this.modelState === ModelStates.Added || this._orginalValues[key] !== value) {
@@ -258,7 +261,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
      * @param value Value
      * @param modelState modelstate of model
      */
-    public fireDataChangedEvent(action?: ModelStates, key?: string, newValue?: any, oldValue?: any): void {
+    fireDataChangedEvent(action?: ModelStates, key?: string, newValue?: any, oldValue?: any): void {
         this._isDirty = true;
 
         if (this._dataChangeEvents) {
