@@ -46,7 +46,7 @@ class Common implements ICommon {
      * @param value Arg
      */
     makePromise<T>(value: any): ng.IPromise<T> {
-        return this.isPromise(value) ? value : this.promise<T>(value);
+        return this.isPromise<T>(value) ? value : this.promise<T>(value);
     }
     /**
      * Check whether or not provided param is promise

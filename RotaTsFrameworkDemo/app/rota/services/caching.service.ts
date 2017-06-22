@@ -22,7 +22,7 @@ class Storage implements ICacher {
 
     constructor(private storage: IStorage, private base64?: IBase64) { }
 
-    get<TModel extends IBaseModel>(key: string, defaultValue?: TModel): TModel {
+    get<TModel>(key: string, defaultValue?: TModel): TModel {
         try {
             const data = this.storage.getItem(key);
             if (data) {
@@ -40,7 +40,7 @@ class Storage implements ICacher {
         return defaultValue;
     }
 
-    store<TModel extends IBaseModel>(key: string, value: TModel): void {
+    store<TModel>(key: string, value: TModel): void {
         if (value === undefined || value === null) {
             this.log(`${key} not stored due to undefined or null`);
             return;

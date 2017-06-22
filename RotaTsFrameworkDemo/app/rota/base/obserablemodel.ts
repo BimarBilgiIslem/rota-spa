@@ -314,7 +314,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         Object.defineProperties(this, modelPropsMap);
     }
 
-    constructor(initialValues?: any, public _parentModel?: IObserableModel<IBaseCrudModel>) {
+    constructor(initialValues?: Partial<TModel>, public _parentModel?: IObserableModel<IBaseCrudModel>) {
         super();
         //set initial values
         this._id = 0;

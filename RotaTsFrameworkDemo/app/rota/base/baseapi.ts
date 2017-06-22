@@ -89,14 +89,14 @@ class BaseApi extends InjectableObject implements IBaseApi {
     * Make get request with cache options
     * @param options Request Options
     */
-    get<T extends IBaseModel>(options: IRequestOptions): ng.IPromise<T>;
+    get<TResult>(options: IRequestOptions): ng.IPromise<TResult>;
     /**
     * Make get request
     * @param url Url
     * @param params Optional params
     * @returns {IPromise<T>} Promise
     */
-    get<T extends IBaseModel>(action: string, params?: any): ng.IPromise<T>;
+    get<TResult>(action: string, params?: object): ng.IPromise<TResult>;
     /**
    * Make get request
    * @param url Url
@@ -104,22 +104,22 @@ class BaseApi extends InjectableObject implements IBaseApi {
    * @param cache Optional caching will be applied
    * @returns {IPromise<T>} Promise
    */
-    get<T extends IBaseModel>(action: string, params?: any, cache?: boolean): ng.IPromise<T>;
-    get<T extends IBaseModel>(...args: any[]): ng.IPromise<T> {
-        return this.makeRequest<T>(RequestMethod.get, ...args);
+    get<TResult>(action: string, params?: object, cache?: boolean): ng.IPromise<TResult>;
+    get<TResult>(...args: any[]): ng.IPromise<TResult> {
+        return this.makeRequest<TResult>(RequestMethod.get, ...args);
     }
     /**
     * Make get request with cache options
     * @param options Request Options
     */
-    post<T extends IBaseModel>(options: IRequestOptions): ng.IPromise<T>;
+    post<TResult>(options: IRequestOptions): ng.IPromise<TResult>;
     /**
      * Make post request
      * @param url Url
      * @param data Payload object
      * @returns {IPromise<T>} Promise
      */
-    post<T extends {}>(action: string, data?: any): ng.IPromise<T>;
+    post<TResult>(action: string, data?: object): ng.IPromise<TResult>;
     /**
      * Make post request
      * @param url Url
@@ -127,9 +127,9 @@ class BaseApi extends InjectableObject implements IBaseApi {
      * @param cache Optional caching will be applied
      * @returns {IPromise<T>} Promise
      */
-    post<T extends {}>(action: string, data?: any, cache?: boolean): ng.IPromise<T>;
-    post<T extends {}>(...args: any[]): ng.IPromise<T> {
-        return this.makeRequest<T>(RequestMethod.post, ...args);
+    post<TResult>(action: string, data?: object, cache?: boolean): ng.IPromise<TResult>;
+    post<TResult>(...args: any[]): ng.IPromise<TResult> {
+        return this.makeRequest<TResult>(RequestMethod.post, ...args);
     }
     //#endregion
 
@@ -139,7 +139,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
     * @param method Request Method
     * @param args Request args
     */
-    makeRequest<T>(method: RequestMethod, ...args: any[]): ng.IPromise<T> {
+    private makeRequest<TResult>(method: RequestMethod, ...args: any[]): ng.IPromise<TResult> {
         if (args.length === 0) return null;
 
         let options: IRequestOptions;
@@ -157,7 +157,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
         //check if cache is active and returns cached data
         if (options.cache) {
             const cacheKey = options.cacheKey || this.buildUrl(options.url, this.common.extend(options.params, options.data));
-            const cachedData = this.caching.cachers[options.cacheType || CacherType.CacheStorage].get(cacheKey);
+            const cachedData = this.caching.cachers[options.cacheType || CacherType.CacheStorage].get<TResult>(cacheKey);
 
             if (this.common.isAssigned(cachedData)) {
                 return this.$q.when(cachedData);
@@ -174,7 +174,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
             params: options.params,
             showSpinner: options.showSpinner
         })
-            .then((response: IBaseServerResponse<T>): T => {
+            .then((response: IBaseServerResponse<TResult>): TResult => {
                 //cache if configured
                 if (options.cache) {
                     const cacheKey = options.cacheKey || this.buildUrl(options.url, options.params);

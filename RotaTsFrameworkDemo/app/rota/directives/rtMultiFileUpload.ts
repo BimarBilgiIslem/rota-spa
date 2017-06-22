@@ -83,7 +83,7 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
                 //check ext
                 if (!checkExt(file.name)) return;
                 //set file model
-                const fileModel = new ObserableModel({ name: file.name });
+                const fileModel = new ObserableModel<IFileModel>({ name: file.name });
                 const uploadedFile: IUploadedFile = {
                     name: file.name,
                     downloadLink: '',

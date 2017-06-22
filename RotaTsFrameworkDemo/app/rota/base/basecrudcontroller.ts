@@ -669,7 +669,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             this.crudPageFlags.isDeleting = false;
         this.crudPageFlags.isCloning = cloning;
 
-        return super.initModel({ id: this.id });
+        return super.initModel({ id: this.id }) as ng.IPromise<TModel>;
     }
     /**
      * Set model getter method
@@ -758,7 +758,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     * @abstract Get model
     * @param args Model
     */
-    abstract getModel(modelFilter: IBaseFormModelFilter): ng.IPromise<TModel> | TModel;
+    abstract getModel(modelFilter: IBaseFormModelFilter): ng.IPromise<TModel>;
     //#endregion   
 
     //#region Utils

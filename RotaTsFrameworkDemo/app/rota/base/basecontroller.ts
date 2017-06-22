@@ -21,7 +21,7 @@ import { InjectableObject } from "./injectableobject";
  * Base controller for all controllers.
  * @description Form directive support,Logger shortcuts,Rota service references
  */
-class BaseController extends InjectableObject implements IBaseController {
+class BaseController extends InjectableObject {
     //#region Props
     //#region Notification services
     /**

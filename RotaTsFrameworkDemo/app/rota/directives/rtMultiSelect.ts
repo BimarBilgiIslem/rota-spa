@@ -414,7 +414,7 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
              * @param item MultiSelectListItem
              * @param event Angular event
              */
-            scope.removeItem = (item: IBaseCrudModel, event: ng.IAngularEvent) => {
+            scope.removeItem = (item: IMultiSelectModel, event: ng.IAngularEvent) => {
                 common.preventClick(event);
                 return removeItem(item).then(() => {
                 }, (message: string): void => {
@@ -478,11 +478,14 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
              */
             scope.setSelected = (selItem: IMultiSelectModel, groupItems?: IMultiSelectModel[]) => {
                 //uncheck all items
-                (groupItems || addedItems).forEach((item: IMultiSelectModel) => {
+                const items = groupItems || addedItems;
+
+                for (let item of items) {
                     if (item.$model[attrs.selectionProp] === true) {
                         item.$model[attrs.selectionProp] = false;
                     }
-                });
+                }
+
                 //set selection
                 selItem.$model[attrs.selectionProp] = true;
             }

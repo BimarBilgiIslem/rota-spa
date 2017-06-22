@@ -60,12 +60,12 @@ interface IRequestOptions {
     /**
      * Map of strings or objects which will be serialized with the paramSerializer and appended as GET parameters.
      */
-    params?: any;
+    params?: object;
     /**
     * Payload object
      * @description  Data to be sent as the request message data.
     */
-    data?: any;
+    data?: object;
     /**
      * Server controller name
      */
@@ -149,6 +149,10 @@ interface IBaseCrudApi<TModel extends IBaseCrudModel> extends IBaseApi {
 //#endregion
 
 //#region Base Models
+/**
+ * Model variants
+ */
+type ModelVariants<TModel extends IBaseModel> = TModel | TModel[] | IPagingListModel<TModel>;
 /**
  * Base model for all filtering classes
  */
@@ -506,7 +510,20 @@ interface IModalPageOptions extends IModelPageOptions {
 /**
  * Base filter for all list pages
  */
-interface IBaseListModelFilter extends IBaseModelFilter {
+interface IBaseListModelFilter extends IBaseModelFilter, IPager {
+}
+/**
+ * Pager model
+ */
+interface IPager {
+    /**
+     * Current page index
+     */
+    pageIndex?: number;
+    /**
+     * Item count listed in a page
+     */
+    pageSize?: number;
 }
 /**
  * Grid options include button options

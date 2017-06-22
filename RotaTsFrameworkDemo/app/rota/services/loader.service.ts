@@ -29,7 +29,7 @@ class Loader implements ILoader {
      * @param url normalized or relative path
      */
     private load(url: string[]): ng.IPromise<string | string[] | RequireError> {
-        var defer = this.$q.defer();
+        var defer = this.$q.defer<string | string[] | RequireError>();
         window.require(url, (...responses: any[]) => {
             defer.resolve(responses);
             this.$rootScope.$apply();
@@ -50,7 +50,7 @@ class Loader implements ILoader {
     * @returns {ng.IPromise<string[]>}
     */
     resolve(urls: string[]): ng.IPromise<string[]>;
-    resolve(value: any): ng.IPromise<string | string[]> {
+    resolve(value: any): ng.IPromise<string | string[] | RequireError> {
         let arrayValue = !this.common.isArray(value) ? [value] : value;
         //set text plugin prefix for html files
         arrayValue = arrayValue.map(url => {

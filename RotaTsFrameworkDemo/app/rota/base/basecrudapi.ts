@@ -96,7 +96,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @returns {ng.IPromise<ICrudServerResponseData>}
     */
     save(model: TModel, controller?: string): ng.IPromise<ICrudServerResponseData> {
-        return this.post<TModel>({ action: this.config.crudActionNames.save, controller: controller, data: model });
+        return this.post<ICrudServerResponseData>({ action: this.config.crudActionNames.save, controller: controller, data: model });
     }
 
     /**

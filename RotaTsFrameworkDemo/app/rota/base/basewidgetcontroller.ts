@@ -20,7 +20,7 @@ import { BaseModelController } from './basemodelcontroller'
 /**
  * Base controller for widgets
  */
-abstract class BaseWidgetController<TModel extends IBaseCrudModel> extends BaseModelController<TModel> {
+abstract class BaseWidgetController<TModel extends IBaseModel> extends BaseModelController<TModel> {
     //#region Props
     /**
      * Widget options
@@ -38,8 +38,8 @@ abstract class BaseWidgetController<TModel extends IBaseCrudModel> extends BaseM
    * Model object
    * @returns {TModel}
    */
-    get model(): TModel | IBaseListModel<TModel> | IPagingListModel<TModel> { return this._model as TModel | IBaseListModel<TModel> | IPagingListModel<TModel> }
-    set model(value: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>) {
+    get model(): TModel | TModel[] | IPagingListModel<TModel> { return this._model as TModel | TModel[] | IPagingListModel<TModel> }
+    set model(value: TModel | TModel[] | IPagingListModel<TModel>) {
         if (this.isAssigned(value)) {
             this._model = value;
         }
@@ -90,15 +90,14 @@ abstract class BaseWidgetController<TModel extends IBaseCrudModel> extends BaseM
     * @abstract Abstract get model method
     * @param args Optional params
     */
-    getModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<IBaseListModel<TModel>> |
-        IBaseListModel<TModel> | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel> {
-        return this.common.promise();
+    getModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>> {
+        return this.common.promise<TModel | TModel[] | IPagingListModel<TModel>>();
     }
     /**
      * Loaded Model
      * @param model Model
      */
-    loadedModel(model: TModel | IBaseListModel<TModel> | IPagingListModel<TModel>): void {
+    loadedModel(model: TModel | TModel[] | IPagingListModel<TModel>): void {
         super.loadedModel(model);
         //set refresh interval
         if (this.widget.refreshInterval) {

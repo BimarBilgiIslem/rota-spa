@@ -213,7 +213,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * @param args Model
     */
     abstract getModel(modelFilter?: TModelFilter): ng.IPromise<TModel[]> |
-                                                   TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
+        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
     /**
      * Check if model is null ,set it empty array for grid
      * @param model Model
@@ -316,10 +316,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             useExternalPagination: true,
             //Export
             exporterSuppressColumns: [],
-            exporterAllDataFn: (): ng.IPromise<any> => {
-                const result = this.initSearchModel(this.getPagingFilter(1, this.gridOptions.totalItems));
-                return (result as ng.IPromise<IPagingListModel<TModel>>).then(() => {
+            exporterAllDataFn: (): ng.IPromise<Array<TModel>> => {
+                const result = this.initSearchModel(this.getPager(1, this.gridOptions.totalItems));
+                return result.then(result => {
                     this.gridOptions.useExternalPagination = false;
+                    if (this.listPageOptions.pagingEnabled) {
+                        return (result as IPagingListModel<TModel>).data;
+                    }
+                    return result as TModel[];
                 });
             },
             exporterCsvFilename: 'myFile.csv',
@@ -347,17 +351,17 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     /**
      * Get paging filter obj depending on params
      */
-    getPagingFilter(pageIndex?: number, pageSize?: number): any {
-        const filter = {};
+    private getPager(pageIndex?: number, pageSize?: number): IPager {
+        const pager: IPager = {};
         //if paging disabled,set max values
         if (!this.listPageOptions.pagingEnabled) {
             pageIndex = 1, pageSize = this.constants.grid.GRID_MAX_PAGE_SIZE;
         }
 
-        filter[this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME] = pageIndex || this.gridOptions.paginationCurrentPage || 1;
-        filter[this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME] = pageSize || this.gridOptions.paginationPageSize ||
+        pager.pageIndex = pageIndex || this.gridOptions.paginationCurrentPage || 1;
+        pager.pageSize = pageSize || this.gridOptions.paginationPageSize ||
             this.listPageOptions.pageSize;
-        return filter;
+        return pager;
     }
     //#endregion
 
@@ -421,7 +425,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         if (this.listPageOptions.pagingEnabled) {
             gridApi.pagination.on.paginationChanged(this.$scope, (currentPage: number, pageSize: number) => {
                 if (this.gridOptions.useExternalPagination)
-                    this.initSearchModel(this.getPagingFilter(currentPage, pageSize));
+                    this.initSearchModel(this.getPager(currentPage, pageSize));
             });
         }
         //register datachanges
@@ -486,14 +490,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * Starts getting model and binding
     * @param pager Paging pager
     */
-    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[]> | ng.IPromise<IPagingListModel<TModel>> {
-        let filter: TModelFilter = this.filter;
+    initSearchModel(pager?: IPager, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+        let filter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
-            filter = angular.extend(filter, pager || this.getPagingFilter(1));
+            filter = angular.extend(filter, pager || this.getPager(1));
         }
         //scroll to grid
         scrollToElem && this.$document.duScrollToElement(scrollToElem);
-        return this.initModel(filter);
+        return <ng.IPromise<TModel[] | IPagingListModel<TModel>>>this.initModel(filter);
     }
     //#endregion
 
@@ -586,8 +590,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * Save filter values
      */
     saveFilter(filter?: TModelFilter): void {
-        const purgedFilters = _.omit(filter || this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
-        this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME]);
+        const purgedFilters = _.omit(filter || this.filter, ["pageIndex", "pageSize"]);
         if (!_.isEmpty(purgedFilters)) {
             this.caching.cachers[this.listPageOptions.storefilterLocation].store(this.filterStorageName, purgedFilters);
             if (this.listPageOptions.showMesssage) {
@@ -688,7 +691,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                     let filter: TModelFilter = this.filter;
                     //get filter with paging values
                     filter = angular.extend(filter,
-                        this.getPagingFilter(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
+                        this.getPager(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
                     //obtain grid fields and header text for server generation
                     const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
                         curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
