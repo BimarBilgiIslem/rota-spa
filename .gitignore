@@ -13,7 +13,7 @@
 !*/**/app/rota/resources/*
 !*/**/app/rota/services/*.ts
 !*/**/app/rota/shell/*
-!*/**/tsconfig.json
+!tsconfig.json
 
 #Ignore
 
