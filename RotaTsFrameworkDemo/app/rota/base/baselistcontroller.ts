@@ -149,7 +149,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * @param options User options
      */
     private static extendOptions(bundle: IBundle, options?: IListPageOptions): IListPageOptions {
-        const configService = bundle.systemBundles["config"] as IMainConfig;
+        const configService = bundle.services["config"] as IMainConfig;
         const listOptions: IListPageOptions = angular.merge({}, BaseListController.defaultOptions,
             {
                 newItemParamName: configService.defaultNewItemParamName,
@@ -182,11 +182,11 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.uigridconstants = bundle.systemBundles["uigridconstants"];
-        this.uigridexporterconstants = bundle.systemBundles["uigridexporterconstants"];
-        this.caching = bundle.systemBundles["caching"];
-        this.$timeout = bundle.systemBundles["$timeout"];
-        this.$interval = bundle.systemBundles["$interval"];
+        this.uigridconstants = bundle.services["uigridconstants"];
+        this.uigridexporterconstants = bundle.services["uigridexporterconstants"];
+        this.caching = bundle.services["caching"];
+        this.$timeout = bundle.services["$timeout"];
+        this.$interval = bundle.services["$interval"];
     }
     /**
      * Store localized value for performance issues (called in basecontroller)
@@ -515,6 +515,11 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     */
     goToDetailState(id: string, entity?: TModel, row?: uiGrid.IGridRowOf<TModel>, $event?: ng.IAngularEvent): ng.IPromise<any> {
         this.common.preventClick($event);
+
+        if (!this.isAssigned(this.listPageOptions.editState)) {
+            throw new Error("editState is missing on options");
+        }
+
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;

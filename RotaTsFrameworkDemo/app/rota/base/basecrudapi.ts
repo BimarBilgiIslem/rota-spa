@@ -29,18 +29,13 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * Tokens
      */
     tokens: ITokens;
-
-    constructor(bundle: IBundle, controller?: string, moduleId?: string) {
-        super(bundle, controller, moduleId);
-    }
-
     /**
     * Update bundle
     * @param bundle IBundle
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.tokens = bundle.systemBundles["tokens"];
+        this.tokens = bundle.services["tokens"];
     }
     //#endregion
 

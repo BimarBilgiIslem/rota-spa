@@ -40,7 +40,11 @@ class BaseApi extends InjectableObject implements IBaseApi {
     caching: ICaching;
     logger: ILogger;
     constants: IConstants;
+    //url options
+    controller?: string;
+    moduleId?: string;
     //#endregion
+
 
     //#region Init
     static injects = InjectableObject.injects.concat(['$q', '$http', '$httpParamSerializer', 'Config', 'Common',
@@ -51,20 +55,23 @@ class BaseApi extends InjectableObject implements IBaseApi {
    */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.$q = bundle.systemBundles['$q'];
-        this.$http = bundle.systemBundles['$http'];
-        this.$httpParamSerializer = bundle.systemBundles['$httpparamserializer'];
-        this.config = bundle.systemBundles['config'];
-        this.common = bundle.systemBundles['common'];
-        this.localization = bundle.systemBundles['localization'];
-        this.caching = bundle.systemBundles['caching'];
-        this.logger = bundle.systemBundles['logger'];
-        this.uploader = bundle.systemBundles['upload'];
-        this.constants = bundle.systemBundles['constants'];
+        this.$q = bundle.services['$q'];
+        this.$http = bundle.services['$http'];
+        this.$httpParamSerializer = bundle.services['$httpparamserializer'];
+        this.config = bundle.services['config'];
+        this.common = bundle.services['common'];
+        this.localization = bundle.services['localization'];
+        this.caching = bundle.services['caching'];
+        this.logger = bundle.services['logger'];
+        this.uploader = bundle.services['upload'];
+        this.constants = bundle.services['constants'];
     }
 
-    constructor(bundle: IBundle, public controller?: string, private moduleId?: string) {
+    constructor(bundle: IBundle) {
         super(bundle);
+        //set options
+        this.controller = (bundle.options as IApiOptions).serverApi;
+        this.moduleId = (bundle.options as IApiOptions).moduleId;
     }
     //#endregion
 
@@ -207,7 +214,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
                             v = angular.toJson(v);
                         }
                     }
-                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(v));
+                    parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(v)}`);
                 });
             }
         }

@@ -20,7 +20,7 @@ import * as moment from "moment";
 /**
  * Obserablemodel responsible for tracking property changes and managing modelState algorithm
  */
-class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IObserableModel<TModel> {
+class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<TModel> {
     //#region Statics
     private static idField = "id";
     private static modelStateField = "modelState";
@@ -315,7 +315,6 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     }
 
     constructor(initialValues?: Partial<TModel>, public _parentModel?: IObserableModel<IBaseCrudModel>) {
-        super();
         //set initial values
         this._id = 0;
         this._modelState = ModelStates.Detached;

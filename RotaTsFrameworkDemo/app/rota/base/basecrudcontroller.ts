@@ -169,7 +169,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param options User options
      */
     private static extendOptions(bundle: IBundle, options?: ICrudPageOptions): ICrudPageOptions {
-        const configService = bundle.systemBundles["config"] as IMainConfig;
+        const configService = bundle.services["config"] as IMainConfig;
         const crudOptions: ICrudPageOptions = angular.merge({}, BaseCrudController.defaultOptions,
             {
                 newItemParamName: configService.defaultNewItemParamName,
@@ -183,9 +183,9 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param bundle Service Bundle
      * @param options User options
      */
-    constructor(bundle: IBundle, options?: ICrudPageOptions) {
+    constructor(bundle: IBundle) {
         //call base constructor
-        super(bundle, BaseCrudController.extendOptions(bundle, options));
+        super(bundle, BaseCrudController.extendOptions(bundle, bundle.options));
         //get new instance of validator service
         this.validators = this.$injector.instantiate(Validators) as IValidators;
         this.validators.controller = this;
@@ -201,8 +201,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             (!this.common.isDefined(this.$stateParams.readonly) || this.$stateParams.readonly);
         //set form is new/edit mode
         this.isNew = this.id === this.crudPageOptions.newItemParamValue;
-        //initialize getting model
-        this.initModel();
     }
     /**
      * Update bundle
@@ -210,9 +208,9 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.$interval = bundle.systemBundles["$interval"];
-        this.$timeout = bundle.systemBundles["$timeout"];
-        this.caching = bundle.systemBundles["caching"];
+        this.$interval = bundle.services["$interval"];
+        this.$timeout = bundle.services["$timeout"];
+        this.caching = bundle.services["caching"];
     }
     /**
      * Store localized value for performance issues (called in basecontroller)
@@ -663,7 +661,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * Init crud model
      * @param cloning Cloning flag
      */
-    protected initModel(cloning?: boolean): ng.IPromise<TModel> {
+    initModel(cloning?: boolean): ng.IPromise<TModel> {
         //reset flags
         this.crudPageFlags.isSaving =
             this.crudPageFlags.isDeleting = false;

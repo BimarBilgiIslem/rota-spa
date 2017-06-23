@@ -104,6 +104,20 @@ interface IBaseApi {
     fileUpload(file: IFileInfo, params?: any): ng.IPromise<IFileUploadResponseData>;
 }
 /**
+ * Api options used by decorators
+ */
+interface IApiOptions extends IBaseOptions {
+    /**
+     * Server controller api name
+     * @description  Set "user" if your server api name is UserController for webapi backend
+     */
+    serverApi?: string;
+    /**
+     * Cross origin host name api will work with,which defined in global environment as "hosts" 
+     */
+    moduleId?: string;
+}
+/**
  * Api that includes custom methods for crud operations
  * @description Please refer to implemention file for restful service endpoint info
  */
@@ -143,8 +157,13 @@ interface IBaseCrudApi<TModel extends IBaseCrudModel> extends IBaseApi {
      * @returns {ng.IPromise<any>}
      */
     delete(id: number, controller?: string): ng.IPromise<any>;
-
-    exportList(filter?: IBaseModelFilter, controller?: string): void;
+    /**
+     * Export model
+     * @param filter Filter
+     * @param controller Server controller name
+     * @returns {void} 
+     */
+    exportList(filter?: IBaseListModelFilter, controller?: string): void;
 }
 //#endregion
 
@@ -767,11 +786,7 @@ interface IBundle {
     /**
      * System angular services and thirdparty services 
      */
-    systemBundles: IDictionary<any>;
-    /**
-     * User defined services
-     */
-    customBundles: IDictionary<any>;
+    services: IDictionary<any>;
     /**
      * Options of injectable object
      */

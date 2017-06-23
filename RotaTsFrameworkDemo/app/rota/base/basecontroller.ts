@@ -169,24 +169,24 @@ class BaseController extends InjectableObject {
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
         //system
-        this.$rootScope = bundle.systemBundles['$rootscope'];
-        this.$scope = bundle.systemBundles['$scope'];
-        this.$window = bundle.systemBundles["$window"];
-        this.$stateParams = bundle.systemBundles["$stateparams"];
-        this.$document = bundle.systemBundles["$document"];
-        this.hotkeys = bundle.systemBundles["hotkeys"];
+        this.$rootScope = bundle.services['$rootscope'];
+        this.$scope = bundle.services['$scope'];
+        this.$window = bundle.services["$window"];
+        this.$stateParams = bundle.services["$stateparams"];
+        this.$document = bundle.services["$document"];
+        this.hotkeys = bundle.services["hotkeys"];
         //rota
-        this.logger = bundle.systemBundles["logger"];
-        this.common = bundle.systemBundles["common"];
-        this.dialogs = bundle.systemBundles["dialogs"];
-        this.config = bundle.systemBundles["config"];
-        this.routing = bundle.systemBundles["routing"];
-        this.localization = bundle.systemBundles["localization"];
-        this.stateInfo = bundle.systemBundles["stateinfo"];
-        this.titlebadges = bundle.systemBundles["titlebadges"];
-        this.constants = bundle.systemBundles["constants"];
-        this.currentUser = bundle.systemBundles["currentuser"];
-        this.currentCompany = bundle.systemBundles["currentcompany"];
+        this.logger = bundle.services["logger"];
+        this.common = bundle.services["common"];
+        this.dialogs = bundle.services["dialogs"];
+        this.config = bundle.services["config"];
+        this.routing = bundle.services["routing"];
+        this.localization = bundle.services["localization"];
+        this.stateInfo = bundle.services["stateinfo"];
+        this.titlebadges = bundle.services["titlebadges"];
+        this.constants = bundle.services["constants"];
+        this.currentUser = bundle.services["currentuser"];
+        this.currentCompany = bundle.services["currentcompany"];
     }
 
     //#endregion

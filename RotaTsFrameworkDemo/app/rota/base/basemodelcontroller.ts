@@ -48,8 +48,8 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
 
-        this.$q = bundle.systemBundles['$q'];
-        this.$http = bundle.systemBundles['$http'];
+        this.$q = bundle.services['$q'];
+        this.$http = bundle.services['$http'];
     }
     //#endregion
 
@@ -85,7 +85,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      * Initiates getting data
      * @param args Optional params
      */
-    protected initModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> {
+    initModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> {
         const d = this.$q.defer<ModelVariants<TModel>>();
         const defineModelResult = this.defineModel(modelFilter);
 

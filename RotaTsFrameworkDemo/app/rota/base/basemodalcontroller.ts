@@ -17,17 +17,15 @@
 //#region Imports
 import { BaseModelController } from './basemodelcontroller';
 import { ObserableModel } from "./obserablemodel";
+import { Controller } from "./decorators";
 //#endregion
 /**
  * Base Modal controller
  */
+@Controller({ initializeModel: true })
 class BaseModalController<TModel extends IBaseModel> extends BaseModelController<TModel>
     implements IBaseModalController {
     //#region Statics,Members,Props
-    private static readonly defaultOptions: IModalPageOptions = {
-        initializeModel: true
-    }
-
     static injects = BaseModelController.injects.concat(['$uibModalInstance', 'instanceOptions']);
     /**
      * Modal instance
@@ -67,33 +65,14 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.$uibModalInstance = bundle.systemBundles["$uibmodalinstance"];
-        this.instanceOptions = bundle.systemBundles["instanceoptions"] || {};
+
+        this.$uibModalInstance = bundle.services["$uibmodalinstance"];
+        this.instanceOptions = bundle.services["instanceoptions"] || {};
         //Inject optional custom services if any
         if (this.instanceOptions.services) {
             this.instanceOptions.services.forEach((service): void => {
                 this.defineService(service, this.$injector.get(service));
             });
-        }
-    }
-    //#endregion
-
-    //#region Init
-    /**
-     * Extend crud page options with user options
-     * @param bundle Service Bundle
-     * @param options User options
-     */
-    private static extendOptions(bundle: IBundle, options?: IModalPageOptions): IModalPageOptions {
-        const modalPageOptions: IModalPageOptions = angular.merge({}, BaseModalController.defaultOptions, options);
-        return modalPageOptions;
-    }
-
-    constructor(bundle: IBundle, options?: IModalPageOptions) {
-        super(bundle, BaseModalController.extendOptions(bundle, options));
-
-        if (this.modalPageOptions.initializeModel) {
-            this.initModel();
         }
     }
     //#endregion

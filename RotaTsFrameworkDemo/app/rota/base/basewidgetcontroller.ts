@@ -74,8 +74,8 @@ abstract class BaseWidgetController<TModel extends IBaseModel> extends BaseModel
      */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.widget = bundle.systemBundles["widget"];
-        this.$timeout = bundle.systemBundles["$timeout"];
+        this.widget = bundle.services["widget"];
+        this.$timeout = bundle.services["$timeout"];
     }
     //#endregion
 
