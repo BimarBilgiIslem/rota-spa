@@ -163,9 +163,9 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * @param bundle Service bundle
      * @param options List page user options
      */
-    constructor(bundle: IBundle, options?: IListPageOptions) {
+    protected constructor(bundle: IBundle) {
         //merge options with defaults
-        super(bundle, BaseListController.extendOptions(bundle, options));
+        super(bundle, BaseListController.extendOptions(bundle, bundle.options));
         //init filter object 
         this.filterStorageName = `storedfilter_${this.stateInfo.stateName}`;
         this.gridLayoutStorageName = `storedgridlayout_${this.stateInfo.stateName}`;
@@ -405,10 +405,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         //set pagination
         this.gridOptions.enablePagination =
             this.gridOptions.enablePaginationControls = this.listPageOptions.pagingEnabled;
-        //load initially if enabled
-        if (this.listPageOptions.initializeModel) {
-            this.initSearchModel();
-        }
     }
     /**
      * @abstract Grid Columns
@@ -497,7 +493,18 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         }
         //scroll to grid
         scrollToElem && this.$document.duScrollToElement(scrollToElem);
-        return <ng.IPromise<TModel[] | IPagingListModel<TModel>>>this.initModel(filter);
+        return <ng.IPromise<TModel[] | IPagingListModel<TModel>>>super.initModel(filter);
+    }
+    /**
+     * Init model 
+     * @param modelFilter
+     */
+    initModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+        let filter = this.filter;
+        if (this.listPageOptions.pagingEnabled) {
+            filter = angular.extend(filter, this.getPager(1));
+        }
+        return <ng.IPromise<TModel[] | IPagingListModel<TModel>>>super.initModel(filter);
     }
     //#endregion
 

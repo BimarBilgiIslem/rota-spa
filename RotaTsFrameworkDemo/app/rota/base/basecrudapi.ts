@@ -22,8 +22,6 @@ import { BaseApi } from "./baseapi";
  * @description Please refer to the static endpoint names defined below for info
  */
 class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
-
-
     //#region Init
     //bundle
     static injects = BaseApi.injects.concat(['Tokens']);

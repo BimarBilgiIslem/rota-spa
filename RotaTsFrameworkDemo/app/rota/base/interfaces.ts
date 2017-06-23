@@ -46,8 +46,8 @@ interface IBaseController {
 /**
  * Model controller interface
  */
-interface IBaseModelController<TModel extends IBaseCrudModel> extends IBaseController {
-    modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
+interface IBaseModelController<TModel extends IBaseModel> extends IBaseController {
+    modelPromise: ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>>;
 }
 /**
  * Request Options for GET ,POST verbs
@@ -357,9 +357,14 @@ interface IEnum {
 
 //#region Page Options
 /**
+ * Base options for all objects
+ */
+interface IBaseOptions {
+}
+/**
 * BasePage options
 */
-interface IBasePageOptions {
+interface IBasePageOptions extends IBaseOptions {
     /**
     * Form name,default rtForm defined in rtForm directive
     */
@@ -393,7 +398,7 @@ interface IListPageOptions extends IModelPageOptions {
     /**
      * Detail page state name of listing page
      */
-    editState: string;
+    editState?: string;
     /**
      * Grid paging is enabled or not
      */
@@ -577,9 +582,9 @@ interface IListPageLocalization {
 /**
  * Base list controller
  */
-interface IBaseListController<TModel extends IBaseCrudModel> extends IBaseModelController<TModel> {
+interface IBaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter> extends IBaseModelController<TModel> {
     options: IListPageOptions;
-    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>>;
+    initSearchModel(pager?: IPager, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[] | IPagingListModel<TModel>>;
 }
 //#endregion
 
@@ -767,6 +772,10 @@ interface IBundle {
      * User defined services
      */
     customBundles: IDictionary<any>;
+    /**
+     * Options of injectable object
+     */
+    options?: IBaseOptions;
 }
 /**
  * Parsers exception include notifictaion type and title
