@@ -342,12 +342,13 @@ class RotaApp implements IRotaApp {
                 const serviceName = injectableObject.injects[index];
                 bundle.systemBundles[serviceName.toLowerCase()] = service;
             });
-            customServices.forEach((service: any, index: number) => {
-                const serviceName = dependencies[index];
-                bundle.customBundles[serviceName] = service;
-            });
+            //customServices.forEach((service: any, index: number) => {
+            //    const serviceName = dependencies[index];
+            //    bundle.customBundles[serviceName] = service;
+            //});
 
-            const instance = new injectableObject(bundle);
+            debugger;
+            const instance = new injectableObject(bundle, ...customServices);
             return instance;
         };
         //add ctor

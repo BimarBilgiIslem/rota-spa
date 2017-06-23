@@ -28,7 +28,7 @@ class InjectableObject {
     //#endregion
 
     //#region Init
-    constructor(bundle: IBundle) {
+    constructor(bundle: IBundle, ...services: any[]) {
         this.initBundle(bundle);
     }
     /**
@@ -38,13 +38,13 @@ class InjectableObject {
     initBundle(bundle: IBundle): void {
         this.$injector = bundle.systemBundles['$injector'];
         //custom bundles
-        for (let customBundle in bundle.customBundles) {
-            if (bundle.customBundles.hasOwnProperty(customBundle)) {
-                ((bundleName: string) => {
-                    this.defineService(bundleName, bundle.customBundles[bundleName]);
-                })(customBundle);
-            }
-        }
+        //for (let customBundle in bundle.customBundles) {
+        //    if (bundle.customBundles.hasOwnProperty(customBundle)) {
+        //        ((bundleName: string) => {
+        //            this.defineService(bundleName, bundle.customBundles[bundleName]);
+        //        })(customBundle);
+        //    }
+        //}
     }
     /**
      * Dynamically define service on controller
