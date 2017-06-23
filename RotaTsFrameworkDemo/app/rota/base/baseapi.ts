@@ -67,7 +67,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
         this.constants = bundle.services['constants'];
     }
 
-    constructor(bundle: IBundle) {
+    constructor(bundle: IBundle, ...services: any[]) {
         super(bundle);
         //set options
         this.controller = (bundle.options as IApiOptions).serverApi;

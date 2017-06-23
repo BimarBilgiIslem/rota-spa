@@ -266,7 +266,7 @@ class Common implements ICommon {
      * @param source Source of TSource
      * @param destinations Destinations of any
      */
-    extend<TSource>(source: TSource, ...extensions: any[]): TSource {
+    extend<TSource>(source: TSource, ...extensions: Partial<TSource>[]): TSource {
         return <TSource>angular.extend(source || {}, ...extensions);
     }
     /**

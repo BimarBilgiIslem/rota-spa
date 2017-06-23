@@ -38,6 +38,8 @@ require.config({
         'angular-animate': './rota/core/angular-animate',
         'angular-cookies': './rota/core/angular-cookies.min',
         'signalr.core': './rota/core/jquery.signalR-2.2.1.min',
+        //typscript helper
+        tslib: './rota/core/tslib',
         //oidc paths
         oidc: './rota/core/oidc-client.min',
         silentrenew: 'rota/shell/views/silent_renew.html',
