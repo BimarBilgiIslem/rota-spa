@@ -315,8 +315,23 @@ if (window) {
                 //init fr
                 loadFr();
             }
-        }, (error) => {
-            alert("there is something wrong with this app authorization,check configuration settings.!\n Error: " + error.message);
+        }, (error: { message?: string }) => {
+            let genericMessage = currentCulture === constants.localization.DEFAULT_LANGUAGE
+                ? constants.errors.IDSRV_GENERIC_ERROR_TR
+                : constants.errors.IDSRV_GENERIC_ERROR_EN;
+
+            let errorDescription: string = null;
+            //customize error messages
+            if (error.message) {
+                //check for "iat is in future" error
+                if (/\iat is in the future/.test(error.message)) {
+                    errorDescription = currentCulture === constants.localization.DEFAULT_LANGUAGE
+                        ? constants.errors.IDSRV_IAT_IS_IN_FUTURE_ERROR_TR
+                        : constants.errors.IDSRV_IAT_IS_IN_FUTURE_ERROR_EN;
+                }
+            }
+
+            alert(genericMessage + "\n" + (errorDescription || error.message));
         });
     });
     //#endregion

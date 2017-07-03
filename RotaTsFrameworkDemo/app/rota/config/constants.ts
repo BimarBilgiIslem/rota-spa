@@ -192,7 +192,14 @@ const rotaConstants: IConstants = {
         //validators
         NO_VALIDATORS_DEFINED: 'validators only available in basecrudcontroller',
         NO_VALIDATOR_DEFINED: 'no validator defined with the name {0}',
-        NO_VALIDATION_FUNC_DEFINED: 'no validation function defined'
+        NO_VALIDATION_FUNC_DEFINED: 'no validation function defined',
+        //Identity server errors
+        IDSRV_GENERIC_ERROR_EN: 'There is something wrong with this app authorization,please refer to help desk !',
+        IDSRV_GENERIC_ERROR_TR: 'Uygulama yetkilendirme ayarlarında problem mevcut,Lütfen sistem destek ekibi ile görüşünüz !',
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_EN: 'There is a discrepancy in system time of this running device/computer with the server.\n' +
+        'It needs to be aligned with server time settings.',
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_TR: 'Server saat ayarları ile çalıştığınız makinanın ayarları farklılık gösteriyor.\n' +
+        'Server saati ile eşitlenmesi gerekiyor.'
     },
     //Securty Service
     security: {

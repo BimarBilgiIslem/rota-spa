@@ -120,6 +120,10 @@ interface IConstants {
         NO_VALIDATORS_DEFINED: string;
         NO_VALIDATOR_DEFINED: string;
         NO_VALIDATION_FUNC_DEFINED: string;
+        IDSRV_GENERIC_ERROR_EN: string;
+        IDSRV_GENERIC_ERROR_TR: string;
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_EN: string;
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_TR: string;
     };
     security: {
         STORAGE_NAME_CURRENT_COMPANY: string;
