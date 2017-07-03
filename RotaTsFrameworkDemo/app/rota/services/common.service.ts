@@ -46,13 +46,13 @@ class Common implements ICommon {
      * @param value Arg
      */
     makePromise<T>(value: any): ng.IPromise<T> {
-        return this.isPromise<T>(value) ? value : this.promise<T>(value);
+        return this.isPromise(value) ? value : this.promise<T>(value);
     }
     /**
      * Check whether or not provided param is promise
      * @param value Arg
      */
-    isPromise<T>(value: any): value is ng.IPromise<T> {
+    isPromise(value: any): value is ng.IPromise<any> {
         return value && angular.isFunction(value.then);
     }
     //#endregion
@@ -288,7 +288,7 @@ class Common implements ICommon {
      * Guard method checks for array objects
      * @param value Any object
      */
-    isArray<T>(value: any): value is Array<T> {
+    isArray(value: any): value is Array<any> {
         return value instanceof Array;
     }
     /**
@@ -309,7 +309,7 @@ class Common implements ICommon {
      * Guard method checks for defined
      * @param value
      */
-    isDefined<T>(value: any): value is T {
+    isDefined(value: any): value is any {
         return angular.isDefined(value);
     }
     /**
@@ -414,7 +414,7 @@ class Common implements ICommon {
      * Check agaist model is obserable instance
      * @param model
      */
-    isObserableModel<T extends IBaseCrudModel>(model: any): model is IObserableModel<T> {
+    isObserableModel(model: any): model is IObserableModel<any> {
         return model instanceof ObserableModel;
     }
     //#endregion

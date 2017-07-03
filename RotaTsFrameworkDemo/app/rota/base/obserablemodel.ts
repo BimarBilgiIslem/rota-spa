@@ -285,11 +285,11 @@ class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<T
         //remove standart fields
         const purgedModel = _.omit(this._orginalValues, ObserableModel.stdFields);
         //define prop map 
-        const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptorMap => {
+        const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptor => {
             //convert array or nav props to obserable
             this._values[key] = this.mapProperty(value);
 
-            const propMap: PropertyDescriptorMap = {
+            const propMap: PropertyDescriptor = {
                 enumerable: true,
                 configurable: true,
                 get: () => { return this._values[key]; },

@@ -207,7 +207,7 @@ interface ICommon extends IBaseService {
     * Check whether or not provided param is promise
     * @param value Arg
     */
-    isPromise<T>(value: any): value is ng.IPromise<T>;
+    isPromise(value: any): value is ng.IPromise<any>;
     /**
    * Check whether or not provided value ends with html extension
    * @param value Arg
@@ -242,7 +242,7 @@ interface ICommon extends IBaseService {
     * Check whether model is valid obserable
     * @param model
     */
-    isObserableModel<T extends IBaseCrudModel>(model: any): model is IObserableModel<T>;
+    isObserableModel(model: any): model is IObserableModel<any>;
     /**
      * Get a new crud model 
      * @param props
@@ -289,7 +289,7 @@ interface ICommon extends IBaseService {
    * Guard method checks for array objects
    * @param value Any object
    */
-    isArray<T>(value: any): value is Array<T>;
+    isArray(value: any): value is Array<any>;
     /**
     * Guard method checks for function
     * @param value
@@ -299,7 +299,7 @@ interface ICommon extends IBaseService {
      * Guard method checks for defined
      * @param value
      */
-    isDefined<T>(value: any): value is T;
+    isDefined(value: any): value is any;
     /**
     * Convert html to plain text
     * @param html Html  

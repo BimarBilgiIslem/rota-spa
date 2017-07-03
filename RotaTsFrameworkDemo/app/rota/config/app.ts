@@ -18,9 +18,8 @@
 import { IRotaApp } from './app.interface';
 //deps
 import { BaseApi } from "../base/baseapi";
-//import { BaseController } from '../base/basecontroller';
 import { InjectableObject } from '../base/injectableobject';
-import { BaseModalController } from '../base/basemodalcontroller';
+import { DefaultModalController } from '../base/basemodalcontroller';
 import constants = require('config/constants');
 import "./infrastructure.index"
 //#endregion
@@ -124,8 +123,13 @@ class RotaApp implements IRotaApp {
                     localization.currentLanguage = { code: userCulture };
                 }
             }]);
+        //Make Typescript async/await available with angular $q service
+        //https://stackoverflow.com/a/41825004/1016147
+        //this.run(['$window', '$q', ($window: ng.IWindowService, $q: ng.IQService) => {
+        //    $window.Promise = $q;
+        //}]);
         //add base modal controllers if not defined controller.see dialog.services->showModal
-        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(BaseModalController));
+        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(DefaultModalController));
     }
     //#endregion
 

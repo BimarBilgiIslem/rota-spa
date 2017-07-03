@@ -22,7 +22,6 @@ import { Controller } from "./decorators";
 /**
  * Base Modal controller
  */
-@Controller({ initializeModel: true })
 class BaseModalController<TModel extends IBaseModel> extends BaseModelController<TModel>
     implements IBaseModalController {
     //#region Statics,Members,Props
@@ -118,5 +117,11 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
     }
     //#endregion
 }
+/**
+ * Default modal controller in the usage with showModal() of Dialogs service
+ */
+@Controller({ initializeModel: true })
+class DefaultModalController<TModel extends IBaseModel> extends BaseModalController<TModel> {
+}
 
-export { BaseModalController }
+export { BaseModalController, DefaultModalController }
