@@ -34,6 +34,7 @@ angular.module('rota.lib',
         //https://github.com/angular-ui/ui-grid
         'ui.grid', 'ui.grid.selection', 'ui.grid.pinning', 'ui.grid.pagination', 'ui.grid.exporter',
         'ui.grid.grouping', 'ui.grid.resizeColumns', 'ui.grid.saveState', 'ui.grid.moveColumns',
+        'ui.grid.edit', 'ui.grid.rowEdit',
         //Datetime picker
         //https://github.com/dalelotts/angular-bootstrap-datetimepicker
         'ui.dateTimeInput',
