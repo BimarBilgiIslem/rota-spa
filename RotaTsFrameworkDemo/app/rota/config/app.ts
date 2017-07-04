@@ -125,9 +125,9 @@ class RotaApp implements IRotaApp {
             }]);
         //Make Typescript async/await available with angular $q service
         //https://stackoverflow.com/a/41825004/1016147
-        //this.run(['$window', '$q', ($window: ng.IWindowService, $q: ng.IQService) => {
-        //    $window.Promise = $q;
-        //}]);
+        this.run(['$window', '$q', ($window: ng.IWindowService, $q: ng.IQService) => {
+            $window.Promise = $q;
+        }]);
         //add base modal controllers if not defined controller.see dialog.services->showModal
         this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(DefaultModalController));
     }

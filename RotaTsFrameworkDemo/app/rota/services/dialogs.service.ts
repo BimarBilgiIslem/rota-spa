@@ -39,7 +39,7 @@ class Dialogs implements IDialogs {
      * Show modal
      * @param options Modal options
      */
-    showModal<TResult extends IBaseModel>(options: IModalOptions): ng.IPromise<TResult> {
+    showModal<TResult>(options: IModalOptions): ng.IPromise<TResult> {
         if (this.common.isNullOrEmpty(options.templateUrl) &&
             this.common.isNullOrEmpty(options.absoluteTemplateUrl)) {
             throw new Error(this.constants.errors.MISSING_TEMPLATE_URL);

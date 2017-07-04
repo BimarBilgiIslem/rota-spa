@@ -287,6 +287,6 @@ interface IDialogs extends IBaseService {
      * if ControllerUrl not defined,it will be looked in templateUrl path
      * @param options Modal options
    */
-    showModal<TResult extends IBaseModel>(options: IModalOptions): ng.IPromise<TResult>;
+    showModal<TResult>(options: IModalOptions): ng.IPromise<TResult>;
 }
 //#endregion
