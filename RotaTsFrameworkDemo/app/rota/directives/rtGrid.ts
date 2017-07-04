@@ -37,21 +37,7 @@ interface IGridDirectiveAttrs extends ng.IAttributes {
 function gridDirective(config: IMainConfig, common: ICommon) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IGridDirectiveAttrs) {
         const optionsName = common.isNullOrEmpty(cAttrs.gridOptions) ? config.gridDefaultOptionsName : cAttrs.gridOptions;
-
-        let featureList;
-        switch (cAttrs.gridFeatureList) {
-            case "standart":
-            case null:
-            case undefined:
-                featureList = config.gridStandartFeatureList;
-                break;
-            case "full":
-                featureList = config.gridFullFeatureList;
-                break;
-            default:
-                featureList = cAttrs.gridFeatureList;
-        }
-        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${featureList}></div>`;
+        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${cAttrs.gridFeatureList || config.gridStandartFeatureList}></div>`;
         cElement.append(htmlMarkup);
         return (): void => {
         }
@@ -82,7 +68,7 @@ function gridRightClickSelectionDirective() {
                 const selectedRow = (scope.$parent.$parent as any).row;
                 //only single selection active
                 if (selectedRow && selectedRow.grid) {
-                    selectedRow.grid.api.selection.clearSelectedRows();   
+                    selectedRow.grid.api.selection.clearSelectedRows();
                     selectedRow.setSelected(true);
                 }
             });

@@ -228,10 +228,6 @@ interface IMainConfig extends IBaseConfig {
      */
     gridDefaultOptionsName?: string;
     /**
-     * Grid Full feature list
-     */
-    gridFullFeatureList?: string;
-    /**
      * Grid standart features list
      */
     gridStandartFeatureList?: string;
@@ -288,6 +284,10 @@ interface IMainConfig extends IBaseConfig {
      * Logo Image file name.It must be under ~/Content/img - default place_holder.png
      */
     logoImageName?: string;
+    /**
+     * Favicon name,relative image path with png ext
+     */
+    favIconName?: string;
     /**
      * Default push service root path
      */

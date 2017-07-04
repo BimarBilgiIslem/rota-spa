@@ -135,6 +135,18 @@ class Common implements ICommon {
 
     //#region Utils
     /**
+     * Dynamically set favicon
+     * @param iconPath
+     */
+    setFavIcon(iconPath: string = "/favicon.ico"): void {
+        const link = (document.querySelector("link[rel*='icon']") || document.createElement('link')) as HTMLLinkElement;
+        link.type = 'image/png';
+        link.rel = 'shortcut icon';
+        link.href = iconPath;
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
+
+    /**
      * Check if request is restfull service request
      * @param config Rewurst config
      * @returns {boolean} 

@@ -84,8 +84,6 @@ const rotaConstants: IConstants = {
     grid: {
         GRID_DEFAULT_PAGE_SIZE: 25,
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
-        GRID_FULL_FEATUTE_LIST:
-        'ui-grid-selection ui-grid-pinning ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
         GRID_STANDART_FEATURE_LIST: 'ui-grid-selection ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ' +
             'ui-grid-save-state ui-grid-move-columns ui-grid-edit ui-grid-row-edit',
         /**

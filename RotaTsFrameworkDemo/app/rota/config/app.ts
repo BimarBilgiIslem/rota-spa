@@ -128,6 +128,12 @@ class RotaApp implements IRotaApp {
         this.run(['$window', '$q', ($window: ng.IWindowService, $q: ng.IQService) => {
             $window.Promise = $q;
         }]);
+        //Set favicon
+        this.run(["Config", "Common", (config: IMainConfig, common: ICommon) => {
+            if (config.favIconName) {
+                common.setFavIcon(common.addPrefixSlash(config.favIconName));
+            }
+        }]);
         //add base modal controllers if not defined controller.see dialog.services->showModal
         this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(DefaultModalController));
     }

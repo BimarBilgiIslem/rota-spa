@@ -90,7 +90,6 @@ class Config extends BaseConfig<IMainConfig> {
             //Grid settings
             gridDefaultPageSize: constants.grid.GRID_DEFAULT_PAGE_SIZE,
             gridDefaultOptionsName: constants.grid.GRID_DEFAULT_OPTIONS_NAME,
-            gridFullFeatureList: constants.grid.GRID_FULL_FEATUTE_LIST,
             gridStandartFeatureList: constants.grid.GRID_STANDART_FEATURE_LIST,
             //Crud page stuffs
             autoSaveInterval: constants.controller.DEFAULT_AUTOSAVE_INTERVAL,
