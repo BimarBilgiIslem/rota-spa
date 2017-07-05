@@ -285,9 +285,13 @@ interface IMainConfig extends IBaseConfig {
      */
     logoImageName?: string;
     /**
-     * Favicon name,relative image path with png ext
+     * Favicon name,relative image path with ico/png ext
      */
     favIconName?: string;
+    /**
+     * Warning favicon name,relative image path with ico/png ext
+     */
+    warnFavIconName?: string;
     /**
      * Default push service root path
      */

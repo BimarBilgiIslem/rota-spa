@@ -138,14 +138,14 @@ class Common implements ICommon {
      * Dynamically set favicon
      * @param iconPath
      */
-    setFavIcon(iconPath: string = "/favicon.ico"): void {
+    setFavIcon(iconPath?: string): void {
+        if (!iconPath) iconPath = this.config.favIconName;
         const link = (document.querySelector("link[rel*='icon']") || document.createElement('link')) as HTMLLinkElement;
-        link.type = 'image/png';
+        link.type = 'image/' + (iconPath.split('.').pop() === "ico" ? "x-icon" : "png");
         link.rel = 'shortcut icon';
         link.href = iconPath;
         document.getElementsByTagName('head')[0].appendChild(link);
     }
-
     /**
      * Check if request is restfull service request
      * @param config Rewurst config

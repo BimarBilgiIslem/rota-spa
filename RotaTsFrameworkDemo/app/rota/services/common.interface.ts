@@ -143,7 +143,7 @@ interface IDictionary<T extends {}> {
 interface ICommon extends IBaseService {
     /**
      * Dynamically set favicon
-     * @param iconPath
+     * @param iconPath if falsy is passed,config.favIconName will be assigned
      */
     setFavIcon(iconPath?: string): void;
     /**

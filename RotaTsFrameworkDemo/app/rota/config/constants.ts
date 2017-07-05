@@ -85,7 +85,7 @@ const rotaConstants: IConstants = {
         GRID_DEFAULT_PAGE_SIZE: 25,
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
         GRID_STANDART_FEATURE_LIST: 'ui-grid-selection ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ' +
-            'ui-grid-save-state ui-grid-move-columns ui-grid-edit ui-grid-row-edit',
+        'ui-grid-save-state ui-grid-move-columns ui-grid-edit ui-grid-row-edit',
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html
@@ -254,6 +254,11 @@ const rotaConstants: IConstants = {
                                       <span class="sr-only">loading ...</span>\n\
                                     </div>\n\
                                   </div>'
+    },
+    style: {
+        IMG_BASE_PATH: '/Content/img',
+        DEFAULT_FAVICON_NAME: 'favicon-default.ico',
+        WARNING_FAVICON_NAME: 'favicon-warn-sign.png'
     }
 };
 

@@ -154,5 +154,10 @@ interface IConstants {
     dashboard: {
         WIDGET_LOADING_TEMPLATE: string;
         MIN_WIDGET_REFRESH_INTERVAL: number;
+    },
+    style: {
+        IMG_BASE_PATH: string,
+        DEFAULT_FAVICON_NAME: string;
+        WARNING_FAVICON_NAME: string;
     }
 } 
