@@ -371,7 +371,5 @@ class RotaApp implements IRotaApp {
     }
     //#endregion
 }
-//Instance of rota app
-var rotaApp: IRotaApp = new RotaApp(RotaApp.moduleName);
 //Export
-export { rotaApp as App }
+export default new RotaApp(RotaApp.moduleName)
