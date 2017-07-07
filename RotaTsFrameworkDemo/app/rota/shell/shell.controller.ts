@@ -114,6 +114,7 @@ class ShellController {
         this.dialogs.showModal({
             isSideBar: true,
             windowClass: 'side-nav',
+            viewPortSize: true,
             absoluteTemplateUrl: this.routeconfig.templates.navmenumobile,
             controller: 'ProfileModalController',
             controllerAs: 'profilevm'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 import * as _s from "underscore.string";
 //#region Common Service
 class Common implements ICommon {
@@ -294,7 +294,7 @@ class Common implements ICommon {
      * @param value Any object
      */
     isAssigned(value: any): boolean {
-        return value !== undefined && value !== null;
+        return [undefined, null].indexOf(value) === -1
     }
     /**
      * Guard method checks for array objects

@@ -18,7 +18,7 @@
 import * as _ from "underscore";
 import * as _s from "underscore.string";
 import * as $ from 'jquery';
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 //#endregion
 
 //#region Select Directive

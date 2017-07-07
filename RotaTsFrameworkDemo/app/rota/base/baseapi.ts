@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { InjectableObject } from "./injectableobject";
+import InjectableObject from "./injectableobject";
 //#endregion
 
 enum RequestMethod {
@@ -240,4 +240,4 @@ class BaseApi extends InjectableObject implements IBaseApi {
     //#endregion
 }
 
-export { BaseApi }
+export default BaseApi 

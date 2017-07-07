@@ -15,8 +15,8 @@
  */
 
 //#region Imports
-import { BaseModelController } from './basemodelcontroller';
-import { ObserableModel } from "./obserablemodel";
+import BaseModelController from './basemodelcontroller';
+import ObserableModel from "./obserablemodel";
 import { Controller } from "./decorators";
 //#endregion
 /**
@@ -123,5 +123,6 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
 @Controller({ initializeModel: true })
 class DefaultModalController<TModel extends IBaseModel> extends BaseModalController<TModel> {
 }
-
-export { BaseModalController, DefaultModalController }
+//Exports
+export default BaseModalController
+export { DefaultModalController }

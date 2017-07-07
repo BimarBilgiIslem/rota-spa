@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { BaseController } from "./basecontroller"
+import BaseController from "./basecontroller"
 //#endregion
 /**
  * This controller is used for loading the any model data remotely or localy
@@ -143,7 +143,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
 
 }
 
-export { BaseModelController }
+export default BaseModelController
 
 
 

@@ -7775,6 +7775,10 @@ ul.contextmenu {
   line-height: 2.1em;
   display: inline-block; }
 
+input[ng-currency] {
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace; }
+
 /************** VENDOR CSS URL IMPORTS ******************/
 /*@import "vendor-css/select2_custom.css";*/
 

@@ -65,7 +65,7 @@ require.config({
         select: './rota/lib/select.min',
         ckeditor: './rota/lib/ckeditor/ckeditor',
         'ng-ckeditor': './rota/lib/ng-ckeditor',
-        ngcurrency: './rota/lib/ng-currency',
+        'ng-currency': './rota/lib/ng-currency',
         mfb: './rota/lib/mfb-directive',
         imgcrop: './rota/lib/ng-img-crop',
         scroll: './rota/lib/angular-scroll.min',
@@ -125,10 +125,7 @@ require.config({
         },
         fileupload: {
             deps: ['fileapi', 'angular']
-        },
-        ngcurrency: {
-            deps: ['angular']
-        },
+        },     
         mfb: {
             deps: ['angular']
         },
@@ -304,7 +301,7 @@ if (window) {
             lang: currentCulture
         });
 
-        result.then(user => {
+        result.then(user => {            
             if (user !== null) {
                 //settings
                 initCulture(currentCulture);

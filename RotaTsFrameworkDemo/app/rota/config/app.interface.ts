@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { InjectableObject } from '../base/injectableobject';
-import { BaseApi } from '../base/baseapi';
+import InjectableObject from '../base/injectableobject';
+import BaseApi from '../base/baseapi';
 
 /**
  * Application interface

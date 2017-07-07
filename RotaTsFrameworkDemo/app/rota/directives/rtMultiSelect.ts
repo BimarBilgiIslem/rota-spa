@@ -17,7 +17,7 @@
 //#region Imports
 import * as _s from "underscore.string";
 import * as $ from 'jquery';
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 //#endregion
 
 //#region Multi Select Directive

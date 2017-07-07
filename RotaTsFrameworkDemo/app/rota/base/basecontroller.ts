@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { InjectableObject } from "./injectableobject";
+import InjectableObject from "./injectableobject";
 //#endregion
 /**
  * Base controller for all controllers.
@@ -313,5 +313,5 @@ class BaseController extends InjectableObject {
     //#endregion
 }
 
-export { BaseController }
+export default BaseController
 

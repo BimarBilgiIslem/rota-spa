@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { BaseApi } from "./baseapi";
+import BaseApi from "./baseapi";
 //#endregion
 /**
  * Base Crud Api for all api services
@@ -111,7 +111,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
             .$httpParamSerializer(filter)}&access_token=${this.tokens.accessToken}`;
         location.replace(url);
     }
+    //#endregion
 }
-
-//#endregion
-export { BaseCrudApi }
+//export
+export default BaseCrudApi 

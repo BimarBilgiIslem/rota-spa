@@ -15,9 +15,9 @@
  */
 
 //#region Imports
-import { BaseModelController } from './basemodelcontroller';
+import BaseModelController from './basemodelcontroller';
 import { Validators } from "../services/validators.service";
-import { ObserableModel } from "./obserablemodel";
+import ObserableModel from "./obserablemodel";
 //#endregion
 /**
  * Base CRUD page implementing save,update,delete processes
@@ -783,4 +783,4 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     //#endregion
 }
 //Export
-export { BaseCrudController }
+export default BaseCrudController 

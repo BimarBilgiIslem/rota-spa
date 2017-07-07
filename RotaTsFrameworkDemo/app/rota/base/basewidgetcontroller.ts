@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { BaseModelController } from './basemodelcontroller'
+import BaseModelController from './basemodelcontroller'
 //#endregion
 /**
  * Base controller for widgets
@@ -116,4 +116,4 @@ abstract class BaseWidgetController<TModel extends IBaseModel> extends BaseModel
     //#endregion
 }
 
-export { BaseWidgetController }
+export default BaseWidgetController 

@@ -17,8 +17,8 @@
 //#region Imports
 import { IRotaApp } from './app.interface';
 //deps
-import { BaseApi } from "../base/baseapi";
-import { InjectableObject } from '../base/injectableobject';
+import BaseApi from "../base/baseapi";
+import  InjectableObject  from '../base/injectableobject';
 import { DefaultModalController } from '../base/basemodalcontroller';
 import constants = require('config/constants');
 import "./infrastructure.index"

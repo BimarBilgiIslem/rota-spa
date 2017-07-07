@@ -54,4 +54,4 @@ class InjectableObject {
     //#endregion
 }
 
-export { InjectableObject }
+export default InjectableObject 

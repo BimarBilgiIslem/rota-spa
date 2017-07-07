@@ -333,4 +333,4 @@ class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<T
     //#endregion
 }
 
-export { ObserableModel }
+export default ObserableModel 

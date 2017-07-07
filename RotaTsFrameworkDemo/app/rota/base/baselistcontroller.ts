@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { BaseModelController } from "./basemodelcontroller"
+import BaseModelController from "./basemodelcontroller"
 import * as s from "underscore.string";
 //#endregion
 /**
@@ -23,7 +23,7 @@ import * as s from "underscore.string";
  * @description This base class should be inherited for all controllers using restful services
  * @param {TModel} is your custom model view.
  */
-abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter>
+abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter = {}>
     extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
@@ -761,4 +761,4 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     //#endregion
 }
 
-export { BaseListController }
+export default BaseListController 
