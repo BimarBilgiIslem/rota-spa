@@ -40,15 +40,15 @@ class BaseApi extends InjectableObject implements IBaseApi {
     caching: ICaching;
     logger: ILogger;
     constants: IConstants;
+    environment: IGlobalEnvironment;
     //url options
     controller?: string;
     moduleId?: string;
     //#endregion
 
-
     //#region Init
     static injects = InjectableObject.injects.concat(['$q', '$http', '$httpParamSerializer', 'Config', 'Common',
-        'Localization', 'Caching', 'Logger', 'Upload', 'Constants']);
+        'Localization', 'Caching', 'Logger', 'Upload', 'Constants', 'Environment']);
     /**
    * Init bundle
    * @param bundle
@@ -65,6 +65,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
         this.logger = bundle.services['logger'];
         this.uploader = bundle.services['upload'];
         this.constants = bundle.services['constants'];
+        this.environment = bundle.services['environment'];
     }
 
     constructor(bundle: IBundle, ...services: object[]) {
@@ -230,10 +231,14 @@ class BaseApi extends InjectableObject implements IBaseApi {
      */
     getAbsoluteUrl(action: string, controller?: string): string {
         let url = `${this.config.defaultApiPrefix}/${controller || this.controller}/${action}`;
-        //if xdom module is defined
-        //TODO:Same origin might be eliminated
-        if (!this.common.isNullOrEmpty(this.moduleId)) {
-            url = window.require.toUrl(`${this.moduleId}/${url}`);
+
+        if (!this.common.isNullOrEmpty(this.moduleId) && this.moduleId !== this.config.host) {
+            const moduleUrl = this.environment.doms[this.moduleId];
+            if (!this.common.isNullOrEmpty(moduleUrl)) {
+                url = `${moduleUrl}/${url}`;
+            } else {
+                this.logger.console.error({ message: `${this.moduleId} is not defined in environment.doms.${url} will be the returned` });
+            }
         }
         return url;
     }
