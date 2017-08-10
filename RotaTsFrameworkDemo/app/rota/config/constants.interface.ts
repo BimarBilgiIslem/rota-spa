@@ -100,8 +100,7 @@ interface IConstants {
         ALLOWED_AVATAR_EXTENSIONS: string;
         STORAGE_NAME_STORED_FILTER_URL: string;
         GRID_REFRESH_INTERVALS: number[];
-    };
-    shortcuts: { GO_TO_FIRST_ROW_OF_GRID: string };
+    };   
     errors: {
         MODEL_EXPECTED_AS_ARRAY: string;
         NO_TOTAL_PROP_PROVIDED: string;

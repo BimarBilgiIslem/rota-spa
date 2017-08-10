@@ -147,7 +147,7 @@ class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<T
             return subModels;
         } else
             //if value is literal obj,convert to ObserableModel
-            if (_.isObject(value)) {
+            if (_.isObject(value) && !_.isDate(value)) {
                 const navModel = new ObserableModel(value, this);
                 //register datachange event to notify parent model
                 navModel.subscribeDataChanged((action?: ModelStates, value?: any, oldValue?: any, key?: string) => {

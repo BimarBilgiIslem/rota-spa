@@ -161,11 +161,7 @@ const rotaConstants: IConstants = {
         ALLOWED_AVATAR_EXTENSIONS: '.png,.jpg',
         STORAGE_NAME_STORED_FILTER_URL: 'urls_stored_filters',
         GRID_REFRESH_INTERVALS: [1, 3, 5, 10]
-    },
-    //Shortcuts
-    shortcuts: {
-        GO_TO_FIRST_ROW_OF_GRID: 'ctrl+shift+right'
-    },
+    },   
     //Errors
     errors: {
         //ListController

@@ -328,14 +328,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             },
             exporterCsvFilename: 'myFile.csv',
             exporterPdfDefaultStyle: { fontSize: 9 },
-            exporterPdfTableStyle: { margin: [5, 5, 5, 5] },
-            exporterPdfTableHeaderStyle: { fontSize: 10, bold: true, italics: true, color: 'red' },
+            exporterPdfTableStyle: { margin: [3, 3, 3, 3] },
+            exporterPdfTableHeaderStyle: { fontSize: 8, bold: true, italics: true, color: '#096ce5' },
             exporterPdfHeader: { text: this.routing.activeMenu.localizedTitle, style: 'headerStyle' },
             exporterPdfFooter: (currentPage: number, pageCount: number) => {
                 return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
             },
             exporterPdfCustomFormatter: docDefinition => {
-                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+                docDefinition.styles.headerStyle = { fontSize: 15, bold: true, color: '#457ABB' };
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
@@ -532,7 +532,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     protected initDeleteModel(id: number, entity: TModel, $event?: ng.IAngularEvent): ng.IPromise<any> {
         this.common.preventClick($event);
-        if (id === undefined || id === null || !id) return undefined;
+        if (!this.isAssigned(id)) return;
 
         const confirmText = BaseListController.localizedValues.deleteconfirm;
         const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;

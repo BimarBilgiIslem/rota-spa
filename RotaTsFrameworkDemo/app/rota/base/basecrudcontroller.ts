@@ -705,6 +705,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param model
      */
     setModel(model: TModel): TModel & IObserableModel<TModel> {
+        if (!this.isAssigned(model)) return;
         //create new obserable model 
         return new ObserableModel<TModel>(model) as any;
     }
@@ -713,13 +714,17 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param model Model
      */
     loadedModel(model: TModel & IObserableModel<TModel>): void {
-        super.loadedModel(model);
         //model not found in edit mode
         if (!this.isNew && !this.isAssigned(model)) {
-            this.notification.error({ message: BaseCrudController.localizedValues.modelbulunamadi });
+            this.logger.console.log({ message: `no such an item found with id ${this.id}` });
+            this.notification.warn({
+                message: BaseCrudController.localizedValues.modelbulunamadi,
+                isSticky: true, autoHideDelay: 6000
+            });
             this.initNewModel();
             return;
         }
+        super.loadedModel(model);
         //set cloning warning & notify
         if (this.crudPageFlags.isCloning) {
             //set modelstate to Added if cloning
