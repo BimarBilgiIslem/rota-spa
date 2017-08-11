@@ -517,7 +517,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         this.common.preventClick($event);
 
         if (!this.isAssigned(this.listPageOptions.editState)) {
-            throw new Error("editState is missing on options");
+            this.logger.console.warn({ message: 'listPageOptions.editState is not defined' });
+            return;
         }
 
         const params = {};

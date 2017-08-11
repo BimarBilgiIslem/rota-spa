@@ -161,7 +161,7 @@ const rotaConstants: IConstants = {
         ALLOWED_AVATAR_EXTENSIONS: '.png,.jpg',
         STORAGE_NAME_STORED_FILTER_URL: 'urls_stored_filters',
         GRID_REFRESH_INTERVALS: [1, 3, 5, 10]
-    },   
+    },
     //Errors
     errors: {
         //ListController
@@ -254,7 +254,8 @@ const rotaConstants: IConstants = {
     style: {
         IMG_BASE_PATH: '/Content/img',
         DEFAULT_FAVICON_NAME: 'favicon-default.ico',
-        WARNING_FAVICON_NAME: 'favicon-warn-sign.png'
+        WARNING_FAVICON_NAME: 'favicon-warn-sign.png',
+        DEFAULT_AVATAR_NAME: 'avatar-default-{size}.png'
     }
 };
 

@@ -6609,32 +6609,24 @@ legend {
 .rota-animate-fade.ng-enter, .rota-animate-fade.ng-leave.ng-leave-active {
   opacity: 0; }
 
-/*[type='color'], [type='date'], [type='datetime'], [type='datetime-local'], [type='email'], [type='month'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='time'], [type='url'], [type='week'], input:not([type]), textarea {
-    font-weight: bold;
-}*/
 ::-webkit-input-placeholder {
-  font-weight: normal; }
+  font-weight: normal;
+  font-family: "Segoe UI", "Lucida Grande", "Ubuntu", "sans-serif"; }
 
 :-moz-placeholder {
   /* Firefox 18- */
-  font-weight: normal; }
+  font-weight: normal;
+  font-family: "Segoe UI", "Lucida Grande", "Ubuntu", "sans-serif"; }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
-  font-weight: normal; }
+  font-weight: normal;
+  font-family: "Segoe UI", "Lucida Grande", "Ubuntu", "sans-serif"; }
 
 :-ms-input-placeholder {
-  font-weight: normal; }
+  font-weight: normal;
+  font-family: "Segoe UI", "Lucida Grande", "Ubuntu", "sans-serif"; }
 
-/*label {
-    color: rgb(138, 137, 137);
-    font-weight: normal;
-
-    > input[type=checkbox] + span {
-        display: inline-block;
-        margin-top: 2px;
-    }
-}*/
 input[type="radio"], input[type="checkbox"] {
   cursor: pointer; }
 
@@ -7765,6 +7757,10 @@ ul.contextmenu {
 .avatar-large {
   height: 43px;
   width: 43px; }
+
+.avatar-anim {
+  transition: opacity .2s linear;
+  opacity: 1; }
 
 .avatar-firstletter {
   border-radius: 50%;

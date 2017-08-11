@@ -100,7 +100,7 @@ interface IConstants {
         ALLOWED_AVATAR_EXTENSIONS: string;
         STORAGE_NAME_STORED_FILTER_URL: string;
         GRID_REFRESH_INTERVALS: number[];
-    };   
+    };
     errors: {
         MODEL_EXPECTED_AS_ARRAY: string;
         NO_TOTAL_PROP_PROVIDED: string;
@@ -158,5 +158,6 @@ interface IConstants {
         IMG_BASE_PATH: string,
         DEFAULT_FAVICON_NAME: string;
         WARNING_FAVICON_NAME: string;
+        DEFAULT_AVATAR_NAME: string;
     }
 } 
