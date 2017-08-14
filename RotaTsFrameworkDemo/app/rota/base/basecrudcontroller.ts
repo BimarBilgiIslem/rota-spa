@@ -534,6 +534,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             });
             //if there is error in save response,dispacth errorModel method
             deleteResult.catch((error: IParserException): void => {
+                if (!error) return;
                 switch (error.logType) {
                     case LogType.Error:
                         this.notification.error({ title: error.title, message: error.message });
@@ -575,13 +576,14 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                 }
             });
             //fail delete
-            deleteResult.catch((response: IBaseServerResponse<IServerFailedResponseData>) => {
-                deferDelete.reject(response.data);
+            deleteResult.catch((response: IBaseServerResponse<IServerFailedResponseData> | IParserException) => {
+                deferDelete.reject((response as IBaseServerResponse<IServerFailedResponseData>).data || response);
             });
         });
         //fail parsers
         parseResult.catch((result: IValidationResult) => {
             deferDelete.reject(result);
+            return result;
         });
         //return delete promise
         return deferDelete.promise;

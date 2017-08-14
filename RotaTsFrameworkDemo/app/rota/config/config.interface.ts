@@ -211,10 +211,14 @@ interface IMainConfig extends IBaseConfig {
      */
     host?: string;
     /**
-    * Profile menu help link uri
+    * Menu help link uri
     * @description If not provided,help menu will be removed
     */
     helpLinkUri?: string;
+    /**
+     * Profile page url
+     */
+    profileLinkUri?: string;
     /**
      * Common event names
      */

@@ -545,10 +545,23 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 return deleteResult.then(() => {
                     this.gridData.deleteById(id);
                     this.gridOptions.totalItems--;
-                });
+                },
+                    (error: IParserException) => {
+                        if (!error) return;
+                        switch (error.logType) {
+                            case LogType.Error:
+                                this.notification.error({ title: error.title, message: error.message });
+                                break;
+                            case LogType.Warn:
+                                this.notification.warn({ title: error.title, message: error.message });
+                                break;
+                            default:
+                            //Server errors will be handled in logger.exception interceptor
+                        }
+                    });
             }
             this.gridData.deleteById(id);
-            return undefined;
+            return;
         });
     }
     /**
