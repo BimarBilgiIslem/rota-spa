@@ -263,7 +263,9 @@ interface ICommon extends IBaseService {
      * @param source Source of T
      * @param extensions Destinations of T
      */
-    extend<TSource>(source: TSource, ...extensions: Partial<TSource>[]): TSource;
+    extend<TSource>(source: TSource, ...extensions: any[]): TSource;
+    //TODO:partial neden calişmıyor ?
+    //extend<TSource>(source: TSource, ...extensions: Partial<TSource>[]): TSource;
     /**
     * Merge source with all destinations
     * @param source Source of TSource

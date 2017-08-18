@@ -16,6 +16,7 @@
 
 //#region Imports
 import BaseController from "./basecontroller"
+import { Validators } from "../services/validators.service";
 //#endregion
 /**
  * This controller is used for loading the any model data remotely or localy
@@ -32,14 +33,16 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     //#endregion
 
     //#region Bundle Services
-    protected $q: ng.IQService;
     protected $http: ng.IHttpService;
-    static injects = BaseController.injects.concat(['$q', '$http']);
+    static injects = BaseController.injects.concat(['$http']);
     //#endregion
 
     //#region Init
     constructor(bundle: IBundle, options?: IModelPageOptions) {
         super(bundle, options);
+        //get new instance of validator service
+        this.validators = this.$injector.instantiate(Validators) as IValidators;
+        this.validators.controller = this;
     }
     /**
     * Update bundle
@@ -47,8 +50,6 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-
-        this.$q = bundle.services['$q'];
         this.$http = bundle.services['$http'];
     }
     //#endregion

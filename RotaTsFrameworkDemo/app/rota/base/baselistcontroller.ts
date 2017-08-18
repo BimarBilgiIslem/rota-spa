@@ -23,14 +23,10 @@ import * as s from "underscore.string";
  * @description This base class should be inherited for all controllers using restful services
  * @param {TModel} is your custom model view.
  */
-abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter = {}>
+abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter>
     extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
-    /**
-     * Localized values for crud page
-     */
-    protected static localizedValues: IListPageLocalization;
     /**
      * List Page options
      */
@@ -191,10 +187,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     /**
      * Store localized value for performance issues (called in basecontroller)
      */
-    protected storeLocalization(): void {
-        if (BaseListController.localizedValues) return;
-
-        BaseListController.localizedValues = {
+    protected storeLocalization(localizedValues: IDictionary<string>): void {
+        super.storeLocalization(this.common.extend({
             kayitbulunamadi: this.localization.getLocal('rota.kayitbulunamadi'),
             deleteconfirm: this.localization.getLocal('rota.deleteconfirm'),
             deleteconfirmtitle: this.localization.getLocal('rota.deleteconfirmtitle'),
@@ -202,8 +196,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             kayitsayisi: this.localization.getLocal('rota.kayitsayisi'),
             filterrestored: this.localization.getLocal('rota.filtreyuklendi'),
             filtersaved: this.localization.getLocal('rota.filtrekayitedildi'),
-            refreshing: this.localization.getLocal('rota.refreshinprogress'),
-        };
+            refreshing: this.localization.getLocal('rota.refreshinprogress')
+        }, localizedValues));
     }
     //#endregion
 
@@ -308,6 +302,9 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             multiSelect: false,
             enableRowClickToEdit: this.common.isMobileOrTablet(),
             enableRowDoubleClickToEdit: !this.common.isMobileOrTablet(),
+            //Row Edit
+            enableCellEdit: false,
+            enableCellEditOnFocus: false,
             //Data
             data: [] as Array<TModel>,
             //Pager
@@ -489,22 +486,36 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     initSearchModel(pager?: IPager, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
         let filter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
-            filter = angular.extend(filter, pager || this.getPager(1));
+            filter = this.common.extend<TModelFilter>(filter, pager || this.getPager(1));
         }
         //scroll to grid
         scrollToElem && this.$document.duScrollToElement(scrollToElem);
-        return <ng.IPromise<TModel[] | IPagingListModel<TModel>>>super.initModel(filter);
+        //get data
+        return this.initModel(filter);
     }
     /**
-     * Init model 
-     * @param modelFilter
+     * Initialize model
+     * @param modelFilter Model filter
+     * @description modelFilter is only available in case its called from initSearchModel.
+     * in case its called from Controller decorator,initModel is called with this.filter without pager params
      */
-    initModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
-        let filter = this.filter;
-        if (this.listPageOptions.pagingEnabled) {
-            filter = angular.extend(filter, this.getPager(1));
-        }
-        return <ng.IPromise<TModel[] | IPagingListModel<TModel>>>super.initModel(filter);
+    initModel(modelFilter?: TModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+        const resultDefer = this.$q.defer<TModel[] | IPagingListModel<TModel>>();
+        this.logger.notification.removeAll();
+        //validation process
+        const validationResult = this.applyValidatitons();
+        //success
+        validationResult.then(() => {
+            super.initModel(modelFilter || this.filter).then(result =>
+                resultDefer.resolve(<TModel[] | IPagingListModel<TModel>>result));
+        });
+        //has error
+        validationResult.catch((error: IParserException) => {
+            this.showParserException(error);
+            resultDefer.reject();
+        });
+
+        return resultDefer.promise;
     }
     //#endregion
 

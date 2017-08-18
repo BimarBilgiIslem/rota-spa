@@ -16,7 +16,6 @@
 
 //#region Imports
 import BaseModelController from './basemodelcontroller';
-import { Validators } from "../services/validators.service";
 import ObserableModel from "./obserablemodel";
 //#endregion
 /**
@@ -44,10 +43,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         readOnly: false
     }
     /**
-     * Localized values for crud page
-     */
-    protected static localizedValues: ICrudPageLocalization;
-    /**
      * Custom injections
      */
     static injects = BaseModelController.injects.concat(['$interval', '$timeout', 'Caching']);
@@ -70,10 +65,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * Crud page state params
      */
     protected $stateParams: ICrudPageStateParams<TModel>;
-    /**
-    * Custom Validators
-    */
-    protected validators: IValidators;
     /**
      * Caching service
      */
@@ -186,9 +177,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     constructor(bundle: IBundle) {
         //call base constructor
         super(bundle, BaseCrudController.extendOptions(bundle, bundle.options));
-        //get new instance of validator service
-        this.validators = this.$injector.instantiate(Validators) as IValidators;
-        this.validators.controller = this;
         //set default options
         const parsers: ICrudParsers = {
             saveParsers: [this.checkAuthority, this.applyValidatitons, this.beforeSaveModel],
@@ -215,22 +203,19 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     /**
      * Store localized value for performance issues (called in basecontroller)
      */
-    protected storeLocalization(): void {
-        if (BaseCrudController.localizedValues) return;
-        BaseCrudController.localizedValues = {
+    protected storeLocalization(localizedValues: IDictionary<string>): void {
+        super.storeLocalization(this.common.extend({
             crudonay: this.localization.getLocal('rota.crudonay'),
             kayitkopyalandi: this.localization.getLocal('rota.kayitkopyalandı'),
             modelbulunamadi: this.localization.getLocal('rota.modelbulunamadi'),
             succesfullyprocessed: this.localization.getLocal('rota.succesfullyprocessed'),
-            validationhatasi: this.localization.getLocal('rota.validationhatasi'),
-            bilinmeyenhata: this.localization.getLocal('rota.bilinmeyenhataolustu'),
             silmeonay: this.localization.getLocal('rota.deleteconfirm'),
             silmeonaybaslik: this.localization.getLocal('rota.deleteconfirmtitle'),
             kayitbasarisiz: this.localization.getLocal('rota.kayitbasarisiz'),
             okumamoduuyari: this.localization.getLocal('rota.okumamoduuyari'),
             onayEvet: this.localization.getLocal('rota.evet'),
             onayHayir: this.localization.getLocal('rota.hayir')
-        };
+        }, localizedValues));
     }
     //#endregion
 
@@ -327,20 +312,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         });
         //if there is error in save response,dispacth errorModel method
         saveResult.catch((error: IParserException): void => {
-            if (!error) return;
-            const parserErrorMsg = error.message ||
-                (error.messageI18N && this.localization.getLocal(error.messageI18N));
-            if (this.common.isNullOrEmpty(parserErrorMsg)) return;
-            switch (error.logType) {
-                case LogType.Error:
-                    this.notification.error({ title: error.title, message: parserErrorMsg });
-                    break;
-                case LogType.Warn:
-                    this.notification.warn({ title: error.title, message: parserErrorMsg });
-                    break;
-                default:
-                //Server errors will be handled in logger.exception interceptor
-            }
+            this.showParserException(error);
         });
         //final step,reset flags
         saveResult.finally(() => {
@@ -467,37 +439,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         this.$timeout(() => {
             this.autoSavingBadge.show = false;
         }, 1000);
-    }
-    //#endregion
-
-    //#region Validation
-    private applyValidatitons(options: ISaveOptions): ng.IPromise<IParserException> {
-        const resultDefer = this.$q.defer<IParserException>();
-        //filter by crud flag
-        const validatorsFilteredByCrudFlag = _.filter(this.validators.validators, (item: IValidationItem) => {
-            let crudFlagOk = false;
-            if ((this.crudPageFlags.isSaving && options.isNew && item.crudFlag & CrudType.Create) ||
-                (this.crudPageFlags.isSaving && !options.isNew && item.crudFlag & CrudType.Update) ||
-                (this.crudPageFlags.isDeleting && item.crudFlag & CrudType.Delete)) {
-                crudFlagOk = true;
-            }
-            return crudFlagOk && !!(item.triggerOn & TriggerOn.Action);
-        });
-        //apply validations
-        const validationResult = this.validators.applyValidations(validatorsFilteredByCrudFlag);
-        //convert pipiline exception
-        validationResult.then(() => { resultDefer.resolve(); }, (reason: IValidationResult) => {
-            let msg = BaseCrudController.localizedValues.bilinmeyenhata;
-            if (reason) {
-                msg = reason.message || (reason.messageI18N && this.localization.getLocal(reason.messageI18N));
-            }
-            resultDefer.reject({
-                title: BaseCrudController.localizedValues.validationhatasi,
-                logType: LogType.Warn,
-                message: msg
-            });
-        });
-        return resultDefer.promise;
     }
     //#endregion
 

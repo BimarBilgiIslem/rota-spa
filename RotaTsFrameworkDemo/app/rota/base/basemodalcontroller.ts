@@ -78,6 +78,25 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
 
     //#region Modal 
     /**
+    * Validation for modals
+    */
+    applyValidatitons(): angular.IPromise<IParserException> {
+        const validateResult = super.applyValidatitons();
+        validateResult.catch((err: IParserException) => {
+            this.logger.toastr.warn({ message: err.message, title: err.title });
+        });
+        return validateResult;
+    }
+    /**
+     * Close modal if validation success
+     * @param data Result
+     */
+    modalResultValidate(data: any): void {
+        this.applyValidatitons().then(() => {
+            this.modalResult(data);
+        });
+    }
+    /**
      * Close modal with result
      * @param data Result
      */

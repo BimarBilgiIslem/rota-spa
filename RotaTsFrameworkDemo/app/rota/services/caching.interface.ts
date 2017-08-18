@@ -23,13 +23,13 @@ interface ICacher {
      * @param key Cache key 
      * @returns {TModel} 
      */
-    get<TModel>(key: string, defaultValue?: TModel): TModel;
+    get<TModel>(key: string, defaultValue?: TModel, decode?: boolean): TModel;
     /**
      * Store cache by key 
      * @param key Key value
      * @param value Value object
      */
-    store<TModel>(key: string, value: TModel): void;
+    store<TModel>(key: string, value: TModel, encode?: boolean): void;
     /**
      * Remove cache by key
      * @param key Key

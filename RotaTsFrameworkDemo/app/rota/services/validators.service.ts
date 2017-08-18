@@ -59,10 +59,6 @@ class Validators implements IValidators {
         if (!item.triggerOn) {
             item.triggerOn = TriggerOn.Action | TriggerOn.Changes;
         }
-
-        if (!item.crudFlag) {
-            item.crudFlag = CrudType.Create | CrudType.Update;
-        }
         //#endregion
 
         this.validators.push(item);

@@ -46,13 +46,21 @@ class BaseController extends InjectableObject {
      */
     protected events: Function[];
     /**
+    * Localized values for crud page
+    */
+    protected static localizedValues: IDictionary<string> = {};
+    /**
+    * Custom Validators
+    */
+    protected validators: IValidators;
+    /**
      * Flag that indcicates controller scope has been destroyed
      */
     destroyed: boolean = false;
     //#endregion
 
     //#region Bundle Services
-    static injects = InjectableObject.injects.concat(['$document', '$rootScope', '$scope', '$window', '$stateParams',
+    static injects = InjectableObject.injects.concat(['$document', '$rootScope', '$scope', '$window', '$stateParams', '$q',
         'Logger', 'Common', 'Dialogs', 'Routing', 'Config', 'Localization', 'stateInfo', 'hotkeys', 'TitleBadges',
         'Constants', 'CurrentUser', 'CurrentCompany']);
     //system services
@@ -62,6 +70,7 @@ class BaseController extends InjectableObject {
     protected $stateParams: ng.ui.IStateParamsService;
     protected $document: duScroll.IDocumentService;
     protected hotkeys: ng.hotkeys.HotkeysProvider;
+    protected $q: ng.IQService;
     //Rota services
     /**
      * Badge service
@@ -138,7 +147,7 @@ class BaseController extends InjectableObject {
                 });
         }
         //save localization
-        this.storeLocalization();
+        this.storeLocalization({});
         //Scroll
         if (this.options.scrollToTop) {
             this.$document.duScrollTop(0, 500);
@@ -160,7 +169,11 @@ class BaseController extends InjectableObject {
      * Store localized value for performance issues
      * @description Must be overriden overrided classes
      */
-    protected storeLocalization(): void {
+    protected storeLocalization(localizedValues: IDictionary<string>): void {
+        BaseController.localizedValues = this.common.extend({
+            validationhatasi: this.localization.getLocal('rota.validationhatasi'),
+            bilinmeyenhata: this.localization.getLocal('rota.bilinmeyenhataolustu')
+        }, localizedValues);
     }
     /**
      * Init bundle
@@ -175,6 +188,7 @@ class BaseController extends InjectableObject {
         this.$stateParams = bundle.services["$stateparams"];
         this.$document = bundle.services["$document"];
         this.hotkeys = bundle.services["hotkeys"];
+        this.$q = bundle.services['$q'];
         //rota
         this.logger = bundle.services["logger"];
         this.common = bundle.services["common"];
@@ -229,6 +243,50 @@ class BaseController extends InjectableObject {
      */
     checkEnumFlag(value: number, flag: number): boolean {
         return !!(value & flag);
+    }
+    /**
+    * Validation service validate implementation    
+    */
+    protected applyValidatitons(): ng.IPromise<IParserException> {
+        const resultDefer = this.$q.defer<IParserException>();
+        //filter by crud flag
+        const validatorsFiltered = _.filter(this.validators.validators, (item: IValidationItem) => {
+            return !!(item.triggerOn & TriggerOn.Action);
+        });
+        //apply validations
+        const validationResult = this.validators.applyValidations(validatorsFiltered);
+        //convert pipiline exception
+        validationResult.then(() => { resultDefer.resolve(); }, (reason: IValidationResult) => {
+            let msg = BaseController.localizedValues['bilinmeyenhataolustu'];
+            if (reason) {
+                msg = reason.message || (reason.messageI18N && this.localization.getLocal(reason.messageI18N));
+            }
+            resultDefer.reject({
+                title: BaseController.localizedValues['validationhatasi'],
+                logType: LogType.Warn,
+                message: msg
+            });
+        });
+        return resultDefer.promise;
+    }
+    /**
+     * Show parse exception
+     * @param error IParserException
+     */
+    showParserException(error: IParserException): void {
+        if (!error) return;
+
+        const parserErrorMsg = error.message ||
+            (error.messageI18N && this.localization.getLocal(error.messageI18N));
+        if (this.common.isNullOrEmpty(parserErrorMsg)) return;
+        switch (error.logType) {
+            case LogType.Error:
+                this.notification.error({ title: error.title, message: parserErrorMsg });
+                break;
+            case LogType.Warn:
+                this.notification.warn({ title: error.title, message: parserErrorMsg });
+                break;
+        }
     }
     //#endregion
 

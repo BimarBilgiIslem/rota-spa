@@ -55,7 +55,7 @@ class Security implements ISecurity {
                 id: company.id,
                 companyId: company.companyId,
                 roleId: company.roleId
-            });
+            }, false);
         //redirect to home page
         this.$window.location.replace("");
     }
@@ -65,7 +65,7 @@ class Security implements ISecurity {
     private setCurrentCompany(): void {
         let selectedCompany = null;
         const storedCompany = this.caching.sessionStorage
-            .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY);
+            .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY, null, false);
 
         const companyId = (storedCompany && this.common.isAssigned(storedCompany.id)) ? storedCompany.id : this.securityConfig.defaultCompanyId;
         if (this.common.isAssigned(companyId)) {

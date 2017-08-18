@@ -586,19 +586,6 @@ interface IGridOptions<TModel extends IBaseModel> extends uiGrid.IGridOptionsOf<
     rowTemplateAttrs?: string[];
 }
 /**
- * List page localization  
- */
-interface IListPageLocalization {
-    kayitbulunamadi: string;
-    deleteconfirm: string;
-    deleteconfirmtitle: string;
-    deleteselected: string;
-    kayitsayisi: string;
-    filterrestored: string;
-    filtersaved: string;
-    refreshing: string;
-}
-/**
  * Base list controller
  */
 interface IBaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter> extends IBaseModelController<TModel> {
@@ -657,23 +644,6 @@ interface ICrudPageFlags {
      * Copying flag
      */
     isCloning?: boolean;
-}
-/**
- * Localized values for crud page
- */
-interface ICrudPageLocalization {
-    crudonay: string;
-    modelbulunamadi: string;
-    kayitkopyalandi: string;
-    succesfullyprocessed: string;
-    validationhatasi: string;
-    bilinmeyenhata: string;
-    silmeonay: string;
-    silmeonaybaslik: string;
-    kayitbasarisiz: string;
-    okumamoduuyari: string;
-    onayEvet: string;
-    onayHayir: string;
 }
 /**
  * Save options
@@ -741,14 +711,6 @@ interface ICrudParsers {
      * Parses used for deleting process
      */
     deleteParsers: Array<IChainableMethod<IParserException>>;
-}
-/**
- * Crud types,Flagable
- */
-const enum CrudType {
-    Create = 1,
-    Update = 2,
-    Delete = 4
 }
 //#endregion
 
