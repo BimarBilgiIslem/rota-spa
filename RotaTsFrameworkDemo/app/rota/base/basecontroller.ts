@@ -266,6 +266,7 @@ class BaseController extends InjectableObject {
                 logType: LogType.Warn,
                 message: msg
             });
+            this.logger.console.warn({ message: 'validation failed' });
         });
         return resultDefer.promise;
     }

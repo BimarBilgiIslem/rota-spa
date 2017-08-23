@@ -78,6 +78,8 @@ declare global {
        * @returns {number} 
        */
         sum?: (fn: _.ListIterator<T, number>) => number;
+
+        pluck?: <TK extends keyof T>(propName: TK) => Array<T[TK]>;
     }
 }
 /**
@@ -175,5 +177,12 @@ Array.prototype["sum"] = function (callBack: _.ListIterator<any, number>): numbe
         return total;
     }, 0);
 }
+/**
+ * Extract a array with provided property name
+ * @returns {Array<any>}
+ */
+Array.prototype["pluck"] = function (propName: string): Array<any> {
+    return _.pluck(this, propName);
+};
 
 export { }

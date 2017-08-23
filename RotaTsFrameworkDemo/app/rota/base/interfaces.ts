@@ -458,6 +458,10 @@ interface IListPageOptions extends IModelPageOptions {
      * Enable refresh list,default false
      */
     enableRefresh?: boolean;
+    /**
+     * Stick to the bottom of the navbar while scrolling to down,default true
+     */
+    enableStickyListButtons?: boolean;
 }
 /**
  * Widget Controller options
@@ -510,6 +514,10 @@ interface ICrudPageOptions extends IModelPageOptions {
      * Readonly flag that model can not be changed
      */
     readOnly?: boolean;
+    /**
+    * Stick to the bottom of the navbar while scrolling to down,default true
+    */
+    enableStickyCrudButtons?: boolean;
 }
 /**
  * Crud Buttons Visibilies

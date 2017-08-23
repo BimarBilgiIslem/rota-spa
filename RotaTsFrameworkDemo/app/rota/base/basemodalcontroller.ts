@@ -91,7 +91,7 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
      * Close modal if validation success
      * @param data Result
      */
-    modalResultValidate(data: any): void {
+    ok(data: any): void {
         this.applyValidatitons().then(() => {
             this.modalResult(data);
         });

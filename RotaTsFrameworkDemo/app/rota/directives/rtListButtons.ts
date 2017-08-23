@@ -20,7 +20,7 @@ function listButtonsDirective() {
         restrict: 'E',
         replace: true,
         template:
-        '<div class="rt-listbutton">' +
+        '<div class="rt-listbutton" rt-sticky="{{::vm.listPageOptions.enableStickyListButtons}}">' +
         '<div class="btn-group">' +
         '<div class="btn-group" uib-dropdown auto-close="outsideClick" is-open="searchToggle">' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton" ' +

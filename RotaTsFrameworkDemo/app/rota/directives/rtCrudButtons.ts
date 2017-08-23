@@ -20,7 +20,7 @@ function crudButtonsDirective() {
         restrict: 'E',
         replace: true,
         template:
-        '<div class="rt-crudbutton" ng-if="vm.isNew || !vm.crudPageOptions.readOnly">' +
+        '<div class="rt-crudbutton" ng-if="vm.isNew || !vm.crudPageOptions.readOnly" rt-sticky="{{::vm.crudPageOptions.enableStickyCrudButtons}}">' +
         '<div class="btn-group">' +
         '<div class="btn-group" uib-dropdown>' +
         '<rt-button ng-if="vm.crudPageOptions.crudButtonsVisibility.newButton" text-i18n="rota.yenikayit" icon="plus"  color="info" click="vm.initNewModel()" ng-disabled="vm.isNew" ' +

@@ -40,6 +40,7 @@
 .rt-listbutton,
 .rt-crudbutton {
     margin-bottom: 6px;
+    z-index: 1000;
 }
 //bg colors
 .bg-warning {
@@ -145,5 +146,22 @@
     &::-webkit-scrollbar-thumb:horizontal:active,
     &::-webkit-scrollbar-thumb:vertical:active {
         background: darken($dropdown-bg,30%);
+    }
+}
+/*Sticky panel*/
+.sticky-panel {
+    position: fixed;
+    top: $navbar-height;
+    opacity: .8;
+    transition: 0.2s;
+    margin-top: 6px;
+    z-index: 1000;
+
+    .btn {
+        @include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
+    }
+
+    &:hover {
+        opacity: 1;
     }
 }

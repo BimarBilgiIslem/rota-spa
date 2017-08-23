@@ -30,6 +30,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     private static readonly defaultOptions: ICrudPageOptions = {
         scrollToTop: true,
         checkDirtyOnExit: true,
+        enableStickyCrudButtons: true,
         crudButtonsVisibility: {
             newButton: true,
             deleteButton: true,

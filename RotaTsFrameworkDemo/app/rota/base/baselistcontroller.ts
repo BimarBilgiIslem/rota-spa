@@ -39,6 +39,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         modelExports: ModelExports.Pdf,
         storeFilterValues: false,
         storefilterLocation: CacherType.SessionStorage,
+        enableStickyListButtons: true,
         listButtonVisibility: {
             newButton: true,
             searchButton: true,
