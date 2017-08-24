@@ -234,7 +234,7 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
              * Get Item by key value for autosuggest mode
              * @param key Model value
              */
-            const bindItemById = (key: number): ng.IPromise<ISelectModel> => {
+            const bindItemById = (key: number): ng.IPromise<ISelectModel[]> => {
                 return asyncModelRequestResult = callMethod<ISelectModel>(scope.onGet, { id: key }).then(
                     (data: ISelectModel) => {
                         let dataArray;
@@ -327,8 +327,9 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
                 }, () => {
                     //force getById if defined
                     if (common.isAssigned(scope.onGet))
-                        bindItemById(modelValue).then((model: ISelectModel): void => {
-                            setModel(model);
+                        bindItemById(modelValue).then((model: ISelectModel[]): void => {
+                            if (model && model.length > 0)
+                                setModel(model[0]);
                         });
                     else {
                         logger.console.warn({ message: 'item not found by ' + modelValue });
