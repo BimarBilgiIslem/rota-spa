@@ -342,5 +342,15 @@ interface ICommon extends IBaseService {
     * Flag that device is mobile or tablet
     */
     isMobileOrTablet(): boolean;
+    /**
+     * Format string using interpolate service
+     * @param src Source string with macros in it
+     * @param context Context obj including macro values
+     * @example
+     * const src = 'Hello {{world}} !';
+     * format(src,{world:'World'});
+     * result => Hello World ! ;
+     */
+    format(src: string, context: any): string;
 }
 //#endregion

@@ -40,7 +40,6 @@
 .rt-listbutton,
 .rt-crudbutton {
     margin-bottom: 6px;
-    z-index: 1000;
 }
 //bg colors
 .bg-warning {
@@ -89,16 +88,7 @@
         filter: alpha(opacity = 0);
     }
 }
-//debug panel
-.debug-panel {
-    position: fixed;
-    right: 5px;
-    top: 0;
-    width: 365px;
-    z-index: 99999;
-    overflow: scroll;
-    height: 100%;
-}
+
 //control focus
 .form-control {
     //@include form-control-focus(#b5c6d0);
@@ -153,7 +143,7 @@
     position: fixed;
     top: $navbar-height;
     opacity: .8;
-    transition: 0.2s;
+    transition: 0.4s;
     margin-top: 6px;
     z-index: 1000;
 

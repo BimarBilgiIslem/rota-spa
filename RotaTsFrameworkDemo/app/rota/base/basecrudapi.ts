@@ -75,6 +75,10 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @returns {ng.IPromise<TModel>}
     */
     getById(id: number, controller?: string): ng.IPromise<TModel> {
+        if (!id || id <= 0 || !this.common.isNumber(id)) {
+            this.logger.console.error({ message: 'getById/id param must be number but received ' + id });
+            return this.common.promise();
+        }
         return this.get<TModel>({
             action: this.config.crudActionNames.getById,
             controller: controller,

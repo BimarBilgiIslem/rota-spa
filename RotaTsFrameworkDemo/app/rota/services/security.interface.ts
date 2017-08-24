@@ -40,6 +40,10 @@ interface ISecurityConfig extends IBaseConfig {
      */
     avatarProviderUri?: string;
     /**
+     * Avatar image fecth type
+     */
+    avatarFetchType?: AvatarFetchType;
+    /**
     * Flag that enables avatar that shows first letter of user name,default true
     */
     useFirstLetterAvatar?: boolean;
@@ -153,4 +157,21 @@ interface IStorageCurrentCompany {
     roleId: number;
 }
 //#endregion
+
+//#region Avatar
+/**
+ * Avatar fetch type
+ */
+const enum AvatarFetchType {
+    /**
+     * ProviderURL injected as <img src="[URL]">
+     */
+    ImgSrc,
+    /**
+     * ProviderURL requested using GET method then added to img>
+     */
+    GetRequest
+}
+//#endregion
+
 

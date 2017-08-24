@@ -21,7 +21,8 @@ class Common implements ICommon {
     serviceName: string = "Common Service";
 
     //#region Init
-    constructor(private $q: ng.IQService, private $filter: ng.IFilterService, private config: IMainConfig) { }
+    constructor(private $q: ng.IQService, private $filter: ng.IFilterService,
+        private $interpolate: ng.IInterpolateService, private config: IMainConfig) { }
     //#endregion
 
     //#region Promise Utils
@@ -114,6 +115,18 @@ class Common implements ICommon {
 
     //#region String Utils
     /**
+     * Format string using interpolate service
+     * @param src Source string with macros in it
+     * @param context Context obj including macro values
+     * @example
+     * const src = 'Hello {{world}} !';
+     * format(src,{world:'World'});
+     * result => Hello World ! ;
+     */
+    format(src: string, context: any): string {
+        return this.$interpolate(src)(context);
+    }
+    /**
      * Guard method checks for string
      * @param value Any object
      */
@@ -164,28 +177,28 @@ class Common implements ICommon {
     getFaIcon(fileExtension: string): string {
         fileExtension = fileExtension.toLowerCase();
         switch (fileExtension) {
-            case "pdf":
-                return "file-pdf-o";
-            case "xls":
-            case "xlsx":
-                return "file-excel-o";
-            case "doc":
-            case "docx":
-                return "file-word-o";
-            case "jpeg":
-            case "jpg":
-            case "png":
-                return "file-image-o";
-            case "rar":
-            case "zip":
-                return "file-zip-o";
-            case "txt":
-                return "file-text-o";
-            case "mp3":
-            case "wav":
-                return "file-audio-o";
-            default:
-                return "file-o";
+        case "pdf":
+            return "file-pdf-o";
+        case "xls":
+        case "xlsx":
+            return "file-excel-o";
+        case "doc":
+        case "docx":
+            return "file-word-o";
+        case "jpeg":
+        case "jpg":
+        case "png":
+            return "file-image-o";
+        case "rar":
+        case "zip":
+            return "file-zip-o";
+        case "txt":
+            return "file-text-o";
+        case "mp3":
+        case "wav":
+            return "file-audio-o";
+        default:
+            return "file-o";
         }
     }
     /**
@@ -434,7 +447,7 @@ class Common implements ICommon {
 //#endregion
 
 //#region Injection
-Common.$inject = ['$q', '$filter', 'Config'];
+Common.$inject = ['$q', '$filter', '$interpolate', 'Config'];
 //#endregion
 
 //#region Register
