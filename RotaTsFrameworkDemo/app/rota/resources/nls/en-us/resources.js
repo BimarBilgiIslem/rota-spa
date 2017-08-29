@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        profilsayfam: 'My profile',
         refreshinprogress: 'Refreshing the list',
         filtrekayitedildi: 'Filter stored',
         filtreyuklendi: 'Filter restored',
@@ -97,7 +98,7 @@
         ilk: 'First',
         yeni: 'New',
         yenikopyala: 'Copy this item',
-        kayitkopyalandı: 'Item succesfully copied',
+        kayitkopyalandi: 'Item succesfully copied',
         sonrakikayit: 'Next',
         oncekikayit: 'Prev',
         yenikayit: 'New item',

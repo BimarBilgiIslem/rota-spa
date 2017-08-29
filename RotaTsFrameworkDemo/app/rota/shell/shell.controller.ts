@@ -36,6 +36,7 @@ class ShellController {
     isHomePage: boolean;
     bgImageUrl: { [index: string]: string };
     vidOptions: IVideoOptions;
+    viewPortClass?: string;
     //#endregion
 
     //#region Init
@@ -87,6 +88,9 @@ class ShellController {
             this.$rootScope.appTitle = menu ? (`${menu.localizedTitle} - ${this.config.appTitle}`) : this.config.appTitle;
             if (this.config.homePageOptions)
                 this.isHomePage = this.$location.url() === this.config.homePageOptions.url;
+            //set viewpot width size
+            this.viewPortClass =
+                this.config.enableContainerFluid || menu.isFullScreen ? 'container-fluid' : 'container';
         });
     }
     /**

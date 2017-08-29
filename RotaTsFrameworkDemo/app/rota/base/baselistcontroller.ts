@@ -23,7 +23,7 @@ import * as s from "underscore.string";
  * @description This base class should be inherited for all controllers using restful services
  * @param {TModel} is your custom model view.
  */
-abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter>
+abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter = IBaseListModelFilter>
     extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
@@ -185,21 +185,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         this.$timeout = bundle.services["$timeout"];
         this.$interval = bundle.services["$interval"];
     }
-    /**
-     * Store localized value for performance issues (called in basecontroller)
-     */
-    protected storeLocalization(localizedValues: IDictionary<string>): void {
-        super.storeLocalization(this.common.extend({
-            kayitbulunamadi: this.localization.getLocal('rota.kayitbulunamadi'),
-            deleteconfirm: this.localization.getLocal('rota.deleteconfirm'),
-            deleteconfirmtitle: this.localization.getLocal('rota.deleteconfirmtitle'),
-            deleteselected: this.localization.getLocal('rota.onaysecilikayitlarisil'),
-            kayitsayisi: this.localization.getLocal('rota.kayitsayisi'),
-            filterrestored: this.localization.getLocal('rota.filtreyuklendi'),
-            filtersaved: this.localization.getLocal('rota.filtrekayitedildi'),
-            refreshing: this.localization.getLocal('rota.refreshinprogress')
-        }, localizedValues));
-    }
     //#endregion
 
     //#region BaseModelController methods
@@ -248,7 +233,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             }
         }
         if (recCount === 0 && this.isActiveState() && this.listPageOptions.showMesssage) {
-            this.toastr.warn({ message: BaseListController.localizedValues.kayitbulunamadi });
+            this.toastr.warn({ message: this.localization.getLocal('rota.kayitbulunamadi') });
         }
         //store filter 
         if (this.listPageOptions.storeFilterValues) {
@@ -426,7 +411,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         gridApi.grid.registerDataChangeCallback((grid: uiGrid.IGridInstanceOf<any>) => {
             //set rc badge
             this.recordcountBadge.show = true;
-            this.recordcountBadge.description = BaseListController.localizedValues.kayitsayisi + " " +
+            this.recordcountBadge.description = this.localization.getLocal("rota.kayitsayisi") + " " +
                 (this.listPageOptions.pagingEnabled ? this.gridOptions.totalItems.toString() : this.gridData.length.toString());
         }, [this.uigridconstants.dataChange.ROW]);
         //register selection changes
@@ -547,8 +532,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         this.common.preventClick($event);
         if (!this.isAssigned(id)) return;
 
-        const confirmText = BaseListController.localizedValues.deleteconfirm;
-        const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
+        const confirmText = this.localization.getLocal("rota.deleteconfirm");
+        const confirmTitleText = this.localization.getLocal("rota.deleteconfirmtitle");
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
             //call delete model
             const deleteResult = this.deleteModel(id, entity);
@@ -590,10 +575,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     initDeleteSelectedModels(): ng.IPromise<any> {
         if (!this.gridSeletedRows.length) return undefined;
 
-        const confirmText = BaseListController.localizedValues.deleteselected;
-        const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
+        const confirmText = this.localization.getLocal("rota.onaysecilikayitlarisil");
+        const confirmTitleText = this.localization.getLocal("deleteconfirmtitle");
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
-            const keyArray: number[] = _.pluck(this.gridSeletedRows, 'id');
+            const keyArray: number[] = this.gridSeletedRows.pluck("id");
             //call delete model
             const deleteResult = this.deleteModel(keyArray, this.gridSeletedRows);
             //removal of model depends on whether result is promise or void
@@ -631,9 +616,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         const purgedFilters = _.omit(filter || this.filter, ["pageIndex", "pageSize"]);
         if (!_.isEmpty(purgedFilters)) {
             this.caching.cachers[this.listPageOptions.storefilterLocation].store(this.filterStorageName, purgedFilters);
-            if (this.listPageOptions.showMesssage) {
-                this.logger.toastr.info({ message: BaseListController.localizedValues.filtersaved });
-            }
         }
     }
     /**
@@ -644,9 +626,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         if (this.listPageOptions.storeFilterValues) {
             filter = this.caching.cachers[this.listPageOptions.storefilterLocation]
                 .get<TModelFilter>(this.filterStorageName);
-            if (this.listPageOptions.showMesssage) {
-                this.logger.toastr.info({ message: BaseListController.localizedValues.filterrestored });
-            }
         }
         return filter || <TModelFilter>{};
     }
@@ -776,7 +755,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                     if (angular.isNumber(value)) {
                         autoRefreshPromise = this.$interval(() => {
                             if (this.listPageOptions.showMesssage) {
-                                this.logger.toastr.info({ message: BaseListController.localizedValues.refreshing });
+                                this.logger.toastr.info({ message: this.localization.getLocal("rota.refreshinprogress") });
                             }
                             this.initSearchModel();
                         }, value * 60 * 1000);

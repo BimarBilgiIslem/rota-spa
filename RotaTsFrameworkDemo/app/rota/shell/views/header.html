@@ -1,6 +1,6 @@
 ﻿<!--Header-->
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div ng-class="{container:!(shellvm.routing.activeMenu.isFullScreen || shellvm.config.enableContainerFluid)}">
+    <div ng-class="shellvm.viewPortClass">
         <div class="navbar-header">
             <!--Nav hamburger menu-->
             <a href class="navbar-toggle" ng-click="shellvm.showNavMenu()">
@@ -10,7 +10,7 @@
             </a>
             <!--Logo-->
             <a class="navbar-brand" href="/">
-                <img ng-src="/Content/img/{{::shellvm.config.logoImageName}}" alt="your app logo">
+                <img ng-src="{{::shellvm.config.logoImageName}}" alt="your app logo">
             </a>
         </div>
         <div class="navbar-collapse collapse">

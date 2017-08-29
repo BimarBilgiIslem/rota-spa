@@ -1,5 +1,6 @@
 ﻿define({
     rota: {
+        profilsayfam: 'Profil sayfam',
         refreshinprogress: 'Liste yenileniyor',
         filtrekayitedildi: 'Filtre saklandı',
         filtreyuklendi: 'Filtre yüklendi',
@@ -95,7 +96,7 @@
         ilk: 'İlk',
         yeni: 'Yeni',
         yenikopyala: 'Kaydı kopyala',
-        kayitkopyalandı: 'Kayıt başarıyla kopyalandı',
+        kayitkopyalandi: 'Kayıt başarıyla kopyalandı',
         bilinmeyenhataolustu: 'Bilinmeyen hata oluştu',
         sonrakikayit: 'Sonraki',
         oncekikayit: 'Önceki',

@@ -201,23 +201,6 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         this.$timeout = bundle.services["$timeout"];
         this.caching = bundle.services["caching"];
     }
-    /**
-     * Store localized value for performance issues (called in basecontroller)
-     */
-    protected storeLocalization(localizedValues: IDictionary<string>): void {
-        super.storeLocalization(this.common.extend({
-            crudonay: this.localization.getLocal('rota.crudonay'),
-            kayitkopyalandi: this.localization.getLocal('rota.kayitkopyalandı'),
-            modelbulunamadi: this.localization.getLocal('rota.modelbulunamadi'),
-            succesfullyprocessed: this.localization.getLocal('rota.succesfullyprocessed'),
-            silmeonay: this.localization.getLocal('rota.deleteconfirm'),
-            silmeonaybaslik: this.localization.getLocal('rota.deleteconfirmtitle'),
-            kayitbasarisiz: this.localization.getLocal('rota.kayitbasarisiz'),
-            okumamoduuyari: this.localization.getLocal('rota.okumamoduuyari'),
-            onayEvet: this.localization.getLocal('rota.evet'),
-            onayHayir: this.localization.getLocal('rota.hayir')
-        }, localizedValues));
-    }
     //#endregion
 
     //#region Model Methods
@@ -361,7 +344,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                         }
                         //show messages
                         if (options.showMessage) {
-                            this.toastr.success({ message: options.message || BaseCrudController.localizedValues.succesfullyprocessed });
+                            this.toastr.success({ message: options.message || this.localization.getLocal("rota.succesfullyprocessed") });
                             if (data.infoMessages && data.infoMessages.length)
                                 this.toastr.info({ message: data.infoMessages.join('</br>') });
                             if (data.warningMessages && data.warningMessages.length)
@@ -463,8 +446,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         }, options);
         //confirm
         const confirmResult: IP<any> = options.confirm ? this.dialogs.showConfirm({
-            message: BaseCrudController.localizedValues.silmeonay,
-            title: BaseCrudController.localizedValues.silmeonaybaslik
+            message: this.localization.getLocal("rota.deleteconfirm"),
+            title: this.localization.getLocal("rota.deleteconfirmtitle")
         }) : this.common.promise();
         //confirm result
         confirmResult.then(() => {
@@ -514,7 +497,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                 deferDelete.resolve();
                 //message
                 if (options.showMessage) {
-                    this.toastr.success({ message: BaseCrudController.localizedValues.succesfullyprocessed });
+                    this.toastr.success({ message: this.localization.getLocal("rota.succesfullyprocessed") });
                 }
             });
             //fail delete
@@ -563,10 +546,9 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             event.preventDefault();
             //confirm save changes 
             this.dialogs.showConfirm({
-                message:
-                BaseCrudController.localizedValues.crudonay,
-                cancelText: BaseCrudController.localizedValues.onayHayir,
-                okText: BaseCrudController.localizedValues.onayEvet
+                message: this.localization.getLocal("rota.crudonay"),
+                cancelText: this.localization.getLocal("rota.hayir"),
+                okText: this.localization.getLocal("rota.evet")
             }).then(() => {
                 //save and go to state
                 this.initSaveModel().then(() => {
@@ -662,7 +644,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         if (!this.isNew && !this.isAssigned(model)) {
             this.logger.console.log({ message: `no such an item found with id ${this.id}` });
             this.notification.warn({
-                message: BaseCrudController.localizedValues.modelbulunamadi,
+                message: this.localization.getLocal("rota.modelbulunamadi"),
                 isSticky: true, autoHideDelay: 6000
             });
             this.initNewModel();
@@ -674,7 +656,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             //set modelstate to Added if cloning
             model.modelState = ModelStates.Added;
             //set UI cloning
-            this.toastr.info({ message: BaseCrudController.localizedValues.kayitkopyalandi });
+            this.toastr.info({ message: this.localization.getLocal("rota.kayitkopyalandi") });
             this.cloningBadge.show = true;
         }
         //set model chnages event for edit mode
@@ -692,7 +674,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             this.startAutoSave();
         //readonly warning message
         if (this.crudPageOptions.readOnly && !this.isNew) {
-            this.logger.notification.info({ message: BaseCrudController.localizedValues.okumamoduuyari });
+            this.logger.notification.info({ message: this.localization.getLocal("rota.okumamoduuyari") });
         }
         //set badges
         this.editmodeBadge.show = !this.isNew && !this.crudPageOptions.readOnly;

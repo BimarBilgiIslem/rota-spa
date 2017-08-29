@@ -15,9 +15,40 @@
  */
 
 import * as _ from "underscore"
+import * as s from "underscore.string";
+
+declare global {
+    interface String {
+        /**
+         * Check if string value is not null or empty
+         * @returns {boolean} 
+         */
+        isNullOrEmpty?: () => boolean;
+        /**
+        * Checks if string starts with another string.
+        * ('image.gif', 'image') => true
+        * @param str
+        * @param starts
+        */
+        startsWith?: (starts: string) => boolean;
+        /**
+         * Tests if string contains a substring.
+         * ('foobar', 'ob') => true
+         * @param str
+         * @param needle
+         */
+        contains(needle: string): boolean;
+    }
+}
 
 String.prototype.isNullOrEmpty = function (): boolean {
     return this === null || this.length === 0;
 }
 
+String.prototype.startsWith = function (starts: string): boolean {
+    return s.startsWith(this, starts);
+}
 
+String.prototype.contains = function (needle: string): boolean {
+    return s.contains(this, needle);
+}

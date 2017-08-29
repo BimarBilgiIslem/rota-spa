@@ -3,6 +3,20 @@
 /*#endregion */
 /*#region Rota */
 /*#endregion */
+/*//sil
+$menu-color: #337ab7;
+$navbar-default-link-active-bg: $menu-color;
+//side menu
+$side-nav-header-bg: #337ab7;
+//avatar bg
+$avatar-first-letter-bg: rgb(127, 188, 218);
+//dropdown
+$dropdown-bg: $menu-color;
+$dropdown-border: $menu-color;
+$dropdown-link-color: #fff;
+$dropdown-link-hover-color: $menu-color;
+$dropdown-link-hover-bg: #fff;
+$dropdown-header-color: #fff;*/
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -6462,15 +6476,6 @@ legend {
     opacity: 0;
     filter: alpha(opacity=0); }
 
-.debug-panel {
-  position: fixed;
-  right: 5px;
-  top: 0;
-  width: 365px;
-  z-index: 99999;
-  overflow: scroll;
-  height: 100%; }
-
 .form-control:focus {
   background: #f2f6f8;
   box-shadow: none;
@@ -6501,6 +6506,22 @@ legend {
     background: #bfbfbf; }
   .scrollable-menu::-webkit-scrollbar-thumb:horizontal:active, .scrollable-menu::-webkit-scrollbar-thumb:vertical:active {
     background: #b3b3b3; }
+
+/*Sticky panel*/
+.sticky-panel {
+  position: fixed;
+  top: 50px;
+  opacity: .8;
+  transition: 0.4s;
+  margin-top: 6px;
+  z-index: 1000; }
+  .sticky-panel .btn {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px; }
+  .sticky-panel:hover {
+    opacity: 1; }
 
 /*#region FadeInRight */
 @-webkit-keyframes fadeInRight {
@@ -7758,10 +7779,6 @@ ul.contextmenu {
   height: 43px;
   width: 43px; }
 
-.avatar-anim {
-  transition: opacity .2s linear;
-  opacity: 1; }
-
 .avatar-firstletter {
   border-radius: 50%;
   background: #d9534f;
@@ -7774,6 +7791,25 @@ ul.contextmenu {
 input[ng-currency] {
   font-weight: bold;
   font-family: "Courier New", Courier, monospace; }
+
+.nav.navbar-nav a.sticky {
+  position: relative;
+  min-width: 355px; }
+  .nav.navbar-nav a.sticky .stick-to-right {
+    position: absolute;
+    color: inherit;
+    right: 11px;
+    top: 4px;
+    border: 1px solid #666666;
+    padding: 0px 6px;
+    border-radius: 4px;
+    opacity: .8;
+    transition: 0.2s ease;
+    font-size: .85em; }
+    .nav.navbar-nav a.sticky .stick-to-right:hover {
+      opacity: 1;
+      border-color: #595959;
+      color: #595959; }
 
 /************** VENDOR CSS URL IMPORTS ******************/
 /*@import "vendor-css/select2_custom.css";*/

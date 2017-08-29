@@ -46,17 +46,13 @@ class BaseController extends InjectableObject {
      */
     protected events: Function[];
     /**
-    * Localized values for crud page
-    */
-    protected static localizedValues: IDictionary<string> = {};
-    /**
     * Custom Validators
     */
     protected validators: IValidators;
     /**
      * Flag that indcicates controller scope has been destroyed
      */
-    destroyed: boolean = false;
+    private destroyed: boolean = false;
     //#endregion
 
     //#region Bundle Services
@@ -146,8 +142,6 @@ class BaseController extends InjectableObject {
                     }
                 });
         }
-        //save localization
-        this.storeLocalization({});
         //Scroll
         if (this.options.scrollToTop) {
             this.$document.duScrollTop(0, 500);
@@ -164,16 +158,6 @@ class BaseController extends InjectableObject {
             fn();
         });
         this.events = null;
-    }
-    /**
-     * Store localized value for performance issues
-     * @description Must be overriden overrided classes
-     */
-    protected storeLocalization(localizedValues: IDictionary<string>): void {
-        BaseController.localizedValues = this.common.extend({
-            validationhatasi: this.localization.getLocal('rota.validationhatasi'),
-            bilinmeyenhata: this.localization.getLocal('rota.bilinmeyenhataolustu')
-        }, localizedValues);
     }
     /**
      * Init bundle
@@ -202,7 +186,6 @@ class BaseController extends InjectableObject {
         this.currentUser = bundle.services["currentuser"];
         this.currentCompany = bundle.services["currentcompany"];
     }
-
     //#endregion
 
     //#region Methods
@@ -257,12 +240,12 @@ class BaseController extends InjectableObject {
         const validationResult = this.validators.applyValidations(validatorsFiltered);
         //convert pipiline exception
         validationResult.then(() => { resultDefer.resolve(); }, (reason: IValidationResult) => {
-            let msg = BaseController.localizedValues['bilinmeyenhataolustu'];
+            let msg = this.localization.getLocal('rota.bilinmeyenhataolustu');
             if (reason) {
                 msg = reason.message || (reason.messageI18N && this.localization.getLocal(reason.messageI18N));
             }
             resultDefer.reject({
-                title: BaseController.localizedValues['validationhatasi'],
+                title: this.localization.getLocal('rota.validationhatasi'),
                 logType: LogType.Warn,
                 message: msg
             });

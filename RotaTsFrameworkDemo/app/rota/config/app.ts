@@ -18,7 +18,7 @@
 import { IRotaApp } from './app.interface';
 //deps
 import BaseApi from "../base/baseapi";
-import  InjectableObject  from '../base/injectableobject';
+import InjectableObject from '../base/injectableobject';
 import { DefaultModalController } from '../base/basemodalcontroller';
 import constants = require('config/constants');
 import "./infrastructure.index"
@@ -97,6 +97,8 @@ class RotaApp implements IRotaApp {
                     });
                 }
             }]);
+
+        //#region Run Blocks
         //Hook handlers
         this.run(["$rootScope", "Constants", ($rootScope: IRotaRootScope, constants: IConstants) => {
             $rootScope.$on(constants.events.EVENT_ON_ERROR, (e, error) => {
@@ -134,6 +136,8 @@ class RotaApp implements IRotaApp {
                 common.setFavIcon(common.addPrefixSlash(config.favIconName));
             }
         }]);
+        //#endregion
+
         //add base modal controllers if not defined controller.see dialog.services->showModal
         this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(DefaultModalController));
     }
