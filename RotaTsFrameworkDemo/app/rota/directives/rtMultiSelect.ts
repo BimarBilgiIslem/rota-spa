@@ -305,6 +305,8 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
             */
             const addItem = (selectItem: ISelectModel, model?: IBaseCrudModel | number, isBatchProcess?: boolean): ng.IPromise<IBaseCrudModel | number | string> => {
                 if (!common.isAssigned(selectItem)) return common.rejectedPromise('select item must be assigned');
+                if (common.isArray(selectItem)) return common.rejectedPromise('select item must be object not array');
+
                 const defer = $q.defer<any>();
                 //check item already added previously
                 const existingModel = findListItem(selectItem);

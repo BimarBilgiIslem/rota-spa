@@ -229,8 +229,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param model Model
      */
     protected resetForm(model?: TModel): void {
-        this.isModelDirty =
-            this.dirtyBadge.show = model && (model.modelState === ModelStates.Added);
+        this.isModelDirty = model && (model.modelState === ModelStates.Added);
         //check form controller initialized
         if (this.isAssigned(this.rtForm)) {
             this.rtForm.$setPristine();
@@ -677,9 +676,12 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             this.logger.notification.info({ message: this.localization.getLocal("rota.okumamoduuyari") });
         }
         //set badges
-        this.editmodeBadge.show = !this.isNew && !this.crudPageOptions.readOnly;
-        this.newmodeBadge.show = this.isNew;
-        this.readOnlyBadge.show = this.crudPageOptions.readOnly && !this.isNew;
+        this.$timeout(() => {
+            this.editmodeBadge.show = !this.isNew && !this.crudPageOptions.readOnly;
+            this.newmodeBadge.show = this.isNew;
+            this.readOnlyBadge.show = this.crudPageOptions.readOnly && !this.isNew;
+            this.dirtyBadge.show = model.modelState === ModelStates.Added;
+        }, 0);
         //reset form
         this.resetForm(model);
     }
