@@ -186,11 +186,11 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
                 let isMinCheck = true,
                     isMaxCheck = true;
 
-                if (common.isDefined(scope.minDate)) {
+                if (scope.minDate) {
                     isMinCheck = moment(value).isAfter(scope.minDate);
                 }
 
-                if (angular.isDefined(scope.maxDate)) {
+                if (scope.maxDate) {
                     isMaxCheck = moment(value).isBefore(scope.maxDate);
                 }
                 return isMinCheck && isMaxCheck;
