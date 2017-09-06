@@ -148,6 +148,7 @@ class Dialogs implements IDialogs {
                     $scope.message = options.message || '';
                     $scope.okText = options.okText || this.localization.getLocal('rota.ok');
                     $scope.cancelText = options.cancelText || this.localization.getLocal('rota.iptal');
+                    $scope.cancel2Text = options.cancel2Text;
                     $scope.ok = () => { $modalInstance.close('ok'); };
                     $scope.cancel = (reason) => { $modalInstance.dismiss(reason); };
                 }],
@@ -161,7 +162,8 @@ class Dialogs implements IDialogs {
                         title: options.title,
                         message: options.message,
                         okText: options.okText,
-                        cancelText: options.cancelText
+                        cancelText: options.cancelText,
+                        cancel2Text: options.cancel2Text
                     };
                 }
             }
@@ -388,7 +390,8 @@ module.run([
             '        <p>{{message}}</p>' +
             '    </div>' +
             '    <div class="modal-footer">' +
-            '        <button class="btn btn-default" data-ng-click="cancel()">{{cancelText}}</button>' +
+            '        <button class="btn btn-default" data-ng-click="cancel(\'cancel\')">{{cancelText}}</button>' +
+            '        <button ng-if="cancel2Text" class="btn btn-info" data-ng-click="cancel(\'cancel2\')">{{cancel2Text}}</button>' +
             '        <button class="btn btn-primary" autofocus data-ng-click="ok()">{{okText}}</button>' +
             '    </div>');
         //Template olarak cache'de sakla

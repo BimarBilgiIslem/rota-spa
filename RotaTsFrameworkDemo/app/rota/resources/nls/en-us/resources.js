@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        crudonaybaslik: 'You have unsaved changes ?',
         profilsayfam: 'My profile',
         refreshinprogress: 'Refreshing the list',
         filtrekayitedildi: 'Filter stored',
@@ -105,7 +106,7 @@
         kayitduzeltme: 'Update',
         ara: 'Search',
         temizle: 'Clear',
-        crudonay: 'Do you want to save the changes ?',
+        crudonay: 'You have unsaved changes! Would you like to save the changes or just leave ?',
         tt_bironcekisayfayadon: 'Go to previous page',
         tt_kaydet: 'Save all changes',
         tt_kaydetdevam: 'Save all changes and continue ',
@@ -126,7 +127,9 @@
         sonaltiay: 'Last 6 month',
         sonbiryil: 'Last 1 year',
         ozel: 'Custom',
-        cikisonay: 'Are you sure to exit ?',
+        kaydetvecik: 'Save and leave',
+        cikis: 'Leave',
+        cikisonay: 'Are you sure to leave ?',
         cikisyapiliyor: 'Signing out...',
         filter: 'Filter Criters',
         ayarlar: 'Settings',

@@ -38,6 +38,16 @@ declare global {
          * @param needle
          */
         contains(needle: string): boolean;
+        /**
+         * Convert the provided string value to all lowercase text depending on the locale
+         * @returns {string} 
+         */
+        turkishToLower(): string;
+        /**
+         * Convert the provided string value to all uppercase text depending on the locale
+         * @returns {string} 
+         */
+        turkishToUpper(): string;
     }
 }
 
@@ -51,4 +61,18 @@ String.prototype.startsWith = function (starts: string): boolean {
 
 String.prototype.contains = function (needle: string): boolean {
     return s.contains(this, needle);
+}
+
+String.prototype.turkishToLower = function (): string {
+    var string = this;
+    var letters = { "İ": "i", "I": "ı", "Ş": "ş", "Ğ": "ğ", "Ü": "ü", "Ö": "ö", "Ç": "ç" };
+    string = string.replace(/(([İIŞĞÜÇÖ]))/g, function (letter) { return letters[letter]; })
+    return string.toLowerCase();
+}
+
+String.prototype.turkishToUpper = function (): string {
+    var string = this;
+    var letters = { "i": "İ", "ş": "Ş", "ğ": "Ğ", "ü": "Ü", "ö": "Ö", "ç": "Ç", "ı": "I" };
+    string = string.replace(/(([iışğüçö]))/g, function (letter) { return letters[letter]; })
+    return string.toUpperCase();
 }

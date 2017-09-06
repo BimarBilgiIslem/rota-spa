@@ -545,17 +545,18 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             event.preventDefault();
             //confirm save changes 
             this.dialogs.showConfirm({
+                title: this.localization.getLocal("rota.crudonaybaslik"),
                 message: this.localization.getLocal("rota.crudonay"),
-                cancelText: this.localization.getLocal("rota.hayir"),
-                okText: this.localization.getLocal("rota.evet")
+                okText: this.localization.getLocal("rota.kaydetvecik"),
+                cancelText: this.localization.getLocal("rota.iptal"),
+                cancel2Text: this.localization.getLocal("rota.cikis")
             }).then(() => {
                 //save and go to state
                 this.initSaveModel().then(() => {
                     this.routing.go(toState.name, toParams);
                 });
             }).catch((reason: string) => {
-                //no action when closed by clicking cross sign
-                if (reason !== 'dismiss') {
+                if (reason === "cancel2") {
                     this.resetForm();
                     this.routing.go(toState.name, toParams);
                 }

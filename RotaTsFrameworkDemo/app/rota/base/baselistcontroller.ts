@@ -427,19 +427,22 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 selChangedFn();
             });
         }
-        //restore
-        this.$timeout(() => {
-            try {
-                const storedState = this.caching.localStorage
-                    .get<uiGrid.saveState.IGridSavedState>(this.gridLayoutStorageName);
-                if (storedState) {
-                    gridApi.saveState.restore(this.$rootScope, storedState);
+        //restore - only columns defined in column options 
+        //for mobile view are permitted so skipped for mobile/ tablet
+        if (!this.common.isMobileOrTablet()) {
+            this.$timeout(() => {
+                try {
+                    const storedState = this.caching.localStorage
+                        .get<uiGrid.saveState.IGridSavedState>(this.gridLayoutStorageName);
+                    if (storedState) {
+                        gridApi.saveState.restore(this.$rootScope, storedState);
+                    }
+                } catch (e) {
+                    this.removeGridLayout();
+                    this.logger.console.error({ message: 'grid layout restoring failed' });
                 }
-            } catch (e) {
-                this.removeGridLayout();
-                this.logger.console.error({ message: 'grid layout restoring failed' });
-            }
-        });
+            });
+        }
     }
 
     /**

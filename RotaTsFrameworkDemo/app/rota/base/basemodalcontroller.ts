@@ -107,7 +107,7 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
      * Close modal with dismiss
      */
     closeModal(): void {
-        if (this.instanceOptions.convertToObserableModel && this.common.isObserableModel(this.model)) {
+        if (this.common.isObserableModel(this.model)) {
             this.model.revertOriginal();
         }
         this.$uibModalInstance.dismiss(this.model);

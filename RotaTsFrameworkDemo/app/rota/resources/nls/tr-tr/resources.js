@@ -1,5 +1,6 @@
 ﻿define({
     rota: {
+        crudonaybaslik: 'Değişiklik kayıt onay ?',
         profilsayfam: 'Profil sayfam',
         refreshinprogress: 'Liste yenileniyor',
         filtrekayitedildi: 'Filtre saklandı',
@@ -105,7 +106,7 @@
         kayitbasarisiz: 'Kayıt işlemi iptal edildi',
         ara: 'Ara',
         temizle: 'Temizle',
-        crudonay: 'Yaptıgınız değişiklikleri kayit etmek istiyormusunuz ?',
+        crudonay: 'Kayıt edilmemiş değişiklikler mevcut.Yaptığınız değişiklikleri kayıt etmek istiyormusunuz ?',
         tt_yenikayit: 'Yeni kayıt açar',
         tt_bironcekisayfayadon: 'Bir önceki sayfaya gider',
         tt_kaydet: 'Yapılan değişiklikleri kayıt eder',
@@ -124,6 +125,8 @@
         sonaltiay: 'Son 6 ay',
         sonbiryil: 'Son 1 yil',
         ozel: 'Özel',
+        kaydetvecik: 'Kaydet ve çık',
+        cikis: 'Çıkış',
         cikisonay: 'Çıkmak istediğinize eminmisiniz ?',
         cikisyapiliyor: 'Çıkış yapılıyor...',
         filter: 'Filtre Kriterleri',
