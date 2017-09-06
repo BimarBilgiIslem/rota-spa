@@ -68,7 +68,6 @@ function avatarDirective($compile: ng.ICompileService, $http: ng.IHttpService,
                         });
                 }
                 //get avatar from remote service
-                //cefdwqdwq
                 const context = {
                     username: currentUser.name.replace('.', '_'),
                     userid: currentUser.id,
