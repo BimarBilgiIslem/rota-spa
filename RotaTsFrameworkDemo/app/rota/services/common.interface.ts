@@ -288,6 +288,11 @@ interface ICommon extends IBaseService {
      */
     isString(value: any): value is string;
     /**
+     * Guard method checks for object
+     * @param value
+     */
+    isObject(value: any): value is object;
+    /**
      * Guard method checks for number
      * @param value
      */

@@ -132,7 +132,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     //#endregion
 
     //#region Bundle Services
-    static injects = BaseModelController.injects.concat(['$timeout', '$interval', 'uiGridConstants', 'uiGridExporterConstants', 'Caching']);
+    static injects = BaseModelController.injects.concat(['$timeout', '$interval', 'uiGridConstants',
+        'uiGridExporterConstants', 'Caching']);
     protected uigridconstants: uiGrid.IUiGridConstants;
     protected uigridexporterconstants: uiGrid.exporter.IUiGridExporterConstants;
     protected caching: ICaching;
@@ -151,6 +152,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             {
                 newItemParamName: configService.defaultNewItemParamName,
                 pageSize: configService.gridDefaultPageSize,
+                //set grid elem name when running on mobile so enable scrolling 
                 elementToScroll: window.__IS_TOUCHABLE && `grid_${configService.gridDefaultOptionsName}`
             }, options);
         return listOptions;
@@ -188,6 +190,30 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     //#endregion
 
     //#region BaseModelController methods
+    /**
+     * Initialize model
+     * @param modelFilter Model filter
+     * @description modelFilter is only available in case its called from initSearchModel.
+     * in case its called from Controller decorator,initModel is called with this.filter without pager params
+     */
+    initModel(modelFilter?: TModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+        const resultDefer = this.$q.defer<TModel[] | IPagingListModel<TModel>>();
+        this.logger.notification.removeAll();
+        //validation process
+        const validationResult = this.applyValidatitons();
+        //success
+        validationResult.then(() => {
+            super.initModel(modelFilter || this.filter).then(result =>
+                resultDefer.resolve(<TModel[] | IPagingListModel<TModel>>result));
+        });
+        //has error
+        validationResult.catch((error: IParserException) => {
+            this.showParserException(error);
+            resultDefer.reject();
+        });
+
+        return resultDefer.promise;
+    }
     /**
     * @abstract Get model
     * @param args Model
@@ -247,10 +273,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     /**
     * Get default buttons
     */
-    protected getDefaultGridButtons(): uiGrid.IColumnDef[] {
+    protected getDefaultGridButtons(hiddenOnMobile?: boolean): uiGrid.IColumnDef[] {
         const buttons: uiGrid.IColumnDef[] = [];
         const getButtonColumn = (name: string, template: string): uiGrid.IColumnDef => {
-            return {
+            const btn: uiGrid.IColumnDef = {
                 name: name,
                 cellClass: 'col-align-center',
                 width: '35',
@@ -258,6 +284,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 enableColumnMenu: false,
                 cellTemplate: template
             };
+            if (hiddenOnMobile) {
+                btn.visible = !this.common.isMobileOrTablet();
+            }
+            return btn;
         }
         //edit button
         if (this.gridOptions.showEditButton) {
@@ -355,7 +385,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         //get default options
         const options = this.getDefaultGridOptions();
         //merge user-defined cols
-        this.gridOptions = angular.extend(options, { columnDefs: this.getGridColumns(options) });
+        this.gridOptions = angular.extend(options, {
+            columnDefs: this.getGridColumns(options).map(col => {
+                if (col.hiddenOnMobile) col.visible = !this.common.isMobileOrTablet();
+                return col;
+            })
+        });
         //Set rowFormatter attrs if assigned
         if (this.isAssigned(this.gridOptions.rowFormatter)) {
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_ROW_FORMATTER_ATTR);
@@ -378,7 +413,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 .replace('{0}', this.gridOptions.rowTemplateAttrs.join(' '));
         }
         //add default button cols
-        const defaultButtons = this.getDefaultGridButtons();
+        const defaultButtons = this.getDefaultGridButtons(this.gridOptions.hiddenActionButtonsOnMobile);
         this.gridOptions.columnDefs = this.gridOptions.columnDefs.concat(defaultButtons);
         //Remove edit-delete buttons from exporting
         if (this.gridOptions.showEditButton)
@@ -472,39 +507,13 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * Starts getting model and binding
     * @param pager Paging pager
     */
-    initSearchModel(pager?: IPager, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+    initSearchModel(pager?: IPager): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
         let filter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
             filter = this.common.extend<TModelFilter>(filter, pager || this.getPager(1));
         }
-        //scroll to grid
-        scrollToElem && this.$document.duScrollToElement(scrollToElem);
         //get data
         return this.initModel(filter);
-    }
-    /**
-     * Initialize model
-     * @param modelFilter Model filter
-     * @description modelFilter is only available in case its called from initSearchModel.
-     * in case its called from Controller decorator,initModel is called with this.filter without pager params
-     */
-    initModel(modelFilter?: TModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
-        const resultDefer = this.$q.defer<TModel[] | IPagingListModel<TModel>>();
-        this.logger.notification.removeAll();
-        //validation process
-        const validationResult = this.applyValidatitons();
-        //success
-        validationResult.then(() => {
-            super.initModel(modelFilter || this.filter).then(result =>
-                resultDefer.resolve(<TModel[] | IPagingListModel<TModel>>result));
-        });
-        //has error
-        validationResult.catch((error: IParserException) => {
-            this.showParserException(error);
-            resultDefer.reject();
-        });
-
-        return resultDefer.promise;
     }
     //#endregion
 

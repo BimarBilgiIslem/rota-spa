@@ -592,6 +592,18 @@ interface IGridOptions<TModel extends IBaseModel> extends uiGrid.IGridOptionsOf<
      * Custom row template attibutes
      */
     rowTemplateAttrs?: string[];
+    /**
+     * Hidden action buttons on mobile device,default false
+     */
+    hiddenActionButtonsOnMobile?: boolean;
+}
+/**
+ * Shortcut flag for column visibility on mobile device
+ */
+declare namespace uiGrid {
+    interface IColumnDefOf<TEntity> {
+        hiddenOnMobile?: boolean;
+    }
 }
 /**
  * Base list controller

@@ -22,7 +22,7 @@ import { Controller } from "./decorators";
 /**
  * Base Modal controller
  */
-class BaseModalController<TModel extends IBaseModel> extends BaseModelController<TModel>
+class BaseModalController<TModel extends IBaseModel, TParams = any> extends BaseModelController<TModel>
     implements IBaseModalController {
     //#region Statics,Members,Props
     static injects = BaseModelController.injects.concat(['$uibModalInstance', 'instanceOptions']);
@@ -48,7 +48,7 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
      * Modal params
      * @returns {} 
      */
-    get params(): any { return this.instanceOptions.params }
+    get params(): TParams { return this.instanceOptions.params }
 
     /**
     * Modal Page options

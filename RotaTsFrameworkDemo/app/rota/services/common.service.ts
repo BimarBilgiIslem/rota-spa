@@ -177,28 +177,28 @@ class Common implements ICommon {
     getFaIcon(fileExtension: string): string {
         fileExtension = fileExtension.toLowerCase();
         switch (fileExtension) {
-        case "pdf":
-            return "file-pdf-o";
-        case "xls":
-        case "xlsx":
-            return "file-excel-o";
-        case "doc":
-        case "docx":
-            return "file-word-o";
-        case "jpeg":
-        case "jpg":
-        case "png":
-            return "file-image-o";
-        case "rar":
-        case "zip":
-            return "file-zip-o";
-        case "txt":
-            return "file-text-o";
-        case "mp3":
-        case "wav":
-            return "file-audio-o";
-        default:
-            return "file-o";
+            case "pdf":
+                return "file-pdf-o";
+            case "xls":
+            case "xlsx":
+                return "file-excel-o";
+            case "doc":
+            case "docx":
+                return "file-word-o";
+            case "jpeg":
+            case "jpg":
+            case "png":
+                return "file-image-o";
+            case "rar":
+            case "zip":
+                return "file-zip-o";
+            case "txt":
+                return "file-text-o";
+            case "mp3":
+            case "wav":
+                return "file-audio-o";
+            default:
+                return "file-o";
         }
     }
     /**
@@ -315,6 +315,13 @@ class Common implements ICommon {
      */
     isArray(value: any): value is Array<any> {
         return value instanceof Array;
+    }
+    /**
+   * Guard method checks for object
+   * @param value
+   */
+    isObject(value: any): value is object {
+        return angular.isObject(value);
     }
     /**
      * Guard method checks for function

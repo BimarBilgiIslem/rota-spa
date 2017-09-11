@@ -93,7 +93,10 @@ class ProfileController {
      * Logoff
      */
     logOff(): void {
-        this.dialogs.showConfirm({ message: this.localization.getLocal('rota.cikisonay') }).then((): void => {
+        this.dialogs.showConfirm({
+            message: this.localization.getLocal('rota.cikisonay'),
+            okText: this.localization.getLocal('rota.cikis')
+        }).then((): void => {
             this.security.logOff();
         });
     }

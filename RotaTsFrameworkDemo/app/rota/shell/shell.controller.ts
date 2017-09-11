@@ -90,7 +90,7 @@ class ShellController {
                 this.isHomePage = this.$location.url() === this.config.homePageOptions.url;
             //set viewpot width size
             this.viewPortClass =
-                this.config.enableContainerFluid || menu.isFullScreen ? 'container-fluid' : 'container';
+                (this.config.enableContainerFluid || (menu && menu.isFullScreen)) ? 'container-fluid' : 'container';
         });
     }
     /**

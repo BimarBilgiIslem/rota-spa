@@ -43,7 +43,7 @@ function buttonDirective($document: duScroll.IDocumentService, hotkeys: ng.hotke
             disabledAttr += ` || (${tAttrs['ngDisabled']})`;
         }
         tAttrs.$set('ngDisabled', disabledAttr);
-        return (scope: IButtonScope, element: ng.IAugmentedJQuery, attrs: IButtonAttributes): void => {
+        return (scope: IButtonScope, element: ng.IAugmentedJQuery, attrs: IButtonAttributes, formCnt?: ng.IFormController): void => {
             //get original items
             let orjText = scope.text;
             const orjIcon = scope.icon;
@@ -76,7 +76,7 @@ function buttonDirective($document: duScroll.IDocumentService, hotkeys: ng.hotke
             const endAjax = () => {
                 setButtonAttrs({ caption: orjText, icon: orjIcon, disable: false });
                 //scroll if elem is defined
-                if (scope.elemToScroll) {
+                if (scope.elemToScroll && formCnt && formCnt.$valid) {
                     const elem = document.getElementById(scope.elemToScroll);
                     $document.duScrollToElement(angular.element(elem), 0, 750);
                 }
@@ -96,6 +96,7 @@ function buttonDirective($document: duScroll.IDocumentService, hotkeys: ng.hotke
     const directive = <ng.IDirective>{
         restrict: 'AE',
         replace: true,
+        require: '?^form',
         scope: {
             text: '@',
             textI18n: '@',
