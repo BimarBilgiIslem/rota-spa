@@ -27,6 +27,7 @@ export interface IDateTimeDirectiveAttrs extends ng.IAttributes {
     minuteStep: number;
     placeholder: string;
     phI18n: string;
+    minDate: Date;
 }
 /**
  * Datetime scope
@@ -186,11 +187,11 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
                 let isMinCheck = true,
                     isMaxCheck = true;
 
-                if (scope.minDate) {
+                if (scope.minDate && value) {
                     isMinCheck = moment(value).isAfter(scope.minDate);
                 }
 
-                if (scope.maxDate) {
+                if (scope.maxDate && value) {
                     isMaxCheck = moment(value).isBefore(scope.maxDate);
                 }
                 return isMinCheck && isMaxCheck;
@@ -230,7 +231,7 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
             maxDate: '=?'
         },
         template: '<div class="rt-date-picker" uib-dropdown is-open="openIt">' +
-        '<div class="input-group" uib-tooltip="{{::\'rota.buguntarihienter\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="right">' +
+        '<div class="input-group">' +
         '<input ng-disabled=ngDisabled ng-model-options="{debounce:50}" ng-required="ngRequired" ' +
         'data-date-parse-strict="false" ng-model=ngModel type="text" class="form-control"> ' +
         '<span style="cursor:pointer;" ng-click="openPicker($event)" class="input-group-addon">' +

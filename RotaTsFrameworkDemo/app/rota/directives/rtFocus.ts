@@ -33,7 +33,7 @@ function rtFocusDirective($timeout: ng.ITimeoutService) {
                     const input = element.find('input');
                     input && typeof input.focus == "function" && input.focus();
                 }
-            }, 0);
+            }, 500);
         };
         //lazy focus
         if (attrs.rtFocus) {

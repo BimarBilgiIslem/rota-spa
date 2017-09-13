@@ -8,6 +8,10 @@ input {
     &[type="radio"], &[type="checkbox"] {
         cursor: pointer;
     }
+
+    &::-ms-clear {
+        display: none;
+    }
 }
 
 input.ng-invalid,
