@@ -70,15 +70,15 @@ $rt-callout-bg: #a70606 !default;
 $rt-callout-color: #fff !default;
 $rt-callout-shadow: 1px 1px rgba(191, 183, 183, 0.63) !default;
 //rtTabs color
-$rt-tabs-color: #5aa1cb;
+$rt-tabs-color: #5aa1cb !default;
 //grid
-$grid-scroll-base-color: #fff;
+$grid-scroll-base-color: #fff !default;
 //break points
 $grid-float-breakpoint: 992px !default;
 //nav profile
-$nav-sticky-min-width: 355px;
+$nav-sticky-min-width: 355px !default;
 //rt-info
-$rt-info-color:#3c8dbc;
+$rt-info-color:#3c8dbc !default;
 /*#endregion */
 
 

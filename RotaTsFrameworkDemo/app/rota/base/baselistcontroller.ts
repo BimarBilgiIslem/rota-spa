@@ -725,7 +725,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                     const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
                         curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
                         if (curr.displayName) {
-                            memo._headers.push(curr.displayName);
+                            memo._headers.push(encodeURIComponent(curr.displayName));
                             memo._fields.push((curr.field || curr.name).toLowerCase());
                         }
                         return memo;

@@ -3,20 +3,6 @@
 /*#endregion */
 /*#region Rota */
 /*#endregion */
-/*//sil
-$menu-color: #337ab7;
-$navbar-default-link-active-bg: $menu-color;
-//side menu
-$side-nav-header-bg: #337ab7;
-//avatar bg
-$avatar-first-letter-bg: rgb(127, 188, 218);
-//dropdown
-$dropdown-bg: $menu-color;
-$dropdown-border: $menu-color;
-$dropdown-link-color: #fff;
-$dropdown-link-hover-color: $menu-color;
-$dropdown-link-hover-bg: #fff;
-$dropdown-header-color: #fff;*/
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -6651,6 +6637,9 @@ legend {
 input[type="radio"], input[type="checkbox"] {
   cursor: pointer; }
 
+input::-ms-clear {
+  display: none; }
+
 input.ng-invalid,
 textarea.ng-invalid {
   border: 1px solid #d44950 !important; }
@@ -7810,6 +7799,14 @@ input[ng-currency] {
       opacity: 1;
       border-color: #595959;
       color: #595959; }
+
+i.rt-info {
+  color: #3c8dbc;
+  font-size: 1.275em;
+  margin-right: 3px;
+  transition: .2s color ease; }
+  i.rt-info:hover {
+    color: #23536f; }
 
 /************** VENDOR CSS URL IMPORTS ******************/
 /*@import "vendor-css/select2_custom.css";*/

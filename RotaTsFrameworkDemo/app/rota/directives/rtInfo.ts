@@ -22,22 +22,26 @@ interface IInfoAttributes extends ng.IAttributes {
 
 //#region Directive
 function rtInfoDirective($compile: ng.ICompileService) {
-
     function link(scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: IInfoAttributes): void {
-        $('<i/>').addClass("fa fa-info-circle rt-info")
+        const infoElem = $('<i/>').addClass("fa fa-info-circle rt-info")
             .attr({
                 "uib-popover": attrs.rtInfo,
-                "popover-placement": "auto top",
+                "popover-placement": "auto bottom-left",
                 "popover-append-to-body": "true",
                 "popover-trigger": "'mouseenter'"
-            }).appendTo(element);
+            });
+
+        const $infoElem = $compile(infoElem)(scope);
+        $infoElem.prependTo(element);
+
         element.removeAttr("rt-info");
-        $compile(element)(scope);
     }
 
     const directive = <ng.IDirective>{
         restrict: 'A',
-        link: link
+        link: link,
+        //run after i18n directive
+        priority: 2
     };
     return directive;
 }

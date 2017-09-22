@@ -30,7 +30,7 @@ class Common implements ICommon {
      * Return promise with provided arg
      * @param p Arg
      */
-    promise<T>(p?: T): ng.IPromise<T> {
+    promise<T=any>(p?: T): ng.IPromise<T> {
         return this.$q.when<T>(p);
     }
     /**
