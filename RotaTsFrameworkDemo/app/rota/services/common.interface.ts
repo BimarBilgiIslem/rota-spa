@@ -35,7 +35,6 @@ interface IPany extends ng.IPromise<any> {
 interface IRotaRootScope extends ng.IRootScopeService {
     appTitle: string;
     forms: any;
-    isCollapsed: boolean;
 }
 /**
  * Used for chainable promise function

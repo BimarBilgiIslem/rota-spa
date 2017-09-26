@@ -34,6 +34,7 @@ class ShellController {
      * Indicates that menu will be in fullscreen container,default false
      */
     isHomePage: boolean;
+    isMobileOrTablet: boolean;
     bgImageUrl: { [index: string]: string };
     vidOptions: IVideoOptions;
     viewPortClass?: string;
@@ -51,7 +52,8 @@ class ShellController {
         private currentUser: IUser,
         private currentCompany: ICompany,
         private routeconfig: IRouteConfig,
-        private titleBadges: ITitleBadges) {
+        private titleBadges: ITitleBadges,
+        private common: ICommon) {
         //init settings
         this.setSpinner();
         this.setActiveMenuListener();
@@ -64,6 +66,7 @@ class ShellController {
         }
         $rootScope.appTitle = '';
         $rootScope.forms = {};
+        this.isMobileOrTablet = common.isMobileOrTablet();
     }
     //#endregion
 
@@ -129,7 +132,7 @@ class ShellController {
      * @description Only visible in main page on mobile device.
      */
     isMbfVisible(): boolean {
-        return (!window.__IS_TOUCHABLE || this.isHomePage) &&
+        return (!this.isMobileOrTablet || this.isHomePage) &&
             this.config.enableQuickMenu && this.routing.quickMenus.length > 0;
     }
     //#endregion
@@ -138,7 +141,7 @@ class ShellController {
 
 //#region Injection
 ShellController.$inject = ['$rootScope', '$scope', '$location', '$window', 'Routing', 'Config',
-    'Dialogs', 'Constants', 'CurrentUser', 'CurrentCompany', 'RouteConfig', 'TitleBadges'];
+    'Dialogs', 'Constants', 'CurrentUser', 'CurrentCompany', 'RouteConfig', 'TitleBadges', 'Common'];
 //#endregion
 
 //#region Register

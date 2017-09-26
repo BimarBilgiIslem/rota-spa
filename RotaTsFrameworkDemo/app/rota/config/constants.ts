@@ -85,7 +85,7 @@ const rotaConstants: IConstants = {
         GRID_DEFAULT_PAGE_SIZE: 25,
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
         GRID_STANDART_FEATURE_LIST: 'ui-grid-selection ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ' +
-        'ui-grid-save-state ui-grid-move-columns ui-grid-edit ui-grid-row-edit',
+        'ui-grid-save-state ui-grid-move-columns ui-grid-edit ui-grid-row-edit ui-grid-expandable',
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html
@@ -99,11 +99,11 @@ const rotaConstants: IConstants = {
         GRID_ROW_DOUBLE_CLICK_EDIT_ATTR: "ng-dblclick=\"grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)\"",
         GRID_CONTEXT_MENU_ATTR: "context-menu='contextmenu.html' rt-grid-right-click-sel",
         GRID_EDIT_BUTTON_HTML:
-        '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)"' +
-        ' uib-tooltip="{{::\'rota.detay\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a>',
-        GRID_DELETE_BUTTON_HTML: '<a class="btn btn-danger btn-xs" ' +
+        '<div class=\'ui-grid-cell-contents\'><a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)"' +
+        ' uib-tooltip="{{::\'rota.detay\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a></div>',
+        GRID_DELETE_BUTTON_HTML: '<div class=\'ui-grid-cell-contents\'><a class="btn btn-danger btn-xs" ' +
         'ng-click="grid.appScope.vm.initDeleteModel(row.entity[\'id\'],row.entity,$event)" uib-tooltip="{{::\'rota.sil\' | i18n}}"' +
-        ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a>',
+        ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a></div>',
         GRID_MAX_PAGE_SIZE: 999999
     },
     tree: {

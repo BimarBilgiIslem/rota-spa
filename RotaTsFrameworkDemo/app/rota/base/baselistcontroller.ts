@@ -691,7 +691,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     removeGridLayout(): void {
         this.caching.localStorage.remove(this.gridLayoutStorageName);
-        this.logger.toastr.info({ message: this.localization.getLocal("rota.gridlayoutsilindi") });
+        this.routing.reload();
     }
     //#endregion
 

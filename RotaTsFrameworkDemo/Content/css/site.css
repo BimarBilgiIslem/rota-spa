@@ -6199,17 +6199,6 @@ input[type="radio"] .styled:checked + label::after {
   height: 2px;
   width: 0; }
 
-.row-centered {
-  text-align: center; }
-
-.col-centered {
-  display: inline-block;
-  float: none;
-  /* reset the text-align */
-  text-align: left;
-  /* inline-block space fix */
-  margin-right: -4px; }
-
 /*#endregion */
 #sub-header {
   background: #FAFAFA;
@@ -6649,10 +6638,7 @@ textarea.ng-invalid {
   height: 600px;
   border-bottom: 3px solid #ABC5DC; }
 
-.ui-grid-row:nth-child(odd):hover .ui-grid-cell {
-  background: #faefca; }
-
-.ui-grid-row:nth-child(even):hover .ui-grid-cell {
+.ui-grid-row:hover > [ui-grid-row] > .ui-grid-cell {
   background: #faefca; }
 
 .ui-grid-row-selected > [ui-grid-row] .ui-grid-cell {
@@ -6663,18 +6649,6 @@ textarea.ng-invalid {
 
 .ui-grid-pager-panel {
   background-color: #ebebeb; }
-
-.col-align-center {
-  text-align: center;
-  line-height: 29px; }
-
-.col-valign-center {
-  line-height: 29px;
-  padding-left: 5px; }
-
-.col-pull-right {
-  float: right;
-  margin-right: 3px; }
 
 .grid .badge, .col-pull-right .badge {
   margin-left: 2px; }
@@ -7487,15 +7461,10 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
     margin-top: 5px;
     margin-right: -10px; }
 
-@media (max-width: 992px) {
-  .navbar-toggle {
-    border: none; }
-    .navbar-toggle:hover, .navbar-toggle:focus {
-      background-color: transparent !important; }
-  .navbar-toggle-left {
-    float: left;
-    margin-left: 15px;
-    margin-right: 0; } }
+.navbar-toggle {
+  border: none; }
+  .navbar-toggle:hover, .navbar-toggle:focus {
+    background-color: transparent !important; }
 
 .side-nav.modal.left .modal-body, .side-nav.modal.right .modal-body, .side-nav.modal-body {
   padding: 0 !important; }
