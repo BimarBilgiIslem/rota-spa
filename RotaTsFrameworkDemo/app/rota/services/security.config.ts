@@ -23,7 +23,7 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
     constructor(environments: IGlobalEnvironment, constants: IConstants) {
         super();
         const config: ISecurityConfig = {
-            logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout,
+            logOffWhenIdleTimeout: environments.logOffWhenIdleTimeout === undefined ? true : environments.logOffWhenIdleTimeout,
             idleTimeout: constants.security.IDLE_TIMEOUT,
             idleLogoffCountDown: constants.security.COUNT_DOWN_FOR_IDLE_TIMEOUT,
             useFirstLetterAvatar: true,

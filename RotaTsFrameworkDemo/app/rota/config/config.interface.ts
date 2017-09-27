@@ -80,7 +80,7 @@ interface IGlobalEnvironment {
      */
     doms?: IDictionary<string>;
     /**
-     * Logoff when idle timeout has reached by prompting user
+     * Logoff when idle timeout has reached by prompting user,default true
      */
     logOffWhenIdleTimeout?: boolean;
     /**
@@ -234,7 +234,7 @@ interface IMainConfig extends IBaseConfig {
     /**
      * Grid standart features list
      */
-    gridStandartFeatureList?: string;
+    gridStandartFeatureList?: string[];
     /**
      * Supported languages
      * @description if new lang is added,nls folder must be updaded accordingly in resource 

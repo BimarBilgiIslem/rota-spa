@@ -1,5 +1,6 @@
 ﻿//#region Import
 import "spinner"
+import "./vfs_fonts";
 import "grid"
 import "hotkeys"
 import "scroll"

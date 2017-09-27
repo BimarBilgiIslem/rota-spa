@@ -67,7 +67,7 @@ interface IConstants {
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;
         GRID_DEFAULT_OPTIONS_NAME: string;
-        GRID_STANDART_FEATURE_LIST: string;
+        GRID_STANDART_FEATURE_LIST: string[];
         GRID_CUSTOM_ROW_TEMPLATE: string;
         GRID_ROW_FORMATTER_ATTR: string;
         GRID_CONTEXT_MENU_ATTR: string;

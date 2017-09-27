@@ -701,7 +701,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * @param {string} rowTypes which rows to export, valid values are uiGridExporterConstants.ALL,
     * @param {string} colTypes which columns to export, valid values are uiGridExporterConstants.ALL,
     */
-    private exportGrid(rowType: string, exportType: ModelExports): void {
+    private exportGrid(rowType: string, exportType?: ModelExports): void {
+        //default export button action
+        if (!exportType) {
+            exportType = ModelExports.Pdf;
+            if (this.checkEnumFlag(this.listPageOptions.modelExports, ModelExports.Excel)) exportType = ModelExports.Excel; else
+                if (this.checkEnumFlag(this.listPageOptions.modelExports, ModelExports.Pdf)) exportType = ModelExports.Pdf; else
+                    if (this.checkEnumFlag(this.listPageOptions.modelExports, ModelExports.Csv)) exportType = ModelExports.Csv;
+        }
         //warn user for possible delay
         let warnDelay = this.common.promise();
         if (rowType === this.uigridexporterconstants.ALL) {

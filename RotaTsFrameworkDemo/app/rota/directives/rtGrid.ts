@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import * as _ from "underscore";
+
 //#region Interfaces
 interface IGridDirectiveAttrs extends ng.IAttributes {
     /**
@@ -37,7 +39,17 @@ interface IGridDirectiveAttrs extends ng.IAttributes {
 function gridDirective(config: IMainConfig, common: ICommon) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IGridDirectiveAttrs) {
         const optionsName = common.isNullOrEmpty(cAttrs.gridOptions) ? config.gridDefaultOptionsName : cAttrs.gridOptions;
-        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${cAttrs.gridFeatureList || config.gridStandartFeatureList}></div>`;
+        let gridFeatures = config.gridStandartFeatureList.join(' ');
+
+        if (cAttrs.gridFeatureList) {
+            const customFeatures = cAttrs.gridFeatureList.split(' ');
+            const existingFeatures = _.intersection<string>(config.gridStandartFeatureList, customFeatures);
+            if (existingFeatures.length > 0)
+                throw existingFeatures.join(",") + " features existing in standart grid definition";
+            gridFeatures = config.gridStandartFeatureList.concat(customFeatures).join(' ');
+        }
+
+        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${gridFeatures}></div>`;
         cElement.append(htmlMarkup);
         return (): void => {
         }

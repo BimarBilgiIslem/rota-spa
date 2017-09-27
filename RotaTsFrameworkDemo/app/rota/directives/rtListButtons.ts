@@ -56,7 +56,7 @@ function listButtonsDirective() {
         '</li>' +
         '</ul></div></div>&nbsp;' +
         '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
-        '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\',\'pdfExport\')" text-i18n="rota.disariyaaktar"' +
+        '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\')" text-i18n="rota.disariyaaktar"' +
         'uib-tooltip="{{::\'rota.disariyaaktar\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom"></rt-button>' +
         '<button type="button" class="btn btn-info dropdown-toggle" uib-dropdown-toggle>' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +

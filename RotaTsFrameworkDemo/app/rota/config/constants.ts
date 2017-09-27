@@ -84,8 +84,8 @@ const rotaConstants: IConstants = {
     grid: {
         GRID_DEFAULT_PAGE_SIZE: 25,
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
-        GRID_STANDART_FEATURE_LIST: 'ui-grid-selection ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ' +
-        'ui-grid-save-state ui-grid-move-columns ui-grid-edit ui-grid-row-edit ui-grid-expandable',
+        GRID_STANDART_FEATURE_LIST: ['ui-grid-selection', 'ui-grid-pagination', 'ui-grid-exporter', 'ui-grid-resize-columns',
+            'ui-grid-save-state', 'ui-grid-move-columns'],
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html
@@ -120,7 +120,7 @@ const rotaConstants: IConstants = {
         DEFAULT_PLACE_HOLDER_KEY: 'rota.seciniz',
         MIN_AUTO_SUGGEST_CHAR_LEN: 3,
         DEFAULT_ITEMS_COUNT: 100,
-        DEFAULT_REFRESH_DELAY: 700
+        DEFAULT_REFRESH_DELAY: 500
     },
     //Controllers
     controller: {

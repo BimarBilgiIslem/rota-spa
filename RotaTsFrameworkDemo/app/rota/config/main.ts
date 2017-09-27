@@ -75,7 +75,6 @@ require.config({
         uilayout: './rota/lib/ui-layout',
         //grid libs
         pdfMake: './rota/lib/pdfMake.min',
-        vfs_fonts: './rota/lib/vfs_fonts',
         //SignalR
         'signalr.hubs': '/signalr/hubs?'
     },
@@ -104,15 +103,8 @@ require.config({
         'angular-cookies': {
             deps: ['angular']
         },
-        pdfMake: {
-            exports: 'pdfMake'
-        },
-        vfs_fonts: {
-            exports: 'vfs_fonts',
-            deps: ['pdfMake']
-        },
         grid: {
-            deps: ['angular', 'vfs_fonts']
+            deps: ['angular']
         },
         hotkeys: {
             deps: ['angular']
@@ -125,7 +117,7 @@ require.config({
         },
         fileupload: {
             deps: ['fileapi', 'angular']
-        },     
+        },
         mfb: {
             deps: ['angular']
         },
@@ -301,7 +293,7 @@ if (window) {
             lang: currentCulture
         });
 
-        result.then(user => {            
+        result.then(user => {
             if (user !== null) {
                 //settings
                 initCulture(currentCulture);
