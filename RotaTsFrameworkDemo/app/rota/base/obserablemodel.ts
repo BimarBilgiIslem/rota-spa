@@ -82,8 +82,14 @@ class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<T
     get _readonly(): boolean { return this.__readonly; }
     set _readonly(value: boolean) {
         if (this.__readonly === value) return;
-        //set child array 
-        this.iterateNavigationalModels(model => model._readonly = value);
+        //set childs
+        _.each(this._values, (childItem): void => {
+            if (_.isArray(childItem)) {
+                (childItem as IBaseListModel<TModel>)._readonly = value;
+            } else if (childItem instanceof ObserableModel) {
+                childItem._readonly = value;
+            }
+        });
         this.__readonly = value;
     }
     /**

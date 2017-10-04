@@ -38,7 +38,8 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
             .attr('placeholder', cAttrs.placeholder)
             .attr('items-count', cAttrs.itemsCount)
             .attr('new-item-options', <any>cAttrs.newItemOptions)
-            .attr('search-item-options', <any>cAttrs.searchItemsOptions);
+            .attr('search-item-options', <any>cAttrs.searchItemsOptions)
+            .attr('min-auto-suggest-char-len', cAttrs.minAutoSuggestCharLen);
 
         if (common.isDefined(cAttrs.onRefresh)) {
             dropDown.attr('on-refresh', 'onRefresh({keyword:keyword})');

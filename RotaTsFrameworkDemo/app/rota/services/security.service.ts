@@ -48,6 +48,7 @@ class Security implements ISecurity {
      * @param company Company to be selected
      */
     setCompany(company: ICompany): void {
+        if (this.currentCompany && this.currentCompany.id === company.id) return;
         this.$rootScope.$broadcast(this.constants.events.EVENT_COMPANY_CHANGED, company);
         this.caching.sessionStorage.store<IStorageCurrentCompany>(
             this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
