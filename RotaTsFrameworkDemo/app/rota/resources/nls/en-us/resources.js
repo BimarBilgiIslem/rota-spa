@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        yukleniyor: 'Loading...',
         crudonaybaslik: 'You have unsaved changes ?',
         profilsayfam: 'My profile',
         refreshinprogress: 'Refreshing the list',

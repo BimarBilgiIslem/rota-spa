@@ -291,6 +291,7 @@ class Routing implements IRouting {
             const defaultParams = {};
             defaultParams[idParamName] = idParamValue;
             defaultParams[this.constants.controller.DEFAULT_READONLY_PARAM_NAME] = true;
+            defaultParams[this.constants.controller.PREVIEW_MODE_PARAM_NAME] = false;
             state.params = this.common.extend(defaultParams, state.params);
         }
         //define state obj

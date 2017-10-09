@@ -1,5 +1,6 @@
 ﻿define({
     rota: {
+        yukleniyor: 'Yükleniyor...',
         crudonaybaslik: 'Değişiklik kayıt onay ?',
         profilsayfam: 'Profil sayfam',
         refreshinprogress: 'Liste yenileniyor',

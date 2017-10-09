@@ -48,6 +48,8 @@ import "./rtAvatar"
 import "./rtDownload"
 import "./rtSticky"
 import "./rtInfo"
+import "./rtPagePreview"
+import "./rtContent"
 
 angular.module('rota.directives',
     ['rota.directives.rtspinner',
@@ -83,5 +85,7 @@ angular.module('rota.directives',
         'rota.directives.rtavatar',
         'rota.directives.rtdownload',
         'rota.directives.rtsticky',
-        'rota.directives.rtinfo'
+        'rota.directives.rtinfo',
+        'rota.directives.rtpagepreview',
+        'rota.directives.rtcontent'
     ]);

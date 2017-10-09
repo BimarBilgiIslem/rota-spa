@@ -170,8 +170,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         this.gridLayoutStorageName = `storedgridlayout_${this.stateInfo.stateName}`;
         //init filter
         this.initFilter();
-        //set grid features
-        this.initGrid();
         //set refresh grid process
         this.initRefresh();
     }
@@ -190,6 +188,13 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     //#endregion
 
     //#region BaseModelController methods
+    /**
+     * this method is called from decorator with all injections are available
+     */
+    initController(): void {
+        this.initGrid();
+        super.initController();
+    }
     /**
      * Initialize model
      * @param modelFilter Model filter
@@ -485,7 +490,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     clearAll(): void {
         this.clearGrid();
-        this.filter = <TModelFilter>{};
+        this.initFilter();
     }
     /**
      * Clear grid

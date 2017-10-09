@@ -640,9 +640,13 @@ interface ICrudPageStateParams<TModel extends IBaseCrudModel> extends ng.ui.ISta
      */
     model: TModel;
     /**
-     * Readonly flag
+     * Readonly flag,default false
      */
     readonly?: boolean;
+    /**
+     * Preview mode flag,default false
+     */
+    preview?: boolean;
 }
 /**
  * Flags for Crud pages

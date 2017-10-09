@@ -181,13 +181,14 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         //set default options
         const parsers: ICrudParsers = {
             saveParsers: [this.checkAuthority, this.applyValidatitons, this.beforeSaveModel],
-            deleteParsers: [this.checkAuthority, this.applyValidatitons, this.beforeDeleteModel]
+            deleteParsers: [this.checkAuthority, this.beforeDeleteModel]
         };
         this.options = this.common.extend<ICrudPageOptions>(this.options, { parsers: parsers });
         this.crudPageFlags = { isCloning: false, isDeleting: false, isSaving: false, isNew: true };
         //set readonly
-        this.crudPageOptions.readOnly = this.crudPageOptions.readOnly &&
-            (!this.common.isDefined(this.$stateParams.readonly) || this.$stateParams.readonly);
+        this.crudPageOptions.readOnly = (this.crudPageOptions.readOnly &&
+            (!this.common.isDefined(this.$stateParams.readonly) || this.$stateParams.readonly))
+            || this.$stateParams.preview;
         //set form is new/edit mode
         this.isNew = this.id === this.crudPageOptions.newItemParamValue;
     }
@@ -673,16 +674,20 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         if (this.crudPageOptions.autoSave && !this.crudPageOptions.readOnly)
             this.startAutoSave();
         //readonly warning message
-        if (this.crudPageOptions.readOnly && !this.isNew) {
+        if (this.crudPageOptions.readOnly && !this.isNew && !this.$stateParams.preview) {
             this.logger.notification.info({ message: this.localization.getLocal("rota.okumamoduuyari") });
         }
         //set badges
-        this.$timeout(() => {
-            this.editmodeBadge.show = !this.isNew && !this.crudPageOptions.readOnly;
-            this.newmodeBadge.show = this.isNew;
-            this.readOnlyBadge.show = this.crudPageOptions.readOnly && !this.isNew;
-            this.dirtyBadge.show = model.modelState === ModelStates.Added;
-        }, 0);
+        //dont touch any badge if preview mode is active
+        if (!this.$stateParams.preview) {
+            this.$timeout(() => {
+                this.editmodeBadge.show = !this.isNew && !this.crudPageOptions.readOnly;
+                this.newmodeBadge.show = this.isNew;
+                this.readOnlyBadge.show = this.crudPageOptions.readOnly && !this.isNew;
+                this.dirtyBadge.show = model.modelState === ModelStates.Added;
+            },
+                0);
+        }
         //reset form
         this.resetForm(model);
     }

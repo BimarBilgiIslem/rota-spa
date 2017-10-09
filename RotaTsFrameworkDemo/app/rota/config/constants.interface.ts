@@ -93,6 +93,7 @@ interface IConstants {
         DEFAULT_NEW_ITEM_PARAM_VALUE: string;
         DEFAULT_NEW_ITEM_PARAM_NAME: string;
         DEFAULT_READONLY_PARAM_NAME: string;
+        PREVIEW_MODE_PARAM_NAME: string;
         DEFAULT_MODEL_ORDER_FIELD_NAME: string;
         DEFAULT_AUTOSAVE_INTERVAL: number;
         DEFAULT_MODAL_CONTROLLER_NAME: string;

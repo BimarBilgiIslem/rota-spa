@@ -131,6 +131,7 @@ const rotaConstants: IConstants = {
         //New item id param default name
         DEFAULT_NEW_ITEM_PARAM_NAME: 'id',
         DEFAULT_READONLY_PARAM_NAME: 'readonly',
+        PREVIEW_MODE_PARAM_NAME: 'preview',
         DEFAULT_MODEL_ORDER_FIELD_NAME: 'order',
         DEFAULT_AUTOSAVE_INTERVAL: 60 * 1000,
         //Default modal cont.name
@@ -245,11 +246,7 @@ const rotaConstants: IConstants = {
     },
     dashboard: {
         MIN_WIDGET_REFRESH_INTERVAL: 5000,
-        WIDGET_LOADING_TEMPLATE: '\<div class="progress progress-striped active">\n\
-                                    <div class="progress-bar" role="progressbar" style="width: 100%">\n\
-                                      <span class="sr-only">loading ...</span>\n\
-                                    </div>\n\
-                                  </div>'
+        WIDGET_LOADING_TEMPLATE: '<div class="loading"><h1><div class="loader"></div>Loading...</h1></div>'
     },
     style: {
         IMG_BASE_PATH: '/Content/img',

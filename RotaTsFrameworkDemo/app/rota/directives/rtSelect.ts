@@ -123,7 +123,7 @@ function selectDirective($document: ng.IDocumentService, $parse: ng.IParseServic
             //https://plnkr.co/edit/ckQhv5bWha2jte5wDBI1?p=preview
             if (inGridCell) {
                 const docClick = (evt: JQueryEventObject) => {
-                    if ($(evt.target).closest('.ui-select-container').size() === 0) {
+                    if ($(evt.target).closest('.ui-select-container').length === 0) {
                         $timeout(() => {
                             scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
                             $document.off('click', docClick);
@@ -408,14 +408,14 @@ function selectDirective($document: ng.IDocumentService, $parse: ng.IParseServic
             if (scope.newItemOptions) {
                 scope.runNewItem = $event => {
                     if (scope.ngDisabled) return;
-                    const instanceOptions: IModalInstanceOptions = {};
-                    instanceOptions.params = scope.params || {};
-                    if (common.isAssigned(scope.newItemOptions.instanceOptions)) {
-                        instanceOptions.services = scope.newItemOptions.instanceOptions.services;
+                    if (!scope.newItemOptions.instanceOptions) scope.newItemOptions.instanceOptions = {};
+                    scope.newItemOptions.instanceOptions.params =
+                        angular.extend(scope.newItemOptions.instanceOptions.params || {}, scope.params);
+
+                    if (!scope.newItemOptions.instanceOptions.model) {
+                        scope.newItemOptions.instanceOptions.model = common.newCrudModel();
+                        scope.newItemOptions.instanceOptions.model.modelState = ModelStates.Added;
                     }
-                    scope.newItemOptions.instanceOptions = instanceOptions;
-                    scope.newItemOptions.instanceOptions.model = common.newCrudModel();
-                    scope.newItemOptions.instanceOptions.model.modelState = ModelStates.Added;
 
                     dialogs.showModal(scope.newItemOptions).then((response: ICrudServerResponseData) => {
                         if (response) {

@@ -130,6 +130,13 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
         }
         return result;
     }
+    /**
+     * this method is called from decorator with all injections are available
+     * initModel is called as default
+     */
+    initController(): void {
+        this.initModel();
+    }
     //#endregion
 
     //#region BaseController
