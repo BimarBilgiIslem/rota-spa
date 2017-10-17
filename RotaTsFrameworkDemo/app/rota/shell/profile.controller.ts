@@ -90,6 +90,52 @@ class ProfileController {
         });
     }
     /**
+     * Show feedback form
+     */
+    showFeedBackForm(): void {
+        this.dialogs.showModal({
+            bindToController: false,
+            controllerAs: null,
+            windowClass: 'feedback-form',
+            sideBarPosition: "left",
+            isSideBar: true,
+            absoluteTemplateUrl: this.routeconfig.templates.feedback,
+            controller: [
+                '$scope', '$http', '$uibModalInstance', 'Config', 'Logger', 'Localization', 'CurrentUser',
+                ($scope: IFeedBackScope, $http: ng.IHttpService, $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance,
+                    config: IMainConfig, logger: ILogger, localization: ILocalization, user: IUser) => {
+
+                    $scope.model = {}
+                    $scope.submit = () => {
+                        $scope.responseInProcess = true;
+                        $http.post(config.feedBackProviderUrl,
+                            {
+                                message: $scope.model.message,
+                                rate: $scope.model.rate,
+                                username: user.name,
+                                userid: user.id,
+                                email: user.email
+                            }).then(() => {
+                                logger.notification.info({
+                                    autoHideDelay: 3500,
+                                    notificationLayout: NotificationLayout.Top,
+                                    message: localization.getLocal('rota.geribildirimbasarili')
+                                });
+                                $uibModalInstance.close();
+                            },
+                            () => {
+                                logger.toastr.error({
+                                    message: localization.getLocal('rota.geribildirimhata')
+                                });
+                            }).finally(() => {
+                                $scope.responseInProcess = false;
+                            });
+                    }
+                }
+            ]
+        });
+    }
+    /**
      * Logoff
      */
     logOff(): void {

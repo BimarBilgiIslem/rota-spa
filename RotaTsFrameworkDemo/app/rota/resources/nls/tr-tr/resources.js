@@ -1,5 +1,12 @@
 ﻿define({
     rota: {
+        geribildirim: 'Geri bildirimde bulun',
+        geribildirimaciklama: 'Proje hakkında şikayet veya mesajınızı lütfen bizimle paylaşın.' +
+            'Projenin gelişimi için yorumlarınız bizim için önemlidir',
+        mesajgiriniz: 'Lütfen mesajınızı giriniz',
+        degerlendirme: 'Genel değerlendirme',
+        geribildirimbasarili: 'Geri bildiriminiz için teşekkür ederiz.',
+        geribildirimhata: 'Geri bildirim gönderiminde hata oluştu.',
         yukleniyor: 'Yükleniyor...',
         crudonaybaslik: 'Değişiklik kayıt onay ?',
         profilsayfam: 'Profil sayfam',

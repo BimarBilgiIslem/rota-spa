@@ -167,6 +167,7 @@ interface ITemplates {
     title?: string;
     userprofile?: string;
     navmenumobile?: string;
+    feedback?: string;
 }
 
 /**

@@ -33,7 +33,7 @@ class OidcManager {
     private static readonly SILENT_RENEW_HTML_PATH = window.require.toUrl("silentrenew").split("?")[0];
     private static readonly PATH = window.location.href.split('/').pop();
 
-    static instance: Oidc.UserManager;
+    private static instance: Oidc.UserManager;
     static user: Oidc.User;
     //#endregion
 
@@ -67,6 +67,12 @@ class OidcManager {
         return OidcManager.authorize();
     }
     /**
+     * Sign off
+     */
+    static signOut(): void {
+        OidcManager.instance.signoutRedirect();
+    }
+    /**
      * Refresh token
      */
     static signinRedirect(): void {
@@ -74,6 +80,13 @@ class OidcManager {
             sessionStorage.setItem(OidcManager.REDIRECT_URI_STORAGE_NAME, location.href);
         }
         OidcManager.instance.signinRedirect();
+    }
+    /**
+     * Update user when silent renew occured
+     * @param callback
+     */
+    static userRenewed(callback: (...ev: any[]) => void): void {
+        OidcManager.instance.events.addUserLoaded(callback);
     }
     /**
      * Init authorization

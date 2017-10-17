@@ -38,6 +38,7 @@ class ShellController {
     bgImageUrl: { [index: string]: string };
     vidOptions: IVideoOptions;
     viewPortClass?: string;
+    currentYear: number;
     //#endregion
 
     //#region Init
@@ -67,6 +68,7 @@ class ShellController {
         $rootScope.appTitle = '';
         $rootScope.forms = {};
         this.isMobileOrTablet = common.isMobileOrTablet();
+        this.currentYear = (new Date()).getFullYear();
     }
     //#endregion
 

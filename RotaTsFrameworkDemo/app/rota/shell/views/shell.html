@@ -14,6 +14,16 @@
         <source ng-if="shellvm.vidOptions.urlWebm" src="{{shellvm.vidOptions.urlWebm}}" type="video/webm" />
         <source ng-if="shellvm.vidOptions.urlOgg" src="{{shellvm.vidOptions.urlOgg}}" type="video/ogg" />
     </video>
+    <!--Footer-->
+    <footer>
+        <div class="footer-content">
+            <!--Logo-->
+            <a href="/">
+                <img ng-src="{{::shellvm.config.footerLogoImageName || shellvm.config.logoImageName}}" alt="your app logo">
+            </a>
+            <small class="bimar">Bimar Bilgi İşlem {{shellvm.currentYear}} &copy;</small>
+        </div>
+    </footer>
 </div>
 <!--Ajax Spinner-->
 <div ng-show="shellvm.isBusy" class="page-splash">

@@ -236,7 +236,8 @@ const rotaConstants: IConstants = {
             breadcrumb: 'breadcrumb.html',
             content: 'content.html',
             currentcompany: 'current-company.html',
-            navmenumobile: 'nav-menu-mobile.html'
+            navmenumobile: 'nav-menu-mobile.html',
+            feedback: 'feedback.html'
         },
         NOT_FOUND_STATE_NAME: 'shell.error404',
         INTERNAL_ERROR_STATE_NAME: 'shell.error500',

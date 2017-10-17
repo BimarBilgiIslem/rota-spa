@@ -1,9 +1,22 @@
-﻿#wrap.home-page {
+﻿#wrap {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
+}
+
+#wrap.home-page {
     background: none;
     background-size: cover;
     background-repeat: no-repeat;
     @include fadeIn();
+
+    footer {
+        display: none;
+    }
+}
+
+header {
+    flex: none;
 }
 
 @media screen and (min-width:800px) {
@@ -37,10 +50,25 @@
 
 #main-content {
     padding-top: ($navbar-height + 1px);
+    flex: 1 0 auto;
 }
 
-.top-margin {
-    margin-top: ($navbar-height + 1px);
+footer {
+    flex: none;
+    margin-top: 1.8em;
+
+    .footer-content {
+        padding: 1.5rem;
+        background: $footer-bg-color;
+        color: $footer-color;
+        font-size: .85em;
+        text-align: center;
+
+        .bimar {
+            display: block;
+            font-size: 1.1em;
+        }
+    }
 }
 
 /*#region Loading Panel */

@@ -289,6 +289,10 @@ interface IMainConfig extends IBaseConfig {
      */
     logoImageName?: string;
     /**
+     * Logo Image file name.It must be under ~/Content/img - default logoImageName
+     */
+    footerLogoImageName?: string;
+    /**
      * Favicon name,relative image path with ico/png ext
      */
     favIconName?: string;
@@ -320,6 +324,11 @@ interface IMainConfig extends IBaseConfig {
      * Spinner options
      */
     spinnerOptions?: SpinnerOptions;
+    /**
+     * Feedback provider url,if defined,feedback form will
+     * be display and POST request made to that endpoint
+     */
+    feedBackProviderUrl?: string;
 }
 /**
  * Main config provider
@@ -359,9 +368,9 @@ interface IVideoOptions {
 
 //#region OIDC
 interface IOidcManager {
-    instance: Oidc.UserManager;
     user: Oidc.User;
     init(settings: IOidcSettings): Promise<Oidc.User>;
+    signOut(): void;
 }
 
 interface IOidcSettings {

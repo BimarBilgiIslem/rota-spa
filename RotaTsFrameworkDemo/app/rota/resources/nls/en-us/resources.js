@@ -1,6 +1,12 @@
 ﻿define({
     //#region Rota
     rota: {
+        geribildirim: 'Feedback',
+        geribildirimaciklama: 'Please use this form if you have any questions or complaint about this project',
+        mesajgiriniz: 'Type your message',
+        degerlendirme: 'Overall rating',
+        geribildirimbasarili: 'Thanks for your valuable comments',
+        geribildirimhata: 'Submitting comments is failed',
         yukleniyor: 'Loading...',
         crudonaybaslik: 'You have unsaved changes ?',
         profilsayfam: 'My profile',

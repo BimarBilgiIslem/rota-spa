@@ -94,7 +94,7 @@ class Security implements ISecurity {
      * Logoff
      */
     logOff(): void {
-        OidcManager.instance.signoutRedirect();
+        OidcManager.signOut();
     }
     //#endregion
 
@@ -129,10 +129,8 @@ class Security implements ISecurity {
         //Set auth header,currentUser
         this.setCredentials(OidcManager.user);
         //update user when silent renew occured
-        OidcManager.instance.events.addUserLoaded(user => {
-            this.$rootScope.$apply(() => {
-                this.setCredentials(user);
-            });
+        OidcManager.userRenewed(user => {
+            this.setCredentials(user);
         });
         //listen for loginRequired event to redirect to login page
         this.$rootScope.$on(this.config.eventNames.loginRequired,

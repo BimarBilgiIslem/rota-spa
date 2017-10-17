@@ -219,7 +219,7 @@ if (window) {
                         //so logging out is the best place to go.
                         //Warning for consistantly redirecting to idsrv
                         if (xhr.status === 401 && !redirecting) {
-                            oidc.instance.signoutRedirect();
+                            oidc.signOut();
                             redirecting = true;
                         }
                     }
