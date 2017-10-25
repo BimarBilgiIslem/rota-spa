@@ -20,7 +20,6 @@ import "xdom";
 import "toastr";
 import "fileupload"
 import "circleprogress"
-import "ckeditor"
 import "ng-ckeditor"
 import "ngcontextmenu"
 import "treeview"

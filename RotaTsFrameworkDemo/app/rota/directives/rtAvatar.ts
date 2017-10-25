@@ -19,17 +19,18 @@ import * as s from "underscore.string";
 //#region Interfaces
 interface IAvatarScope extends ng.IScope {
     userId?: number;
+    userName?: string;
     size?: "small" | "medium" | "large";
 }
 //#endregion
 
 //#region Directive
 function avatarDirective($compile: ng.ICompileService, $http: ng.IHttpService,
-    currentUser: IUser, securtyconfig: ISecurityConfig, common: ICommon, constants: IConstants) {
+    currentUser: IUser, securityconfig: ISecurityConfig, common: ICommon, constants: IConstants) {
 
     function link(scope: IAvatarScope, element: ng.IAugmentedJQuery): void {
         const avatarFallBack = (): string => {
-            if (securtyconfig.useFirstLetterAvatar) {
+            if (securityconfig.useFirstLetterAvatar) {
                 const firstLetters = currentUser.fullname.split(' ').map(value => value[0]).join('');
                 return `<div ng-class="[\'avatar-firstletter\', \'avatar-\'+size]">${firstLetters}</div>`;
             }
@@ -44,46 +45,41 @@ function avatarDirective($compile: ng.ICompileService, $http: ng.IHttpService,
 
         scope.size = scope.size || "medium";
 
-        if (!angular.isDefined(scope.userId)) {
-            if (currentUser.avatarDataUri) {
-                compile(`<img class="img-circle" ng-class="[\'img-circle\', \'avatar-\'+size]" ng-src="${currentUser.avatarDataUri}" alt="user avatar" />`);
-            } else {
-                compile(avatarFallBack());
+        if (securityconfig.avatarProviderUri) {
+            //load img with preimage
+            const defaultAvatarPath = `${common.addTrailingSlash(constants.style.IMG_BASE_PATH) +
+                constants.style.DEFAULT_AVATAR_NAME.replace('{size}', scope.size)}`;
+            const imgElem = $(`<img ng-class="[\'img-circle\', \'avatar-\'+size]" src="${defaultAvatarPath}" alt="user avatar" />`);
+            compile(imgElem);
+            /**
+            * Update src 
+            * @param src
+            */
+            const updateSrc = (src: string) => {
+                $(imgElem).fadeOut(350,
+                    () => {
+                        $(imgElem).attr('src', src).fadeIn(350);
+                    });
             }
-        } else {
-            if (securtyconfig.avatarProviderUri) {
-                //load img with preimage
-                const defaultAvatarPath = `${common.addTrailingSlash(constants.style.IMG_BASE_PATH) +
-                    constants.style.DEFAULT_AVATAR_NAME.replace('{size}', scope.size)}`;
-                const imgElem = $(`<img ng-class="[\'img-circle\', \'avatar-\'+size]" src="${defaultAvatarPath}" alt="user avatar" />`);
-                compile(imgElem);
-                /**
-                * Update src 
-                * @param src
-                */
-                const updateSrc = (src: string) => {
-                    $(imgElem).fadeOut(350,
-                        () => {
-                            $(imgElem).attr('src', src).fadeIn(350);
-                        });
-                }
-                //get avatar from remote service
-                const context = {
-                    username: currentUser.name.replace('.', '_'),
-                    userid: currentUser.id,
-                    size: scope.size,
-                    shortsize: scope.size.charAt(0)
-                }
-                const uri = common.format(securtyconfig.avatarProviderUri, context);
-                //Get img depending on fetch type
-                //this is a must for uris which run with NTLM authentication or apis
-                switch (securtyconfig.avatarFetchType) {
+            //get avatar from remote service
+            const context = {
+                username: scope.userName || currentUser.name,
+                userid: scope.userId || currentUser.id,
+                size: scope.size,
+                shortsize: scope.size.charAt(0)
+            }
+            const uri = common.format(securityconfig.avatarProviderUri, context);
+            //Get img depending on fetch type
+            //this is a must for uris which run with NTLM authentication or apis
+            switch (securityconfig.avatarFetchType) {
                 case AvatarFetchType.GetRequest:
-                    const avatarProm = $http.get<string>(encodeURI(uri), <any>{ showSpinner: false });
+                    const avatarProm = $http.get<string>(encodeURI(uri), <any>{ responseType: 'blob', showSpinner: false });
                     avatarProm.then(response => {
-                        if (!common.isNullOrEmpty(response.data)) {
+                        if (response.data) {
+                            const url = window.URL || (window as any).webkitURL;
+                            const src = url.createObjectURL(response.data);
                             //replace src attr of img elem
-                            updateSrc(response.data);
+                            updateSrc(src);
                         }
                     });
                     break;
@@ -91,17 +87,17 @@ function avatarDirective($compile: ng.ICompileService, $http: ng.IHttpService,
                     updateSrc(uri);
                     break;
                 default:
-                }
-            } else {
-                compile(avatarFallBack());
             }
+        } else {
+            compile(avatarFallBack());
         }
     }
     const directive = <ng.IDirective>{
         restrict: 'AE',
         link: link,
         scope: {
-            userId: '=',
+            userId: '@',
+            userName: '@',
             size: '@'
         }
     };

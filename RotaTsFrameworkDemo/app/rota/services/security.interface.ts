@@ -113,7 +113,6 @@ interface IUser {
     email?: string;
     managerId?: number;
     culture?: ISupportedCultures;
-    avatarDataUri?: string;
 }
 /**
  * Company structure

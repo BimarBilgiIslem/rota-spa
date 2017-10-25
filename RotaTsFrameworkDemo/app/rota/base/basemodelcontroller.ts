@@ -30,6 +30,10 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     //#region Props
     protected _model: ModelVariants<TModel>;
     modelPromise: ng.IPromise<ModelVariants<TModel>>;
+    /**
+     * List controller options
+     */
+    get modelPageOptions(): IModelPageOptions { return this.options as IModelPageOptions; }
     //#endregion
 
     //#region Bundle Services
@@ -135,7 +139,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      * initModel is called as default
      */
     initController(): void {
-        this.initModel();
+        if (this.modelPageOptions.initializeModel) this.initModel();
     }
     //#endregion
 

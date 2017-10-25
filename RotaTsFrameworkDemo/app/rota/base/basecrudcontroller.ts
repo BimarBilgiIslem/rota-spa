@@ -31,6 +31,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         scrollToTop: true,
         checkDirtyOnExit: true,
         enableStickyCrudButtons: true,
+        initializeModel: true,
         crudButtonsVisibility: {
             newButton: true,
             deleteButton: true,

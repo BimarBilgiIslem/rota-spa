@@ -29,13 +29,13 @@ require.config({
         'app-resources': './resources',
         //core
         jquery: './rota/core/jquery-2.1.4.min',
-        angular: './rota/core/angular',
-        'angular-ui-router': './rota/core/angular-ui-router',
+        angular: './rota/core/angular.min',
+        'angular-ui-router': './rota/core/angular-ui-router.min',
         'ct-ui-router-extras': './rota/lib/ct-ui-router-extras',
         'angular-local': './rota/core/angular-locale_tr-tr',
         'angular-bootstrap': './rota/core/ui-bootstrap-tpls-2.5.0.min',
-        'angular-sanitize': './rota/core/angular-sanitize',
-        'angular-animate': './rota/core/angular-animate',
+        'angular-sanitize': './rota/core/angular-sanitize.min',
+        'angular-animate': './rota/core/angular-animate.min',
         'angular-cookies': './rota/core/angular-cookies.min',
         'signalr.core': './rota/core/jquery.signalR-2.2.1.min',
         //typscript helper
@@ -127,11 +127,8 @@ require.config({
         circleprogress: {
             deps: ['angular']
         },
-        ckeditor: {
-            deps: ['jquery']
-        },
         'ng-ckeditor': {
-            deps: ['ckeditor', 'angular']
+            deps: ['angular']
         },
         ngcontextmenu: {
             deps: ['angular']

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import "ng-ckeditor";
+
 interface IEditorScope extends ng.IScope {
     config: any;
 }

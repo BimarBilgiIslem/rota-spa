@@ -57,6 +57,10 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
     get modalPageOptions(): IModalPageOptions { return this.options as IModalPageOptions }
     //#endregion
 
+    constructor(bundle: IBundle) {
+        //call base constructor
+        super(bundle, { initializeModel: true });
+    }
     //#region InjcetableObject
     /**
     * Update bundle
