@@ -25,3 +25,10 @@ interface IShellScope extends ng.IScope {
     avatarUri?: string;
 }
 
+interface IFeedBackScope extends ng.IScope {
+    model: {
+        message?: string;
+        rate?: number;
+    }
+    submit?: () => void;
+}

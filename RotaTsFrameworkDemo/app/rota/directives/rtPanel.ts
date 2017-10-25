@@ -43,11 +43,13 @@ function panelDirective(localization: ILocalization) {
                     }
                 });
             });
+            element.removeAttr('title');
         }
     }
 
     const directive = <ng.IDirective>{
         restrict: 'E',
+        replace: true,
         scope: {
             title: '@',
             titleI18n: '@',

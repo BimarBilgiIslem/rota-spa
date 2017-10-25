@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 //#region Interfaces
 interface IMultiFileUploadAttributes extends ng.IAttributes {
     fileidProp?: string;
@@ -83,7 +83,7 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
                 //check ext
                 if (!checkExt(file.name)) return;
                 //set file model
-                const fileModel = new ObserableModel({ name: file.name });
+                const fileModel = new ObserableModel<IFileModel>({ name: file.name });
                 const uploadedFile: IUploadedFile = {
                     name: file.name,
                     downloadLink: '',
@@ -197,9 +197,9 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
         },
         template: '<ul class="list-group rt-multi-file-upload">' +
         '<li class="list-group-item text-center" ng-hide=ngDisabled>' +
-        '<a uib-tooltip="{{::\'rota.dosyaekleaciklama\' | i18n}}" ngf-drag-over-class="bold" href style="display:block;padding:0 10px" ngf-drop="uploadFiles($files)" ' +
+        '<a uib-tooltip="{{::\'rota.dosyaekleaciklama\' | i18n}}" ngf-drag-over-class="bold" href ngf-drop="uploadFiles($files)" class="badge alert-info selector" ' +
         'ngf-select-disabled=ngDisabled ngf-select="uploadFiles($files)" ngf-multiple="true" ngf-accept=accept ngf-max-size=maxUploadSize>' +
-        '<i class="fa fa-file"></i>&nbsp;{{::\'rota.yenidosyaekle\' | i18n}}</a></li>' +
+        '<i class="fa fa-paperclip"></i>&nbsp;{{::\'rota.yenidosyaekle\' | i18n}}</a></li>' +
         '<li class="list-group-item rota-animate-rt-multiselect" ng-repeat="file in visibleItems">' +
         '<a href rt-download="{{file.$uploadedFile.downloadLink}}"><i ng-class="[\'fa\', \'fa-fw\', \'fa-\' + file.$uploadedFile.icon]"></i>&nbsp;{{file.$uploadedFile.name}}</a>' +
         '<a ng-hide="ngDisabled || !file.$uploadedFile.isLoaded" uib-tooltip="{{::\'rota.tt_sil\' | i18n}}" tooltip-append-to-body="true" href class="pull-right" ng-click="remove(file)"><i class="fa fa-minus-circle text-danger"></i></a>' +

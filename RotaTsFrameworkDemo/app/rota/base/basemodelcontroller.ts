@@ -15,7 +15,8 @@
  */
 
 //#region Imports
-import { BaseController } from "./basecontroller"
+import BaseController from "./basecontroller"
+import { Validators } from "../services/validators.service";
 //#endregion
 /**
  * This controller is used for loading the any model data remotely or localy
@@ -27,19 +28,25 @@ import { BaseController } from "./basecontroller"
  */
 abstract class BaseModelController<TModel extends IBaseModel> extends BaseController {
     //#region Props
-    protected _model: TModel | TModel[] | IPagingListModel<TModel>;
-    modelPromise: ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>>;
+    protected _model: ModelVariants<TModel>;
+    modelPromise: ng.IPromise<ModelVariants<TModel>>;
+    /**
+     * List controller options
+     */
+    get modelPageOptions(): IModelPageOptions { return this.options as IModelPageOptions; }
     //#endregion
 
     //#region Bundle Services
-    protected $q: ng.IQService;
     protected $http: ng.IHttpService;
-    static injects = BaseController.injects.concat(['$q', '$http']);
+    static injects = BaseController.injects.concat(['$http']);
     //#endregion
 
     //#region Init
     constructor(bundle: IBundle, options?: IModelPageOptions) {
         super(bundle, options);
+        //get new instance of validator service
+        this.validators = this.$injector.instantiate(Validators) as IValidators;
+        this.validators.controller = this;
     }
     /**
     * Update bundle
@@ -47,9 +54,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-
-        this.$q = bundle.systemBundles['$q'];
-        this.$http = bundle.systemBundles['$http'];
+        this.$http = bundle.services['$http'];
     }
     //#endregion
 
@@ -58,13 +63,12 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      * @abstract Abstract get model method
      * @param args Optional params
      */
-    abstract getModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<TModel[]> |
-        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
+    abstract getModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> | ModelVariants<TModel>;
     /**
      * Loaded model method triggered at last
      * @param model
      */
-    protected loadedModel(model: TModel | TModel[] | IPagingListModel<TModel>): void {
+    protected loadedModel(model: ModelVariants<TModel>): void {
         //send broadcast
         this.$rootScope.$broadcast(this.config.eventNames.modelLoaded, model);
     }
@@ -72,33 +76,32 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     * Set model for some optional modifications
     * @param model Model
     */
-    protected setModel(model: TModel | TModel[] | IPagingListModel<TModel>): TModel | TModel[] | IPagingListModel<TModel> {
+    protected setModel(model: ModelVariants<TModel>): ModelVariants<TModel> {
         return model;
     }
     /**
      * Overridable model definition method
      * @param modelFilter Optional Model filter 
      */
-    defineModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel> | TModel | ng.IPromise<TModel[]> |
-        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel> {
+    defineModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> | ModelVariants<TModel> {
         return this.getModel(modelFilter);
     }
     /**
      * Initiates getting data
      * @param args Optional params
      */
-    protected initModel(modelFilter?: IBaseModelFilter): ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>> {
-        const d = this.$q.defer();
+    initModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> {
+        const d = this.$q.defer<ModelVariants<TModel>>();
         const defineModelResult = this.defineModel(modelFilter);
 
-        const processModel = (model: TModel | TModel[] | IPagingListModel<TModel>): void => {
+        const processModel = (model: ModelVariants<TModel>): void => {
             //call modelloaded event
             this.loadedModel(this._model = this.setModel(model));
             d.resolve(model);
         }
 
         if (this.common.isPromise(defineModelResult)) {
-            (defineModelResult as ng.IPromise<any>).then((data: TModel | TModel[] | IPagingListModel<TModel>) => {
+            defineModelResult.then((data: ModelVariants<TModel>) => {
                 processModel(data);
             }, (reason: any) => {
                 //TODO: can be changed depending on server excepion response
@@ -116,7 +119,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      * @param params Optional parameters
      */
     protected initParsers<T>(pipeline: Array<IChainableMethod<T>>, ...params: any[]): ng.IPromise<T> {
-        let result = this.common.promise();
+        let result = this.common.promise<T>();
         //iterate pipeline methods
         for (let i = 0; i < pipeline.length; i++) {
             result = ((promise: ng.IPromise<any>, method: IChainableMethod<T>) => {
@@ -130,6 +133,13 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
             })(result, pipeline[i]);
         }
         return result;
+    }
+    /**
+     * this method is called from decorator with all injections are available
+     * initModel is called as default
+     */
+    initController(): void {
+        if (this.modelPageOptions.initializeModel) this.initModel();
     }
     //#endregion
 
@@ -145,4 +155,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
 
 }
 
-export { BaseModelController }
+export default BaseModelController
+
+
+

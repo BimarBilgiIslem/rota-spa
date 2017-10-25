@@ -24,7 +24,7 @@ class RouteConfigProvider extends BaseConfig<IRouteConfig> {
     constructor(constants: IConstants) {
         super();
         const config: IRouteConfig = {};
-        config.templates = _.mapObject<ITemplates>(constants.routing.TEMPLATES, filename => {
+        config.templates = _.mapObject<string>(constants.routing.TEMPLATES, filename => {
             return window.require.toUrl(constants.routing.SHELL_PATH + filename);
         });
         config.contentControllerAlias = constants.routing.CONTROLLER_ALIAS_NAME;

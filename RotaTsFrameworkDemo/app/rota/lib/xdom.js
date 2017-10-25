@@ -1,6 +1,7 @@
 ﻿define("xdom", [], {
     normalize: function (name, normalize) {
-        var baseUrl = window.require.toUrl('.'),
+        //remove cachebust 
+        var baseUrl = window.require.toUrl('.').split("?")[0],
         parts = name.split('/'),
         xdom = parts[0],
         xdomUrl = xdom + '/' + baseUrl + parts.slice(1).join('/');

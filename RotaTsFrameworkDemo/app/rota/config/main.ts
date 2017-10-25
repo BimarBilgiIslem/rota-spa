@@ -29,15 +29,17 @@ require.config({
         'app-resources': './resources',
         //core
         jquery: './rota/core/jquery-2.1.4.min',
-        angular: './rota/core/angular',
-        'angular-ui-router': './rota/core/angular-ui-router',
+        angular: './rota/core/angular.min',
+        'angular-ui-router': './rota/core/angular-ui-router.min',
         'ct-ui-router-extras': './rota/lib/ct-ui-router-extras',
         'angular-local': './rota/core/angular-locale_tr-tr',
         'angular-bootstrap': './rota/core/ui-bootstrap-tpls-2.5.0.min',
-        'angular-sanitize': './rota/core/angular-sanitize',
-        'angular-animate': './rota/core/angular-animate',
+        'angular-sanitize': './rota/core/angular-sanitize.min',
+        'angular-animate': './rota/core/angular-animate.min',
         'angular-cookies': './rota/core/angular-cookies.min',
         'signalr.core': './rota/core/jquery.signalR-2.2.1.min',
+        //typscript helper
+        tslib: './rota/core/tslib',
         //oidc paths
         oidc: './rota/core/oidc-client.min',
         silentrenew: 'rota/shell/views/silent_renew.html',
@@ -63,7 +65,7 @@ require.config({
         select: './rota/lib/select.min',
         ckeditor: './rota/lib/ckeditor/ckeditor',
         'ng-ckeditor': './rota/lib/ng-ckeditor',
-        ngcurrency: './rota/lib/ng-currency',
+        'ng-currency': './rota/lib/ng-currency',
         mfb: './rota/lib/mfb-directive',
         imgcrop: './rota/lib/ng-img-crop',
         scroll: './rota/lib/angular-scroll.min',
@@ -73,7 +75,6 @@ require.config({
         uilayout: './rota/lib/ui-layout',
         //grid libs
         pdfMake: './rota/lib/pdfMake.min',
-        vfs_fonts: './rota/lib/vfs_fonts',
         //SignalR
         'signalr.hubs': '/signalr/hubs?'
     },
@@ -102,15 +103,8 @@ require.config({
         'angular-cookies': {
             deps: ['angular']
         },
-        pdfMake: {
-            exports: 'pdfMake'
-        },
-        vfs_fonts: {
-            exports: 'vfs_fonts',
-            deps: ['pdfMake']
-        },
         grid: {
-            deps: ['angular', 'vfs_fonts']
+            deps: ['angular']
         },
         hotkeys: {
             deps: ['angular']
@@ -124,9 +118,6 @@ require.config({
         fileupload: {
             deps: ['fileapi', 'angular']
         },
-        ngcurrency: {
-            deps: ['angular']
-        },
         mfb: {
             deps: ['angular']
         },
@@ -136,11 +127,8 @@ require.config({
         circleprogress: {
             deps: ['angular']
         },
-        ckeditor: {
-            deps: ['jquery']
-        },
         'ng-ckeditor': {
-            deps: ['ckeditor', 'angular']
+            deps: ['angular']
         },
         ngcontextmenu: {
             deps: ['angular']
@@ -228,7 +216,7 @@ if (window) {
                         //so logging out is the best place to go.
                         //Warning for consistantly redirecting to idsrv
                         if (xhr.status === 401 && !redirecting) {
-                            oidc.instance.signoutRedirect();
+                            oidc.signOut();
                             redirecting = true;
                         }
                     }
@@ -313,8 +301,23 @@ if (window) {
                 //init fr
                 loadFr();
             }
-        }, (error) => {
-            alert("there is something wrong with this app authorization,check configuration settings.!\n Error: " + error.message);
+        }, (error: { message?: string }) => {
+            let genericMessage = currentCulture === constants.localization.DEFAULT_LANGUAGE
+                ? constants.errors.IDSRV_GENERIC_ERROR_TR
+                : constants.errors.IDSRV_GENERIC_ERROR_EN;
+
+            let errorDescription: string = null;
+            //customize error messages
+            if (error.message) {
+                //check for "iat is in future" error
+                if (/\iat is in the future/.test(error.message)) {
+                    errorDescription = currentCulture === constants.localization.DEFAULT_LANGUAGE
+                        ? constants.errors.IDSRV_IAT_IS_IN_FUTURE_ERROR_TR
+                        : constants.errors.IDSRV_IAT_IS_IN_FUTURE_ERROR_EN;
+                }
+            }
+
+            alert(genericMessage + "\n" + (errorDescription || error.message));
         });
     });
     //#endregion

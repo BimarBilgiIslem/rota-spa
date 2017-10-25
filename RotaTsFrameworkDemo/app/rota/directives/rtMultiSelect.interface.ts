@@ -128,13 +128,13 @@ interface IMultiSelectScope extends ISelectScope {
      * @param selItem Selection item
      * @param groupItems Grouped items if enabled
      */
-    setSelected: (selItem: IBaseCrudModel, groupItems: IGroupItemModel[]) => void;
+    setSelected: (selItem: IMultiSelectModel, groupItems: IMultiSelectModel[]) => void;
     /**
      * Remove item
      * @param item Item to be removed 
      * @param event Angular event
      */
-    removeItem: (item: IBaseCrudModel, event: ng.IAngularEvent) => ng.IPromise<any>;
+    removeItem: (item: IMultiSelectModel, event: ng.IAngularEvent) => ng.IPromise<any>;
     /**
      * Add all items
      * @param event Angular event     

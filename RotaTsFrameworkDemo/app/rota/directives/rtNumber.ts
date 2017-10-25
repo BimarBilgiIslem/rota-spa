@@ -20,6 +20,7 @@ interface INumberDirectiveAttrs extends ng.IAttributes {
     minValue?: number;
     maxValue?: number;
     required?: boolean;
+    currencySymbol?: string;
 }
 //#endregion
 
@@ -28,10 +29,10 @@ function numberDirective($compile: ng.ICompileService, constants: IConstants) {
 
     function link(scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: INumberDirectiveAttrs): void {
         element.attr('ng-currency', '');
-        element.attr('fraction', attrs.rtNumber || 0);
+        element.attr('fraction', attrs.rtNumber || 2);
         element.attr('min', attrs.minValue || constants.MIN_NUMBER_VALUE);
         element.attr('max', attrs.maxValue || constants.MAX_NUMBER_VALUE);
-        element.attr('currency-symbol', '');
+        element.attr('currency-symbol', attrs.currencySymbol || '');
         //required attr does not work in ngCurrency,ng-required works !
         if (angular.isDefined(attrs.required))
             element.attr('ng-required', 'true');

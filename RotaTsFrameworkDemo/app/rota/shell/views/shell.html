@@ -1,5 +1,5 @@
 ﻿<!--ShellPage-->
-<div id="wrap" ng-class="{'home-page':shellvm.isHomePage,'video-bg':shellvm.vidOptions}"
+<main id="wrap" ng-class="{'home-page':shellvm.isHomePage,'video-bg':shellvm.vidOptions}"
      ng-style="shellvm.isHomePage && shellvm.bgImageUrl">
     <!--Top notifications-->
     <rt-notification notification-layout="top"></rt-notification>
@@ -14,7 +14,17 @@
         <source ng-if="shellvm.vidOptions.urlWebm" src="{{shellvm.vidOptions.urlWebm}}" type="video/webm" />
         <source ng-if="shellvm.vidOptions.urlOgg" src="{{shellvm.vidOptions.urlOgg}}" type="video/ogg" />
     </video>
-</div>
+    <!--Footer-->
+    <footer>
+        <div class="footer-content">
+            <!--Logo-->
+            <a href="/">
+                <img ng-src="{{::shellvm.config.footerLogoImageName || shellvm.config.logoImageName}}" alt="your app logo">
+            </a>
+            <small class="bimar">Bimar Bilgi İşlem {{shellvm.currentYear}} &copy;</small>
+        </div>
+    </footer>
+</main>
 <!--Ajax Spinner-->
 <div ng-show="shellvm.isBusy" class="page-splash">
     <div rt-spinner="shellvm.config.spinnerOptions"></div>

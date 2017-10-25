@@ -23,13 +23,13 @@ const filter = () => {
         let result = value;
         switch (type) {
             case "uppercase":
-                result = value.toLocaleUpperCase();
+                result = value.turkishToUpper();
                 break;
             case "title":
                 result = s.titleize(value);
                 break;
             case "lowercase":
-                result = value.toLocaleLowerCase();
+                result = value.turkishToLower();
                 break;
             case "capitalize":
                 result = s.capitalize(value);

@@ -20,8 +20,8 @@ const rotaConstants: IConstants = {
     APP_VERSION: '0.0.1',
     APP_TITLE: 'Bimar Rota SPA App',
     DEFAULT_LOGO_IMAGE_NAME: 'logo_place_holder.png',
-    PRODUCTION_DEBUG_WARNING: 'Dur ! Bu alan yazılımcılar içindir',
-    MIN_NUMBER_VALUE: -9999999999,
+    PRODUCTION_DEBUG_WARNING: 'Bu alan yazılımcılar içindir',
+    MIN_NUMBER_VALUE: 0,
     MAX_NUMBER_VALUE: 9999999999,
     //Localization
     localization: {
@@ -84,9 +84,8 @@ const rotaConstants: IConstants = {
     grid: {
         GRID_DEFAULT_PAGE_SIZE: 25,
         GRID_DEFAULT_OPTIONS_NAME: 'vm.gridOptions',
-        GRID_FULL_FEATUTE_LIST:
-        'ui-grid-selection ui-grid-pinning ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
-        GRID_STANDART_FEATURE_LIST: 'ui-grid-selection ui-grid-pagination ui-grid-exporter ui-grid-resize-columns ui-grid-save-state ui-grid-move-columns',
+        GRID_STANDART_FEATURE_LIST: ['ui-grid-selection', 'ui-grid-pagination', 'ui-grid-exporter', 'ui-grid-resize-columns',
+            'ui-grid-save-state', 'ui-grid-move-columns'],
         /**
         * This template for used if rowFormatter is defined
         * @description https://github.com/angular-ui/ui-grid/blob/master/src/templates/ui-grid/ui-grid-row.html
@@ -100,13 +99,11 @@ const rotaConstants: IConstants = {
         GRID_ROW_DOUBLE_CLICK_EDIT_ATTR: "ng-dblclick=\"grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)\"",
         GRID_CONTEXT_MENU_ATTR: "context-menu='contextmenu.html' rt-grid-right-click-sel",
         GRID_EDIT_BUTTON_HTML:
-        '<a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)"' +
-        ' uib-tooltip="{{::\'rota.detay\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a>',
-        GRID_DELETE_BUTTON_HTML: '<a class="btn btn-danger btn-xs" ' +
+        '<div class=\'ui-grid-cell-contents\'><a class="btn btn-info btn-xs" ng-click="grid.appScope.vm.goToDetailState(row.entity[\'id\'],row.entity,row,$event)"' +
+        ' uib-tooltip="{{::\'rota.detay\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-edit"></i></a></div>',
+        GRID_DELETE_BUTTON_HTML: '<div class=\'ui-grid-cell-contents\'><a class="btn btn-danger btn-xs" ' +
         'ng-click="grid.appScope.vm.initDeleteModel(row.entity[\'id\'],row.entity,$event)" uib-tooltip="{{::\'rota.sil\' | i18n}}"' +
-        ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a>',
-        GRID_PAGE_INDEX_FIELD_NAME: 'pageIndex',
-        GRID_PAGE_SIZE_FIELD_NAME: 'pageSize',
+        ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a></div>',
         GRID_MAX_PAGE_SIZE: 999999
     },
     tree: {
@@ -123,7 +120,7 @@ const rotaConstants: IConstants = {
         DEFAULT_PLACE_HOLDER_KEY: 'rota.seciniz',
         MIN_AUTO_SUGGEST_CHAR_LEN: 3,
         DEFAULT_ITEMS_COUNT: 100,
-        DEFAULT_REFRESH_DELAY: 700
+        DEFAULT_REFRESH_DELAY: 500
     },
     //Controllers
     controller: {
@@ -134,6 +131,7 @@ const rotaConstants: IConstants = {
         //New item id param default name
         DEFAULT_NEW_ITEM_PARAM_NAME: 'id',
         DEFAULT_READONLY_PARAM_NAME: 'readonly',
+        PREVIEW_MODE_PARAM_NAME: 'preview',
         DEFAULT_MODEL_ORDER_FIELD_NAME: 'order',
         DEFAULT_AUTOSAVE_INTERVAL: 60 * 1000,
         //Default modal cont.name
@@ -165,10 +163,6 @@ const rotaConstants: IConstants = {
         STORAGE_NAME_STORED_FILTER_URL: 'urls_stored_filters',
         GRID_REFRESH_INTERVALS: [1, 3, 5, 10]
     },
-    //Shortcuts
-    shortcuts: {
-        GO_TO_FIRST_ROW_OF_GRID: 'ctrl+shift+right'
-    },
     //Errors
     errors: {
         //ListController
@@ -194,7 +188,14 @@ const rotaConstants: IConstants = {
         //validators
         NO_VALIDATORS_DEFINED: 'validators only available in basecrudcontroller',
         NO_VALIDATOR_DEFINED: 'no validator defined with the name {0}',
-        NO_VALIDATION_FUNC_DEFINED: 'no validation function defined'
+        NO_VALIDATION_FUNC_DEFINED: 'no validation function defined',
+        //Identity server errors
+        IDSRV_GENERIC_ERROR_EN: 'There is something wrong with this app authorization,please refer to help desk !',
+        IDSRV_GENERIC_ERROR_TR: 'Uygulama yetkilendirme ayarlarında problem mevcut,Lütfen sistem destek ekibi ile görüşünüz !',
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_EN: 'There is a discrepancy in system time of this running device/computer with the server.\n' +
+        'It needs to be aligned with server time settings.',
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_TR: 'Server saat ayarları ile çalıştığınız makinanın ayarları farklılık gösteriyor.\n' +
+        'Server saati ile eşitlenmesi gerekiyor.'
     },
     //Securty Service
     security: {
@@ -235,7 +236,8 @@ const rotaConstants: IConstants = {
             breadcrumb: 'breadcrumb.html',
             content: 'content.html',
             currentcompany: 'current-company.html',
-            navmenumobile: 'nav-menu-mobile.html'
+            navmenumobile: 'nav-menu-mobile.html',
+            feedback: 'feedback.html'
         },
         NOT_FOUND_STATE_NAME: 'shell.error404',
         INTERNAL_ERROR_STATE_NAME: 'shell.error500',
@@ -245,11 +247,13 @@ const rotaConstants: IConstants = {
     },
     dashboard: {
         MIN_WIDGET_REFRESH_INTERVAL: 5000,
-        WIDGET_LOADING_TEMPLATE: '\<div class="progress progress-striped active">\n\
-                                    <div class="progress-bar" role="progressbar" style="width: 100%">\n\
-                                      <span class="sr-only">loading ...</span>\n\
-                                    </div>\n\
-                                  </div>'
+        WIDGET_LOADING_TEMPLATE: '<div class="loading"><h1><div class="loader"></div>Loading...</h1></div>'
+    },
+    style: {
+        IMG_BASE_PATH: '/Content/img',
+        DEFAULT_FAVICON_NAME: 'favicon-default.ico',
+        WARNING_FAVICON_NAME: 'favicon-warn-sign.png',
+        DEFAULT_AVATAR_NAME: 'avatar-default-{size}.png'
     }
 };
 

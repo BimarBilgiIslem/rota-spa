@@ -57,10 +57,6 @@ interface IValidationItem {
      */
     order?: number;
     /**
-     * Crud flags indicates that which crud types validation will be applied
-     */
-    crudFlag?: CrudType;
-    /**
      * Flags that indicates when validation get run ,default Changes | Action
      */
     triggerOn?: TriggerOn;
@@ -70,7 +66,7 @@ interface IValidationItem {
 
 //#region Validation Service
 interface IValidators extends IBaseService {
-    controller: IBaseController;
+    controller: any;
     /**
   * Custom Validators
   */

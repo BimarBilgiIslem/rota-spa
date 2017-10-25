@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 import * as _s from "underscore.string";
 //#region Common Service
 class Common implements ICommon {
     serviceName: string = "Common Service";
 
     //#region Init
-    constructor(private $q: ng.IQService, private $filter: ng.IFilterService, private config: IMainConfig) { }
+    constructor(private $q: ng.IQService, private $filter: ng.IFilterService,
+        private $interpolate: ng.IInterpolateService, private config: IMainConfig) { }
     //#endregion
 
     //#region Promise Utils
@@ -29,7 +30,7 @@ class Common implements ICommon {
      * Return promise with provided arg
      * @param p Arg
      */
-    promise<T>(p?: T): ng.IPromise<T> {
+    promise<T=any>(p?: T): ng.IPromise<T> {
         return this.$q.when<T>(p);
     }
     /**
@@ -52,7 +53,7 @@ class Common implements ICommon {
      * Check whether or not provided param is promise
      * @param value Arg
      */
-    isPromise<T>(value: any): value is ng.IPromise<T> {
+    isPromise(value: any): value is ng.IPromise<any> {
         return value && angular.isFunction(value.then);
     }
     //#endregion
@@ -114,6 +115,18 @@ class Common implements ICommon {
 
     //#region String Utils
     /**
+     * Format string using interpolate service
+     * @param src Source string with macros in it
+     * @param context Context obj including macro values
+     * @example
+     * const src = 'Hello {{world}} !';
+     * format(src,{world:'World'});
+     * result => Hello World ! ;
+     */
+    format(src: string, context: any): string {
+        return this.$interpolate(src)(context);
+    }
+    /**
      * Guard method checks for string
      * @param value Any object
      */
@@ -134,6 +147,18 @@ class Common implements ICommon {
     //#endregion
 
     //#region Utils
+    /**
+     * Dynamically set favicon
+     * @param iconPath
+     */
+    setFavIcon(iconPath?: string): void {
+        if (!iconPath) iconPath = this.config.favIconName;
+        const link = (document.querySelector("link[rel*='icon']") || document.createElement('link')) as HTMLLinkElement;
+        link.type = 'image/' + (iconPath.split('.').pop() === "ico" ? "x-icon" : "png");
+        link.rel = 'shortcut icon';
+        link.href = iconPath;
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
     /**
      * Check if request is restfull service request
      * @param config Rewurst config
@@ -282,14 +307,21 @@ class Common implements ICommon {
      * @param value Any object
      */
     isAssigned(value: any): boolean {
-        return value !== undefined && value !== null;
+        return [undefined, null].indexOf(value) === -1
     }
     /**
      * Guard method checks for array objects
      * @param value Any object
      */
-    isArray<T>(value: any): value is Array<T> {
+    isArray(value: any): value is Array<any> {
         return value instanceof Array;
+    }
+    /**
+   * Guard method checks for object
+   * @param value
+   */
+    isObject(value: any): value is object {
+        return angular.isObject(value);
     }
     /**
      * Guard method checks for function
@@ -309,7 +341,7 @@ class Common implements ICommon {
      * Guard method checks for defined
      * @param value
      */
-    isDefined<T>(value: any): value is T {
+    isDefined(value: any): value is any {
         return angular.isDefined(value);
     }
     /**
@@ -414,7 +446,7 @@ class Common implements ICommon {
      * Check agaist model is obserable instance
      * @param model
      */
-    isObserableModel<T extends IBaseCrudModel>(model: any): model is IObserableModel<T> {
+    isObserableModel(model: any): model is IObserableModel<any> {
         return model instanceof ObserableModel;
     }
     //#endregion
@@ -422,7 +454,7 @@ class Common implements ICommon {
 //#endregion
 
 //#region Injection
-Common.$inject = ['$q', '$filter', 'Config'];
+Common.$inject = ['$q', '$filter', '$interpolate', 'Config'];
 //#endregion
 
 //#region Register

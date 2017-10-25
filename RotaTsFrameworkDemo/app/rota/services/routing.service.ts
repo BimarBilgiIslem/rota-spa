@@ -74,6 +74,7 @@ class Routing implements IRouting {
      * @description This indicator is used to determine if the state is nested or not
      */
     private shellContentStateOctateLen: number;
+    private readonly newItemParamNameRegex: RegExp = new RegExp(`/:${this.constants.controller.DEFAULT_NEW_ITEM_PARAM_NAME}$`);
     //#endregion
 
     //#region Init
@@ -263,24 +264,10 @@ class Routing implements IRouting {
         this.registerShellSection(this.constants.routing.SHELL_CONTENT_STATE_NAME, contentSections, true);
     }
     /**
-    * Register states
-    */
-    private registerStates(): void {
-        //create default state params
-        const defaultParams = {};
-        defaultParams[this.constants.controller.DEFAULT_NEW_ITEM_PARAM_NAME] =
-            this.constants.controller.DEFAULT_NEW_ITEM_PARAM_VALUE;
-        defaultParams[this.constants.controller.DEFAULT_READONLY_PARAM_NAME] = true;
-        //register states
-        this._states.forEach((state: IMenuModel) => {
-            this.registerState(state, defaultParams);
-        });
-    }
-    /**
      * Register state
-     * @param state State
+     * @param state State     
      */
-    private registerState(state: IMenuModel, defaultParams?: IDictionary<any>): IRouting {
+    private registerState(state: IMenuModel): IRouting {
         //only state name defined and host's name is matched
         if (!state.name || (state.host && this.config.host !== state.host)) return this;
         //check if already defined
@@ -293,7 +280,20 @@ class Routing implements IRouting {
         //is nested state
         const isNestedState = this.isNestedState(state.name);
         //adjust url
-        const url = (state.url && (isNestedState ? '/' + state.url : state.url)) || '';
+        let url = ((state.url && (isNestedState ? '/' + state.url : state.url)) || '') as string;
+        //check /:id param is available in state url.if available,this is a crud page
+        if (this.newItemParamNameRegex.test(url)) {
+            const idParamName = this.constants.controller.DEFAULT_NEW_ITEM_PARAM_NAME;
+            const idParamValue = this.constants.controller.DEFAULT_NEW_ITEM_PARAM_VALUE;
+            //replace :id param to more strict type.id must be either numeric value or 'new' value
+            url = url.replace(`:${idParamName}`, `{${idParamName}:[0-9]+|${idParamValue}}`);
+            //default params for crud pages
+            const defaultParams = {};
+            defaultParams[idParamName] = idParamValue;
+            defaultParams[this.constants.controller.DEFAULT_READONLY_PARAM_NAME] = true;
+            defaultParams[this.constants.controller.PREVIEW_MODE_PARAM_NAME] = false;
+            state.params = this.common.extend(defaultParams, state.params);
+        }
         //define state obj
         const stateObj: IRotaState = {
             hierarchicalMenu: state.hierarchicalMenu,
@@ -302,7 +302,7 @@ class Routing implements IRouting {
             controller: state.controller,
             controllerAs: this.routeconfig.contentControllerAlias,
             url: url,
-            params: angular.extend(defaultParams, state.params),
+            params: state.params,
             isNestedState: isNestedState,
             resolve: {
                 stateInfo: (): IStateInfo => {
@@ -354,7 +354,9 @@ class Routing implements IRouting {
         this._hierarchicalMenus = this.createHierarchicalMenus();
         //register states
         try {
-            this.registerStates();
+            this._states.forEach((state: IMenuModel) => {
+                this.registerState(state);
+            });
             //create nav menus *this must be called after registration of states*
             this._navMenus = this.createNavMenus();
             //add quick menus

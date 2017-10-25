@@ -47,7 +47,9 @@ class Config extends BaseConfig<IMainConfig> {
             appTitle: constants.APP_TITLE,
             debugMode: environments.debugging,
             host: this.getHostPath(location.protocol + "//" + location.host, environments.doms),
-            logoImageName: constants.DEFAULT_LOGO_IMAGE_NAME,
+            logoImageName: constants.style.IMG_BASE_PATH + '/' + constants.DEFAULT_LOGO_IMAGE_NAME,
+            favIconName: constants.style.IMG_BASE_PATH + '/' + constants.style.DEFAULT_FAVICON_NAME,
+            warnFavIconName: constants.style.IMG_BASE_PATH + '/' + constants.style.WARNING_FAVICON_NAME,
             defaultApiPrefix: constants.server.DEFAULT_API_PREFIX,
             encodeStorageValues: !environments.debugging,
             enableMultiLanguage: true,
@@ -90,7 +92,6 @@ class Config extends BaseConfig<IMainConfig> {
             //Grid settings
             gridDefaultPageSize: constants.grid.GRID_DEFAULT_PAGE_SIZE,
             gridDefaultOptionsName: constants.grid.GRID_DEFAULT_OPTIONS_NAME,
-            gridFullFeatureList: constants.grid.GRID_FULL_FEATUTE_LIST,
             gridStandartFeatureList: constants.grid.GRID_STANDART_FEATURE_LIST,
             //Crud page stuffs
             autoSaveInterval: constants.controller.DEFAULT_AUTOSAVE_INTERVAL,

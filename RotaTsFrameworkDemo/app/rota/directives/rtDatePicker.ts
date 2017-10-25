@@ -27,6 +27,7 @@ export interface IDateTimeDirectiveAttrs extends ng.IAttributes {
     minuteStep: number;
     placeholder: string;
     phI18n: string;
+    minDate: Date;
 }
 /**
  * Datetime scope
@@ -44,13 +45,14 @@ interface IDatetimeScope extends ng.IScope {
 //#endregion
 
 //#region Ui-DateTime wrapper
-function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConfig,
-    common: ICommon, constants: IConstants, localization: ILocalization) {
+function dateTimePickerDirective($document: ng.IDocumentService, $timeout: ng.ITimeoutService, config: IMainConfig,
+    common: ICommon, constants: IConstants, localization: ILocalization, uiGridEditConstants: uiGrid.edit.IUiGridEditConstants) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IDateTimeDirectiveAttrs) {
         //#region DOM manupulations
         let phReskey = 'rota.tarihseciniz';
 
         const $input = $('input', cElement),
+            inGridCell = !!$(cElement).parent('.ui-grid-cell').length,
             $datetimepicker = $('datetimepicker', cElement),
             minStep = cAttrs.minuteStep || config.datetimeFormat.datePickerTimeMinStep;
         //inital view values
@@ -107,6 +109,13 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
                     $input.focus();
                 },
                     0);
+                //close date picker after date selected while running in grid cell
+                if (inGridCell) {
+                    $timeout(() => {
+                        scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
+                    },
+                        0);
+                }
             };
             //get current date depending on date-format
             const getCurrentDate = (): Date => {
@@ -186,11 +195,11 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
                 let isMinCheck = true,
                     isMaxCheck = true;
 
-                if (common.isDefined(scope.minDate)) {
+                if (scope.minDate && value) {
                     isMinCheck = moment(value).isAfter(scope.minDate);
                 }
 
-                if (angular.isDefined(scope.maxDate)) {
+                if (scope.maxDate && value) {
                     isMaxCheck = moment(value).isBefore(scope.maxDate);
                 }
                 return isMinCheck && isMaxCheck;
@@ -212,6 +221,17 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
                     }
                 }
             }
+            //quit edit mode in grid if selected or clicked outside 
+            //https://plnkr.co/edit/ckQhv5bWha2jte5wDBI1?p=preview
+            if (inGridCell) {
+                const docClick = (evt: JQueryEventObject) => {
+                    if ($(evt.target).closest('.rt-date-picker').length === 0) {
+                        scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
+                        $document.off('click', docClick);
+                    }
+                }
+                $document.on("click", docClick);
+            }
             //#endregion
         }
     }
@@ -229,21 +249,24 @@ function dateTimePickerDirective($timeout: ng.ITimeoutService, config: IMainConf
             minDate: '=?',
             maxDate: '=?'
         },
-        template: '<div class="rt-date-picker" uib-dropdown is-open="openIt">' +
-        '<div class="input-group" uib-tooltip="{{::\'rota.buguntarihienter\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="right">' +
-        '<input ng-disabled=ngDisabled ng-model-options="{debounce:50}" ng-required="ngRequired" ' +
-        'data-date-parse-strict="false" ng-model=ngModel type="text" class="form-control"> ' +
-        '<span style="cursor:pointer;" ng-click="openPicker($event)" class="input-group-addon">' +
-        '<i class="fa fa-calendar"></i></span></div>' +
-        '<ul uib-dropdown-menu role="menu" aria-labelledby="dLabel">' +
-        '<datetimepicker ng-model=ngModel data-on-set-time=onTimeSet(newDate) ' +
-        'data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"/></ul></div>'
+        template: (elem: ng.IAugmentedJQuery) => {
+            const inGridCell = !!$(elem).parent('.ui-grid-cell').length;
+            return '<div class="rt-date-picker" uib-dropdown is-open="openIt" ' + (inGridCell ? 'dropdown-append-to-body' : '') + '>' +
+                '<div class="input-group">' +
+                '<input ng-disabled=ngDisabled ng-model-options="{debounce:50}" ng-required="ngRequired" ' +
+                'data-date-parse-strict="false" ng-model=ngModel type="text" class="form-control"> ' +
+                '<span class="input-group-btn"><button style="cursor:pointer;" ng-disabled=ngDisabled class="btn btn-default" ng-click="openPicker($event)">' +
+                '<i class="fa fa-calendar"></i></button></span></div>' +
+                '<ul uib-dropdown-menu role="menu" aria-labelledby="dLabel">' +
+                '<datetimepicker ng-model=ngModel data-on-set-time=onTimeSet(newDate) ' +
+                'data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"/></ul></div>';
+        }
     };
     return directive;
     //#endregion
 }
 //#region Injections
-dateTimePickerDirective.$inject = ['$timeout', 'Config', 'Common', 'Constants', 'Localization'];
+dateTimePickerDirective.$inject = ['$document', '$timeout', 'Config', 'Common', 'Constants', 'Localization', 'uiGridEditConstants'];
 //#endregion
 //#endregion
 

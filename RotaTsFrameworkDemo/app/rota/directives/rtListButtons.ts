@@ -20,7 +20,7 @@ function listButtonsDirective() {
         restrict: 'E',
         replace: true,
         template:
-        '<div class="rt-listbutton">' +
+        '<div class="rt-listbutton" rt-sticky="{{::vm.listPageOptions.enableStickyListButtons}}">' +
         '<div class="btn-group">' +
         '<div class="btn-group" uib-dropdown auto-close="outsideClick" is-open="searchToggle">' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton" ' +
@@ -56,7 +56,7 @@ function listButtonsDirective() {
         '</li>' +
         '</ul></div></div>&nbsp;' +
         '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
-        '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\',\'pdfExport\')" text-i18n="rota.disariyaaktar"' +
+        '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\')" text-i18n="rota.disariyaaktar"' +
         'uib-tooltip="{{::\'rota.disariyaaktar\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom"></rt-button>' +
         '<button type="button" class="btn btn-info dropdown-toggle" uib-dropdown-toggle>' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
@@ -66,11 +66,11 @@ function listButtonsDirective() {
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,1)" role="separator" class="divider"></li>' +
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,2)"><a href i18n="rota.aktarallpdf" ng-click="vm.exportGrid(\'all\',2)"></a></li>' +
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,2)"><a href i18n="rota.aktarekrandakipdf" ng-click="vm.exportGrid(\'visible\',2)"></a></li>' +
-        '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,2)"><a href i18n="rota.aktarsecilipdf" ng-disabled="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',2)"></a></li>' +
+        '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,2)"><a href i18n="rota.aktarsecilipdf" ng-if="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',2)"></a></li>' +
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,4)" role="separator" class="divider"></li>' +
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,4)"><a href i18n="rota.aktarallcsv" ng-click="vm.exportGrid(\'all\',4)"></a></li>' +
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,4)"><a href i18n="rota.aktarekrandakicsv" ng-click="vm.exportGrid(\'visible\',4)"></a></li>' +
-        '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,4)"><a href i18n="rota.aktarsecilicsv" ng-disabled="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',4)"></a></li>' +
+        '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,4)"><a href i18n="rota.aktarsecilicsv" ng-if="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',4)"></a></li>' +
         '</ul></div>&nbsp;<div class="btn-group"><div class="btn-group" uib-dropdown>' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.clearButton"  text-i18n="rota.temizle" icon="eraser" ' +
         'uib-tooltip="{{::\'rota.gridfiltretemizle\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +

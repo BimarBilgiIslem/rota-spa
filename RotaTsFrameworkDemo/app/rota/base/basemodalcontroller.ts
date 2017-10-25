@@ -15,19 +15,16 @@
  */
 
 //#region Imports
-import { BaseModelController } from './basemodelcontroller';
-import { ObserableModel } from "./obserablemodel";
+import BaseModelController from './basemodelcontroller';
+import ObserableModel from "./obserablemodel";
+import { Controller } from "./decorators";
 //#endregion
 /**
  * Base Modal controller
  */
-class BaseModalController<TModel extends IBaseModel> extends BaseModelController<TModel>
+class BaseModalController<TModel extends IBaseModel, TParams = any> extends BaseModelController<TModel>
     implements IBaseModalController {
     //#region Statics,Members,Props
-    private static readonly defaultOptions: IModalPageOptions = {
-        initializeModel: true
-    }
-
     static injects = BaseModelController.injects.concat(['$uibModalInstance', 'instanceOptions']);
     /**
      * Modal instance
@@ -51,7 +48,7 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
      * Modal params
      * @returns {} 
      */
-    get params(): any { return this.instanceOptions.params }
+    get params(): TParams { return this.instanceOptions.params }
 
     /**
     * Modal Page options
@@ -60,6 +57,10 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
     get modalPageOptions(): IModalPageOptions { return this.options as IModalPageOptions }
     //#endregion
 
+    constructor(bundle: IBundle) {
+        //call base constructor
+        super(bundle, { initializeModel: true });
+    }
     //#region InjcetableObject
     /**
     * Update bundle
@@ -67,8 +68,9 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.$uibModalInstance = bundle.systemBundles["$uibmodalinstance"];
-        this.instanceOptions = bundle.systemBundles["instanceoptions"] || {};
+
+        this.$uibModalInstance = bundle.services["$uibmodalinstance"];
+        this.instanceOptions = bundle.services["instanceoptions"] || {};
         //Inject optional custom services if any
         if (this.instanceOptions.services) {
             this.instanceOptions.services.forEach((service): void => {
@@ -78,27 +80,26 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
     }
     //#endregion
 
-    //#region Init
-    /**
-     * Extend crud page options with user options
-     * @param bundle Service Bundle
-     * @param options User options
-     */
-    private static extendOptions(bundle: IBundle, options?: IModalPageOptions): IModalPageOptions {
-        const modalPageOptions: IModalPageOptions = angular.merge({}, BaseModalController.defaultOptions, options);
-        return modalPageOptions;
-    }
-
-    constructor(bundle: IBundle, options?: IModalPageOptions) {
-        super(bundle, BaseModalController.extendOptions(bundle, options));
-
-        if (this.modalPageOptions.initializeModel) {
-            this.initModel();
-        }
-    }
-    //#endregion
-
     //#region Modal 
+    /**
+    * Validation for modals
+    */
+    applyValidatitons(): angular.IPromise<IParserException> {
+        const validateResult = super.applyValidatitons();
+        validateResult.catch((err: IParserException) => {
+            this.logger.toastr.warn({ message: err.message, title: err.title });
+        });
+        return validateResult;
+    }
+    /**
+     * Close modal if validation success
+     * @param data Result
+     */
+    ok(data: any): void {
+        this.applyValidatitons().then(() => {
+            this.modalResult(data);
+        });
+    }
     /**
      * Close modal with result
      * @param data Result
@@ -110,7 +111,7 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
      * Close modal with dismiss
      */
     closeModal(): void {
-        if (this.instanceOptions.convertToObserableModel && this.common.isObserableModel(this.model)) {
+        if (this.common.isObserableModel(this.model)) {
             this.model.revertOriginal();
         }
         this.$uibModalInstance.dismiss(this.model);
@@ -139,5 +140,12 @@ class BaseModalController<TModel extends IBaseModel> extends BaseModelController
     }
     //#endregion
 }
-
-export { BaseModalController }
+/**
+ * Default modal controller in the usage with showModal() of Dialogs service
+ */
+@Controller({ initializeModel: true })
+class DefaultModalController<TModel extends IBaseModel> extends BaseModalController<TModel> {
+}
+//Exports
+export default BaseModalController
+export { DefaultModalController }

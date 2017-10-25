@@ -1,10 +1,11 @@
 ﻿//#region Import
 import "spinner"
+import "./vfs_fonts";
 import "grid"
 import "hotkeys"
 import "scroll"
 import "select"
-import "ngcurrency"
+import "ng-currency"
 import "./dateTimeInput"
 import "./datetimepicker"
 import "ct-ui-router-extras"
@@ -19,7 +20,6 @@ import "xdom";
 import "toastr";
 import "fileupload"
 import "circleprogress"
-import "ckeditor"
 import "ng-ckeditor"
 import "ngcontextmenu"
 import "treeview"
@@ -34,6 +34,7 @@ angular.module('rota.lib',
         //https://github.com/angular-ui/ui-grid
         'ui.grid', 'ui.grid.selection', 'ui.grid.pinning', 'ui.grid.pagination', 'ui.grid.exporter',
         'ui.grid.grouping', 'ui.grid.resizeColumns', 'ui.grid.saveState', 'ui.grid.moveColumns',
+        'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.expandable',
         //Datetime picker
         //https://github.com/dalelotts/angular-bootstrap-datetimepicker
         'ui.dateTimeInput',

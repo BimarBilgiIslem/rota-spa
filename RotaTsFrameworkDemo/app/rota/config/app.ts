@@ -17,10 +17,9 @@
 //#region Imports
 import { IRotaApp } from './app.interface';
 //deps
-import { BaseApi } from "../base/baseapi";
-//import { BaseController } from '../base/basecontroller';
-import { InjectableObject } from '../base/injectableobject';
-import { BaseModalController } from '../base/basemodalcontroller';
+import BaseApi from "../base/baseapi";
+import InjectableObject from '../base/injectableobject';
+import { DefaultModalController } from '../base/basemodalcontroller';
 import constants = require('config/constants');
 import "./infrastructure.index"
 //#endregion
@@ -98,6 +97,8 @@ class RotaApp implements IRotaApp {
                     });
                 }
             }]);
+
+        //#region Run Blocks
         //Hook handlers
         this.run(["$rootScope", "Constants", ($rootScope: IRotaRootScope, constants: IConstants) => {
             $rootScope.$on(constants.events.EVENT_ON_ERROR, (e, error) => {
@@ -124,8 +125,21 @@ class RotaApp implements IRotaApp {
                     localization.currentLanguage = { code: userCulture };
                 }
             }]);
+        //Make Typescript async/await available with angular $q service
+        //https://stackoverflow.com/a/41825004/1016147
+        this.run(['$window', '$q', ($window: ng.IWindowService, $q: ng.IQService) => {
+            $window.Promise = $q;
+        }]);
+        //Set favicon
+        this.run(["Config", "Common", (config: IMainConfig, common: ICommon) => {
+            if (config.favIconName) {
+                common.setFavIcon(common.addPrefixSlash(config.favIconName));
+            }
+        }]);
+        //#endregion
+
         //add base modal controllers if not defined controller.see dialog.services->showModal
-        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(BaseModalController));
+        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(DefaultModalController));
     }
     //#endregion
 
@@ -332,22 +346,17 @@ class RotaApp implements IRotaApp {
         const deps = new Array<any>().concat(injectableObject.injects, dependencies);
         const controllerCtor: Function = (...args: any[]): InjectableObject => {
             const bundle: IBundle = {
-                customBundles: {},
-                systemBundles: {}
+                services: {}
             }
             const systemServices = args.slice(0, args.length - dependencies.length);
             const customServices = args.slice(systemServices.length, args.length);
 
             systemServices.forEach((service: any, index: number) => {
                 const serviceName = injectableObject.injects[index];
-                bundle.systemBundles[serviceName.toLowerCase()] = service;
-            });
-            customServices.forEach((service: any, index: number) => {
-                const serviceName = dependencies[index];
-                bundle.customBundles[serviceName] = service;
+                bundle.services[serviceName.toLowerCase()] = service;
             });
 
-            const instance = new injectableObject(bundle);
+            const instance = new injectableObject(bundle, ...customServices);
             return instance;
         };
         //add ctor
@@ -366,7 +375,5 @@ class RotaApp implements IRotaApp {
     }
     //#endregion
 }
-//Instance of rota app
-var rotaApp: IRotaApp = new RotaApp(RotaApp.moduleName);
 //Export
-export { rotaApp as App }
+export default new RotaApp(RotaApp.moduleName)

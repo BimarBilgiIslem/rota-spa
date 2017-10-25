@@ -17,7 +17,7 @@
 //#region Imports
 import * as _s from "underscore.string";
 import * as $ from 'jquery';
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 //#endregion
 
 //#region Multi Select Directive
@@ -38,7 +38,8 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
             .attr('placeholder', cAttrs.placeholder)
             .attr('items-count', cAttrs.itemsCount)
             .attr('new-item-options', <any>cAttrs.newItemOptions)
-            .attr('search-item-options', <any>cAttrs.searchItemsOptions);
+            .attr('search-item-options', <any>cAttrs.searchItemsOptions)
+            .attr('min-auto-suggest-char-len', cAttrs.minAutoSuggestCharLen);
 
         if (common.isDefined(cAttrs.onRefresh)) {
             dropDown.attr('on-refresh', 'onRefresh({keyword:keyword})');
@@ -305,6 +306,8 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
             */
             const addItem = (selectItem: ISelectModel, model?: IBaseCrudModel | number, isBatchProcess?: boolean): ng.IPromise<IBaseCrudModel | number | string> => {
                 if (!common.isAssigned(selectItem)) return common.rejectedPromise('select item must be assigned');
+                if (common.isArray(selectItem)) return common.rejectedPromise('select item must be object not array');
+
                 const defer = $q.defer<any>();
                 //check item already added previously
                 const existingModel = findListItem(selectItem);
@@ -414,7 +417,7 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
              * @param item MultiSelectListItem
              * @param event Angular event
              */
-            scope.removeItem = (item: IBaseCrudModel, event: ng.IAngularEvent) => {
+            scope.removeItem = (item: IMultiSelectModel, event: ng.IAngularEvent) => {
                 common.preventClick(event);
                 return removeItem(item).then(() => {
                 }, (message: string): void => {
@@ -478,11 +481,14 @@ function multiSelectDirective($timeout: ng.ITimeoutService, $parse: ng.IParseSer
              */
             scope.setSelected = (selItem: IMultiSelectModel, groupItems?: IMultiSelectModel[]) => {
                 //uncheck all items
-                (groupItems || addedItems).forEach((item: IMultiSelectModel) => {
+                const items = groupItems || addedItems;
+
+                for (let item of items) {
                     if (item.$model[attrs.selectionProp] === true) {
                         item.$model[attrs.selectionProp] = false;
                     }
-                });
+                }
+
                 //set selection
                 selItem.$model[attrs.selectionProp] = true;
             }

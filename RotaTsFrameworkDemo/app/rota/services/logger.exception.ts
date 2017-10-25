@@ -46,20 +46,21 @@ const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.
         throw err;
     };
 
-    return (exception: IException, cause?: string) => {
+    return (exception: IException | string, cause?: string) => {
         if (config.debugMode) {
-            $delegate(exception, cause);
+            $delegate(exception as IException, cause);
         } else {
             if (config.serverExceptionLoggingEnabled) {
                 try {
-                    serverLogger(exception);
+                    serverLogger(exception as IException);
                 } catch (e) { }
             }
         };
         loggerService = loggerService || $injector.get<ILogger>('Logger');
         //toastr and notification log
-        loggerService.toastr.error({ message: exception.message });
-        loggerService.notification.error({ message: exception.message });
+        const errorMsg = typeof exception === "string" ? exception : exception.message;
+        loggerService.toastr.error({ message: errorMsg });
+        loggerService.notification.error({ message: errorMsg });
         //broadcast
         $rootScope = $rootScope || $injector.get<ng.IRootScopeService>('$rootScope');
         $rootScope.$broadcast(constants.events.EVENT_ON_ERROR, exception);

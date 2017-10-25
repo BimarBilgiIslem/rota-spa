@@ -15,5 +15,27 @@
     .dropdown-menu {
         background-color: #fff;
         border: 1px solid #ccc;
+
+        @media screen and (max-width:$screen-xs-max) {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1100;
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    &[dropdown-append-to-body] {
+        input, button {
+            border: none !important;
+        }
+
+        input {
+            padding-left: 6px;
+            height: 29px;
+        }
     }
 }

@@ -34,8 +34,11 @@ class ShellController {
      * Indicates that menu will be in fullscreen container,default false
      */
     isHomePage: boolean;
+    isMobileOrTablet: boolean;
     bgImageUrl: { [index: string]: string };
     vidOptions: IVideoOptions;
+    viewPortClass?: string;
+    currentYear: number;
     //#endregion
 
     //#region Init
@@ -50,7 +53,8 @@ class ShellController {
         private currentUser: IUser,
         private currentCompany: ICompany,
         private routeconfig: IRouteConfig,
-        private titleBadges: ITitleBadges) {
+        private titleBadges: ITitleBadges,
+        private common: ICommon) {
         //init settings
         this.setSpinner();
         this.setActiveMenuListener();
@@ -63,6 +67,8 @@ class ShellController {
         }
         $rootScope.appTitle = '';
         $rootScope.forms = {};
+        this.isMobileOrTablet = common.isMobileOrTablet();
+        this.currentYear = (new Date()).getFullYear();
     }
     //#endregion
 
@@ -87,6 +93,9 @@ class ShellController {
             this.$rootScope.appTitle = menu ? (`${menu.localizedTitle} - ${this.config.appTitle}`) : this.config.appTitle;
             if (this.config.homePageOptions)
                 this.isHomePage = this.$location.url() === this.config.homePageOptions.url;
+            //set viewpot width size
+            this.viewPortClass =
+                (this.config.enableContainerFluid || (menu && menu.isFullScreen)) ? 'container-fluid' : 'container';
         });
     }
     /**
@@ -114,6 +123,7 @@ class ShellController {
         this.dialogs.showModal({
             isSideBar: true,
             windowClass: 'side-nav',
+            viewPortSize: true,
             absoluteTemplateUrl: this.routeconfig.templates.navmenumobile,
             controller: 'ProfileModalController',
             controllerAs: 'profilevm'
@@ -124,7 +134,7 @@ class ShellController {
      * @description Only visible in main page on mobile device.
      */
     isMbfVisible(): boolean {
-        return (!window.__IS_TOUCHABLE || this.isHomePage) &&
+        return (!this.isMobileOrTablet || this.isHomePage) &&
             this.config.enableQuickMenu && this.routing.quickMenus.length > 0;
     }
     //#endregion
@@ -133,7 +143,7 @@ class ShellController {
 
 //#region Injection
 ShellController.$inject = ['$rootScope', '$scope', '$location', '$window', 'Routing', 'Config',
-    'Dialogs', 'Constants', 'CurrentUser', 'CurrentCompany', 'RouteConfig', 'TitleBadges'];
+    'Dialogs', 'Constants', 'CurrentUser', 'CurrentCompany', 'RouteConfig', 'TitleBadges', 'Common'];
 //#endregion
 
 //#region Register

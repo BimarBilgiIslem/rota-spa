@@ -78,6 +78,14 @@ declare global {
        * @returns {number} 
        */
         sum?: (fn: _.ListIterator<T, number>) => number;
+        /**
+	    * A convenient version of what is perhaps the most common use-case for map: extracting a list of
+	    * property values.
+	    * @param list The list to pluck elements out of that have the property `propertyName`.
+	    * @param propertyName The property to look for on each element within `list`.
+	    * @return The list of elements within `list` that have the property `propertyName`.
+	    **/
+        pluck?: <TK extends keyof T>(propName: TK) => Array<T[TK]>;
     }
 }
 /**
@@ -85,7 +93,7 @@ declare global {
  * @param id 
  * @returns {} 
  */
-Array.prototype["findById"] = function (id) {
+Array.prototype.findById = function (id) {
     const item = _.findWhere(this, { id: id });
     return item;
 };
@@ -94,14 +102,14 @@ Array.prototype["findById"] = function (id) {
  * @param callback Iterator function
  * @returns {number} 
  */
-Array.prototype["findIndex"] = function (callback: _.ListIterator<{}, boolean>) {
+Array.prototype.findIndex = function (callback: _.ListIterator<{}, boolean>) {
     return _.findIndex(this, callback);
 };
 /**
 * Delete item of array
 * @param args Iterator function or item itself to be deleted
 */
-Array.prototype["delete"] = function (...args: any[]): void {
+Array.prototype.delete = function (...args: any[]): void {
     if (args.length === 0) return;
 
     if (_.isFunction(args[0])) {
@@ -119,7 +127,7 @@ Array.prototype["delete"] = function (...args: any[]): void {
  * @param id 
  * @returns {} 
  */
-Array.prototype["deleteById"] = function (id) {
+Array.prototype.deleteById = function (id) {
     var _this = this;
     var items = _.where(this, { id: id });
     items.forEach(function (item) {
@@ -133,7 +141,7 @@ Array.prototype["deleteById"] = function (id) {
  * @param callback Iterator fuction
  * @returns {number} 
  */
-Array.prototype["count"] = function (callback: _.ListIterator<any, boolean>): number {
+Array.prototype.count = function (callback: _.ListIterator<any, boolean>): number {
     const items = this.where(this, callback);
     return items !== null ? items.length : 0;
 }
@@ -142,7 +150,7 @@ Array.prototype["count"] = function (callback: _.ListIterator<any, boolean>): nu
  * @param fn Iterator function
  * @returns {boolean} 
  */
-Array.prototype["any"] = function (callback: _.ListIterator<any, boolean>): boolean {
+Array.prototype.any = function (callback: _.ListIterator<any, boolean>): boolean {
     return _.some(this, callback);
 }
 /**
@@ -150,7 +158,7 @@ Array.prototype["any"] = function (callback: _.ListIterator<any, boolean>): bool
   * @param callback Iterator function
  * @returns {IBaseListModel<TModel>}
  */
-Array.prototype["where"] = function (callback: _.ListIterator<any, boolean>): Array<any> {
+Array.prototype.where = function (callback: _.ListIterator<any, boolean>): Array<any> {
     return _.filter(this, callback);
 }
 /**
@@ -158,7 +166,7 @@ Array.prototype["where"] = function (callback: _.ListIterator<any, boolean>): Ar
   * @param callback Iterator function
  * @returns {IBaseListModel}
  */
-Array.prototype["firstOrDefault"] = function (callback?: _.ListIterator<any, boolean>): any {
+Array.prototype.firstOrDefault = function (callback?: _.ListIterator<any, boolean>): any {
     let result = this;
     if (callback)
         result = this.where(callback);
@@ -169,11 +177,18 @@ Array.prototype["firstOrDefault"] = function (callback?: _.ListIterator<any, boo
  * @param callBack Iteration function
  * @returns {number} 
  */
-Array.prototype["sum"] = function (callBack: _.ListIterator<any, number>): number {
+Array.prototype.sum = function (callBack: _.ListIterator<any, number>): number {
     return _.reduce<any, number>(this, (total, item, index, list) => {
         total += callBack(item, index, list);
         return total;
     }, 0);
 }
+/**
+ * Extract a array with provided property name
+ * @returns {Array<any>}
+ */
+Array.prototype.pluck = function (propName: string): Array<any> {
+    return _.pluck(this, propName);
+};
 
 export { }

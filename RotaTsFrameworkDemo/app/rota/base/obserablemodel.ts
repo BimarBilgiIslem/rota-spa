@@ -20,7 +20,7 @@ import * as moment from "moment";
 /**
  * Obserablemodel responsible for tracking property changes and managing modelState algorithm
  */
-class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IObserableModel<TModel> {
+class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<TModel> {
     //#region Statics
     private static idField = "id";
     private static modelStateField = "modelState";
@@ -82,8 +82,14 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     get _readonly(): boolean { return this.__readonly; }
     set _readonly(value: boolean) {
         if (this.__readonly === value) return;
-        //set child array 
-        this.iterateNavigationalModels(model => model._readonly = value);
+        //set childs
+        _.each(this._values, (childItem): void => {
+            if (_.isArray(childItem)) {
+                (childItem as IBaseListModel<TModel>)._readonly = value;
+            } else if (childItem instanceof ObserableModel) {
+                childItem._readonly = value;
+            }
+        });
         this.__readonly = value;
     }
     /**
@@ -147,7 +153,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
             return subModels;
         } else
             //if value is literal obj,convert to ObserableModel
-            if (_.isObject(value)) {
+            if (_.isObject(value) && !_.isDate(value)) {
                 const navModel = new ObserableModel(value, this);
                 //register datachange event to notify parent model
                 navModel.subscribeDataChanged((action?: ModelStates, value?: any, oldValue?: any, key?: string) => {
@@ -285,11 +291,11 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         //remove standart fields
         const purgedModel = _.omit(this._orginalValues, ObserableModel.stdFields);
         //define prop map 
-        const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptorMap => {
+        const modelPropsMap = _.mapObject(purgedModel, (value, key): PropertyDescriptor => {
             //convert array or nav props to obserable
             this._values[key] = this.mapProperty(value);
 
-            const propMap: PropertyDescriptorMap = {
+            const propMap: PropertyDescriptor = {
                 enumerable: true,
                 configurable: true,
                 get: () => { return this._values[key]; },
@@ -314,8 +320,7 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
         Object.defineProperties(this, modelPropsMap);
     }
 
-    constructor(initialValues?: any, public _parentModel?: IObserableModel<IBaseCrudModel>) {
-        super();
+    constructor(initialValues?: Partial<TModel>, public _parentModel?: IObserableModel<IBaseCrudModel>) {
         //set initial values
         this._id = 0;
         this._modelState = ModelStates.Detached;
@@ -334,4 +339,4 @@ class ObserableModel<TModel extends IBaseCrudModel> extends Object implements IO
     //#endregion
 }
 
-export { ObserableModel }
+export default ObserableModel 

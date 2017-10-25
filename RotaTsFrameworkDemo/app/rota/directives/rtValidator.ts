@@ -88,7 +88,7 @@ function validatorDirective(common: ICommon, constants: IConstants, localization
 
     const directive = <ng.IDirective>{
         restrict: 'A',
-        require: 'ngModel',
+        require: '?ngModel',
         link: link
     };
     return directive;

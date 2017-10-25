@@ -15,13 +15,13 @@
  */
 
 //#region Imports
-import { InjectableObject } from "./injectableobject";
+import InjectableObject from "./injectableobject";
 //#endregion
 /**
  * Base controller for all controllers.
  * @description Form directive support,Logger shortcuts,Rota service references
  */
-class BaseController extends InjectableObject implements IBaseController {
+class BaseController extends InjectableObject {
     //#region Props
     //#region Notification services
     /**
@@ -46,13 +46,17 @@ class BaseController extends InjectableObject implements IBaseController {
      */
     protected events: Function[];
     /**
+    * Custom Validators
+    */
+    protected validators: IValidators;
+    /**
      * Flag that indcicates controller scope has been destroyed
      */
-    destroyed: boolean = false;
+    private destroyed: boolean = false;
     //#endregion
 
     //#region Bundle Services
-    static injects = InjectableObject.injects.concat(['$document', '$rootScope', '$scope', '$window', '$stateParams',
+    static injects = InjectableObject.injects.concat(['$document', '$rootScope', '$scope', '$window', '$stateParams', '$q',
         'Logger', 'Common', 'Dialogs', 'Routing', 'Config', 'Localization', 'stateInfo', 'hotkeys', 'TitleBadges',
         'Constants', 'CurrentUser', 'CurrentCompany']);
     //system services
@@ -62,6 +66,7 @@ class BaseController extends InjectableObject implements IBaseController {
     protected $stateParams: ng.ui.IStateParamsService;
     protected $document: duScroll.IDocumentService;
     protected hotkeys: ng.hotkeys.HotkeysProvider;
+    protected $q: ng.IQService;
     //Rota services
     /**
      * Badge service
@@ -137,8 +142,6 @@ class BaseController extends InjectableObject implements IBaseController {
                     }
                 });
         }
-        //save localization
-        this.storeLocalization();
         //Scroll
         if (this.options.scrollToTop) {
             this.$document.duScrollTop(0, 500);
@@ -157,38 +160,32 @@ class BaseController extends InjectableObject implements IBaseController {
         this.events = null;
     }
     /**
-     * Store localized value for performance issues
-     * @description Must be overriden overrided classes
-     */
-    protected storeLocalization(): void {
-    }
-    /**
      * Init bundle
      * @param bundle
      */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
         //system
-        this.$rootScope = bundle.systemBundles['$rootscope'];
-        this.$scope = bundle.systemBundles['$scope'];
-        this.$window = bundle.systemBundles["$window"];
-        this.$stateParams = bundle.systemBundles["$stateparams"];
-        this.$document = bundle.systemBundles["$document"];
-        this.hotkeys = bundle.systemBundles["hotkeys"];
+        this.$rootScope = bundle.services['$rootscope'];
+        this.$scope = bundle.services['$scope'];
+        this.$window = bundle.services["$window"];
+        this.$stateParams = bundle.services["$stateparams"];
+        this.$document = bundle.services["$document"];
+        this.hotkeys = bundle.services["hotkeys"];
+        this.$q = bundle.services['$q'];
         //rota
-        this.logger = bundle.systemBundles["logger"];
-        this.common = bundle.systemBundles["common"];
-        this.dialogs = bundle.systemBundles["dialogs"];
-        this.config = bundle.systemBundles["config"];
-        this.routing = bundle.systemBundles["routing"];
-        this.localization = bundle.systemBundles["localization"];
-        this.stateInfo = bundle.systemBundles["stateinfo"];
-        this.titlebadges = bundle.systemBundles["titlebadges"];
-        this.constants = bundle.systemBundles["constants"];
-        this.currentUser = bundle.systemBundles["currentuser"];
-        this.currentCompany = bundle.systemBundles["currentcompany"];
+        this.logger = bundle.services["logger"];
+        this.common = bundle.services["common"];
+        this.dialogs = bundle.services["dialogs"];
+        this.config = bundle.services["config"];
+        this.routing = bundle.services["routing"];
+        this.localization = bundle.services["localization"];
+        this.stateInfo = bundle.services["stateinfo"];
+        this.titlebadges = bundle.services["titlebadges"];
+        this.constants = bundle.services["constants"];
+        this.currentUser = bundle.services["currentuser"];
+        this.currentCompany = bundle.services["currentcompany"];
     }
-
     //#endregion
 
     //#region Methods
@@ -229,6 +226,51 @@ class BaseController extends InjectableObject implements IBaseController {
      */
     checkEnumFlag(value: number, flag: number): boolean {
         return !!(value & flag);
+    }
+    /**
+    * Validation service validate implementation    
+    */
+    protected applyValidatitons(): ng.IPromise<IParserException> {
+        const resultDefer = this.$q.defer<IParserException>();
+        //filter by crud flag
+        const validatorsFiltered = _.filter(this.validators.validators, (item: IValidationItem) => {
+            return !!(item.triggerOn & TriggerOn.Action);
+        });
+        //apply validations
+        const validationResult = this.validators.applyValidations(validatorsFiltered);
+        //convert pipiline exception
+        validationResult.then(() => { resultDefer.resolve(); }, (reason: IValidationResult) => {
+            let msg = this.localization.getLocal('rota.bilinmeyenhataolustu');
+            if (reason) {
+                msg = reason.message || (reason.messageI18N && this.localization.getLocal(reason.messageI18N));
+            }
+            resultDefer.reject({
+                title: this.localization.getLocal('rota.validationhatasi'),
+                logType: LogType.Warn,
+                message: msg
+            });
+            this.logger.console.warn({ message: 'validation failed' });
+        });
+        return resultDefer.promise;
+    }
+    /**
+     * Show parse exception
+     * @param error IParserException
+     */
+    showParserException(error: IParserException): void {
+        if (!error) return;
+
+        const parserErrorMsg = error.message ||
+            (error.messageI18N && this.localization.getLocal(error.messageI18N));
+        if (this.common.isNullOrEmpty(parserErrorMsg)) return;
+        switch (error.logType) {
+            case LogType.Error:
+                this.notification.error({ title: error.title, message: parserErrorMsg });
+                break;
+            case LogType.Warn:
+                this.notification.warn({ title: error.title, message: parserErrorMsg });
+                break;
+        }
     }
     //#endregion
 
@@ -313,5 +355,5 @@ class BaseController extends InjectableObject implements IBaseController {
     //#endregion
 }
 
-export { BaseController }
+export default BaseController
 

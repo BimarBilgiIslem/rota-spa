@@ -1,4 +1,26 @@
 ﻿ul.rt-multi-file-upload {
+
+    a.selector {
+        float: none;
+        padding: 7px 20px;
+        text-decoration: none;
+        font-weight: normal;
+        border-radius: 0;
+        box-shadow: 1px 1px 5px 0px #999;
+        -moz-box-shadow: 1px 1px 5px 0px #999;
+        -webkit-box-shadow: 1px 1px 5px 0px #999;
+
+        &:active,
+        &:visited {
+            color: $alert-info-text;
+        }
+
+        &:hover {
+            background-color: darken($alert-info-bg,40%);
+            color: #fff;
+        }
+    }
+
     li {
         &:first-child {
             border-style: dashed;

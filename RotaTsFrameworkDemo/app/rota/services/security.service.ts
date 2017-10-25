@@ -48,6 +48,7 @@ class Security implements ISecurity {
      * @param company Company to be selected
      */
     setCompany(company: ICompany): void {
+        if (this.currentCompany && this.currentCompany.id === company.id) return;
         this.$rootScope.$broadcast(this.constants.events.EVENT_COMPANY_CHANGED, company);
         this.caching.sessionStorage.store<IStorageCurrentCompany>(
             this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
@@ -55,7 +56,7 @@ class Security implements ISecurity {
                 id: company.id,
                 companyId: company.companyId,
                 roleId: company.roleId
-            });
+            }, false);
         //redirect to home page
         this.$window.location.replace("");
     }
@@ -65,7 +66,7 @@ class Security implements ISecurity {
     private setCurrentCompany(): void {
         let selectedCompany = null;
         const storedCompany = this.caching.sessionStorage
-            .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY);
+            .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY, null, false);
 
         const companyId = (storedCompany && this.common.isAssigned(storedCompany.id)) ? storedCompany.id : this.securityConfig.defaultCompanyId;
         if (this.common.isAssigned(companyId)) {
@@ -93,7 +94,7 @@ class Security implements ISecurity {
      * Logoff
      */
     logOff(): void {
-        OidcManager.instance.signoutRedirect();
+        OidcManager.signOut();
     }
     //#endregion
 
@@ -128,10 +129,8 @@ class Security implements ISecurity {
         //Set auth header,currentUser
         this.setCredentials(OidcManager.user);
         //update user when silent renew occured
-        OidcManager.instance.events.addUserLoaded(user => {
-            this.$rootScope.$apply(() => {
-                this.setCredentials(user);
-            });
+        OidcManager.userRenewed(user => {
+            this.setCredentials(user);
         });
         //listen for loginRequired event to redirect to login page
         this.$rootScope.$on(this.config.eventNames.loginRequired,

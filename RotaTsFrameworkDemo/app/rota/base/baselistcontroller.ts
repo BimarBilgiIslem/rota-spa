@@ -15,7 +15,7 @@
  */
 
 //#region Imports
-import { BaseModelController } from "./basemodelcontroller"
+import BaseModelController from "./basemodelcontroller"
 import * as s from "underscore.string";
 //#endregion
 /**
@@ -23,14 +23,10 @@ import * as s from "underscore.string";
  * @description This base class should be inherited for all controllers using restful services
  * @param {TModel} is your custom model view.
  */
-abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter>
+abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter = IBaseListModelFilter>
     extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
-    /**
-     * Localized values for crud page
-     */
-    protected static localizedValues: IListPageLocalization;
     /**
      * List Page options
      */
@@ -43,6 +39,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         modelExports: ModelExports.Pdf,
         storeFilterValues: false,
         storefilterLocation: CacherType.SessionStorage,
+        enableStickyListButtons: true,
         listButtonVisibility: {
             newButton: true,
             searchButton: true,
@@ -135,7 +132,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     //#endregion
 
     //#region Bundle Services
-    static injects = BaseModelController.injects.concat(['$timeout', '$interval', 'uiGridConstants', 'uiGridExporterConstants', 'Caching']);
+    static injects = BaseModelController.injects.concat(['$timeout', '$interval', 'uiGridConstants',
+        'uiGridExporterConstants', 'Caching']);
     protected uigridconstants: uiGrid.IUiGridConstants;
     protected uigridexporterconstants: uiGrid.exporter.IUiGridExporterConstants;
     protected caching: ICaching;
@@ -149,11 +147,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * @param options User options
      */
     private static extendOptions(bundle: IBundle, options?: IListPageOptions): IListPageOptions {
-        const configService = bundle.systemBundles["config"] as IMainConfig;
+        const configService = bundle.services["config"] as IMainConfig;
         const listOptions: IListPageOptions = angular.merge({}, BaseListController.defaultOptions,
             {
                 newItemParamName: configService.defaultNewItemParamName,
                 pageSize: configService.gridDefaultPageSize,
+                //set grid elem name when running on mobile so enable scrolling 
                 elementToScroll: window.__IS_TOUCHABLE && `grid_${configService.gridDefaultOptionsName}`
             }, options);
         return listOptions;
@@ -163,16 +162,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * @param bundle Service bundle
      * @param options List page user options
      */
-    constructor(bundle: IBundle, options?: IListPageOptions) {
+    protected constructor(bundle: IBundle) {
         //merge options with defaults
-        super(bundle, BaseListController.extendOptions(bundle, options));
+        super(bundle, BaseListController.extendOptions(bundle, bundle.options));
         //init filter object 
         this.filterStorageName = `storedfilter_${this.stateInfo.stateName}`;
         this.gridLayoutStorageName = `storedgridlayout_${this.stateInfo.stateName}`;
         //init filter
         this.initFilter();
-        //set grid features
-        this.initGrid();
         //set refresh grid process
         this.initRefresh();
     }
@@ -182,38 +179,52 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.uigridconstants = bundle.systemBundles["uigridconstants"];
-        this.uigridexporterconstants = bundle.systemBundles["uigridexporterconstants"];
-        this.caching = bundle.systemBundles["caching"];
-        this.$timeout = bundle.systemBundles["$timeout"];
-        this.$interval = bundle.systemBundles["$interval"];
-    }
-    /**
-     * Store localized value for performance issues (called in basecontroller)
-     */
-    protected storeLocalization(): void {
-        if (BaseListController.localizedValues) return;
-
-        BaseListController.localizedValues = {
-            kayitbulunamadi: this.localization.getLocal('rota.kayitbulunamadi'),
-            deleteconfirm: this.localization.getLocal('rota.deleteconfirm'),
-            deleteconfirmtitle: this.localization.getLocal('rota.deleteconfirmtitle'),
-            deleteselected: this.localization.getLocal('rota.onaysecilikayitlarisil'),
-            kayitsayisi: this.localization.getLocal('rota.kayitsayisi'),
-            filterrestored: this.localization.getLocal('rota.filtreyuklendi'),
-            filtersaved: this.localization.getLocal('rota.filtrekayitedildi'),
-            refreshing: this.localization.getLocal('rota.refreshinprogress'),
-        };
+        this.uigridconstants = bundle.services["uigridconstants"];
+        this.uigridexporterconstants = bundle.services["uigridexporterconstants"];
+        this.caching = bundle.services["caching"];
+        this.$timeout = bundle.services["$timeout"];
+        this.$interval = bundle.services["$interval"];
     }
     //#endregion
 
     //#region BaseModelController methods
     /**
+     * this method is called from decorator with all injections are available
+     */
+    initController(): void {
+        this.initGrid();
+        super.initController();
+    }
+    /**
+     * Initialize model
+     * @param modelFilter Model filter
+     * @description modelFilter is only available in case its called from initSearchModel.
+     * in case its called from Controller decorator,initModel is called with this.filter without pager params
+     */
+    initModel(modelFilter?: TModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+        const resultDefer = this.$q.defer<TModel[] | IPagingListModel<TModel>>();
+        this.logger.notification.removeAll();
+        //validation process
+        const validationResult = this.applyValidatitons();
+        //success
+        validationResult.then(() => {
+            super.initModel(modelFilter || this.filter).then(result =>
+                resultDefer.resolve(<TModel[] | IPagingListModel<TModel>>result));
+        });
+        //has error
+        validationResult.catch((error: IParserException) => {
+            this.showParserException(error);
+            resultDefer.reject();
+        });
+
+        return resultDefer.promise;
+    }
+    /**
     * @abstract Get model
     * @param args Model
     */
     abstract getModel(modelFilter?: TModelFilter): ng.IPromise<TModel[]> |
-                                                   TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
+        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
     /**
      * Check if model is null ,set it empty array for grid
      * @param model Model
@@ -253,7 +264,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             }
         }
         if (recCount === 0 && this.isActiveState() && this.listPageOptions.showMesssage) {
-            this.toastr.warn({ message: BaseListController.localizedValues.kayitbulunamadi });
+            this.toastr.warn({ message: this.localization.getLocal('rota.kayitbulunamadi') });
         }
         //store filter 
         if (this.listPageOptions.storeFilterValues) {
@@ -267,10 +278,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     /**
     * Get default buttons
     */
-    protected getDefaultGridButtons(): uiGrid.IColumnDef[] {
+    protected getDefaultGridButtons(hiddenOnMobile?: boolean): uiGrid.IColumnDef[] {
         const buttons: uiGrid.IColumnDef[] = [];
         const getButtonColumn = (name: string, template: string): uiGrid.IColumnDef => {
-            return {
+            const btn: uiGrid.IColumnDef = {
                 name: name,
                 cellClass: 'col-align-center',
                 width: '35',
@@ -278,6 +289,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 enableColumnMenu: false,
                 cellTemplate: template
             };
+            if (hiddenOnMobile) {
+                btn.visible = !this.common.isMobileOrTablet();
+            }
+            return btn;
         }
         //edit button
         if (this.gridOptions.showEditButton) {
@@ -308,6 +323,9 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             multiSelect: false,
             enableRowClickToEdit: this.common.isMobileOrTablet(),
             enableRowDoubleClickToEdit: !this.common.isMobileOrTablet(),
+            //Row Edit
+            enableCellEdit: false,
+            enableCellEditOnFocus: false,
             //Data
             data: [] as Array<TModel>,
             //Pager
@@ -316,22 +334,26 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
             useExternalPagination: true,
             //Export
             exporterSuppressColumns: [],
-            exporterAllDataFn: (): ng.IPromise<any> => {
-                const result = this.initSearchModel(this.getPagingFilter(1, this.gridOptions.totalItems));
-                return (result as ng.IPromise<IPagingListModel<TModel>>).then(() => {
+            exporterAllDataFn: (): ng.IPromise<Array<TModel>> => {
+                const result = this.initSearchModel(this.getPager(1, this.gridOptions.totalItems));
+                return result.then(result => {
                     this.gridOptions.useExternalPagination = false;
+                    if (this.listPageOptions.pagingEnabled) {
+                        return (result as IPagingListModel<TModel>).data;
+                    }
+                    return result as TModel[];
                 });
             },
             exporterCsvFilename: 'myFile.csv',
             exporterPdfDefaultStyle: { fontSize: 9 },
-            exporterPdfTableStyle: { margin: [5, 5, 5, 5] },
-            exporterPdfTableHeaderStyle: { fontSize: 10, bold: true, italics: true, color: 'red' },
+            exporterPdfTableStyle: { margin: [3, 3, 3, 3] },
+            exporterPdfTableHeaderStyle: { fontSize: 8, bold: true, italics: true, color: '#096ce5' },
             exporterPdfHeader: { text: this.routing.activeMenu.localizedTitle, style: 'headerStyle' },
             exporterPdfFooter: (currentPage: number, pageCount: number) => {
                 return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
             },
             exporterPdfCustomFormatter: docDefinition => {
-                docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+                docDefinition.styles.headerStyle = { fontSize: 15, bold: true, color: '#457ABB' };
                 docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
                 return docDefinition;
             },
@@ -347,17 +369,17 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     /**
      * Get paging filter obj depending on params
      */
-    getPagingFilter(pageIndex?: number, pageSize?: number): any {
-        const filter = {};
+    private getPager(pageIndex?: number, pageSize?: number): IPager {
+        const pager: IPager = {};
         //if paging disabled,set max values
         if (!this.listPageOptions.pagingEnabled) {
             pageIndex = 1, pageSize = this.constants.grid.GRID_MAX_PAGE_SIZE;
         }
 
-        filter[this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME] = pageIndex || this.gridOptions.paginationCurrentPage || 1;
-        filter[this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME] = pageSize || this.gridOptions.paginationPageSize ||
+        pager.pageIndex = pageIndex || this.gridOptions.paginationCurrentPage || 1;
+        pager.pageSize = pageSize || this.gridOptions.paginationPageSize ||
             this.listPageOptions.pageSize;
-        return filter;
+        return pager;
     }
     //#endregion
 
@@ -368,7 +390,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         //get default options
         const options = this.getDefaultGridOptions();
         //merge user-defined cols
-        this.gridOptions = angular.extend(options, { columnDefs: this.getGridColumns(options) });
+        this.gridOptions = angular.extend(options, {
+            columnDefs: this.getGridColumns(options).map(col => {
+                if (col.hiddenOnMobile) col.visible = !this.common.isMobileOrTablet();
+                return col;
+            })
+        });
         //Set rowFormatter attrs if assigned
         if (this.isAssigned(this.gridOptions.rowFormatter)) {
             this.gridOptions.rowTemplateAttrs.push(this.constants.grid.GRID_ROW_FORMATTER_ATTR);
@@ -391,7 +418,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 .replace('{0}', this.gridOptions.rowTemplateAttrs.join(' '));
         }
         //add default button cols
-        const defaultButtons = this.getDefaultGridButtons();
+        const defaultButtons = this.getDefaultGridButtons(this.gridOptions.hiddenActionButtonsOnMobile);
         this.gridOptions.columnDefs = this.gridOptions.columnDefs.concat(defaultButtons);
         //Remove edit-delete buttons from exporting
         if (this.gridOptions.showEditButton)
@@ -401,10 +428,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         //set pagination
         this.gridOptions.enablePagination =
             this.gridOptions.enablePaginationControls = this.listPageOptions.pagingEnabled;
-        //load initially if enabled
-        if (this.listPageOptions.initializeModel) {
-            this.initSearchModel();
-        }
     }
     /**
      * @abstract Grid Columns
@@ -421,14 +444,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         if (this.listPageOptions.pagingEnabled) {
             gridApi.pagination.on.paginationChanged(this.$scope, (currentPage: number, pageSize: number) => {
                 if (this.gridOptions.useExternalPagination)
-                    this.initSearchModel(this.getPagingFilter(currentPage, pageSize));
+                    this.initSearchModel(this.getPager(currentPage, pageSize));
             });
         }
         //register datachanges
         gridApi.grid.registerDataChangeCallback((grid: uiGrid.IGridInstanceOf<any>) => {
             //set rc badge
             this.recordcountBadge.show = true;
-            this.recordcountBadge.description = BaseListController.localizedValues.kayitsayisi + " " +
+            this.recordcountBadge.description = this.localization.getLocal("rota.kayitsayisi") + " " +
                 (this.listPageOptions.pagingEnabled ? this.gridOptions.totalItems.toString() : this.gridData.length.toString());
         }, [this.uigridconstants.dataChange.ROW]);
         //register selection changes
@@ -444,19 +467,22 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 selChangedFn();
             });
         }
-        //restore
-        this.$timeout(() => {
-            try {
-                const storedState = this.caching.localStorage
-                    .get<uiGrid.saveState.IGridSavedState>(this.gridLayoutStorageName);
-                if (storedState) {
-                    gridApi.saveState.restore(this.$rootScope, storedState);
+        //restore - only columns defined in column options 
+        //for mobile view are permitted so skipped for mobile/ tablet
+        if (!this.common.isMobileOrTablet()) {
+            this.$timeout(() => {
+                try {
+                    const storedState = this.caching.localStorage
+                        .get<uiGrid.saveState.IGridSavedState>(this.gridLayoutStorageName);
+                    if (storedState) {
+                        gridApi.saveState.restore(this.$rootScope, storedState);
+                    }
+                } catch (e) {
+                    this.removeGridLayout();
+                    this.logger.console.error({ message: 'grid layout restoring failed' });
                 }
-            } catch (e) {
-                this.removeGridLayout();
-                this.logger.console.error({ message: 'grid layout restoring failed' });
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -464,7 +490,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     clearAll(): void {
         this.clearGrid();
-        this.filter = <TModelFilter>{};
+        this.initFilter();
     }
     /**
      * Clear grid
@@ -486,13 +512,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * Starts getting model and binding
     * @param pager Paging pager
     */
-    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[]> | ng.IPromise<IPagingListModel<TModel>> {
-        let filter: TModelFilter = this.filter;
+    initSearchModel(pager?: IPager): ng.IPromise<TModel[] | IPagingListModel<TModel>> {
+        let filter = this.filter;
         if (this.listPageOptions.pagingEnabled) {
-            filter = angular.extend(filter, pager || this.getPagingFilter(1));
+            filter = this.common.extend<TModelFilter>(filter, pager || this.getPager(1));
         }
-        //scroll to grid
-        scrollToElem && this.$document.duScrollToElement(scrollToElem);
+        //get data
         return this.initModel(filter);
     }
     //#endregion
@@ -504,6 +529,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     */
     goToDetailState(id: string, entity?: TModel, row?: uiGrid.IGridRowOf<TModel>, $event?: ng.IAngularEvent): ng.IPromise<any> {
         this.common.preventClick($event);
+
+        if (!this.isAssigned(this.listPageOptions.editState)) {
+            this.logger.console.warn({ message: 'listPageOptions.editState is not defined' });
+            return;
+        }
+
         const params = {};
         if (this.common.isAssigned(id)) {
             params[this.listPageOptions.newItemParamName] = id;
@@ -516,10 +547,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     protected initDeleteModel(id: number, entity: TModel, $event?: ng.IAngularEvent): ng.IPromise<any> {
         this.common.preventClick($event);
-        if (id === undefined || id === null || !id) return undefined;
+        if (!this.isAssigned(id)) return;
 
-        const confirmText = BaseListController.localizedValues.deleteconfirm;
-        const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
+        const confirmText = this.localization.getLocal("rota.deleteconfirm");
+        const confirmTitleText = this.localization.getLocal("rota.deleteconfirmtitle");
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
             //call delete model
             const deleteResult = this.deleteModel(id, entity);
@@ -528,10 +559,23 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                 return deleteResult.then(() => {
                     this.gridData.deleteById(id);
                     this.gridOptions.totalItems--;
-                });
+                },
+                    (error: IParserException) => {
+                        if (!error) return;
+                        switch (error.logType) {
+                            case LogType.Error:
+                                this.notification.error({ title: error.title, message: error.message });
+                                break;
+                            case LogType.Warn:
+                                this.notification.warn({ title: error.title, message: error.message });
+                                break;
+                            default:
+                            //Server errors will be handled in logger.exception interceptor
+                        }
+                    });
             }
             this.gridData.deleteById(id);
-            return undefined;
+            return;
         });
     }
     /**
@@ -548,10 +592,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     initDeleteSelectedModels(): ng.IPromise<any> {
         if (!this.gridSeletedRows.length) return undefined;
 
-        const confirmText = BaseListController.localizedValues.deleteselected;
-        const confirmTitleText = BaseListController.localizedValues.deleteconfirmtitle;
+        const confirmText = this.localization.getLocal("rota.onaysecilikayitlarisil");
+        const confirmTitleText = this.localization.getLocal("deleteconfirmtitle");
         return this.dialogs.showConfirm({ message: confirmText, title: confirmTitleText }).then(() => {
-            const keyArray: number[] = _.pluck(this.gridSeletedRows, 'id');
+            const keyArray: number[] = this.gridSeletedRows.pluck("id");
             //call delete model
             const deleteResult = this.deleteModel(keyArray, this.gridSeletedRows);
             //removal of model depends on whether result is promise or void
@@ -586,13 +630,9 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * Save filter values
      */
     saveFilter(filter?: TModelFilter): void {
-        const purgedFilters = _.omit(filter || this.filter, [this.constants.grid.GRID_PAGE_INDEX_FIELD_NAME,
-        this.constants.grid.GRID_PAGE_SIZE_FIELD_NAME]);
+        const purgedFilters = _.omit(filter || this.filter, ["pageIndex", "pageSize"]);
         if (!_.isEmpty(purgedFilters)) {
             this.caching.cachers[this.listPageOptions.storefilterLocation].store(this.filterStorageName, purgedFilters);
-            if (this.listPageOptions.showMesssage) {
-                this.logger.toastr.info({ message: BaseListController.localizedValues.filtersaved });
-            }
         }
     }
     /**
@@ -603,9 +643,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         if (this.listPageOptions.storeFilterValues) {
             filter = this.caching.cachers[this.listPageOptions.storefilterLocation]
                 .get<TModelFilter>(this.filterStorageName);
-            if (this.listPageOptions.showMesssage) {
-                this.logger.toastr.info({ message: BaseListController.localizedValues.filterrestored });
-            }
         }
         return filter || <TModelFilter>{};
     }
@@ -659,7 +696,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     removeGridLayout(): void {
         this.caching.localStorage.remove(this.gridLayoutStorageName);
-        this.logger.toastr.info({ message: this.localization.getLocal("rota.gridlayoutsilindi") });
+        this.routing.reload();
     }
     //#endregion
 
@@ -669,7 +706,14 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * @param {string} rowTypes which rows to export, valid values are uiGridExporterConstants.ALL,
     * @param {string} colTypes which columns to export, valid values are uiGridExporterConstants.ALL,
     */
-    private exportGrid(rowType: string, exportType: ModelExports): void {
+    private exportGrid(rowType: string, exportType?: ModelExports): void {
+        //default export button action
+        if (!exportType) {
+            exportType = ModelExports.Pdf;
+            if (this.checkEnumFlag(this.listPageOptions.modelExports, ModelExports.Excel)) exportType = ModelExports.Excel; else
+                if (this.checkEnumFlag(this.listPageOptions.modelExports, ModelExports.Pdf)) exportType = ModelExports.Pdf; else
+                    if (this.checkEnumFlag(this.listPageOptions.modelExports, ModelExports.Csv)) exportType = ModelExports.Csv;
+        }
         //warn user for possible delay
         let warnDelay = this.common.promise();
         if (rowType === this.uigridexporterconstants.ALL) {
@@ -688,12 +732,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                     let filter: TModelFilter = this.filter;
                     //get filter with paging values
                     filter = angular.extend(filter,
-                        this.getPagingFilter(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
+                        this.getPager(null, rowType === this.uigridexporterconstants.ALL && this.constants.grid.GRID_MAX_PAGE_SIZE));
                     //obtain grid fields and header text for server generation
                     const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
                         curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
                         if (curr.displayName) {
-                            memo._headers.push(curr.displayName);
+                            memo._headers.push(encodeURIComponent(curr.displayName));
                             memo._fields.push((curr.field || curr.name).toLowerCase());
                         }
                         return memo;
@@ -735,7 +779,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                     if (angular.isNumber(value)) {
                         autoRefreshPromise = this.$interval(() => {
                             if (this.listPageOptions.showMesssage) {
-                                this.logger.toastr.info({ message: BaseListController.localizedValues.refreshing });
+                                this.logger.toastr.info({ message: this.localization.getLocal("rota.refreshinprogress") });
                             }
                             this.initSearchModel();
                         }, value * 60 * 1000);
@@ -746,4 +790,4 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     //#endregion
 }
 
-export { BaseListController }
+export default BaseListController 

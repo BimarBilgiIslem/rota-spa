@@ -22,11 +22,11 @@ class Storage implements ICacher {
 
     constructor(private storage: IStorage, private base64?: IBase64) { }
 
-    get<TModel extends IBaseModel>(key: string, defaultValue?: TModel): TModel {
+    get<TModel>(key: string, defaultValue?: TModel, decode: boolean = true): TModel {
         try {
             const data = this.storage.getItem(key);
             if (data) {
-                const decoded = this.base64 ? this.base64.decode(data) : data;
+                const decoded = (decode && this.base64) ? this.base64.decode(data) : data;
                 const model = JSON.parse(decoded);
                 this.log(`${key} retrived from storage`, model);
                 return model as TModel;
@@ -40,14 +40,14 @@ class Storage implements ICacher {
         return defaultValue;
     }
 
-    store<TModel extends IBaseModel>(key: string, value: TModel): void {
+    store<TModel>(key: string, value: TModel, encode: boolean = true): void {
         if (value === undefined || value === null) {
             this.log(`${key} not stored due to undefined or null`);
             return;
         };
         try {
             const strData: string = JSON.stringify(value);
-            this.storage.setItem(key, this.base64 ? this.base64.encode(strData) : strData);
+            this.storage.setItem(key, (encode && this.base64) ? this.base64.encode(strData) : strData);
             this.log(`${key} stored`, value);
         } catch (e) {
             this.log(`${key} can not be stored`, e);

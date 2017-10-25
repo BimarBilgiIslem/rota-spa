@@ -35,7 +35,6 @@ interface IPany extends ng.IPromise<any> {
 interface IRotaRootScope extends ng.IRootScopeService {
     appTitle: string;
     forms: any;
-    isCollapsed: boolean;
 }
 /**
  * Used for chainable promise function
@@ -142,6 +141,11 @@ interface IDictionary<T extends {}> {
  */
 interface ICommon extends IBaseService {
     /**
+     * Dynamically set favicon
+     * @param iconPath if falsy is passed,config.favIconName will be assigned
+     */
+    setFavIcon(iconPath?: string): void;
+    /**
      * Check if request is restfull service request
      * @param config Rewurst config
      * @returns {boolean} 
@@ -192,7 +196,7 @@ interface ICommon extends IBaseService {
     * Return promise with provided arg
     * @param p Arg
     */
-    promise<T>(p?: T): ng.IPromise<T>;
+    promise<T=any>(p?: T): ng.IPromise<T>;
     /**
     * Return rejected promise with reason
     * @param reason Arg
@@ -207,7 +211,7 @@ interface ICommon extends IBaseService {
     * Check whether or not provided param is promise
     * @param value Arg
     */
-    isPromise<T>(value: any): value is ng.IPromise<T>;
+    isPromise(value: any): value is ng.IPromise<any>;
     /**
    * Check whether or not provided value ends with html extension
    * @param value Arg
@@ -242,7 +246,7 @@ interface ICommon extends IBaseService {
     * Check whether model is valid obserable
     * @param model
     */
-    isObserableModel<T extends IBaseCrudModel>(model: any): model is IObserableModel<T>;
+    isObserableModel(model: any): model is IObserableModel<any>;
     /**
      * Get a new crud model 
      * @param props
@@ -259,6 +263,8 @@ interface ICommon extends IBaseService {
      * @param extensions Destinations of T
      */
     extend<TSource>(source: TSource, ...extensions: any[]): TSource;
+    //TODO:partial neden calişmıyor ?
+    //extend<TSource>(source: TSource, ...extensions: Partial<TSource>[]): TSource;
     /**
     * Merge source with all destinations
     * @param source Source of TSource
@@ -281,6 +287,11 @@ interface ICommon extends IBaseService {
      */
     isString(value: any): value is string;
     /**
+     * Guard method checks for object
+     * @param value
+     */
+    isObject(value: any): value is object;
+    /**
      * Guard method checks for number
      * @param value
      */
@@ -289,7 +300,7 @@ interface ICommon extends IBaseService {
    * Guard method checks for array objects
    * @param value Any object
    */
-    isArray<T>(value: any): value is Array<T>;
+    isArray(value: any): value is Array<any>;
     /**
     * Guard method checks for function
     * @param value
@@ -299,7 +310,7 @@ interface ICommon extends IBaseService {
      * Guard method checks for defined
      * @param value
      */
-    isDefined<T>(value: any): value is T;
+    isDefined(value: any): value is any;
     /**
     * Convert html to plain text
     * @param html Html  
@@ -335,5 +346,15 @@ interface ICommon extends IBaseService {
     * Flag that device is mobile or tablet
     */
     isMobileOrTablet(): boolean;
+    /**
+     * Format string using interpolate service
+     * @param src Source string with macros in it
+     * @param context Context obj including macro values
+     * @example
+     * const src = 'Hello {{world}} !';
+     * format(src,{world:'World'});
+     * result => Hello World ! ;
+     */
+    format(src: string, context: any): string;
 }
 //#endregion

@@ -80,7 +80,7 @@ interface IGlobalEnvironment {
      */
     doms?: IDictionary<string>;
     /**
-     * Logoff when idle timeout has reached by prompting user
+     * Logoff when idle timeout has reached by prompting user,default true
      */
     logOffWhenIdleTimeout?: boolean;
     /**
@@ -211,10 +211,14 @@ interface IMainConfig extends IBaseConfig {
      */
     host?: string;
     /**
-    * Profile menu help link uri
+    * Menu help link uri
     * @description If not provided,help menu will be removed
     */
     helpLinkUri?: string;
+    /**
+     * Profile page url
+     */
+    profileLinkUri?: string;
     /**
      * Common event names
      */
@@ -228,13 +232,9 @@ interface IMainConfig extends IBaseConfig {
      */
     gridDefaultOptionsName?: string;
     /**
-     * Grid Full feature list
-     */
-    gridFullFeatureList?: string;
-    /**
      * Grid standart features list
      */
-    gridStandartFeatureList?: string;
+    gridStandartFeatureList?: string[];
     /**
      * Supported languages
      * @description if new lang is added,nls folder must be updaded accordingly in resource 
@@ -289,6 +289,18 @@ interface IMainConfig extends IBaseConfig {
      */
     logoImageName?: string;
     /**
+     * Logo Image file name.It must be under ~/Content/img - default logoImageName
+     */
+    footerLogoImageName?: string;
+    /**
+     * Favicon name,relative image path with ico/png ext
+     */
+    favIconName?: string;
+    /**
+     * Warning favicon name,relative image path with ico/png ext
+     */
+    warnFavIconName?: string;
+    /**
      * Default push service root path
      */
     pushServicePath?: string;
@@ -312,6 +324,11 @@ interface IMainConfig extends IBaseConfig {
      * Spinner options
      */
     spinnerOptions?: SpinnerOptions;
+    /**
+     * Feedback provider url,if defined,feedback form will
+     * be display and POST request made to that endpoint
+     */
+    feedBackProviderUrl?: string;
 }
 /**
  * Main config provider
@@ -351,9 +368,9 @@ interface IVideoOptions {
 
 //#region OIDC
 interface IOidcManager {
-    instance: Oidc.UserManager;
     user: Oidc.User;
     init(settings: IOidcSettings): Promise<Oidc.User>;
+    signOut(): void;
 }
 
 interface IOidcSettings {

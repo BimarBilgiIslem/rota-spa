@@ -46,8 +46,8 @@ interface IBaseController {
 /**
  * Model controller interface
  */
-interface IBaseModelController<TModel extends IBaseCrudModel> extends IBaseController {
-    modelPromise: ng.IPromise<TModel | IBaseListModel<TModel> | IPagingListModel<TModel>>;
+interface IBaseModelController<TModel extends IBaseModel> extends IBaseController {
+    modelPromise: ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>>;
 }
 /**
  * Request Options for GET ,POST verbs
@@ -60,12 +60,12 @@ interface IRequestOptions {
     /**
      * Map of strings or objects which will be serialized with the paramSerializer and appended as GET parameters.
      */
-    params?: any;
+    params?: object;
     /**
     * Payload object
      * @description  Data to be sent as the request message data.
     */
-    data?: any;
+    data?: object;
     /**
      * Server controller name
      */
@@ -102,6 +102,20 @@ interface IBaseApi {
     * @param params Optional params to send to server
     */
     fileUpload(file: IFileInfo, params?: any): ng.IPromise<IFileUploadResponseData>;
+}
+/**
+ * Api options used by decorators
+ */
+interface IApiOptions extends IBaseOptions {
+    /**
+     * Server controller api name
+     * @description  Set "user" if your server api name is UserController for webapi backend
+     */
+    serverApi?: string;
+    /**
+     * Cross origin host name api will work with,which defined in global environment as "hosts" 
+     */
+    moduleId?: string;
 }
 /**
  * Api that includes custom methods for crud operations
@@ -143,12 +157,21 @@ interface IBaseCrudApi<TModel extends IBaseCrudModel> extends IBaseApi {
      * @returns {ng.IPromise<any>}
      */
     delete(id: number, controller?: string): ng.IPromise<any>;
-
-    exportList(filter?: IBaseModelFilter, controller?: string): void;
+    /**
+     * Export model
+     * @param filter Filter
+     * @param controller Server controller name
+     * @returns {void} 
+     */
+    exportList(filter?: IBaseListModelFilter, controller?: string): void;
 }
 //#endregion
 
 //#region Base Models
+/**
+ * Model variants
+ */
+type ModelVariants<TModel extends IBaseModel> = TModel | TModel[] | IPagingListModel<TModel>;
 /**
  * Base model for all filtering classes
  */
@@ -353,9 +376,14 @@ interface IEnum {
 
 //#region Page Options
 /**
+ * Base options for all objects
+ */
+interface IBaseOptions {
+}
+/**
 * BasePage options
 */
-interface IBasePageOptions {
+interface IBasePageOptions extends IBaseOptions {
     /**
     * Form name,default rtForm defined in rtForm directive
     */
@@ -389,7 +417,7 @@ interface IListPageOptions extends IModelPageOptions {
     /**
      * Detail page state name of listing page
      */
-    editState: string;
+    editState?: string;
     /**
      * Grid paging is enabled or not
      */
@@ -430,6 +458,10 @@ interface IListPageOptions extends IModelPageOptions {
      * Enable refresh list,default false
      */
     enableRefresh?: boolean;
+    /**
+     * Stick to the bottom of the navbar while scrolling to down,default true
+     */
+    enableStickyListButtons?: boolean;
 }
 /**
  * Widget Controller options
@@ -482,6 +514,10 @@ interface ICrudPageOptions extends IModelPageOptions {
      * Readonly flag that model can not be changed
      */
     readOnly?: boolean;
+    /**
+    * Stick to the bottom of the navbar while scrolling to down,default true
+    */
+    enableStickyCrudButtons?: boolean;
 }
 /**
  * Crud Buttons Visibilies
@@ -506,7 +542,20 @@ interface IModalPageOptions extends IModelPageOptions {
 /**
  * Base filter for all list pages
  */
-interface IBaseListModelFilter extends IBaseModelFilter {
+interface IBaseListModelFilter extends IBaseModelFilter, IPager {
+}
+/**
+ * Pager model
+ */
+interface IPager {
+    /**
+     * Current page index
+     */
+    pageIndex?: number;
+    /**
+     * Item count listed in a page
+     */
+    pageSize?: number;
 }
 /**
  * Grid options include button options
@@ -543,26 +592,25 @@ interface IGridOptions<TModel extends IBaseModel> extends uiGrid.IGridOptionsOf<
      * Custom row template attibutes
      */
     rowTemplateAttrs?: string[];
+    /**
+     * Hidden action buttons on mobile device,default false
+     */
+    hiddenActionButtonsOnMobile?: boolean;
 }
 /**
- * List page localization  
+ * Shortcut flag for column visibility on mobile device
  */
-interface IListPageLocalization {
-    kayitbulunamadi: string;
-    deleteconfirm: string;
-    deleteconfirmtitle: string;
-    deleteselected: string;
-    kayitsayisi: string;
-    filterrestored: string;
-    filtersaved: string;
-    refreshing: string;
+declare namespace uiGrid {
+    interface IColumnDefOf<TEntity> {
+        hiddenOnMobile?: boolean;
+    }
 }
 /**
  * Base list controller
  */
-interface IBaseListController<TModel extends IBaseCrudModel> extends IBaseModelController<TModel> {
+interface IBaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter> extends IBaseModelController<TModel> {
     options: IListPageOptions;
-    initSearchModel(pager?: any, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<IBaseListModel<TModel>> | ng.IPromise<IPagingListModel<TModel>>;
+    initSearchModel(pager?: IPager, scrollToElem?: ng.IAugmentedJQuery): ng.IPromise<TModel[] | IPagingListModel<TModel>>;
 }
 //#endregion
 
@@ -592,9 +640,13 @@ interface ICrudPageStateParams<TModel extends IBaseCrudModel> extends ng.ui.ISta
      */
     model: TModel;
     /**
-     * Readonly flag
+     * Readonly flag,default false
      */
     readonly?: boolean;
+    /**
+     * Preview mode flag,default false
+     */
+    preview?: boolean;
 }
 /**
  * Flags for Crud pages
@@ -616,23 +668,6 @@ interface ICrudPageFlags {
      * Copying flag
      */
     isCloning?: boolean;
-}
-/**
- * Localized values for crud page
- */
-interface ICrudPageLocalization {
-    crudonay: string;
-    modelbulunamadi: string;
-    kayitkopyalandi: string;
-    succesfullyprocessed: string;
-    validationhatasi: string;
-    bilinmeyenhata: string;
-    silmeonay: string;
-    silmeonaybaslik: string;
-    kayitbasarisiz: string;
-    okumamoduuyari: string;
-    onayEvet: string;
-    onayHayir: string;
 }
 /**
  * Save options
@@ -701,14 +736,6 @@ interface ICrudParsers {
      */
     deleteParsers: Array<IChainableMethod<IParserException>>;
 }
-/**
- * Crud types,Flagable
- */
-const enum CrudType {
-    Create = 1,
-    Update = 2,
-    Delete = 4
-}
 //#endregion
 
 //#region BaseModalController
@@ -745,11 +772,11 @@ interface IBundle {
     /**
      * System angular services and thirdparty services 
      */
-    systemBundles: IDictionary<any>;
+    services: IDictionary<any>;
     /**
-     * User defined services
+     * Options of injectable object
      */
-    customBundles: IDictionary<any>;
+    options?: IBaseOptions;
 }
 /**
  * Parsers exception include notifictaion type and title

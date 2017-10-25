@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import * as _ from "underscore";
+
 //#region Interfaces
 interface IGridDirectiveAttrs extends ng.IAttributes {
     /**
@@ -37,21 +39,17 @@ interface IGridDirectiveAttrs extends ng.IAttributes {
 function gridDirective(config: IMainConfig, common: ICommon) {
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: IGridDirectiveAttrs) {
         const optionsName = common.isNullOrEmpty(cAttrs.gridOptions) ? config.gridDefaultOptionsName : cAttrs.gridOptions;
+        let gridFeatures = config.gridStandartFeatureList.join(' ');
 
-        let featureList;
-        switch (cAttrs.gridFeatureList) {
-            case "standart":
-            case null:
-            case undefined:
-                featureList = config.gridStandartFeatureList;
-                break;
-            case "full":
-                featureList = config.gridFullFeatureList;
-                break;
-            default:
-                featureList = cAttrs.gridFeatureList;
+        if (cAttrs.gridFeatureList) {
+            const customFeatures = cAttrs.gridFeatureList.split(' ');
+            const existingFeatures = _.intersection<string>(config.gridStandartFeatureList, customFeatures);
+            if (existingFeatures.length > 0)
+                throw existingFeatures.join(",") + " features existing in standart grid definition";
+            gridFeatures = config.gridStandartFeatureList.concat(customFeatures).join(' ');
         }
-        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${featureList}></div>`;
+
+        const htmlMarkup = `<div id="grid_${optionsName}" class="grid" ui-grid="${optionsName}" ${gridFeatures}></div>`;
         cElement.append(htmlMarkup);
         return (): void => {
         }
@@ -82,7 +80,7 @@ function gridRightClickSelectionDirective() {
                 const selectedRow = (scope.$parent.$parent as any).row;
                 //only single selection active
                 if (selectedRow && selectedRow.grid) {
-                    selectedRow.grid.api.selection.clearSelectedRows();   
+                    selectedRow.grid.api.selection.clearSelectedRows();
                     selectedRow.setSelected(true);
                 }
             });

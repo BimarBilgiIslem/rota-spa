@@ -15,15 +15,13 @@
  */
 
 //#region Imports
-import { BaseApi } from "./baseapi";
+import BaseApi from "./baseapi";
 //#endregion
 /**
  * Base Crud Api for all api services
  * @description Please refer to the static endpoint names defined below for info
  */
 class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
-
-
     //#region Init
     //bundle
     static injects = BaseApi.injects.concat(['Tokens']);
@@ -31,18 +29,13 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * Tokens
      */
     tokens: ITokens;
-
-    constructor(bundle: IBundle, controller?: string, moduleId?: string) {
-        super(bundle, controller, moduleId);
-    }
-
     /**
     * Update bundle
     * @param bundle IBundle
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.tokens = bundle.systemBundles["tokens"];
+        this.tokens = bundle.services["tokens"];
     }
     //#endregion
 
@@ -82,6 +75,10 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @returns {ng.IPromise<TModel>}
     */
     getById(id: number, controller?: string): ng.IPromise<TModel> {
+        if (!id || id <= 0 || !this.common.isNumber(id)) {
+            this.logger.console.error({ message: 'getById/id param must be number but received ' + id });
+            return this.common.promise();
+        }
         return this.get<TModel>({
             action: this.config.crudActionNames.getById,
             controller: controller,
@@ -96,7 +93,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @returns {ng.IPromise<ICrudServerResponseData>}
     */
     save(model: TModel, controller?: string): ng.IPromise<ICrudServerResponseData> {
-        return this.post<TModel>({ action: this.config.crudActionNames.save, controller: controller, data: model });
+        return this.post<ICrudServerResponseData>({ action: this.config.crudActionNames.save, controller: controller, data: model });
     }
 
     /**
@@ -118,7 +115,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
             .$httpParamSerializer(filter)}&access_token=${this.tokens.accessToken}`;
         location.replace(url);
     }
+    //#endregion
 }
-
-//#endregion
-export { BaseCrudApi }
+//export
+export default BaseCrudApi 

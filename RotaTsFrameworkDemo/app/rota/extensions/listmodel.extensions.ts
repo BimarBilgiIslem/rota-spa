@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ObserableModel } from "../base/obserablemodel";
+import ObserableModel from "../base/obserablemodel";
 /**
  * Set readonly prop of array
  */

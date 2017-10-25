@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-interface IHub<TMethods> {
+interface IHub<TMethods = {}> {
     promise: JQueryPromise<any>;
     methods: TMethods;
     on(eventName: string, callback: (...msg: any[]) => void): void;
@@ -74,8 +74,7 @@ interface IHubOptions {
 }
 
 interface IPushService extends IBaseService {
-    connectToHub(hubName: string, options: IHubOptions): IHub<{}>;
-    connectToHub<TMethods>(hubName: string, options: IHubOptions): IHub<TMethods>;
+    connectToHub<TMethods = {}>(hubName: string, options: IHubOptions): IHub<TMethods>;
 }
 
 interface IListeners {

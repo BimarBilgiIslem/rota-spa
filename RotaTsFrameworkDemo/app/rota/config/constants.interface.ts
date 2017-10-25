@@ -67,8 +67,7 @@ interface IConstants {
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;
         GRID_DEFAULT_OPTIONS_NAME: string;
-        GRID_FULL_FEATUTE_LIST: string;
-        GRID_STANDART_FEATURE_LIST: string;
+        GRID_STANDART_FEATURE_LIST: string[];
         GRID_CUSTOM_ROW_TEMPLATE: string;
         GRID_ROW_FORMATTER_ATTR: string;
         GRID_CONTEXT_MENU_ATTR: string;
@@ -76,8 +75,6 @@ interface IConstants {
         GRID_ROW_DOUBLE_CLICK_EDIT_ATTR: string;
         GRID_EDIT_BUTTON_HTML: string;
         GRID_DELETE_BUTTON_HTML: string;
-        GRID_PAGE_INDEX_FIELD_NAME: string;
-        GRID_PAGE_SIZE_FIELD_NAME: string;
         GRID_MAX_PAGE_SIZE: number;
     };
     tree: { TREE_TWISTIE_COLLAPSED_TPL: string; TREE_TWISTIE_EXPANDED_TPL: string };
@@ -96,6 +93,7 @@ interface IConstants {
         DEFAULT_NEW_ITEM_PARAM_VALUE: string;
         DEFAULT_NEW_ITEM_PARAM_NAME: string;
         DEFAULT_READONLY_PARAM_NAME: string;
+        PREVIEW_MODE_PARAM_NAME: string;
         DEFAULT_MODEL_ORDER_FIELD_NAME: string;
         DEFAULT_AUTOSAVE_INTERVAL: number;
         DEFAULT_MODAL_CONTROLLER_NAME: string;
@@ -104,7 +102,6 @@ interface IConstants {
         STORAGE_NAME_STORED_FILTER_URL: string;
         GRID_REFRESH_INTERVALS: number[];
     };
-    shortcuts: { GO_TO_FIRST_ROW_OF_GRID: string };
     errors: {
         MODEL_EXPECTED_AS_ARRAY: string;
         NO_TOTAL_PROP_PROVIDED: string;
@@ -122,6 +119,10 @@ interface IConstants {
         NO_VALIDATORS_DEFINED: string;
         NO_VALIDATOR_DEFINED: string;
         NO_VALIDATION_FUNC_DEFINED: string;
+        IDSRV_GENERIC_ERROR_EN: string;
+        IDSRV_GENERIC_ERROR_TR: string;
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_EN: string;
+        IDSRV_IAT_IS_IN_FUTURE_ERROR_TR: string;
     };
     security: {
         STORAGE_NAME_CURRENT_COMPANY: string;
@@ -153,5 +154,11 @@ interface IConstants {
     dashboard: {
         WIDGET_LOADING_TEMPLATE: string;
         MIN_WIDGET_REFRESH_INTERVAL: number;
+    },
+    style: {
+        IMG_BASE_PATH: string,
+        DEFAULT_FAVICON_NAME: string;
+        WARNING_FAVICON_NAME: string;
+        DEFAULT_AVATAR_NAME: string;
     }
 } 

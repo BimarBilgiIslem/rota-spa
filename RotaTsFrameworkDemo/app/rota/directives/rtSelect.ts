@@ -15,16 +15,14 @@
  */
 
 //#region Imports
-import * as _ from "underscore";
-import * as _s from "underscore.string";
 import * as $ from 'jquery';
-import { ObserableModel } from "../base/obserablemodel";
 //#endregion
 
 //#region Select Directive
-function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorService,
-    $q: ng.IQService, $sce: ng.ISCEService, localization: ILocalization, common: ICommon, logger: ILogger, dialogs: IDialogs,
-    rtSelectI18N: ISelectI18NService, constants: IConstants) {
+function selectDirective($document: ng.IDocumentService, $parse: ng.IParseService, $injector: ng.auto.IInjectorService,
+    $q: ng.IQService, $sce: ng.ISCEService, $timeout: ng.ITimeoutService, localization: ILocalization,
+    common: ICommon, logger: ILogger, dialogs: IDialogs,
+    rtSelectI18N: ISelectI18NService, constants: IConstants, uiGridEditConstants: uiGrid.edit.IUiGridEditConstants) {
 
     function compile(cElement: ng.IAugmentedJQuery, cAttrs: ISelectAttributes) {
         const isAutoSuggest = angular.isDefined(cAttrs.onRefresh);
@@ -37,11 +35,12 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
             throw new Error(constants.errors.MISSING_DISPLAY_PROP_OR_TEMPLATE);
         }
         //#endregion
-
         //#region Dom manupulations
-        const $choices = $('ui-select-choices', cElement),
+        const $uiSelect = $('ui-select', cElement),
+            $choices = $('ui-select-choices', cElement),
             $match = $('ui-select-match', cElement),
-            $row = $("<div/>");
+            $row = $("<div/>"),
+            inGridCell = !!$(cElement).parent('.ui-grid-cell').length;
 
         if (isAutoSuggest) {
             $choices.attr('repeat', 'listItem in listItems' +
@@ -80,6 +79,10 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
         } else {
             $match.html(`<span ng-bind-html="$select.selected.${cAttrs.displayProp}"></span>`);
         }
+        //add to body if run in ui-grid 
+        if (inGridCell) {
+            $uiSelect.attr('append-to-body', 'true');
+        }
         //#endregion
         return (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ISelectAttributes, modelCtrl: ng.INgModelController): void => {
             //#region Init attrs
@@ -116,6 +119,20 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
             }
             //Unique focus event name
             scope.focusEventName = `rt-select-focus:${common.getRandomNumber()}`;
+            //quit edit mode in grid if selected or clicked outside 
+            //https://plnkr.co/edit/ckQhv5bWha2jte5wDBI1?p=preview
+            if (inGridCell) {
+                const docClick = (evt: JQueryEventObject) => {
+                    if ($(evt.target).closest('.ui-select-container').length === 0) {
+                        $timeout(() => {
+                            scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
+                            $document.off('click', docClick);
+                        },
+                            0);
+                    }
+                }
+                $document.on("click", docClick);
+            }
             //#endregion
 
             //#region Utility Methods
@@ -234,7 +251,7 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
              * Get Item by key value for autosuggest mode
              * @param key Model value
              */
-            const bindItemById = (key: number): ng.IPromise<ISelectModel> => {
+            const bindItemById = (key: number): ng.IPromise<ISelectModel[]> => {
                 return asyncModelRequestResult = callMethod<ISelectModel>(scope.onGet, { id: key }).then(
                     (data: ISelectModel) => {
                         let dataArray;
@@ -284,7 +301,7 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
                 }
                 scope.refreshFn = (keyword: string): ng.IPromise<Array<ISelectModel>> => {
                     if (keyword && minAutoSuggestCharLen <= keyword.length) {
-                        return bindItemsByKeyword(keyword);
+                        return bindItemsByKeyword(encodeURIComponent(keyword));
                     }
                 };
             };
@@ -327,8 +344,9 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
                 }, () => {
                     //force getById if defined
                     if (common.isAssigned(scope.onGet))
-                        bindItemById(modelValue).then((model: ISelectModel): void => {
-                            setModel(model);
+                        bindItemById(modelValue).then((model: ISelectModel[]): void => {
+                            if (model && model.length > 0)
+                                setModel(model[0]);
                         });
                     else {
                         logger.console.warn({ message: 'item not found by ' + modelValue });
@@ -390,14 +408,14 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
             if (scope.newItemOptions) {
                 scope.runNewItem = $event => {
                     if (scope.ngDisabled) return;
-                    const instanceOptions: IModalInstanceOptions = {};
-                    instanceOptions.params = scope.params || {};
-                    if (common.isAssigned(scope.newItemOptions.instanceOptions)) {
-                        instanceOptions.services = scope.newItemOptions.instanceOptions.services;
+                    if (!scope.newItemOptions.instanceOptions) scope.newItemOptions.instanceOptions = {};
+                    scope.newItemOptions.instanceOptions.params =
+                        angular.extend(scope.newItemOptions.instanceOptions.params || {}, scope.params);
+
+                    if (!scope.newItemOptions.instanceOptions.model) {
+                        scope.newItemOptions.instanceOptions.model = common.newCrudModel();
+                        scope.newItemOptions.instanceOptions.model.modelState = ModelStates.Added;
                     }
-                    scope.newItemOptions.instanceOptions = instanceOptions;
-                    scope.newItemOptions.instanceOptions.model = common.newCrudModel();
-                    scope.newItemOptions.instanceOptions.model.modelState = ModelStates.Added;
 
                     dialogs.showModal(scope.newItemOptions).then((response: ICrudServerResponseData) => {
                         if (response) {
@@ -484,8 +502,8 @@ function selectDirective($parse: ng.IParseService, $injector: ng.auto.IInjectorS
     //#endregion
 }
 //#region Injections
-selectDirective.$inject = ['$parse', '$injector', '$q', '$sce', 'Localization', 'Common', 'Logger',
-    'Dialogs', 'rtSelectI18N', 'Constants'];
+selectDirective.$inject = ['$document', '$parse', '$injector', '$q', '$sce', '$timeout', 'Localization', 'Common', 'Logger',
+    'Dialogs', 'rtSelectI18N', 'Constants', 'uiGridEditConstants'];
 //#endregion
 //#endregion
 
