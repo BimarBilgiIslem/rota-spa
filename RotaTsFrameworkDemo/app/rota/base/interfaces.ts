@@ -379,6 +379,10 @@ interface IEnum {
  * Base options for all objects
  */
 interface IBaseOptions {
+    /**
+     * Injection name is angular registration name 
+     */
+    registerName?: string;
 }
 /**
 * BasePage options

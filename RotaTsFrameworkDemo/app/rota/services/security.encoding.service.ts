@@ -20,6 +20,7 @@
  */
 class Base64 implements IBase64 {
     serviceName: string = "Base64 Service";
+    static injectionName = "Base64";
 
     private PADCHAR: string = '=';
     private ALPHA: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -108,7 +109,7 @@ class Base64 implements IBase64 {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.security.encoding', []);
-module.service('Base64', Base64);
+module.service(Base64.injectionName, Base64);
 //#endregion
 
 export { Base64 };

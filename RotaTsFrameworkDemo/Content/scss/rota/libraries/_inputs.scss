@@ -5,13 +5,17 @@
 }
 
 input {
-    &[type="radio"], &[type="checkbox"] {
+    &[type="radio"], &[type="checkbox"], &[type="radio"] ~ label, &[type="checkbox"] ~ label {
         cursor: pointer;
     }
 
     &::-ms-clear {
         display: none;
     }
+}
+
+.form-control {
+    @include box-shadow(none); // Redeclare so transitions work
 }
 
 

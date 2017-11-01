@@ -22,6 +22,7 @@ import OidcManager = require('config/oidc-manager')
 //#region Security Service
 class Security implements ISecurity {
     serviceName: 'Security Service';
+    static injectionName = "Security";
 
     //#region Init
     constructor(
@@ -151,7 +152,7 @@ Security.$inject = ['$window', '$rootScope', '$http', 'SecurityConfig', 'Config'
 //#region Register
 const serviceModule: ng.IModule = angular.module('rota.services.security', ['rota.services.security.config']);
 serviceModule
-    .service('Security', Security)
+    .service(Security.injectionName, Security)
     .value('CurrentUser', {})
     .value('CurrentCompany', {})
     .value('Tokens', {});

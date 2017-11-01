@@ -20,6 +20,7 @@
  */
 class Dialogs implements IDialogs {
     serviceName = 'Dialog Service';
+    static injectionName = "Dialogs";
 
     static $inject = ['$rootScope', '$q', '$uibModal', 'Routing', 'Config', 'RouteConfig', 'Common', 'Loader', 'Localization', 'Constants'];
     constructor(private $rootScope: IRotaRootScope,
@@ -352,7 +353,7 @@ class Dialogs implements IDialogs {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.dialog', ['ui.bootstrap']);
-module.service('Dialogs', Dialogs);
+module.service(Dialogs.injectionName, Dialogs);
 module.run([
     '$templateCache', ($templateCache: ng.ITemplateCacheService) => {
         //#region Add templates to cache

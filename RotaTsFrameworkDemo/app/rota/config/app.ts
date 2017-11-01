@@ -17,7 +17,6 @@
 //#region Imports
 import { IRotaApp } from './app.interface';
 //deps
-import BaseApi from "../base/baseapi";
 import InjectableObject from '../base/injectableobject';
 import { DefaultModalController } from '../base/basemodalcontroller';
 import constants = require('config/constants');
@@ -45,6 +44,13 @@ class RotaApp implements IRotaApp {
     //#region Init
     constructor(moduleName: string) {
         this.rotaModule = angular.module(moduleName, ["rota"]);
+        this.init();
+    }
+    /**
+     * Initialize module setup
+     */
+    private init(): IRotaApp {
+        //#region Config Blocks
         //Configure lazy loading assignments and debug options
         this.configure(['$filterProvider', '$animateProvider', '$compileProvider', '$controllerProvider',
             '$provide', 'ConfigProvider', '$sceDelegateProvider', '$uibTooltipProvider', 'Environment', 'Constants',
@@ -97,6 +103,7 @@ class RotaApp implements IRotaApp {
                     });
                 }
             }]);
+        //#endregion
 
         //#region Run Blocks
         //Hook handlers
@@ -113,6 +120,7 @@ class RotaApp implements IRotaApp {
             });
         }]);
         //reload if user specific culture different than browser culture
+        //TODO:move to localization service
         this.run(["$window", "Localization", "Config", "CurrentUser", "Constants", "Common",
             ($window: ng.IWindowService, localization: ILocalization, config: IMainConfig,
                 currentUser: IUser, constants: IConstants, common: ICommon) => {
@@ -139,7 +147,10 @@ class RotaApp implements IRotaApp {
         //#endregion
 
         //add base modal controllers if not defined controller.see dialog.services->showModal
-        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME, this.createAnnotation(DefaultModalController));
+        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME,
+            this.createAnnotation(DefaultModalController));
+
+        return this;
     }
     //#endregion
 
@@ -168,7 +179,9 @@ class RotaApp implements IRotaApp {
      * @param dependencies Dependencies 
      */
     addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): IRotaApp {
+        //check name
         this.validateName(controllerName, "controller");
+        //register
         const controllerAnnotation = this.createAnnotation(controller, dependencies);
         this.$controllerProvider.register(controllerName, controllerAnnotation);
         return this;
@@ -179,8 +192,11 @@ class RotaApp implements IRotaApp {
     * @param api Api class itself
     * @param dependencies Optional dependencies
     */
-    addApi(apiName: string, api: typeof BaseApi, ...dependencies: string[]): IRotaApp {
+    addApi(apiName: string, api: typeof InjectableObject, ...dependencies: string[]): IRotaApp {
+        //check name
         this.validateName(apiName, "api");
+        api.injectionName = apiName;
+        //register
         const apiAnnotation = this.createAnnotation(api, dependencies);
         this.$provide.service(apiName, apiAnnotation);
         return this;
@@ -376,4 +392,4 @@ class RotaApp implements IRotaApp {
     //#endregion
 }
 //Export
-export default new RotaApp(RotaApp.moduleName)
+export default new RotaApp(RotaApp.moduleName);

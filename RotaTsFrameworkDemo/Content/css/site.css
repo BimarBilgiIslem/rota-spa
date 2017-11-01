@@ -6681,11 +6681,15 @@ legend {
   font-weight: normal;
   font-family: "Segoe UI", "Lucida Grande", "Ubuntu", "sans-serif"; }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"], input[type="checkbox"], input[type="radio"] ~ label, input[type="checkbox"] ~ label {
   cursor: pointer; }
 
 input::-ms-clear {
   display: none; }
+
+.form-control {
+  -webkit-box-shadow: none;
+  box-shadow: none; }
 
 input.ng-invalid,
 textarea.ng-invalid {
@@ -6737,6 +6741,10 @@ textarea.ng-invalid {
 
 .rt-date-picker .fixedrange {
   padding-top: 3px; }
+
+.rt-date-picker .calendar-picker {
+  cursor: pointer;
+  border-left: none; }
 
 .rt-date-picker ul.dropdown-menu {
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15); }

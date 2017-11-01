@@ -68,15 +68,8 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-
         this.$uibModalInstance = bundle.services["$uibmodalinstance"];
         this.instanceOptions = bundle.services["instanceoptions"] || {};
-        //Inject optional custom services if any
-        if (this.instanceOptions.services) {
-            this.instanceOptions.services.forEach((service): void => {
-                this.defineService(service, this.$injector.get(service));
-            });
-        }
     }
     //#endregion
 
@@ -141,10 +134,31 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
     //#endregion
 }
 /**
- * Default modal controller in the usage with showModal() of Dialogs service
+ * Default modal controller used by showModal() of Dialogs service
  */
-@Controller({ initializeModel: true })
 class DefaultModalController<TModel extends IBaseModel> extends BaseModalController<TModel> {
+    constructor(bundle: IBundle) {
+        //call base constructor
+        super(bundle);
+        //as no decorator is defined,initcontroller must be called manually here
+        this.initModel();
+    }
+    //#region InjcetableObject
+    /**
+    * Update bundle
+    * @param bundle IBundle
+    */
+    initBundle(bundle: IBundle): void {
+        super.initBundle(bundle);
+        //Inject optional custom services if any
+        if (this.instanceOptions.services) {
+            this.instanceOptions.services.forEach((service): void => {
+                this.defineService(service, this.$injector.get(service));
+            });
+        }
+    }
+    //#endregion
+
 }
 //Exports
 export default BaseModalController

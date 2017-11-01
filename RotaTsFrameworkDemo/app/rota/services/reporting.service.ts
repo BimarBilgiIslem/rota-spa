@@ -24,6 +24,7 @@ import * as moment from "moment";
  */
 class Reporting implements IReporting {
     serviceName = 'Reporting Service';
+    static injectionName = "Reporting";
 
     static $inject = ['$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants', 'Tokens'];
     constructor(
@@ -125,7 +126,7 @@ class Reporting implements IReporting {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.reporting', []);
-module.service('Reporting', Reporting);
+module.service(Reporting.injectionName, Reporting);
 //#endregion
 
 export { Reporting }

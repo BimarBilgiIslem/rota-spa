@@ -318,6 +318,8 @@ class Console implements IConsole {
 class Logger implements ILogger {
     //#region Props
     serviceName = "Logger Service";
+    static injectionName = "Logger";
+
     private logServices: { [index: number]: IBaseLogger<ILog> };
     //Services
     /**
@@ -371,7 +373,7 @@ class Logger implements ILogger {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.log', ['rota.services.log.config', 'rota.config']);
-module.service('Logger', Logger);
+module.service(Logger.injectionName, Logger);
 //Config 
 module.config([
     '$logProvider', 'ConfigProvider',

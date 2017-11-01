@@ -490,7 +490,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      */
     clearAll(): void {
         this.clearGrid();
-        this.initFilter();
+        this.filter = this.getFilter();
     }
     /**
      * Clear grid

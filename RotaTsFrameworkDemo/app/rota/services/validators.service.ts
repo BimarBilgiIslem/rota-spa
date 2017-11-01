@@ -20,6 +20,7 @@
 class Validators implements IValidators {
     //#region Props
     serviceName: 'Validator Service';
+    static injectionName = "Validators";
     /**
     * Custom Validators
     */
@@ -129,7 +130,7 @@ Validators.$inject = ['Common', 'Constants'];
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.validators', []);
-module.service('Validators', Validators);
+module.service(Validators.injectionName, Validators);
 //#endregion
 
 export { Validators }

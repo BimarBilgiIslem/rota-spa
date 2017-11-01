@@ -713,11 +713,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     */
     protected changeUrl(id: number | string): ng.IPromise<any> {
         if (!this.crudPageOptions.changeIdParamOnSave) return this.common.promise();
-        //get id param obj
-        const idParam = {};
-        idParam[this.crudPageOptions.newItemParamName] = id;
         //replace the url with new id
-        const params = this.common.extend(this.$stateParams, idParam);
+        const params = this.common.extend(this.$stateParams, { [this.crudPageOptions.newItemParamName]: id });
         return this.routing.changeUrl(params);
     }
     //#endregion

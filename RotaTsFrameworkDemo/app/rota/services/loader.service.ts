@@ -20,6 +20,7 @@
  */
 class Loader implements ILoader {
     serviceName: string = "Loader Service";
+    static injectionName = "Loader";
     //states
     static $inject = ['$q', '$rootScope', 'Common'];
     constructor(private $q: ng.IQService, private $rootScope: IRotaRootScope, private common: ICommon) {
@@ -65,7 +66,7 @@ class Loader implements ILoader {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.loader', []);
-module.service('Loader', Loader);
+module.service(Loader.injectionName, Loader);
 //#endregion
 
 export { Loader };

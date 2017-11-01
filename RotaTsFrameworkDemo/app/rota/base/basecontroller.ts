@@ -58,8 +58,8 @@ class BaseController extends InjectableObject {
     //#region Bundle Services
     static injects = InjectableObject.injects.concat(['$document', '$rootScope', '$scope', '$window', '$stateParams', '$q',
         'Logger', 'Common', 'Dialogs', 'Routing', 'Config', 'Localization', 'stateInfo', 'hotkeys', 'TitleBadges',
-        'Constants', 'CurrentUser', 'CurrentCompany']);
-    //system services
+        'Constants']);
+    //System services
     protected $rootScope: IRotaRootScope;
     protected $scope: ng.IScope;
     protected $window: ng.IWindowService;
@@ -68,50 +68,15 @@ class BaseController extends InjectableObject {
     protected hotkeys: ng.hotkeys.HotkeysProvider;
     protected $q: ng.IQService;
     //Rota services
-    /**
-     * Badge service
-     */
     protected titlebadges: ITitleBadges;
-    /**
-     * Global consts
-     */
     protected constants: IConstants;
-    /**
-     * Brief info for state
-     */
     protected stateInfo: IStateInfo;
-    /**
-     * Logger service
-     */
     protected logger: ILogger;
-    /**
-     * Common service
-     */
     protected common: ICommon;
-    /**
-     * Dialogs services
-     */
     protected dialogs: IDialogs;
-    /**
-     * Main config 
-     */
     protected config: IMainConfig;
-    /**
-     * Routing service
-     */
     protected routing: IRouting;
-    /**
-     * Localization service
-     */
     protected localization: ILocalization;
-    /**
-     * Current principal
-     */
-    protected currentUser: IUser;
-    /**
-     * Selected company if available
-     */
-    protected currentCompany: ICompany;
     //#endregion
 
     //#region Init
@@ -183,8 +148,6 @@ class BaseController extends InjectableObject {
         this.stateInfo = bundle.services["stateinfo"];
         this.titlebadges = bundle.services["titlebadges"];
         this.constants = bundle.services["constants"];
-        this.currentUser = bundle.services["currentuser"];
-        this.currentCompany = bundle.services["currentcompany"];
     }
     //#endregion
 

@@ -19,6 +19,7 @@ import * as _s from "underscore.string";
 //#region Common Service
 class Common implements ICommon {
     serviceName: string = "Common Service";
+    static injectionName = "Common";
 
     //#region Init
     constructor(private $q: ng.IQService, private $filter: ng.IFilterService,
@@ -459,7 +460,7 @@ Common.$inject = ['$q', '$filter', '$interpolate', 'Config'];
 
 //#region Register
 const module: ng.IModule = angular.module('rota.services.common', [])
-    .service('Common', Common);
+    .service(Common.injectionName, Common);
 //#endregion
 
 export { Common }

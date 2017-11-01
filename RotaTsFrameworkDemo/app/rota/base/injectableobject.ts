@@ -21,10 +21,14 @@ import * as _s from "underscore.string";
 class InjectableObject {
     //#region Props
     $injector: ng.auto.IInjectorService;
+    protected currentUser: IUser;
+    protected currentCompany: ICompany;
+
+    static injectionName: string;
     /**
      * Service names to be injected
      */
-    static injects = ['$injector'];
+    static injects = ['$injector', 'CurrentUser', 'CurrentCompany'];
     //#endregion
 
     //#region Init
@@ -37,6 +41,8 @@ class InjectableObject {
      */
     initBundle(bundle: IBundle): void {
         this.$injector = bundle.services['$injector'];
+        this.currentUser = bundle.services["currentuser"];
+        this.currentCompany = bundle.services["currentcompany"];
     }
     /**
      * Dynamically define service on controller

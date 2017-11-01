@@ -45,7 +45,6 @@ class BaseApi extends InjectableObject implements IBaseApi {
     controller?: string;
     moduleId?: string;
     //#endregion
-
     //#region Init
     static injects = InjectableObject.injects.concat(['$q', '$http', '$httpParamSerializer', 'Config', 'Common',
         'Localization', 'Caching', 'Logger', 'Upload', 'Constants', 'Environment']);

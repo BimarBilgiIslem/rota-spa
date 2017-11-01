@@ -21,6 +21,7 @@
 class TitleBadges implements ITitleBadges {
     //#region Props
     serviceName = "TitleBadges Service";
+    static injectionName = "TitleBadges";
     badges: { [index: number]: ITitleBadge };
     //#endregion
 
@@ -110,7 +111,7 @@ class TitleBadges implements ITitleBadges {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.titlebadges', []);
-module.service('TitleBadges', TitleBadges);
+module.service(TitleBadges.injectionName, TitleBadges);
 //#endregion
 
 export { TitleBadges }

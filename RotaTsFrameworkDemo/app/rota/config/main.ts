@@ -38,6 +38,7 @@ require.config({
         'angular-animate': './rota/core/angular-animate.min',
         'angular-cookies': './rota/core/angular-cookies.min',
         'signalr.core': './rota/core/jquery.signalR-2.2.1.min',
+        'reflect-metadata': './rota/core/Reflect',
         //typscript helper
         tslib: './rota/core/tslib',
         //oidc paths
@@ -128,7 +129,7 @@ require.config({
             deps: ['angular']
         },
         'ng-ckeditor': {
-            deps: ['angular']
+            deps: ['angular', 'ckeditor']
         },
         ngcontextmenu: {
             deps: ['angular']
@@ -158,7 +159,7 @@ require.config({
 //#endregion
 
 //#region Runtime config 
-if (window) {
+if (typeof window !== 'undefined') {
     const env = window.__globalEnvironment;
 
     //#region Methods

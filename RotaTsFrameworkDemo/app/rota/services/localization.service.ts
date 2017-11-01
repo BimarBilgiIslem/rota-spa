@@ -26,6 +26,7 @@ import 'i18n!rota-resources/nls/moment-lang';
 class Localization implements ILocalization {
     //#region Props
     serviceName = "Localization Service";
+    static injectionName = "Localization";
 
     private _currentLanguage: ILanguage;
     /**
@@ -120,7 +121,7 @@ class Localization implements ILocalization {
 
 //#region Register
 const module: ng.IModule = angular.module('rota.services.localization', []);
-module.service('Localization', Localization);
+module.service(Localization.injectionName, Localization);
 module.factory('Resource', () => {
     return angular.merge({}, rotaresource, appresource);
 });

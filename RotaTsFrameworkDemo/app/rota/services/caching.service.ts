@@ -73,6 +73,7 @@ class Storage implements ICacher {
 class Caching implements ICaching {
     //#region Props
     serviceName = "Caching Service";
+    static injectionName = "Caching";
     private static cacheId = "rota-cache";
     cachers: { [index: number]: ICacher };
     //#endregion
@@ -118,7 +119,7 @@ class Caching implements ICaching {
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.caching', []);
-module.service('Caching', Caching);
+module.service(Caching.injectionName, Caching);
 //#endregion
 
 export { Caching }

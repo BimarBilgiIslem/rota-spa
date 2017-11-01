@@ -7,6 +7,7 @@ import 'angular-bootstrap';
 import 'angular-local';
 import 'angular-cookies';
 import 'tslib';
+import 'reflect-metadata';
 
 angular.module('rota.core',
     [

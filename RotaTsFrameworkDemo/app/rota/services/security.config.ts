@@ -20,6 +20,8 @@ import { BaseConfig } from "../base/baseconfig";
 
 //#region SecurityConfig
 class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
+    static injectionName = "SecurityConfig";
+
     constructor(environments: IGlobalEnvironment, constants: IConstants) {
         super();
         const config: ISecurityConfig = {
@@ -40,7 +42,7 @@ SecurityConfigProvider.$inject = ['Environment', 'Constants'];
 
 //#region Register
 var module: ng.IModule = angular.module('rota.services.security.config', []);
-module.provider('SecurityConfig', SecurityConfigProvider);
+module.provider(SecurityConfigProvider.injectionName, SecurityConfigProvider);
 //#endregion
 
 export { SecurityConfigProvider }

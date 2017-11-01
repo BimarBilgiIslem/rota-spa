@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as $ from "jquery";
 //#region Interfaces
 interface IInfoAttributes extends ng.IAttributes {
     rtInfo: string;
@@ -32,7 +33,7 @@ function rtInfoDirective($compile: ng.ICompileService) {
             });
 
         const $infoElem = $compile(infoElem)(scope);
-        $infoElem.prependTo(element);
+        $($infoElem).prependTo(element);
 
         element.removeAttr("rt-info");
     }

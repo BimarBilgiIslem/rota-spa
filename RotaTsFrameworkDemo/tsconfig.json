@@ -1,11 +1,12 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
         "module": "amd",
         "target": "es5",
         "noEmitOnError": true,
         "removeComments": false,
-        //"emitDecoratorMetadata": true,
+        "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "baseUrl": "app",
         "importHelpers": true,

@@ -28,6 +28,7 @@ import * as _s from "underscore.string";
 class Routing implements IRouting {
     //#region Props
     serviceName: string = "Routing Service";
+    static injectionName = "Routing";
     /**
      * Quick menus
      */
@@ -682,7 +683,7 @@ config.$inject = ['$provide', '$stateProvider', '$urlRouterProvider', '$stickySt
 //#region Register
 var module: ng.IModule = angular.module('rota.services.routing', ['rota.services.routing.config', 'rota.services.loader', 'ui.router',
     'ct.ui.router.extras.sticky', 'ct.ui.router.extras.dsr']);
-module.service('Routing', Routing)
+module.service(Routing.injectionName, Routing)
     .config(config);
 //#endregion
 
