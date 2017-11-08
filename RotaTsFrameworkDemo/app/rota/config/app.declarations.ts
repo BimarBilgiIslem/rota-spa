@@ -14,18 +14,44 @@
  * limitations under the License.
  */
 
+/**
+ * optional plugin make the dependency optional,literal obj assign as defalt
+ */
 declare module "optional!*" {
     let json: any;
     export default json;
 }
+/**
+ * json plugin which is override of text plugin is used to make async request to the restful services
+ */
 declare module "json!*" {
     let json: any;
     export default json;
 }
+
+/**
+ * @description xdom plugin is used to import component or api from cross origin domains.
+ * Make sure your CORS settings satisfied the criteries.
+ * @example
+ * import Injection = require("xdom!demo/customer/customer.api");
+   import "xdom!demo/common/customer.directive"
+
+   constructor(bundle: IBundle,
+        @Inject(Injection.CustomerApi.injectionName) customerApi: any,
+        private testapi: TestapiApi
+    ) {
+        super(bundle);
+
+        this.customerApi = customerApi;
+    }
+ */
 declare module "xdom!*" {
     let json: any;
-    export default json;
+    export = json;
 }
+/**
+ * text plugin is used to fetch text files such as HTML,text etc.
+ */
 declare module "text!*" {
     let json: any;
     export default json;

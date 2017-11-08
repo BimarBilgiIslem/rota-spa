@@ -31,6 +31,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         scrollToTop: true,
         checkDirtyOnExit: true,
         enableStickyCrudButtons: true,
+        registerName: null,
         initializeModel: true,
         crudButtonsVisibility: {
             newButton: true,
@@ -157,34 +158,21 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
 
     //#region Init
     /**
-     * Extend crud page options with user options
-     * @param bundle Service Bundle
-     * @param options User options
-     */
-    private static extendOptions(bundle: IBundle, options?: ICrudPageOptions): ICrudPageOptions {
-        const configService = bundle.services["config"] as IMainConfig;
-        const crudOptions: ICrudPageOptions = angular.merge({}, BaseCrudController.defaultOptions,
-            {
-                newItemParamName: configService.defaultNewItemParamName,
-                newItemParamValue: configService.defaultNewItemParamValue,
-                postOnlyModelChanges: configService.postOnlyModelChanges
-            }, options);
-        return crudOptions;
-    }
-    /**
      * Constructor 
      * @param bundle Service Bundle
      * @param options User options
      */
     constructor(bundle: IBundle) {
         //call base constructor
-        super(bundle, BaseCrudController.extendOptions(bundle, bundle.options));
-        //set default options
+        super(bundle);
+        //update options
         const parsers: ICrudParsers = {
             saveParsers: [this.checkAuthority, this.applyValidatitons, this.beforeSaveModel],
             deleteParsers: [this.checkAuthority, this.beforeDeleteModel]
         };
-        this.options = this.common.extend<ICrudPageOptions>(this.options, { parsers: parsers });
+        this.crudPageOptions.parsers = this.crudPageOptions.parsers || parsers;
+        this.crudPageOptions.postOnlyModelChanges = this.common.iif(this.crudPageOptions.postOnlyModelChanges, this.config.postOnlyModelChanges);
+
         this.crudPageFlags = { isCloning: false, isDeleting: false, isSaving: false, isNew: true };
         //set readonly
         this.crudPageOptions.readOnly = (this.crudPageOptions.readOnly &&

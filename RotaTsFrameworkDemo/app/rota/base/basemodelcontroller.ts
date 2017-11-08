@@ -42,8 +42,13 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
     //#endregion
 
     //#region Init
-    constructor(bundle: IBundle, options?: IModelPageOptions) {
-        super(bundle, options);
+    constructor(bundle: IBundle) {
+        super(bundle);
+        //options update
+        this.modelPageOptions.newItemParamName =
+            this.modelPageOptions.newItemParamName || this.config.defaultNewItemParamName;
+        this.modelPageOptions.newItemParamValue =
+            this.modelPageOptions.newItemParamValue || this.config.defaultNewItemParamValue;
         //get new instance of validator service
         this.validators = this.$injector.instantiate(Validators) as IValidators;
         this.validators.controller = this;

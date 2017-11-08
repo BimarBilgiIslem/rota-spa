@@ -34,15 +34,6 @@ interface IMultiFileUploadItem {
     $model: IFileModel;
     $uploadedFile: IUploadedFile;
 }
-
-interface IUploadedFile {
-    name?: string;
-    loaded?: number;
-    total?: number;
-    icon?: string;
-    isLoaded?: boolean;
-    downloadLink?: string;
-}
 //#endregion
 
 //#region Directive

@@ -7893,5 +7893,13 @@ i.rt-info {
   transform-origin: 0 0;
   height: 70%; }
 
+.rt-file-upload {
+  position: relative; }
+  .rt-file-upload .progress-wrapper {
+    position: absolute;
+    right: 47px;
+    top: 8px;
+    z-index: 2; }
+
 /************** VENDOR CSS URL IMPORTS ******************/
 

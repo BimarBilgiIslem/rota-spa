@@ -53,6 +53,10 @@ class BaseController extends InjectableObject {
      * Flag that indcicates controller scope has been destroyed
      */
     private destroyed: boolean = false;
+    /**
+     * Page options
+     */
+    protected options: IBasePageOptions;
     //#endregion
 
     //#region Bundle Services
@@ -80,10 +84,10 @@ class BaseController extends InjectableObject {
     //#endregion
 
     //#region Init
-    constructor(bundle: IBundle, public options?: IBasePageOptions) {
+    constructor(bundle: IBundle) {
         super(bundle);
-
-        this.options = angular.extend({ formName: this.constants.controller.DEFAULT_FORM_NAME }, options);
+        //update options
+        this.options.formName = this.options.formName || this.constants.controller.DEFAULT_FORM_NAME;
         //set form watchers
         this.$scope.$watch(`${this.options.formName}.$dirty`, (newValue?: boolean) => {
             this.onFormDirtyFlagChanged(!!newValue);
@@ -130,6 +134,8 @@ class BaseController extends InjectableObject {
      */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
+        //options
+        this.options = (bundle.options || {}) as IBasePageOptions;
         //system
         this.$rootScope = bundle.services['$rootscope'];
         this.$scope = bundle.services['$scope'];

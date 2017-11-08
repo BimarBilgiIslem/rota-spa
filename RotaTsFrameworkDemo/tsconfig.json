@@ -14,7 +14,8 @@
         //"strictNullChecks": true,
         "paths": {
             "tslib": [ "../Scripts/typings/tslib/tslib.d.ts" ]
-        }
+        },
+        "lib": [ "es2015.promise", "dom", "es5" ]
     },
     "include": [
         "Scripts/typings/**/*",

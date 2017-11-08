@@ -13,22 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import ObserableModel from "../base/obserablemodel";
 
 //#region Interfaces
 interface IFileUploadAttributes extends ng.IAttributes {
 }
 
 interface IFileUploadScope extends ng.IScope {
-    fileName: string;
+    uploadedFile: IUploadedFile;
     uploadFiles: (files: IFileInfo[]) => void;
     accept?: string;
     maxUploadSize: string;
+    onUploaded: (file: { file: IFileInfo }) => ng.IPromise<IFileUploadResponseData>;
 }
 //#endregion
 
 //#region Directive
 function fileUploadDirective(localization: ILocalization, logger: ILogger, config: IMainConfig) {
-    function link(scope: IFileUploadScope, element: ng.IAugmentedJQuery, attrs: IFileUploadAttributes, modelCtrl: ng.INgModelController): void {
+    function link(scope: IFileUploadScope,
+        element: ng.IAugmentedJQuery,
+        attrs: IFileUploadAttributes,
+        modelCtrl: ng.INgModelController): void {
         scope.maxUploadSize = config.maxFileUploadSize;
         /**
          * Check extension
@@ -50,12 +55,32 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger, confi
 
         scope.uploadFiles = (files: IFileInfo[]): void => {
             if (!files || !files.length) return;
-            //upload 
+            //upload de
             files.forEach((file: IFileInfo): void => {
                 //check ext
                 if (checkExt(file.name)) {
-                    modelCtrl.$setViewValue(file);
-                    scope.fileName = file.name;
+                    const model = new ObserableModel<IFileModel>({ name: file.name, cacheKey: '' });
+                    //create model for upload progress
+                    scope.uploadedFile = {
+                        name: file.name,
+                        isLoaded: false,
+                        loading: true
+                    }
+                    //call uploaded event
+                    const updateResult = scope.onUploaded({ file: file });
+                    //result
+                    updateResult.then((result: IFileUploadResponseData): void => {
+                        scope.uploadedFile.isLoaded = true;
+                        (model as IFileModel).cacheKey = result.newUid;
+                    }, (): void => {
+                        //fail
+                        }, (args: angular.angularFileUpload.IFileProgressEvent): void => {
+                        debugger;
+                        scope.uploadedFile.total = args.total;
+                        scope.uploadedFile.loaded = args.loaded;
+                    });
+
+                    modelCtrl.$setViewValue(model);
                     return;
                 }
                 scope.fileName = null;
@@ -70,17 +95,20 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger, confi
         require: 'ngModel',
         scope: {
             ngDisabled: '=?',
-            accept: '@'
+            accept: '@',
+            onUploaded: '&?'
         },
         link: link,
-        template: '<div class="input-group">' +
-        '<input ng-model="fileName" readonly type="text" class="form-control" ph-i18n="rota.dosyaseciniz"/>' +
+        template: '<div class="rt-file-upload"><div class="input-group">' +
+        '<input ng-model="uploadedFile.name" readonly type="text" class="form-control" ph-i18n="rota.dosyaseciniz"/>' +
+        '{{uploadedFile.loaded}}{{uploadedFile.total}}<div class="progress-wrapper" ng-show="uploadedFile.loading && !uploadedFile.isLoaded"><round-progress color="#337ab7" max="uploadedFile.total" ' +
+        'current="uploadedFile.loaded" radius="9" stroke="3"></round-progress></div>' +
         '<span class="input-group-btn">' +
         '<button type="button" ngf-multiple="false" ngf-select-disabled=ngDisabled ngf-accept=accept ' +
         'ngf-select="uploadFiles($files)" ngf-max-size=maxUploadSize class="btn btn-primary" uib-tooltip="{{::\'rota.tt_dosyasecmekicintiklayiniz\' | i18n}}">' +
         '<i class="fa fa-upload"></i>' +
         '</button></span>' +
-        '</div>'
+        '</div></div>'
     };
     return directive;
 }

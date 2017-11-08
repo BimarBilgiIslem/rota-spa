@@ -17,14 +17,16 @@
 //#region Imports
 import BaseModelController from './basemodelcontroller';
 import ObserableModel from "./obserablemodel";
-import { Controller } from "./decorators";
 //#endregion
 /**
  * Base Modal controller
  */
-class BaseModalController<TModel extends IBaseModel, TParams = any> extends BaseModelController<TModel>
-    implements IBaseModalController {
+class BaseModalController<TModel extends IBaseModel, TParams = any> extends BaseModelController<TModel>{
     //#region Statics,Members,Props
+    private static readonly defaultOptions: IModalPageOptions = {
+        registerName: null,
+        initializeModel: true
+    }
     static injects = BaseModelController.injects.concat(['$uibModalInstance', 'instanceOptions']);
     /**
      * Modal instance
@@ -59,7 +61,7 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
 
     constructor(bundle: IBundle) {
         //call base constructor
-        super(bundle, { initializeModel: true });
+        super(bundle);
     }
     //#region InjcetableObject
     /**
@@ -133,33 +135,5 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
     }
     //#endregion
 }
-/**
- * Default modal controller used by showModal() of Dialogs service
- */
-class DefaultModalController<TModel extends IBaseModel> extends BaseModalController<TModel> {
-    constructor(bundle: IBundle) {
-        //call base constructor
-        super(bundle);
-        //as no decorator is defined,initcontroller must be called manually here
-        this.initModel();
-    }
-    //#region InjcetableObject
-    /**
-    * Update bundle
-    * @param bundle IBundle
-    */
-    initBundle(bundle: IBundle): void {
-        super.initBundle(bundle);
-        //Inject optional custom services if any
-        if (this.instanceOptions.services) {
-            this.instanceOptions.services.forEach((service): void => {
-                this.defineService(service, this.$injector.get(service));
-            });
-        }
-    }
-    //#endregion
-
-}
 //Exports
 export default BaseModalController
-export { DefaultModalController }

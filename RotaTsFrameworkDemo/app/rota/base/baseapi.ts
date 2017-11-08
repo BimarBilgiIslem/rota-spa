@@ -70,8 +70,8 @@ class BaseApi extends InjectableObject implements IBaseApi {
     constructor(bundle: IBundle, ...services: object[]) {
         super(bundle);
         //set options
-        this.controller = (bundle.options as IApiOptions).serverApi;
-        this.moduleId = (bundle.options as IApiOptions).moduleId;
+        this.controller = bundle.options && (bundle.options as IApiOptions).serverApi;
+        this.moduleId = bundle.options && (bundle.options as IApiOptions).moduleId;
     }
     //#endregion
 
@@ -81,10 +81,10 @@ class BaseApi extends InjectableObject implements IBaseApi {
      * @param file Selected file info
      * @param params Optional params to send to server
      */
-    fileUpload(file: IFileInfo, params?: any): ng.IPromise<IFileUploadResponseData> {
+    fileUpload(file: IFileInfo, params?: any, actionName?: string): ng.IPromise<IFileUploadResponseData> {
         return this.uploader.upload(<any>{
             showSpinner: false,
-            url: this.getAbsoluteUrl(this.constants.server.ACTION_NAME_DEFAULT_FILE_UPLOAD),
+            url: this.getAbsoluteUrl(actionName || this.constants.server.ACTION_NAME_DEFAULT_FILE_UPLOAD),
             method: RequestMethod[RequestMethod.post],
             data: this.common.extend({ file: file }, params)
         }).then((response: IBaseServerResponse<IFileUploadResponseData>): IFileUploadResponseData => {

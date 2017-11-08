@@ -23,7 +23,7 @@ import * as s from "underscore.string";
  * @description This base class should be inherited for all controllers using restful services
  * @param {TModel} is your custom model view.
  */
-abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter = IBaseListModelFilter>
+abstract class BaseListController<TModel extends IBaseModel, TModelFilter extends IBaseListModelFilter = {}>
     extends BaseModelController<TModel>  {
     //#region Props
     //#region Statics
@@ -34,7 +34,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         initializeModel: true,
         scrollToTop: true,
         pagingEnabled: true,
-        editState: undefined,
+        registerName: null,
         showMesssage: true,
         modelExports: ModelExports.Pdf,
         storeFilterValues: false,
@@ -142,36 +142,22 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
 
     //#region Init
     /**
-     * Extend crud page options with user options
-     * @param bundle Service Bundle
-     * @param options User options
-     */
-    private static extendOptions(bundle: IBundle, options?: IListPageOptions): IListPageOptions {
-        const configService = bundle.services["config"] as IMainConfig;
-        const listOptions: IListPageOptions = angular.merge({}, BaseListController.defaultOptions,
-            {
-                newItemParamName: configService.defaultNewItemParamName,
-                pageSize: configService.gridDefaultPageSize,
-                //set grid elem name when running on mobile so enable scrolling 
-                elementToScroll: window.__IS_TOUCHABLE && `grid_${configService.gridDefaultOptionsName}`
-            }, options);
-        return listOptions;
-    }
-    /**
      * Constructor
      * @param bundle Service bundle
      * @param options List page user options
      */
     protected constructor(bundle: IBundle) {
-        //merge options with defaults
-        super(bundle, BaseListController.extendOptions(bundle, bundle.options));
+        super(bundle);
+        //options update
+        this.listPageOptions.pageSize =
+            this.listPageOptions.pageSize || this.config.gridDefaultPageSize;
+        this.listPageOptions.elementToScroll =
+            this.listPageOptions.elementToScroll || (this.common.isMobileOrTablet() && `grid_${this.config.gridDefaultOptionsName}`);
         //init filter object 
         this.filterStorageName = `storedfilter_${this.stateInfo.stateName}`;
         this.gridLayoutStorageName = `storedgridlayout_${this.stateInfo.stateName}`;
-        //init filter
+        //as filter obj could be initialzed after super in ancestor controllers,initFilter must be here
         this.initFilter();
-        //set refresh grid process
-        this.initRefresh();
     }
     /**
      * Update bundle
@@ -192,7 +178,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * this method is called from decorator with all injections are available
      */
     initController(): void {
+        //set refresh grid process
+        if (this.listPageOptions.enableRefresh)
+            this.initRefresh();
+        //init grid 
         this.initGrid();
+        //init data
         super.initController();
     }
     /**
@@ -529,17 +520,11 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     */
     goToDetailState(id: string, entity?: TModel, row?: uiGrid.IGridRowOf<TModel>, $event?: ng.IAngularEvent): ng.IPromise<any> {
         this.common.preventClick($event);
-
         if (!this.isAssigned(this.listPageOptions.editState)) {
             this.logger.console.warn({ message: 'listPageOptions.editState is not defined' });
-            return;
+            return this.common.promise();
         }
-
-        const params = {};
-        if (this.common.isAssigned(id)) {
-            params[this.listPageOptions.newItemParamName] = id;
-        }
-        return this.routing.go(this.listPageOptions.editState, params);
+        return this.routing.go(this.listPageOptions.editState, { [this.listPageOptions.newItemParamName]: id });
     }
     /**
      * Init deletion model by unique key
@@ -769,8 +754,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
 
     //#region Refresh Grid
     initRefresh(): void {
-        if (!this.listPageOptions.enableRefresh) return;
-
         let autoRefreshPromise: IP<any>;
         this.$scope.$watch<number>('vm.listPageOptions.refreshInterval',
             (value, oldValue) => {

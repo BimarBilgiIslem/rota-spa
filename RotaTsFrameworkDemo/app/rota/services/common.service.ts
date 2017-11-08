@@ -149,6 +149,19 @@ class Common implements ICommon {
 
     //#region Utils
     /**
+     * Get first item which is not null or undefined
+     * @param args Parameters
+     * @returns {T} Result
+     */
+    iif<T>(...args: T[]): T {
+        for (let item of args) {
+            if (this.isAssigned(item)) {
+                return item;
+            }
+        }
+        return undefined;
+    }
+    /**
      * Dynamically set favicon
      * @param iconPath
      */

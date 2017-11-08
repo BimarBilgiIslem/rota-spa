@@ -193,6 +193,12 @@ interface ICommon extends IBaseService {
      */
     getUniqueNumber(): number;
     /**
+     * Get first item which is not null or undefined
+     * @param args Parameters
+     * @returns {T} Result
+     */
+    iif<T>(...args: T[]): T;
+    /**
     * Return promise with provided arg
     * @param p Arg
     */

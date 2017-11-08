@@ -21,6 +21,10 @@ import BaseModelController from './basemodelcontroller'
  * Base controller for widgets
  */
 abstract class BaseWidgetController<TModel extends IBaseModel> extends BaseModelController<TModel> {
+    private static readonly defaultOptions: IWidgetPageOptions = {
+        registerName: null,
+        initializeModel: true
+    }
     //#region Props
     /**
      * Widget options
@@ -52,14 +56,6 @@ abstract class BaseWidgetController<TModel extends IBaseModel> extends BaseModel
      * Custom injections
      */
     static injects = BaseModelController.injects.concat(['$timeout', 'widget']);
-
-    constructor(bundle: IBundle, options?: IWidgetPageOptions) {
-        super(bundle, angular.extend({ initializeModel: true }, options));
-        //init model
-        if (this.widgetPageOptions.initializeModel) {
-            this.initModel();
-        }
-    }
 
     destroy(): void {
         super.destroy();

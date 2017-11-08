@@ -22,7 +22,8 @@ class Dialogs implements IDialogs {
     serviceName = 'Dialog Service';
     static injectionName = "Dialogs";
 
-    static $inject = ['$rootScope', '$q', '$uibModal', 'Routing', 'Config', 'RouteConfig', 'Common', 'Loader', 'Localization', 'Constants'];
+    static $inject = ['$rootScope', '$q', '$uibModal', 'Routing', 'Config', 'RouteConfig', 'Common',
+        'Loader', 'Localization', 'Constants', 'Logger'];
     constructor(private $rootScope: IRotaRootScope,
         private $q: ng.IQService,
         private $modal: ng.ui.bootstrap.IModalService,
@@ -32,7 +33,8 @@ class Dialogs implements IDialogs {
         private common: ICommon,
         private loader: ILoader,
         private localization: ILocalization,
-        private constants: IConstants) {
+        private constants: IConstants,
+        private logger: ILogger) {
     }
 
     //#region Dialogs
@@ -95,14 +97,16 @@ class Dialogs implements IDialogs {
                 }
             }
         }
+        //set default controller name if not provided
+        if (!modalOptions.controller) {
+            modalOptions.controller = this.constants.controller.DEFAULT_MODAL_CONTROLLER_NAME;
+            modalOptions.controllerUrl = "rota/base/defaultmodalcontroller";
+            this.logger.console.log({ message: 'default model controller will be used', data: modalOptions });
+        }
         //load controller file
         if (modalOptions.controllerUrl) {
             const cntResolve = { load: () => this.loader.resolve(modalOptions.controllerUrl) }
             modalOptions.resolve = angular.extend(modalOptions.resolve, cntResolve);
-        }
-        //set default controller name if not provided
-        if (!modalOptions.controller) {
-            modalOptions.controller = this.constants.controller.DEFAULT_MODAL_CONTROLLER_NAME;
         }
         return this.$modal.open(modalOptions).result;
     }

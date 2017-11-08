@@ -378,7 +378,7 @@ interface IEnum {
 /**
  * Base options for all objects
  */
-interface IBaseOptions {
+interface IBaseOptions  {
     /**
      * Injection name is angular registration name 
      */
@@ -396,6 +396,10 @@ interface IBasePageOptions extends IBaseOptions {
     * Scroll the top of the page when controller initiated
     */
     scrollToTop?: boolean;
+    /**
+     * Redefine registerName as null|undefined
+     */
+    registerName: string;
 }
 /**
 * BaseModelPage options
@@ -472,6 +476,15 @@ interface IListPageOptions extends IModelPageOptions {
  */
 interface IWidgetPageOptions extends IModelPageOptions {
 
+}
+/**
+ * Directive options
+ */
+interface IDirectiveOptions extends IBaseOptions {
+    /**
+     * Redefine "registerName" as mandatory
+     */
+    registerName: string;
 }
 /**
  * List Buttons Visibilities

@@ -18,8 +18,6 @@
 import { IRotaApp } from './app.interface';
 //deps
 import InjectableObject from '../base/injectableobject';
-import { DefaultModalController } from '../base/basemodalcontroller';
-import constants = require('config/constants');
 import "./infrastructure.index"
 //#endregion
 
@@ -145,11 +143,6 @@ class RotaApp implements IRotaApp {
             }
         }]);
         //#endregion
-
-        //add base modal controllers if not defined controller.see dialog.services->showModal
-        this.rotaModule.controller(constants.controller.DEFAULT_MODAL_CONTROLLER_NAME,
-            this.createAnnotation(DefaultModalController));
-
         return this;
     }
     //#endregion
