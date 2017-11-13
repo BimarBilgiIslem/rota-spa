@@ -4,8 +4,42 @@
         cursor: pointer;
     }
 
-    input[type="radio"] {
-        margin-left: 8px;
-        margin-right: 3px;
+
+
+    .fixedrange {
+        input[type="radio"] {
+            margin-left: 8px;
+            margin-right: 3px;
+        }
+
+        input[type="radio"]:first-child {
+            margin-left: 0;
+        }
+    }
+
+    .custom {
+        display: table;
+
+        .start, .end {
+            display: table-cell;
+        }
+
+        .start {
+            .calendar-picker {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+        }
+
+        .end {
+            > .input-group {
+                margin-left: -1px;
+
+                > input {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+            }
+        }
     }
 }

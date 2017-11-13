@@ -105,11 +105,11 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
     /**
      * Close modal with dismiss
      */
-    closeModal(): void {
+    closeModal(reason?: any): void {
         if (this.common.isObserableModel(this.model)) {
             this.model.revertOriginal();
         }
-        this.$uibModalInstance.dismiss(this.model);
+        this.$uibModalInstance.dismiss(reason || this.model);
     }
     //#endregion
 

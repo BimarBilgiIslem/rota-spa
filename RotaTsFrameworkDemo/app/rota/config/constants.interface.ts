@@ -97,6 +97,7 @@ interface IConstants {
         DEFAULT_MODEL_ORDER_FIELD_NAME: string;
         DEFAULT_AUTOSAVE_INTERVAL: number;
         DEFAULT_MODAL_CONTROLLER_NAME: string;
+        DEFAULT_MODAL_CONTROLLER_PATH: string;
         DEFAULT_SPINNER_OPTIONS: SpinnerOptions;
         ALLOWED_AVATAR_EXTENSIONS: string;
         STORAGE_NAME_STORED_FILTER_URL: string;

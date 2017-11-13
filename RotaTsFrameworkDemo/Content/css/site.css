@@ -6742,9 +6742,18 @@ textarea.ng-invalid {
 .rt-date-picker .fixedrange {
   padding-top: 3px; }
 
+.rt-date-picker .input-group > input {
+  border-right: none; }
+
 .rt-date-picker .calendar-picker {
   cursor: pointer;
   border-left: none; }
+  .rt-date-picker .calendar-picker:hover, .rt-date-picker .calendar-picker:focus {
+    background: none;
+    border-left: none;
+    border-color: #ccc; }
+    .rt-date-picker .calendar-picker:hover i, .rt-date-picker .calendar-picker:focus i {
+      color: #337ab7; }
 
 .rt-date-picker ul.dropdown-menu {
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15); }
@@ -7668,9 +7677,25 @@ ul.rt-multi-file-upload li.rota-animate-rt-multiselect.ng-enter, ul.rt-multi-fil
   font-weight: normal;
   cursor: pointer; }
 
-.range-date-picker input[type="radio"] {
+.range-date-picker .fixedrange input[type="radio"] {
   margin-left: 8px;
   margin-right: 3px; }
+
+.range-date-picker .fixedrange input[type="radio"]:first-child {
+  margin-left: 0; }
+
+.range-date-picker .custom {
+  display: table; }
+  .range-date-picker .custom .start, .range-date-picker .custom .end {
+    display: table-cell; }
+  .range-date-picker .custom .start .calendar-picker {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
+  .range-date-picker .custom .end > .input-group {
+    margin-left: -1px; }
+    .range-date-picker .custom .end > .input-group > input {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0; }
 
 ul.contextmenu {
   list-style-type: none;

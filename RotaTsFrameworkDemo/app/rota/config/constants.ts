@@ -136,6 +136,7 @@ const rotaConstants: IConstants = {
         DEFAULT_AUTOSAVE_INTERVAL: 60 * 1000,
         //Default modal cont.name
         DEFAULT_MODAL_CONTROLLER_NAME: 'defaultModalController',
+        DEFAULT_MODAL_CONTROLLER_PATH: 'rota/base/defaultmodalcontroller',
         //Default ajax spinner options
         DEFAULT_SPINNER_OPTIONS: {
             lines: 13 // The number of lines to draw

@@ -115,20 +115,18 @@ function dateRangeDirective($parse: ng.IParseService, config: IMainConfig, commo
             dateEnd: '=',
             fixedRange: '='
         },
-        template: '<div class="row range-date-picker" ng-class="rangeIsValidClass">' +
-            '<div class="col-sm-12 fixedrange" ng-hide="showfixedrange">' +
+        template: '<div class="range-date-picker" ng-class="rangeIsValidClass">' +
+            '<div class="fixedrange" ng-hide="showfixedrange">' +
             '<input id="fr1" type="radio" ng-model="fixedRange" value="1" /><label for="fr1" i18n=\'rota.bugun\'></label>' +
             '<input id="fr7" type="radio" ng-model="fixedRange" value="7" /><label for="fr7" i18n=\'rota.sonbirhafta\'></label>' +
             '<input id="fr30" type="radio" ng-model="fixedRange" value="30" /><label for="fr30" i18n=\'rota.sonbiray\'></label>' +
             '<input id="fr180" type="radio" ng-model="fixedRange" value="180" /><label for="fr180" i18n=\'rota.sonaltiay\'></label>' +
             '<input id="fr365" type="radio" ng-model="fixedRange" value="365" /><label for="fr365" i18n=\'rota.sonbiryil\'></label>' +
             '<input id="cus" type="radio" ng-model="fixedRange" value="" ng-click="showfixedrange=true" /><label for="cus" i18n=\'rota.ozel\'></label></div>' +
-            '<div ng-show="showfixedrange">' +
-            '<div class="col-sm-6 ">' +
-            '<rt-date-picker ng-model=dateStart date-format="time" class="start"></rt-date-picker>' +
-            '</div><div class="col-sm-6 ">' +
+            '<div ng-show="showfixedrange" class="custom">' +
+            '<rt-date-picker ng-model=dateStart date-format="time" class="start"></rt-date-picker>' +            
             '<rt-date-picker ng-model=dateEnd date-format="time" class="end"></rt-date-picker>' +
-            '</div></div></div>'
+            '</div>'
     };
     return directive;
     //#endregion

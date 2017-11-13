@@ -1,7 +1,6 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "forceConsistentCasingInFileNames": true,
         "module": "amd",
         "target": "es5",
         "noEmitOnError": true,

@@ -100,7 +100,7 @@ class Dialogs implements IDialogs {
         //set default controller name if not provided
         if (!modalOptions.controller) {
             modalOptions.controller = this.constants.controller.DEFAULT_MODAL_CONTROLLER_NAME;
-            modalOptions.controllerUrl = "rota/base/defaultmodalcontroller";
+            modalOptions.controllerUrl = this.constants.controller.DEFAULT_MODAL_CONTROLLER_PATH;
             this.logger.console.log({ message: 'default model controller will be used', data: modalOptions });
         }
         //load controller file

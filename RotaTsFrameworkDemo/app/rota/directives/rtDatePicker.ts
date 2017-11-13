@@ -56,30 +56,36 @@ function dateTimePickerDirective($document: ng.IDocumentService, $timeout: ng.IT
             $datetimepicker = $('datetimepicker', cElement),
             minStep = cAttrs.minuteStep || config.datetimeFormat.datePickerTimeMinStep;
         //inital view values
-        let startView = "day", minView = "day", format = config.datetimeFormat.dateFormat;
+        let startView = "day", minView = "day", format = config.datetimeFormat.dateFormat, w = "167px";
         if (common.isNullOrEmpty(cAttrs.dateFormat)) cAttrs.dateFormat = "day";
 
         switch (cAttrs.dateFormat) {
             case "day":
                 startView = minView = "day";
                 format = config.datetimeFormat.dateFormat;
+                w = "132px";
                 break;
             case "time":
                 startView = "day";
                 minView = "minute";
                 format = config.datetimeFormat.timeFormat;
+                w = "167px";
                 break;
             case "month":
                 startView = minView = "month";
                 format = config.datetimeFormat.monthFormat;
                 phReskey = 'rota.ayseciniz';
+                w = "120px";
                 break;
             case "year":
                 startView = minView = "year";
                 format = config.datetimeFormat.yearFormat;
                 phReskey = 'rota.yilseciniz';
+                w = "95px";
                 break;
         }
+        //set width
+        cElement.attr('style', 'width:' + w);
         //set formats
         $datetimepicker.attr('data-datetimepicker-config', `{startView:'${startView}',minView:'${minView}',minuteStep:${minStep}}`);
         $input.attr('data-date-time-input', format);

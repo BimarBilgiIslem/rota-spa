@@ -98,7 +98,7 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger, confi
         'current="uploadedFile.loaded" radius="9" stroke="3"></round-progress></div>' +
         '<span class="input-group-btn">' +
         '<button type="button" ngf-multiple="false" ngf-select-disabled=ngDisabled ngf-accept=accept ' +
-        'ngf-select="uploadFiles($files)" ngf-max-size=maxUploadSize class="btn btn-primary" uib-tooltip="{{::\'rota.tt_dosyasecmekicintiklayiniz\' | i18n}}">' +
+        'ngf-select="uploadFiles($files)" ngf-max-size=maxUploadSize class="btn btn-primary" tooltip-append-to-body="true" uib-tooltip="{{::\'rota.tt_dosyasecmekicintiklayiniz\' | i18n}}">' +
         '<i class="fa fa-upload"></i>' +
         '</button></span>' +
         '</div></div>'

@@ -1,5 +1,4 @@
 ﻿.rt-date-picker {
-
     &.ng-invalid input {
         border: $validation-control-border;
     }
@@ -8,9 +7,23 @@
         padding-top: 3px;
     }
 
+    .input-group > input {
+        border-right: none;
+    }
+
     .calendar-picker {
         cursor: pointer;
         border-left: none;
+
+        &:hover, &:focus {
+            background: none;
+            border-left: none;
+            border-color: $btn-default-border;
+
+            i {
+                color: #337ab7;
+            }
+        }
     }
 
     ul.dropdown-menu {
