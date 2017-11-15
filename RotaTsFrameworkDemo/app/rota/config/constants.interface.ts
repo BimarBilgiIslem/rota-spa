@@ -61,8 +61,6 @@ interface IConstants {
         EVENT_MODEL_LOADED: string;
         EVENT_STATE_CHANGE_START: string;
         EVENT_STATE_CHANGE_SUCCESS: string;
-        EVENT_ON_ERROR: string;
-        EVENT_COMPANY_CHANGED: string;
     };
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;
@@ -127,6 +125,7 @@ interface IConstants {
     };
     security: {
         STORAGE_NAME_CURRENT_COMPANY: string;
+        STORAGE_NAME_REQUEST_HEADER_MAPS: string;
         IDLE_TIMEOUT: number;
         COUNT_DOWN_FOR_IDLE_TIMEOUT: number;
     },

@@ -149,12 +149,6 @@ interface ITokens {
     idToken: string;
     accessToken: string;
 }
-
-interface IStorageCurrentCompany {
-    id: number;
-    companyId: number;
-    roleId: number;
-}
 //#endregion
 
 //#region Avatar

@@ -107,7 +107,12 @@ class Config extends BaseConfig<IMainConfig> {
                 widgetLoadingTemplate: constants.dashboard.WIDGET_LOADING_TEMPLATE
             },
             //Max file upload size 
-            maxFileUploadSize: "20MB"
+            maxFileUploadSize: "20MB",
+            //default request headers
+            requestHeaderMaps: {
+                companyId: constants.server.HEADER_NAME_COMPANY_ID,
+                roleId: constants.server.HEADER_NAME_ROLE_ID
+            }
         };
         this.config = config;
     }

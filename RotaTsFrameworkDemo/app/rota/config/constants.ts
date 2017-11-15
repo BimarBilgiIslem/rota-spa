@@ -76,9 +76,7 @@ const rotaConstants: IConstants = {
         EVENT_LOGIN_REQIRED: 'rota:loginRequired',
         EVENT_MODEL_LOADED: 'rota:modelLoaded',
         EVENT_STATE_CHANGE_START: '$stateChangeStart',
-        EVENT_STATE_CHANGE_SUCCESS: '$stateChangeSuccess',
-        EVENT_ON_ERROR: 'rota:error',
-        EVENT_COMPANY_CHANGED: 'rota:companychanged'
+        EVENT_STATE_CHANGE_SUCCESS: '$stateChangeSuccess'
     },
     //Grid 
     grid: {
@@ -202,6 +200,7 @@ const rotaConstants: IConstants = {
     security: {
         //Storage names
         STORAGE_NAME_CURRENT_COMPANY: 'current-company',
+        STORAGE_NAME_REQUEST_HEADER_MAPS: 'request-header-maps',
         IDLE_TIMEOUT: 1800000,
         COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000
     },
@@ -226,19 +225,19 @@ const rotaConstants: IConstants = {
         MAX_QUICKMENU_LEN: 4,
         //error pages settings
         TEMPLATES: {
-            error404: 'error404.html',
-            error500: 'error500.html',
-            title: 'title.html',
-            shell: 'shell.html',
-            header: 'header.html',
-            userprofile: 'user-profile.html',
-            badges: 'badges.html',
-            actions: 'header-action-buttons.html',
-            breadcrumb: 'breadcrumb.html',
-            content: 'content.html',
-            currentcompany: 'current-company.html',
-            navmenumobile: 'nav-menu-mobile.html',
-            feedback: 'feedback.html'
+            error404: 'rota/error404.tpl.html',
+            error500: 'rota/error500.tpl.html',
+            title: 'rota/title.tpl.html',
+            shell: 'rota/shell.tpl.html',
+            header: 'rota/header.tpl.html',
+            userprofile: 'rota/user-profile.tpl.html',
+            badges: 'rota/badges.tpl.html',
+            actions: 'rota/header-action-buttons.tpl.html',
+            breadcrumb: 'rota/breadcrumb.tpl.html',
+            content: 'rota/content.tpl.html',
+            currentcompany: 'rota/current-company.tpl.html',
+            navmenumobile: 'rota/nav-menu-mobile.tpl.html',
+            feedback: 'rota/feedback.tpl.html'
         },
         NOT_FOUND_STATE_NAME: 'shell.error404',
         INTERNAL_ERROR_STATE_NAME: 'shell.error500',

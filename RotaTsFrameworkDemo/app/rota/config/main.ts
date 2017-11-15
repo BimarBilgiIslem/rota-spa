@@ -196,15 +196,22 @@ if (typeof window !== 'undefined') {
                     //this is for cross origin text requests
                     useXhr: (url, protocol, hostname, port) => true,
                     onXhr: (xhr, url) => {
-                        //get selected company if any
-                        let currentCompany: IStorageCurrentCompany = null;
-                        const storedCompany = sessionStorage.getItem(constants.security.STORAGE_NAME_CURRENT_COMPANY);
-                        if (storedCompany) {
-                            currentCompany = JSON.parse(storedCompany);
+                        //get request header map 
+                        const storedRequestHeaderMaps = sessionStorage.getItem(constants.security.STORAGE_NAME_REQUEST_HEADER_MAPS);
+                        if (storedRequestHeaderMaps) {
+                            const requestHeaderMaps = JSON.parse(storedRequestHeaderMaps) as RequestHeaders;
+                            //get currentUser from session
+                            const storedCompany = sessionStorage.getItem(constants.security.STORAGE_NAME_CURRENT_COMPANY);
+                            if (storedCompany) {
+                                const currentCompany: ICompany = JSON.parse(storedCompany);
+                                //map and append request header map to config
+                                for (let key in requestHeaderMaps) {
+                                    if (requestHeaderMaps.hasOwnProperty(key) && currentCompany[key]) {
+                                        xhr.setRequestHeader(requestHeaderMaps[key], currentCompany[key]);
+                                    }
+                                }
+                            }
                         }
-                        //set current company & role id
-                        xhr.setRequestHeader(constants.server.HEADER_NAME_ROLE_ID, currentCompany && currentCompany.roleId);
-                        xhr.setRequestHeader(constants.server.HEADER_NAME_COMPANY_ID, currentCompany && currentCompany.companyId);
                         //set language for server 
                         xhr.setRequestHeader(constants.server.HEADER_NAME_LANGUAGE, culture);
                         //set authorization token for json & text requests

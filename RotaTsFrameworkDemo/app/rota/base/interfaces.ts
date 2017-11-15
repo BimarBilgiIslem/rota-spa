@@ -52,7 +52,7 @@ interface IBaseModelController<TModel extends IBaseModel> extends IBaseControlle
 /**
  * Request Options for GET ,POST verbs
  */
-interface IRequestOptions {
+interface IRequestOptions extends ng.IRequestShortcutConfig {
     /**
      * Restful service endpoint uri
      */
@@ -378,7 +378,7 @@ interface IEnum {
 /**
  * Base options for all objects
  */
-interface IBaseOptions  {
+interface IBaseOptions {
     /**
      * Injection name is angular registration name 
      */

@@ -46,7 +46,9 @@ class Storage implements ICacher {
             return;
         };
         try {
-            const strData: string = JSON.stringify(value);
+            //to remove the $$hashKey prop,angular.tojson is used instead of JSON.stringfy
+            //https://stackoverflow.com/a/23656919/1016147
+            const strData: string = angular.toJson(value);
             this.storage.setItem(key, (encode && this.base64) ? this.base64.encode(strData) : strData);
             this.log(`${key} stored`, value);
         } catch (e) {

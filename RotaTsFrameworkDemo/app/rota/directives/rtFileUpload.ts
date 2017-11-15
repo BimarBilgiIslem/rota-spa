@@ -64,18 +64,29 @@ function fileUploadDirective(localization: ILocalization, logger: ILogger, confi
                         isLoaded: false,
                         loading: true
                     }
-                    //call uploaded event
-                    const updateResult = scope.onUploaded({ file: file });
-                    //result
-                    updateResult.then((result: IFileUploadResponseData): void => {
-                        scope.uploadedFile.isLoaded = true;
-                        modelCtrl.$setViewValue(result.newUid);
-                    }, (): void => {
-                        //fail
-                    }, (args: angular.angularFileUpload.IFileProgressEvent): void => {
-                        scope.uploadedFile.total = args.total;
-                        scope.uploadedFile.loaded = args.loaded;
-                    });
+                    /*
+                        Note : if onUploaded event defined,it is supposed to send the file to server and return cacheKey.
+                               model value will set the cacheKey.if there is no onUploaded event,just hit the file to the model value
+                    */
+
+                    if (scope.onUploaded) {
+                        //call uploaded event
+                        const updateResult = scope.onUploaded({ file: file });
+                        //result
+                        updateResult.then((result: IFileUploadResponseData): void => {
+                            scope.uploadedFile.isLoaded = true;
+                            modelCtrl.$setViewValue(result.newUid);
+                        },
+                            (): void => {
+                                //fail
+                            },
+                            (args: angular.angularFileUpload.IFileProgressEvent): void => {
+                                scope.uploadedFile.total = args.total;
+                                scope.uploadedFile.loaded = args.loaded;
+                            });
+                    } else {
+                        modelCtrl.$setViewValue(file);
+                    }
                     return;
                 }
             });

@@ -115,7 +115,7 @@ class ProfileController {
                                 username: user.name,
                                 userid: user.id,
                                 email: user.email
-                            }).then(() => {
+                            }, <IRequestOptions>{ showSpinner: false }).then(() => {
                                 logger.notification.info({
                                     autoHideDelay: 3500,
                                     notificationLayout: NotificationLayout.Top,

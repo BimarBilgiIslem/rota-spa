@@ -329,6 +329,10 @@ interface IMainConfig extends IBaseConfig {
      * be display and POST request made to that endpoint
      */
     feedBackProviderUrl?: string;
+    /**
+    * Request headers
+    */
+    requestHeaderMaps?: RequestHeaders;
 }
 /**
  * Main config provider
@@ -383,4 +387,11 @@ interface IOidcSettings {
     clockSkew?: number;
     lang?: string;
 }
+//#endregion
+
+//#region Custom Headers
+type CustomHeaders<T> = {
+    [TP in keyof T]?: string;
+}
+type RequestHeaders = CustomHeaders<ICompany>;
 //#endregion

@@ -20,7 +20,7 @@ import "./logger.service"
 
 //#region Client Error Tracker
 const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.auto.IInjectorService,
-    config: IMainConfig, constants: IConstants) => {
+    config: IMainConfig) => {
     let loggerService: ILogger;
     let httpService: ng.IHttpService;
     let $rootScope: ng.IRootScopeService;
@@ -61,12 +61,9 @@ const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.
         const errorMsg = typeof exception === "string" ? exception : exception.message;
         loggerService.toastr.error({ message: errorMsg });
         loggerService.notification.error({ message: errorMsg });
-        //broadcast
-        $rootScope = $rootScope || $injector.get<ng.IRootScopeService>('$rootScope');
-        $rootScope.$broadcast(constants.events.EVENT_ON_ERROR, exception);
     };
 };
-exceptionHandler.$inject = ['$delegate', '$injector', 'Config', 'Constants'];
+exceptionHandler.$inject = ['$delegate', '$injector', 'Config'];
 //#endregion
 
 //#region Server Error Tracker
@@ -115,8 +112,6 @@ var errorHttpInterceptorService = ($q: ng.IQService, $rootScope: IRotaRootScope,
                 //no response from server
                 logger.notification.error({ message: 'Server connection lost' });
             }
-            //broadcast
-            $rootScope.$broadcast(constants.events.EVENT_ON_ERROR, response);
             return $q.reject(response);
         }
     };

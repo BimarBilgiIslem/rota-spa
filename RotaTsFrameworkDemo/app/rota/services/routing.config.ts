@@ -16,7 +16,6 @@
 
 //#region Import
 import { BaseConfig } from "../base/baseconfig";
-import * as _ from "underscore";
 //#endregion
 
 //#region RouteConfig
@@ -24,9 +23,7 @@ class RouteConfigProvider extends BaseConfig<IRouteConfig> {
     constructor(constants: IConstants) {
         super();
         const config: IRouteConfig = {};
-        config.templates = _.mapObject<string>(constants.routing.TEMPLATES, filename => {
-            return window.require.toUrl(constants.routing.SHELL_PATH + filename);
-        });
+        config.templates = { ...constants.routing.TEMPLATES };
         config.contentControllerAlias = constants.routing.CONTROLLER_ALIAS_NAME;
         config.shellControllerAlias = constants.routing.SHELL_CONTROLLER_ALIAS_NAME;
         this.config = config;

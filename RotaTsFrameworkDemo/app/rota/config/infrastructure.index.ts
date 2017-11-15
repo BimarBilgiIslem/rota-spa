@@ -23,6 +23,7 @@ import "../extensions/index"
 //shell controllers
 import "../shell/shell.controller"
 import "../shell/profile.controller"
+import "../shell/templates"
 
 angular.module('rota', [
     'rota.constants',
@@ -32,6 +33,7 @@ angular.module('rota', [
     'rota.filters',
     'rota.shell',
     'rota.shell.profile',
+    'rota.shell.templates',
     /*lib & core loaded in vendor.index*/
     'rota.lib',
     'rota.core'

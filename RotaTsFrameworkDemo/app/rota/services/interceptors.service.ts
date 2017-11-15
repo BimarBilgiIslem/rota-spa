@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+//#region Imports
+import App from "config/app";
+//#endregion
+
 //#region Request Tracker
 const httpRequestTrackerService = ($q: ng.IQService,
     $location: ng.ILocationService,
@@ -75,22 +79,24 @@ httpRequestTrackerService.$inject = ['$q', '$location', '$rootScope', '$timeout'
 
 //#region Request Wrapper - All request wrappers must be coded in this interceptor
 const requestWrapperInterceptor = ($q: ng.IQService, localization: ILocalization,
-    currentCompany: ICompany, common: ICommon, constants: IConstants): ng.IHttpInterceptor => {
+    currentCompany: ICompany, constants: IConstants, mainConfig: IMainConfig): ng.IHttpInterceptor => {
     return {
         request: (config: ng.IRequestConfig) => {
             //TODO:Add headers to only restful service request if (common.isApiRequest(config)) 
             config.headers[constants.server.HEADER_NAME_LANGUAGE] = localization.currentLanguage.code;
-            if (currentCompany) {
-                if (common.isAssigned(currentCompany.roleId))
-                    config.headers[constants.server.HEADER_NAME_ROLE_ID] = currentCompany.roleId.toString();
-                if (common.isAssigned(currentCompany.companyId))
-                    config.headers[constants.server.HEADER_NAME_COMPANY_ID] = currentCompany.companyId.toString();
+            if (currentCompany && mainConfig.requestHeaderMaps) {
+                //custom company values
+                for (let key in mainConfig.requestHeaderMaps) {
+                    if (mainConfig.requestHeaderMaps.hasOwnProperty(key) && currentCompany[key]) {
+                        config.headers[mainConfig.requestHeaderMaps[key]] = currentCompany[key];
+                    }
+                }
             }
             return $q.when(config);
         }
     };
 }
-requestWrapperInterceptor.$inject = ['$q', 'Localization', 'CurrentCompany', 'Common', 'Constants'];
+requestWrapperInterceptor.$inject = ['$q', 'Localization', 'CurrentCompany', 'Constants', 'Config'];
 //#endregion
 
 //#region Security Interceptor

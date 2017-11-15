@@ -53,6 +53,6 @@ declare module "xdom!*" {
  * text plugin is used to fetch text files such as HTML,text etc.
  */
 declare module "text!*" {
-    let json: any;
+    let json: string;
     export default json;
 }

@@ -50,14 +50,12 @@ class Security implements ISecurity {
      */
     setCompany(company: ICompany): void {
         if (this.currentCompany && this.currentCompany.id === company.id) return;
-        this.$rootScope.$broadcast(this.constants.events.EVENT_COMPANY_CHANGED, company);
-        this.caching.sessionStorage.store<IStorageCurrentCompany>(
-            this.constants.security.STORAGE_NAME_CURRENT_COMPANY,
-            {
-                id: company.id,
-                companyId: company.companyId,
-                roleId: company.roleId
-            }, false);
+        //store current company
+        this.caching.sessionStorage.store<ICompany>(
+            this.constants.security.STORAGE_NAME_CURRENT_COMPANY, company, false);
+        //store map settings of company that is to be sent to the server in header meta
+        this.caching.sessionStorage.store<RequestHeaders>(
+            this.constants.security.STORAGE_NAME_REQUEST_HEADER_MAPS, this.config.requestHeaderMaps, false);
         //redirect to home page
         this.$window.location.replace("");
     }
@@ -67,11 +65,11 @@ class Security implements ISecurity {
     private setCurrentCompany(): void {
         let selectedCompany = null;
         const storedCompany = this.caching.sessionStorage
-            .get<IStorageCurrentCompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY, null, false);
+            .get<ICompany>(this.constants.security.STORAGE_NAME_CURRENT_COMPANY, null, false);
 
         const companyId = (storedCompany && this.common.isAssigned(storedCompany.id)) ? storedCompany.id : this.securityConfig.defaultCompanyId;
         if (this.common.isAssigned(companyId)) {
-            selectedCompany = _.findWhere(this.securityConfig.authorizedCompanies, { id: companyId });
+            selectedCompany = this.securityConfig.authorizedCompanies.findById(companyId);
         }
 
         if (!selectedCompany && this.securityConfig.authorizedCompanies && this.securityConfig.authorizedCompanies.length) {

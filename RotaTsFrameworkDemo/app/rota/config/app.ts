@@ -37,6 +37,7 @@ class RotaApp implements IRotaApp {
     //calbacks
     private errCallBack: Function | any[];
     private companyChangedCallBack: Function | any[];
+    private customHeaderCallBack: Function | any[];
     //#endregion
 
     //#region Init
@@ -104,19 +105,6 @@ class RotaApp implements IRotaApp {
         //#endregion
 
         //#region Run Blocks
-        //Hook handlers
-        this.run(["$rootScope", "Constants", ($rootScope: IRotaRootScope, constants: IConstants) => {
-            $rootScope.$on(constants.events.EVENT_ON_ERROR, (e, error) => {
-                if (this.errCallBack) {
-                    this.$injector.invoke(<Function>this.errCallBack, error);
-                }
-            });
-            $rootScope.$on(constants.events.EVENT_COMPANY_CHANGED, (e, company) => {
-                if (this.companyChangedCallBack) {
-                    this.$injector.invoke(<Function>this.companyChangedCallBack, company);
-                }
-            });
-        }]);
         //reload if user specific culture different than browser culture
         //TODO:move to localization service
         this.run(["$window", "Localization", "Config", "CurrentUser", "Constants", "Common",
@@ -148,16 +136,6 @@ class RotaApp implements IRotaApp {
     //#endregion
 
     //#region App Methods
-    onCompanyChanged?(callBack: Function | any[]): void {
-        this.companyChangedCallBack = callBack;
-    }
-    /**
-     * 
-     * @param errCallBack
-     */
-    onError?(errCallBack: Function | any[]): void {
-        this.errCallBack = errCallBack;
-    }
     /**
      * Set injector for further module dependecy
      * @param $injector
