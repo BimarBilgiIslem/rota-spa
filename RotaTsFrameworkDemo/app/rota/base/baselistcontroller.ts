@@ -184,7 +184,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         //init grid 
         this.initGrid();
         //init data
-        super.initController();
+        this.initSearchModel();
     }
     /**
      * Initialize model
