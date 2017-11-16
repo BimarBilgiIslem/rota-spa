@@ -155,6 +155,11 @@ class BaseController extends InjectableObject {
         this.titlebadges = bundle.services["titlebadges"];
         this.constants = bundle.services["constants"];
     }
+    /**
+     * this method is called from decorator with all injections are available
+     */
+    initController(): void {
+    }
     //#endregion
 
     //#region Methods
