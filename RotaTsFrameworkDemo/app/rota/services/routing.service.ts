@@ -81,7 +81,8 @@ class Routing implements IRouting {
     //#region Init
     static $inject = ['$window', '$state', '$stateParams', '$rootScope', '$q', '$urlRouter', '$location',
         '$stickyState', '$urlMatcherFactory', '$timeout', 'StateProvider', 'UrlRouterProvider',
-        'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants', 'Caching'];
+        'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants',
+        'Caching', 'Environment'];
     //ctor
     constructor(
         private $window: ng.IWindowService,
@@ -104,7 +105,8 @@ class Routing implements IRouting {
         private localization: ILocalization,
         private base64: IBase64,
         private constants: IConstants,
-        private caching: ICaching) {
+        private caching: ICaching,
+        private environment: IGlobalEnvironment) {
         //Register static states and events
         this.init();
         //static shell state octates count, default "shell.content" 
@@ -622,15 +624,19 @@ class Routing implements IRouting {
      * @param menu Menu
      */
     getMenuAbsoluteUrl(menu: IMenuModel): string {
-        const reluri = menu.menuUrl ||
+        let reluri = menu.menuUrl ||
             (menu.name && this.$state.href(menu.name, menu.params)) ||
             (menu.url && /[^?|:]*/.exec(menu.url as string)[0]);
 
-        if (menu.host && menu.host !== this.config.host) {
-            return this.toUrl(`${menu.host}/${reluri}`);
-        } else {
-            return reluri;
+        if (reluri && menu.host && menu.host !== this.config.host) {
+            const moduleUrl = this.environment.doms[menu.host];
+            if (!this.common.isNullOrEmpty(moduleUrl)) {
+                reluri = `${this.common.addTrailingSlash(moduleUrl)}${reluri}`;
+            } else {
+                this.logger.console.error({ message: `${menu.host} is not defined in environment.doms.${reluri} will be the returned` });
+            }
         }
+        return reluri;
     }
     /**
      * Returns whether provided state is nested 

@@ -301,7 +301,7 @@ function selectDirective($document: ng.IDocumentService, $parse: ng.IParseServic
                 }
                 scope.refreshFn = (keyword: string): ng.IPromise<Array<ISelectModel>> => {
                     if (keyword && minAutoSuggestCharLen <= keyword.length) {
-                        return bindItemsByKeyword(encodeURIComponent(keyword));
+                        return bindItemsByKeyword(keyword);
                     }
                 };
             };

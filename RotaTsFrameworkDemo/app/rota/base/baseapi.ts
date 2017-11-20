@@ -234,7 +234,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
         if (!this.common.isNullOrEmpty(this.moduleId) && this.moduleId !== this.config.host) {
             const moduleUrl = this.environment.doms[this.moduleId];
             if (!this.common.isNullOrEmpty(moduleUrl)) {
-                url = `${moduleUrl}/${url}`;
+                url = `${this.common.addTrailingSlash(moduleUrl)}${url}`;
             } else {
                 this.logger.console.error({ message: `${this.moduleId} is not defined in environment.doms.${url} will be the returned` });
             }

@@ -160,11 +160,18 @@ interface IModalInstanceOptions {
     /**
      * Optional services to be injected 
      */
-    services?: string[];
+    services?: CustomService[];
     /**
      * Converts obj to obserable model
      */
     convertToObserableModel?: boolean;
+}
+/**
+ * Custom service type
+ */
+type CustomService = {
+    injectionName: string;
+    instanceName: string;
 }
 /**
  * Modal options
