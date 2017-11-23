@@ -20,6 +20,7 @@ const rotaConstants: IConstants = {
     APP_VERSION: '0.0.1',
     APP_TITLE: 'Bimar Rota SPA App',
     DEFAULT_LOGO_IMAGE_NAME: 'logo_place_holder.png',
+    DEFAULT_STARTUP_MODULE_NAME: 'startup',
     PRODUCTION_DEBUG_WARNING: 'Bu alan yazılımcılar içindir',
     MIN_NUMBER_VALUE: 0,
     MAX_NUMBER_VALUE: 9999999999,
@@ -194,7 +195,8 @@ const rotaConstants: IConstants = {
         IDSRV_IAT_IS_IN_FUTURE_ERROR_EN: 'There is a discrepancy in system time of this running device/computer with the server.\n' +
         'It needs to be aligned with server time settings.',
         IDSRV_IAT_IS_IN_FUTURE_ERROR_TR: 'Server saat ayarları ile çalıştığınız makinanın ayarları farklılık gösteriyor.\n' +
-        'Server saati ile eşitlenmesi gerekiyor.'
+        'Server saati ile eşitlenmesi gerekiyor.',
+        STARTUP_FAILED: 'startup module must return the App class - i.e export = App'
     },
     //Securty Service
     security: {

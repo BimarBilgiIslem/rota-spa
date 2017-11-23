@@ -157,8 +157,9 @@ serviceModule
 //#endregion
 
 //#region Initialize Security
-serviceModule.run(['Security', (security: ISecurity) => {
-    security.initSecurity();
+serviceModule.run(['Security', 'Environment', (security: ISecurity, env: IGlobalEnvironment) => {
+    if (!env.allowAnonymous)
+        security.initSecurity();
 }]);
 //#endregion
 

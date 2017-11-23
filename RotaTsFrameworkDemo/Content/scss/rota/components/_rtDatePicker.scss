@@ -47,6 +47,8 @@
     }
 
     &[dropdown-append-to-body] {
+        width: 100% !important;
+
         input, button {
             border: none !important;
         }

@@ -6772,12 +6772,13 @@ textarea.ng-invalid {
       padding: 0;
       margin: 0; } }
 
-.rt-date-picker[dropdown-append-to-body] input, .rt-date-picker[dropdown-append-to-body] button {
-  border: none !important; }
-
-.rt-date-picker[dropdown-append-to-body] input {
-  padding-left: 6px;
-  height: 29px; }
+.rt-date-picker[dropdown-append-to-body] {
+  width: 100% !important; }
+  .rt-date-picker[dropdown-append-to-body] input, .rt-date-picker[dropdown-append-to-body] button {
+    border: none !important; }
+  .rt-date-picker[dropdown-append-to-body] input {
+    padding-left: 6px;
+    height: 29px; }
 
 .rt-multiselect {
   position: relative;

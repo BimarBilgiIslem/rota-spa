@@ -87,6 +87,14 @@ interface IGlobalEnvironment {
      * Default push service root path
      */
     pushServicePath?: string;
+    /**
+     * First module to load on load,default startup.
+     */
+    startupModuleName?: string;
+    /**
+     * whether or not legitimate the user on startup by checking id_token
+     */
+    allowAnonymous?: boolean;
 }
 //#endregion
 

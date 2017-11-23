@@ -18,6 +18,7 @@ interface IConstants {
     APP_VERSION: string;
     APP_TITLE: string;
     DEFAULT_LOGO_IMAGE_NAME: string;
+    DEFAULT_STARTUP_MODULE_NAME: string;
     PRODUCTION_DEBUG_WARNING: string;
     MIN_NUMBER_VALUE: number;
     MAX_NUMBER_VALUE: number;
@@ -122,6 +123,7 @@ interface IConstants {
         IDSRV_GENERIC_ERROR_TR: string;
         IDSRV_IAT_IS_IN_FUTURE_ERROR_EN: string;
         IDSRV_IAT_IS_IN_FUTURE_ERROR_TR: string;
+        STARTUP_FAILED: string;
     };
     security: {
         STORAGE_NAME_CURRENT_COMPANY: string;
