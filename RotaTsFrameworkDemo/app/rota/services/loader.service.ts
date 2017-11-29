@@ -22,8 +22,11 @@ class Loader implements ILoader {
     serviceName: string = "Loader Service";
     static injectionName = "Loader";
     //states
-    static $inject = ['$q', '$rootScope', 'Common'];
-    constructor(private $q: ng.IQService, private $rootScope: IRotaRootScope, private common: ICommon) {
+    static $inject = ['$q', '$rootScope', 'Common', 'Config'];
+    constructor(private $q: ng.IQService,
+        private $rootScope: IRotaRootScope,
+        private common: ICommon,
+        private config: IMainConfig) {
     }
     /**
      * Load file
@@ -39,25 +42,37 @@ class Loader implements ILoader {
         });
         return defer.promise;
     }
+
+    /**
+    * Normalize url
+    * @param path Url to normalize
+    * @param host Host
+    */
+    private normalize(path: string, host: string = this.config.host): string {
+        //return path if within the same host
+        let result = this.config.host === host ? path : `${host}/${window.require.toUrl(path)}`;
+        //set text plugin prefix for html files
+        if (this.common.isHtml(result) && result.indexOf('text!') === -1) result = 'text!' + result;
+        return result;
+    }
     /**
       * Load file from server with the provided url
       * @param url Url
       * @returns {ng.IPromise<string>}
       */
     resolve(url: string): ng.IPromise<string>;
+    resolve(url: string, host: string): ng.IPromise<string>;
     /**
     * Load provided files from server
     * @param urls Url array
     * @returns {ng.IPromise<string[]>}
     */
     resolve(urls: string[]): ng.IPromise<string[]>;
-    resolve(value: any): ng.IPromise<string | string[] | RequireError> {
-        let arrayValue = !this.common.isArray(value) ? [value] : value;
+    resolve(urls: string[], host: string): ng.IPromise<string[]>;
+    resolve(...args: any[]): ng.IPromise<string | string[] | RequireError> {
+        let arrayValue = !this.common.isArray(args[0]) ? [args[0]] : args[0];
         //set text plugin prefix for html files
-        arrayValue = arrayValue.map(url => {
-            if (this.common.isHtml(url)) return ('text!' + url);
-            return url;
-        });
+        arrayValue = arrayValue.map(url => this.normalize(url, args[1]));
         //file resolve
         return this.load(arrayValue);
     }

@@ -104,7 +104,6 @@ class ProfileController {
                 '$scope', '$http', '$uibModalInstance', 'Config', 'Logger', 'Localization', 'CurrentUser',
                 ($scope: IFeedBackScope, $http: ng.IHttpService, $uibModalInstance: ng.ui.bootstrap.IModalServiceInstance,
                     config: IMainConfig, logger: ILogger, localization: ILocalization, user: IUser) => {
-
                     $scope.model = {}
                     $scope.submit = () => {
                         $scope.responseInProcess = true;

@@ -222,6 +222,10 @@ interface IModalOptions extends ng.ui.bootstrap.IModalSettings {
      * Show modal at viewport size when its height exceeds viewport height
      */
     viewPortSize?: boolean;
+    /**
+     * Host data to generate controller and template url depending cross origin domains defined in [environment.doms]
+     */
+    host?: string;
 }
 /**
  * Image Cropping Scope

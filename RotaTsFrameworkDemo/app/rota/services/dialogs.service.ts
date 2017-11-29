@@ -47,9 +47,7 @@ class Dialogs implements IDialogs {
             this.common.isNullOrEmpty(options.absoluteTemplateUrl)) {
             throw new Error(this.constants.errors.MISSING_TEMPLATE_URL);
         }
-        //set temlate path based on baseUrl - works both html and dynamic file server
-        const templateFilePath = options.absoluteTemplateUrl || (this.common.isHtml(options.templateUrl) ?
-            window.require.toUrl(options.templateUrl) : options.templateUrl);
+        //#region Init options
         //default options
         const defaultModalOptions: IModalOptions = {
             keyboard: true,
@@ -65,8 +63,10 @@ class Dialogs implements IDialogs {
             windowClass: ''
         }
         //merge default options
-        const modalOptions: IModalOptions = angular.extend(defaultModalOptions, options,
-            { templateUrl: templateFilePath });
+        const modalOptions: IModalOptions = { ...defaultModalOptions, ...options }
+        //#endregion
+
+        //#region Custom styles
         //sidebar
         if (options.isSideBar) {
             modalOptions.windowClass += ` ${options.sideBarPosition || "left"}`;
@@ -87,6 +87,8 @@ class Dialogs implements IDialogs {
         if ((options.isMaximized || options.canMaximized) && options.isSideBar) {
             throw new Error("sidebar and maximized features can not be used at the same time");
         }
+        //#endregion
+
         //resolve data
         modalOptions.resolve = {
             instanceOptions: () => modalOptions.instanceOptions,
@@ -97,18 +99,22 @@ class Dialogs implements IDialogs {
                 }
             }
         }
+
+        //#region Template and controller
+        if (!this.common.isNullOrEmpty(modalOptions.absoluteTemplateUrl)) {
+            return this.$modal.open({ ...modalOptions, templateUrl: modalOptions.absoluteTemplateUrl } as IModalOptions).result;
+        }
         //set default controller name if not provided
-        if (!modalOptions.controller) {
+        if (!modalOptions.controller || !modalOptions.controllerUrl) {
             modalOptions.controller = this.constants.controller.DEFAULT_MODAL_CONTROLLER_NAME;
             modalOptions.controllerUrl = this.constants.controller.DEFAULT_MODAL_CONTROLLER_PATH;
             this.logger.console.log({ message: 'default model controller will be used', data: modalOptions });
         }
         //load controller file
-        if (modalOptions.controllerUrl) {
-            const cntResolve = { load: () => this.loader.resolve(modalOptions.controllerUrl) }
-            modalOptions.resolve = angular.extend(modalOptions.resolve, cntResolve);
-        }
-        return this.$modal.open(modalOptions).result;
+        return this.loader.resolve([modalOptions.templateUrl, modalOptions.controllerUrl], options.host).then((result) => {
+            return this.$modal.open({ ...modalOptions, template: result[0] } as IModalOptions).result;
+        });
+        //#endregion
     }
     /**
      * Show simple dialog with ok button

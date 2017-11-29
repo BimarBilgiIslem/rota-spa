@@ -15,13 +15,11 @@
  */
 
 //#region Imports
-import { IRotaApp } from './app.interface';
-//deps
 import InjectableObject from '../base/injectableobject';
 import "./infrastructure.index"
 //#endregion
 
-class RotaApp implements IRotaApp {
+class RotaApp {
     //#region Props
     //Main module name
     static readonly moduleName = "rota-app";
@@ -34,10 +32,6 @@ class RotaApp implements IRotaApp {
     private $provide: angular.auto.IProvideService;
     private $compileProvider: ng.ICompileProvider;
     private $filterProvider: ng.IFilterProvider;
-    //calbacks
-    private errCallBack: Function | any[];
-    private companyChangedCallBack: Function | any[];
-    private customHeaderCallBack: Function | any[];
     //#endregion
 
     //#region Init
@@ -48,20 +42,18 @@ class RotaApp implements IRotaApp {
     /**
      * Initialize module setup
      */
-    private init(): IRotaApp {
+    private init(): this {
         //#region Config Blocks
         //Configure lazy loading assignments and debug options
         this.configure(['$filterProvider', '$animateProvider', '$compileProvider', '$controllerProvider',
-            '$provide', 'ConfigProvider', '$sceDelegateProvider', '$uibTooltipProvider', 'Environment', 'Constants',
+            '$provide', 'ConfigProvider', '$uibTooltipProvider', 'Constants',
             ($filterProvider: ng.IFilterProvider,
                 $animateProvider: ng.animate.IAnimateProvider,
                 $compileProvider: ng.ICompileProvider,
                 $controllerProvider: ng.IControllerProvider,
                 $provide: ng.auto.IProvideService,
                 configProvider: IMainConfigProvider,
-                $sceDelegateProvider: ng.ISCEDelegateProvider,
                 $uibTooltipProvider: ng.ui.bootstrap.ITooltipProvider,
-                environment: IGlobalEnvironment,
                 constants: IConstants) => {
                 //Lazy registering 
                 this.$controllerProvider = $controllerProvider;
@@ -77,24 +69,6 @@ class RotaApp implements IRotaApp {
                 //only animation starts with rota-animate is allowed 
                 //Stricted due to error in ui - select https://github.com/angular-ui/ui-select/issues/1467
                 $animateProvider.classNameFilter(/rota-animate/);
-                //register xdom paths
-                if (!_.isEmpty(environment.doms)) {
-                    const xdoms = ['self'];
-                    for (let xdom in environment.doms) {
-                        if (environment.doms.hasOwnProperty(xdom)) {
-                            let domUrl = environment.doms[xdom];
-                            if (domUrl) {
-                                //check trailing slash
-                                if (domUrl.slice(-1) !== '/') {
-                                    domUrl += "/";
-                                }
-                                domUrl += "**";
-                                xdoms.push(domUrl);
-                            }
-                        }
-                    }
-                    $sceDelegateProvider.resourceUrlWhitelist(xdoms);
-                }
                 //remove tooltips for mobile
                 if (window.__IS_TOUCHABLE) {
                     $uibTooltipProvider.options({
@@ -149,7 +123,7 @@ class RotaApp implements IRotaApp {
      * @param controller Controller instance
      * @param dependencies Dependencies 
      */
-    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): IRotaApp {
+    addController(controllerName: string, controller: typeof InjectableObject, ...dependencies: string[]): this {
         //check name
         this.validateName(controllerName, "controller");
         //register
@@ -163,7 +137,7 @@ class RotaApp implements IRotaApp {
     * @param api Api class itself
     * @param dependencies Optional dependencies
     */
-    addApi(apiName: string, api: typeof InjectableObject, ...dependencies: string[]): IRotaApp {
+    addApi(apiName: string, api: typeof InjectableObject, ...dependencies: string[]): this {
         //check name
         this.validateName(apiName, "api");
         api.injectionName = apiName;
@@ -177,7 +151,7 @@ class RotaApp implements IRotaApp {
     * @param serviceName Value service name
     * @param service Service itself
     */
-    addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): IRotaApp {
+    addValue<TModel extends IBaseModel>(serviceName: string, service: TModel): this {
         this.validateName(serviceName, "value");
         this.$provide.value(serviceName, service);
         return this;
@@ -187,7 +161,7 @@ class RotaApp implements IRotaApp {
      * @param directiveName Directive Name
      * @param directiveFactory Directive function
      */
-    addDirective(directiveName: string, directiveFactory: Function | any[]): IRotaApp {
+    addDirective(directiveName: string, directiveFactory: Function | any[]): this {
         this.validateName(directiveName, "directive");
         this.$compileProvider.directive(directiveName, directiveFactory);
         return this;
@@ -197,7 +171,7 @@ class RotaApp implements IRotaApp {
      * @param filterName Filter Name
      * @param filterFactory Filter factory
      */
-    addFilter(filterName: string, filterFactory: Function | any[]): IRotaApp {
+    addFilter(filterName: string, filterFactory: Function | any[]): this {
         this.validateName(filterName, "filter");
         this.$filterProvider.register(filterName, filterFactory);
         return this;
@@ -206,7 +180,7 @@ class RotaApp implements IRotaApp {
      * Add module after app bootstrap
      * @param modules Modules to load
      */
-    addModule(...modules: string[]): IRotaApp {
+    addModule(...modules: string[]): this {
         /**
          * Following code injected to angular to make "module adding after bootstrap" available.line 4345
          * https://github.com/angular/angular.js/pull/4694
@@ -222,7 +196,7 @@ class RotaApp implements IRotaApp {
      * Set app global settings
      * @param settings App settings
      */
-    setConfig(settings: IAppConfig): IRotaApp {
+    setConfig(settings: IAppConfig): this {
         this.configure(["ConfigProvider", "SecurityConfigProvider", "RouteConfigProvider", "$urlRouterProvider",
             (config: IMainConfigProvider, securityConfig: ISecurityConfigProvider,
                 routeConfig: IRouteConfigProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) => {
@@ -244,9 +218,9 @@ class RotaApp implements IRotaApp {
      * Add menus
      * @param menus Navigational menus
      */
-    setNavMenus(menus: IMenuModel[]): IRotaApp;
-    setNavMenus(fn: (currentUser: IUser, currentCompany: ICompany) => IMenuModel[]): IRotaApp;
-    setNavMenus(args: any): IRotaApp {
+    setNavMenus(menus: IMenuModel[]): this;
+    setNavMenus(fn: (currentUser: IUser, currentCompany: ICompany) => IMenuModel[]): this;
+    setNavMenus(args: any): this {
         this.run(["Routing", "CurrentUser", "CurrentCompany",
             (routing: IRouting, currentUser: IUser, currentCompany: ICompany) => {
                 let menus: IMenuModel[];
@@ -264,7 +238,7 @@ class RotaApp implements IRotaApp {
      * Extend resources with dynamic resources from DB or else
      * @param dynamicresource Dynamic resource object
      */
-    setResources(dynamicresource: IDictionary<string | IDictionary<string>>): IRotaApp {
+    setResources(dynamicresource: IDictionary<string | IDictionary<string>>): this {
         this.run(["Resource", (resource: IDictionary<string | IDictionary<string>>) => {
             //Extend resources from server to statics
             resource = angular.extend(resource, dynamicresource);
@@ -274,27 +248,27 @@ class RotaApp implements IRotaApp {
     /**
     * Configure app method
     * @param fn Function to register
-    * @returns {IRotaApp} 
+    * @returns {this} 
     */
-    configure(fn: any): IRotaApp {
+    configure(fn: any): this {
         this.rotaModule.config(fn);
         return this;
     }
     /**
     * Register run phase function
     * @param fn Function to register
-    * @returns {IRotaApp} 
+    * @returns {this} 
     */
-    run(fn: any): IRotaApp {
+    run(fn: any): this {
         this.rotaModule.run(fn);
         return this;
     }
     /**
     * Sets home page settings
     * @param options Options
-    * @returns {IRotaApp}
+    * @returns {this}
     */
-    setHomePage(options: IHomePageOptions): IRotaApp {
+    setHomePage(options: IHomePageOptions): this {
         this.configure([
             "$urlRouterProvider", "RouteConfigProvider", "ConfigProvider",
             ($urlRouterProvider: ng.ui.IUrlRouterProvider, routeConfig: IRouteConfigProvider, config: IMainConfigProvider) => {
@@ -311,7 +285,7 @@ class RotaApp implements IRotaApp {
      * Define a state rule providiing the url 
      * @param redirections List of reddirections including from and to paths
      */
-    redirect(redirections: { from: string, to: string }[]): IRotaApp {
+    redirect(redirections: { from: string, to: string }[]): this {
         this.configure(["$urlRouterProvider",
             ($urlRouterProvider: ng.ui.IUrlRouterProvider) => {
                 const escapeRegex = (stringToGoIntoTheRegex: string): string => {

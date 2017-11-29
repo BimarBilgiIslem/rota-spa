@@ -18,7 +18,6 @@
 import "./routing.config";
 import "./loader.service";
 import * as _ from "underscore";
-import * as _s from "underscore.string";
 //#endregion
 
 //#region Routing Service
@@ -278,8 +277,6 @@ class Routing implements IRouting {
             this.logger.console.warn({ message: 'state already registered ' + state.name });
             return this;
         }
-        //normalize template file path
-        const templateFilePath = this.common.isHtml(state.templateUrl as string) ? this.toUrl(state.templateUrl as string) : state.templateUrl;
         //is nested state
         const isNestedState = this.isNestedState(state.name);
         //adjust url
@@ -291,17 +288,20 @@ class Routing implements IRouting {
             //replace :id param to more strict type.id must be either numeric value or 'new' value
             url = url.replace(`:${idParamName}`, `{${idParamName}:[0-9]+|${idParamValue}}`);
             //default params for crud pages
-            const defaultParams = {};
-            defaultParams[idParamName] = idParamValue;
-            defaultParams[this.constants.controller.DEFAULT_READONLY_PARAM_NAME] = true;
-            defaultParams[this.constants.controller.PREVIEW_MODE_PARAM_NAME] = false;
-            state.params = this.common.extend(defaultParams, state.params);
+            const defaultParams = {
+                [idParamName]: idParamValue,
+                [this.constants.controller.DEFAULT_READONLY_PARAM_NAME]: true,
+                [this.constants.controller.PREVIEW_MODE_PARAM_NAME]: false
+            };
+            state.params = { ...defaultParams, ...state.params };
         }
         //define state obj
         const stateObj: IRotaState = {
             hierarchicalMenu: state.hierarchicalMenu,
             abstract: state.abstract,
-            templateUrl: templateFilePath,
+            templateProvider: () => {
+                return this.loader.resolve(<string>state.templateUrl);
+            },
             controller: state.controller,
             controllerAs: this.routeconfig.contentControllerAlias,
             url: url,
@@ -324,7 +324,9 @@ class Routing implements IRouting {
             const views: { [index: string]: ng.ui.IState } = {};
             views[state.name] = {
                 controller: state.controller,
-                templateUrl: templateFilePath,
+                templateProvider: () => {
+                    return this.loader.resolve(<string>state.templateUrl);
+                },
                 controllerAs: this.routeconfig.contentControllerAlias
             }
             stateObj.views = views;
