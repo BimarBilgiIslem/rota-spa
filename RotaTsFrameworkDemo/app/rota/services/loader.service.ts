@@ -50,7 +50,7 @@ class Loader implements ILoader {
     */
     private normalize(path: string, host: string = this.config.host): string {
         //return path if within the same host
-        let result = this.config.host === host ? path : `${host}/${window.require.toUrl(path)}`;
+        let result = this.config.host === host ? path : `${host}/${this.common.toUrl(path, false)}`;
         //set text plugin prefix for html files
         if (this.common.isHtml(result) && result.indexOf('text!') === -1) result = 'text!' + result;
         return result;

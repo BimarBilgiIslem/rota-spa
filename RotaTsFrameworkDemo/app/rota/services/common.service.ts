@@ -112,6 +112,22 @@ class Common implements ICommon {
         else
             return '/' + path;
     }
+
+    /**
+     * Convert relative url ro absolute url
+     * @param relativeUrl Relative url
+     */
+    toUrl(relativeUrl: string, includeCacheBust: boolean = true): string {
+        const absolutePath = window.require.toUrl(relativeUrl);
+        if (includeCacheBust === false) return absolutePath.split("?")[0];
+        return absolutePath;
+    }
+    /**
+     * Get defined baseurl of requirejs config
+     */
+    getBasePath(): string {
+        return this.toUrl('.').split("?")[0];
+    }
     //#endregion
 
     //#region String Utils

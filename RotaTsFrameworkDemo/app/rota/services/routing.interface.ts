@@ -302,11 +302,6 @@ interface IRouting extends IBaseService {
     */
     isInclude(stateName: string, params?: any): boolean;
     /**
-     * Convert relative url ro absolute url
-     * @param relativeUrl Relative url
-     */
-    toUrl(relativeUrl: string): string;
-    /**
     * Get active menu eliminating nested states
     * @param state Optional state
     */

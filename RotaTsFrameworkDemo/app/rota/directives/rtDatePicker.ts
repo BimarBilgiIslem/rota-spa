@@ -83,6 +83,12 @@ function dateTimePickerDirective($document: ng.IDocumentService, $timeout: ng.IT
                 phReskey = 'rota.yilseciniz';
                 w = "95px";
                 break;
+            default:
+                startView = "day";
+                minView = "minute";
+                format = cAttrs.dateFormat;
+                w = "190px";
+                break;
         }
         //set width
         cElement.attr('style', 'width:' + w);

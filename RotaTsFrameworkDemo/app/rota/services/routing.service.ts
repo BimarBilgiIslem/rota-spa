@@ -609,19 +609,6 @@ class Routing implements IRouting {
         return <IRotaState>this.$state.get(stateName);
     }
     /**
-     * Convert relative url ro absolute url
-     * @param relativeUrl Relative url
-     */
-    toUrl(relativeUrl: string): string {
-        return window.require.toUrl(relativeUrl);
-    }
-    /**
-     * Get defined baseurl of requirejs config
-     */
-    getBasePath(): string {
-        return this.toUrl('.');
-    }
-    /**
      * Get absolute uri of menu 
      * @param menu Menu
      */

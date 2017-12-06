@@ -362,5 +362,14 @@ interface ICommon extends IBaseService {
      * result => Hello World ! ;
      */
     format(src: string, context: any): string;
+    /**
+    * Convert relative url ro absolute url
+    * @param relativeUrl Relative url
+    */
+    toUrl(relativeUrl: string, includeCacheBust?: boolean): string;
+    /**
+     * Get defined baseurl of requirejs config
+     */
+    getBasePath(): string;
 }
 //#endregion
