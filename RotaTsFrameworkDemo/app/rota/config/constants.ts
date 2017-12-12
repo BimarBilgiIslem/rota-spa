@@ -204,7 +204,8 @@ const rotaConstants: IConstants = {
         STORAGE_NAME_CURRENT_COMPANY: 'current-company',
         STORAGE_NAME_REQUEST_HEADER_MAPS: 'request-header-maps',
         IDLE_TIMEOUT: 1800000,
-        COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000
+        COUNT_DOWN_FOR_IDLE_TIMEOUT: 300000,
+        ACCESS_TOKEN_QUERY_STRING_NAME: 'access_token'
     },
     //Logger service
     logger: {

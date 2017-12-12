@@ -23,7 +23,8 @@ class Common implements ICommon {
 
     //#region Init
     constructor(private $q: ng.IQService, private $filter: ng.IFilterService,
-        private $interpolate: ng.IInterpolateService, private config: IMainConfig) { }
+        private $interpolate: ng.IInterpolateService, private config: IMainConfig,
+        private securityconfig: ISecurityConfig, private tokens: ITokens) { }
     //#endregion
 
     //#region Promise Utils
@@ -164,6 +165,15 @@ class Common implements ICommon {
     //#endregion
 
     //#region Utils
+    /**
+     * Add access token to url
+     * @param url
+     */
+    appendAccessTokenToUrl(url: string): string {
+        return this.updateQueryStringParameter(url,
+            this.securityconfig.accessTokenQueryStringName,
+            this.tokens.accessToken);
+    }
     /**
      * Get first item which is not null or undefined
      * @param args Parameters
@@ -484,7 +494,7 @@ class Common implements ICommon {
 //#endregion
 
 //#region Injection
-Common.$inject = ['$q', '$filter', '$interpolate', 'Config'];
+Common.$inject = ['$q', '$filter', '$interpolate', 'Config', 'SecurityConfig', 'Tokens'];
 //#endregion
 
 //#region Register

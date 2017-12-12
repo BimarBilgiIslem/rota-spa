@@ -6748,7 +6748,8 @@ textarea.ng-invalid {
 
 .rt-date-picker .calendar-picker {
   cursor: pointer;
-  border-left: none; }
+  border-left: none;
+  outline: none !important; }
   .rt-date-picker .calendar-picker:hover, .rt-date-picker .calendar-picker:focus {
     background: none;
     border-left: none;

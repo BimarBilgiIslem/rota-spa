@@ -141,6 +141,11 @@ interface IDictionary<T extends {}> {
  */
 interface ICommon extends IBaseService {
     /**
+   * Add access token to url
+   * @param url
+   */
+    appendAccessTokenToUrl(url: string): string;
+    /**
      * Dynamically set favicon
      * @param iconPath if falsy is passed,config.favIconName will be assigned
      */

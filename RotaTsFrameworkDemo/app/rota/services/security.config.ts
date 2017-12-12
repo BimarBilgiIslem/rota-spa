@@ -29,7 +29,8 @@ class SecurityConfigProvider extends BaseConfig<ISecurityConfig> {
             idleTimeout: constants.security.IDLE_TIMEOUT,
             idleLogoffCountDown: constants.security.COUNT_DOWN_FOR_IDLE_TIMEOUT,
             useFirstLetterAvatar: true,
-            avatarFetchType: AvatarFetchType.GetRequest
+            avatarFetchType: AvatarFetchType.GetRequest,
+            accessTokenQueryStringName: constants.security.ACCESS_TOKEN_QUERY_STRING_NAME
         }
         this.config = config;
     }

@@ -20,8 +20,12 @@
  */
 interface ISecurityConfig extends IBaseConfig {
     /**
-   * Auhorized Companies 
-   */
+     * Access token query string namewhen making get request
+     */
+    accessTokenQueryStringName?: string;
+    /**
+    * Auhorized Companies 
+    */
     authorizedCompanies?: ICompany[];
     /**
     * Default company Id

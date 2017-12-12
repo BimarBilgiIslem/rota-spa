@@ -9,12 +9,13 @@
 
     .input-group > input {
         border-right: none;
-        z-index: 3;
+        z-index: 3;        
     }
 
     .calendar-picker {
         cursor: pointer;
         border-left: none;
+        outline: none !important;
 
         &:hover, &:focus {
             background: none;

@@ -130,6 +130,7 @@ interface IConstants {
         STORAGE_NAME_REQUEST_HEADER_MAPS: string;
         IDLE_TIMEOUT: number;
         COUNT_DOWN_FOR_IDLE_TIMEOUT: number;
+        ACCESS_TOKEN_QUERY_STRING_NAME: string;
     },
     logger: {
         TOASTR_TIMEOUT: number;

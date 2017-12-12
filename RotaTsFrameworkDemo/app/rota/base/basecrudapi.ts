@@ -23,19 +23,12 @@ import BaseApi from "./baseapi";
  */
 class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     //#region Init
-    //bundle
-    static injects = BaseApi.injects.concat(['Tokens']);
-    /**
-     * Tokens
-     */
-    tokens: ITokens;
     /**
     * Update bundle
     * @param bundle IBundle
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
-        this.tokens = bundle.services["tokens"];
     }
     //#endregion
 
@@ -111,8 +104,9 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param controller Optional controller
      */
     exportList(filter?: IBaseModelFilter & IExportOptions, controller?: string): void {
-        const url = `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}?${this
-            .$httpParamSerializer(filter)}&access_token=${this.tokens.accessToken}`;
+        const url = this.common.appendAccessTokenToUrl(
+            `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}?${this
+            .$httpParamSerializer(filter)}`);
         location.replace(url);
     }
     //#endregion
