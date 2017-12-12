@@ -509,8 +509,10 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         if (this.listPageOptions.pagingEnabled) {
             filter = this.common.extend<TModelFilter>(filter, pager || this.getPager(1));
         }
+        this.isFormDisabled = true;
         //get data
-        return this.initModel(filter);
+        return this.initModel(filter).finally(
+            () => this.isFormDisabled = false);
     }
     //#endregion
 

@@ -23,7 +23,8 @@ import InjectableObject from "./injectableobject";
  */
 class BaseController extends InjectableObject {
     //#region Props
-    //#region Notification services
+
+    //#region Notification props
     /**
             * Notification Service
             * @returns {IBaseLogger}
@@ -41,6 +42,74 @@ class BaseController extends InjectableObject {
     get console(): IConsole { return this.logger.console; }
 
     //#endregion
+
+    //#region Form props
+    /**
+    * Form Scope
+    * @description Initialized by initFormScope from rtForm directive
+    */
+    private formScope: any;
+    private _isFormDisabled?: boolean;
+    /**
+     * Main form controller used with rtForm form directive
+     */
+    get rtForm(): ng.IFormController {
+        if (!this.common.isAssigned(this.formScope)) return undefined;
+        return this.formScope[this.options.formName];
+    }
+    /**
+    * Prop that if form is disabled
+    * @returns {boolean} 
+    */
+    get isFormDisabled(): boolean {
+        if (!this.common.isAssigned(this.rtForm)) return false;
+        return this._isFormDisabled || false;
+    }
+    set isFormDisabled(value: boolean) {
+        this._isFormDisabled = value;
+    }
+    /**
+     * Flag that if form is dirty
+     * @returns {boolean} 
+     */
+    get isFormDirty(): boolean {
+        if (!this.common.isAssigned(this.rtForm)) return false;
+        return this.rtForm.$dirty;
+    }
+    /**
+     * Flag that if form is valid
+     * @returns {boolean} 
+     */
+    get isFormValid(): boolean {
+        if (!this.common.isAssigned(this.rtForm)) return true;
+        return this.rtForm.$valid;
+    }
+    /**
+     * Flag that if form is invalid
+     * @returns {boolean} 
+     */
+    get isFormInvalid(): boolean {
+        if (!this.common.isAssigned(this.rtForm)) return false;
+        return this.rtForm.$invalid;
+    }
+    /**
+     * Flag that if form is pristine
+     * @returns {boolean} 
+     */
+    get isFormPristine(): boolean {
+        if (!this.common.isAssigned(this.rtForm)) return false;
+        return this.rtForm.$pristine;
+    }
+    /**
+     * Flag that if form is pending
+     * @returns {boolean} 
+     */
+    get isFormPending(): boolean {
+        if (!this.common.isAssigned(this.rtForm)) return false;
+        return this.rtForm['$pending'];
+    }
+    //#endregion
+
     /**
      * Registered events to store off-callbacks
      */
@@ -248,7 +317,7 @@ class BaseController extends InjectableObject {
     }
     //#endregion
 
-    //#region Form methods
+    //#region Form Methods & Events
     /**
   * Form invalid flag changes
   * @param invalidFlag Invalid flag of main form
@@ -273,58 +342,6 @@ class BaseController extends InjectableObject {
    */
     initFormScope(formScope: ng.IScope): void {
         this.formScope = formScope;
-    }
-    /**
-     * Form Scope
-     * @description Initialized by initFormScope from rtForm directive
-     */
-    private formScope: any;
-    /**
-     * Main form controller used with rtForm form directive
-     */
-    get rtForm(): ng.IFormController {
-        if (!this.common.isAssigned(this.formScope)) return undefined;
-        return this.formScope[this.options.formName];
-    }
-    /**
-     * Flag that if form is dirty
-     * @returns {boolean} 
-     */
-    get isFormDirty(): boolean {
-        if (!this.common.isAssigned(this.rtForm)) return false;
-        return this.rtForm.$dirty;
-    }
-    /**
-     * Flag that if form is valid
-     * @returns {boolean} 
-     */
-    get isFormValid(): boolean {
-        if (!this.common.isAssigned(this.rtForm)) return true;
-        return this.rtForm.$valid;
-    }
-    /**
-     * Flag that if form is invalid
-     * @returns {boolean} 
-     */
-    get isFormInvalid(): boolean {
-        if (!this.common.isAssigned(this.rtForm)) return false;
-        return this.rtForm.$invalid;
-    }
-    /**
-     * Flag that if form is pristine
-     * @returns {boolean} 
-     */
-    get isFormPristine(): boolean {
-        if (!this.common.isAssigned(this.rtForm)) return false;
-        return this.rtForm.$pristine;
-    }
-    /**
-     * Flag that if form is pending
-     * @returns {boolean} 
-     */
-    get isFormPending(): boolean {
-        if (!this.common.isAssigned(this.rtForm)) return false;
-        return this.rtForm['$pending'];
     }
     //#endregion
 }

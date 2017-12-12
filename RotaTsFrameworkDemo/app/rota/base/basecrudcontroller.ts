@@ -270,7 +270,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             showMessage: true,
             redirectHandled: false
         }, options);
-        this.crudPageFlags.isSaving = true;
+        this.isFormDisabled =
+            this.crudPageFlags.isSaving = true;
         (this.notification as INotification).removeAll(true);
         //validate and save model 
         const saveResult = this.parseAndSaveModel(options);
@@ -291,7 +292,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         saveResult.finally(() => {
             this.cloningBadge.show =
                 this.crudPageFlags.isCloning =
-                this.crudPageFlags.isSaving = false;
+                this.crudPageFlags.isSaving =
+                this.isFormDisabled = false;
             this.logger.console.log({ message: 'save process completed' });
         });
         //return promise to let rt-button know that saving process is finished

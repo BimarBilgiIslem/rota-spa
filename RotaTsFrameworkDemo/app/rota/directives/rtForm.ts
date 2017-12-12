@@ -16,6 +16,7 @@
 
 interface IFormAttributes extends ng.IAttributes {
     name: string;
+    disabled: boolean;
 }
 
 function formDirective() {
@@ -24,9 +25,10 @@ function formDirective() {
         restrict: 'EA',
         transclude: true,
         template: (element: ng.IAugmentedJQuery, attrs: IFormAttributes): string => {
-            return attrs.name ? `<div ng-form="${attrs.name}" isolate-form ng-init="vm.initFormScope(this)"><ng-transclude></ng-transclude></div>` :
+            return attrs.name ? `<div ng-form="${attrs.name}" isolate-form ng-init="vm.initFormScope(this)">
+                <fieldset ng-disabled="vm.isFormDisabled"><ng-transclude></ng-transclude></fieldset></div>` :
                 '<form class="form-horizontal" name="vm.formScope.rtForm" disable-enter novalidate ng-init="vm.initFormScope(this)">' +
-                '<ng-transclude></ng-transclude></form>';
+                '<fieldset ng-disabled="vm.isFormDisabled"><ng-transclude></ng-transclude></fieldset></form>';
         }
     };
     return directive;
