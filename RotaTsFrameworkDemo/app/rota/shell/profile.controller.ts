@@ -43,13 +43,9 @@ class ProfileController {
         private localization: ILocalization,
         private hotkey: ng.hotkeys.HotkeysProvider,
         private common: ICommon) {
-
-        //format links
-        if (config.helpLinkUri) {
-            this.helpLink = common.format(config.helpLinkUri, this.routing.activeMenu);
-        }
+        //format user link
         if (config.profileLinkUri) {
-            this.profileLink = common.format(config.profileLinkUri, this.currentUser);
+            this.profileLink = encodeURI(common.format(config.profileLinkUri, this.currentUser));
         }
     }
     //#endregion
@@ -133,6 +129,13 @@ class ProfileController {
                 }
             ]
         });
+    }
+    /**
+     * Go to help link if helpLinkUri provided
+     */
+    goToHelpLink(): void {
+        const helpUri = encodeURI(this.common.format(this.config.helpLinkUri, this.routing.activeMenu));
+        location.replace(helpUri);
     }
     /**
      * Logoff
