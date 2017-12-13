@@ -81,7 +81,7 @@ class Routing implements IRouting {
     static $inject = ['$window', '$state', '$stateParams', '$rootScope', '$q', '$urlRouter', '$location',
         '$stickyState', '$urlMatcherFactory', '$timeout', 'StateProvider', 'UrlRouterProvider',
         'RouteConfig', 'Loader', 'Common', 'Config', 'Logger', 'Localization', 'Base64', 'Constants',
-        'Caching', 'Environment'];
+        'Caching', 'Environment', '$uibModalStack'];
     //ctor
     constructor(
         private $window: ng.IWindowService,
@@ -105,7 +105,8 @@ class Routing implements IRouting {
         private base64: IBase64,
         private constants: IConstants,
         private caching: ICaching,
-        private environment: IGlobalEnvironment) {
+        private environment: IGlobalEnvironment,
+        private $uibModalStack: ng.ui.bootstrap.IModalStackService) {
         //Register static states and events
         this.init();
         //static shell state octates count, default "shell.content" 
@@ -181,6 +182,10 @@ class Routing implements IRouting {
             }
 
             setActiveMenu();
+            /**
+             * Close all opened modals when state has changed with success
+             */
+            this.$uibModalStack.dismissAll();
         });
 
         this.$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
