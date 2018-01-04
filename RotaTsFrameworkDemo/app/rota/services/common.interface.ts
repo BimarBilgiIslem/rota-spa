@@ -351,8 +351,16 @@ interface ICommon extends IBaseService {
      * @param uri
      * @param key
      * @param value
+     * @returns {string}
      */
     updateQueryStringParameter(uri: string, key: string, value: string): string;
+    /**
+     * Update querystring of uri with provided key value object
+     * @param uri 
+     * @param params 
+     * @returns {string} 
+     */
+    updateQueryStringParameter(uri: string, params: IDictionary<string | number | boolean>): string;
     /**
     * Flag that device is mobile or tablet
     */

@@ -71,9 +71,7 @@ require.config({
         imgcrop: './rota/lib/ng-img-crop',
         scroll: './rota/lib/angular-scroll.min',
         ngcontextmenu: './rota/lib/ng-contextmenu',
-        treeview: './rota/lib/ivh-treeview',
         uimask: './rota/lib/mask.min',
-        uilayout: './rota/lib/ui-layout',
         //grid libs
         pdfMake: './rota/lib/pdfMake.min',
         //SignalR
@@ -141,13 +139,7 @@ require.config({
         'signalr.hubs': {
             deps: ['signalr.core']
         },
-        treeview: {
-            deps: ['angular']
-        },
         uimask: {
-            deps: ['angular']
-        },
-        uilayout: {
             deps: ['angular']
         },
         oidc: {

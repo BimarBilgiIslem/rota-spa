@@ -35,7 +35,6 @@ import "./rtFileUpload"
 import "./rtMultiFileUpload"
 import "./rtInclude"
 import "./rtReportButtons"
-import "./rtTree"
 import "./rtDraggableModal"
 import "./rtCallout"
 import "./rtValidator"
@@ -74,7 +73,6 @@ angular.module('rota.directives',
         'rota.directives.rtmultifileupload',
         'rota.directives.rtinclude',
         'rota.directives.rtreportbuttons',
-        'rota.directives.rttree',
         'rota.directives.rtdraggablemodal',
         'rota.directives.rtcallout',
         'rota.directives.rtvalidator',

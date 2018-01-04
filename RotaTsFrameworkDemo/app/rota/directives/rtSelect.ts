@@ -83,6 +83,9 @@ function selectDirective($document: ng.IDocumentService, $parse: ng.IParseServic
         if (inGridCell) {
             $uiSelect.attr('append-to-body', 'true');
         }
+        if (angular.isDefined(cAttrs.multiLine)) {
+            $uiSelect.attr('multi-line', 'true');
+        }
         //#endregion
         return (scope: ISelectScope, element: ng.IAugmentedJQuery, attrs: ISelectAttributes, modelCtrl: ng.INgModelController): void => {
             //#region Init attrs

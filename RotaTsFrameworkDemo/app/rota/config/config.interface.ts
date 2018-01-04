@@ -95,6 +95,10 @@ interface IGlobalEnvironment {
      * whether or not legitimate the user on startup by checking id_token
      */
     allowAnonymous?: boolean;
+    /**
+     * Server rendered inital data
+     */
+    initialData?: IDictionary<any>;
 }
 //#endregion
 

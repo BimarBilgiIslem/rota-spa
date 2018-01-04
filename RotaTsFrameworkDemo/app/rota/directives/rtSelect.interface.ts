@@ -174,6 +174,10 @@ interface ISelectAttributes extends ng.IAttributes {
      * Max items to display ,default 100 
      */
     itemsCount?: number;
+    /**
+     * 
+     */
+    multiLine?: boolean;
 }
 /**
  * Select localization struct

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 //#region Dialog Service
 /**
  * Dialog service
@@ -21,9 +20,10 @@
 class Dialogs implements IDialogs {
     serviceName = 'Dialog Service';
     static injectionName = "Dialogs";
+    private readonly dialogStyleSettings: IDialogStyle;
 
     static $inject = ['$rootScope', '$q', '$uibModal', 'Routing', 'Config', 'RouteConfig', 'Common',
-        'Loader', 'Localization', 'Constants', 'Logger'];
+        'Loader', 'Localization', 'Constants'];
     constructor(private $rootScope: IRotaRootScope,
         private $q: ng.IQService,
         private $modal: ng.ui.bootstrap.IModalService,
@@ -33,8 +33,35 @@ class Dialogs implements IDialogs {
         private common: ICommon,
         private loader: ILoader,
         private localization: ILocalization,
-        private constants: IConstants,
-        private logger: ILogger) {
+        private constants: IConstants) {
+        //set settings for style
+        this.dialogStyleSettings = {
+            [DialogType.Error]: {
+                windowClass: "modal-dialog-error",
+                iconName: "minus-circle",
+                defaultTitle: localization.getLocal("rota.titleerror")
+            },
+            [DialogType.Warn]: {
+                windowClass: "modal-dialog-warn",
+                iconName: "exclamation-triangle",
+                defaultTitle: localization.getLocal("rota.titlewarn")
+            },
+            [DialogType.Info]: {
+                windowClass: "modal-dialog-info",
+                iconName: "info-circle",
+                defaultTitle: localization.getLocal("rota.titleinfo")
+            },
+            [DialogType.Success]: {
+                windowClass: "modal-dialog-success",
+                iconName: "check-square-o",
+                defaultTitle: localization.getLocal("rota.titlesuccess")
+            },
+            [DialogType.Question]: {
+                windowClass: "modal-dialog-question",
+                iconName: "question-circle",
+                defaultTitle: localization.getLocal("rota.onay")
+            }
+        }
     }
 
     //#region Dialogs
@@ -108,7 +135,6 @@ class Dialogs implements IDialogs {
         if (!modalOptions.controller || !modalOptions.controllerUrl) {
             modalOptions.controller = this.constants.controller.DEFAULT_MODAL_CONTROLLER_NAME;
             modalOptions.controllerUrl = this.constants.controller.DEFAULT_MODAL_CONTROLLER_PATH;
-            this.logger.console.log({ message: 'default model controller will be used', data: modalOptions });
         }
         //load controller file
         return this.loader.resolve([modalOptions.templateUrl, modalOptions.controllerUrl], options.host).then((result) => {
@@ -125,21 +151,23 @@ class Dialogs implements IDialogs {
             templateUrl: 'modalSimpleDialog.tpl.html',
             controller: ['$scope', '$uibModalInstance', 'options',
                 ($scope: IDialogScope, $modalInstance: ng.ui.bootstrap.IModalServiceInstance, options: IDialogOptions) => {
-                    $scope.title = options.title || this.localization.getLocal('rota.onay');
+                    $scope.title = options.title || this.dialogStyleSettings[options.dialogType].defaultTitle;
                     $scope.message = options.message || '';
+                    $scope.iconName = this.dialogStyleSettings[options.dialogType || DialogType.Info].iconName;
                     $scope.okText = options.okText || this.localization.getLocal('rota.ok');
                     $scope.ok = () => { $modalInstance.close('ok'); };
                 }],
             keyboard: true,
             backdrop: 'static',
             animation: false,
-            windowClass: 'modal-dialog',
+            windowClass: `alert-dialog ${this.dialogStyleSettings[options.dialogType || DialogType.Info].windowClass}`,
             resolve: {
                 options: () => {
                     return {
                         title: options.title,
                         message: options.message,
-                        okText: options.okText
+                        okText: options.okText,
+                        dialogType: options.dialogType
                     };
                 }
             }
@@ -160,13 +188,14 @@ class Dialogs implements IDialogs {
                     $scope.okText = options.okText || this.localization.getLocal('rota.ok');
                     $scope.cancelText = options.cancelText || this.localization.getLocal('rota.iptal');
                     $scope.cancel2Text = options.cancel2Text;
+                    $scope.iconName = this.dialogStyleSettings[options.dialogType || DialogType.Question].iconName;
                     $scope.ok = () => { $modalInstance.close('ok'); };
                     $scope.cancel = (reason) => { $modalInstance.dismiss(reason); };
                 }],
             keyboard: true,
             backdrop: 'static',
             animation: false,
-            windowClass: 'modal-confirm',
+            windowClass: `modal-confirm alert-dialog ${this.dialogStyleSettings[options.dialogType || DialogType.Question].windowClass}`,
             resolve: {
                 options: () => {
                     return {
@@ -174,7 +203,8 @@ class Dialogs implements IDialogs {
                         message: options.message,
                         okText: options.okText,
                         cancelText: options.cancelText,
-                        cancel2Text: options.cancel2Text
+                        cancel2Text: options.cancel2Text,
+                        dialogType: options.dialogType
                     };
                 }
             }
@@ -384,10 +414,15 @@ module.run([
         $templateCache.put('modalSimpleDialog.tpl.html',
             '    <div class="modal-header">' +
             '        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-ng-click="cancel()">&times;</button>' +
-            '        <h4><i class="fa fa-question-circle"></i>&nbsp;{{title}}</h4>' +
+            '        <h4><i ng-class="[\'fa\', \'fa-\'+iconName]"></i>&nbsp;{{title}}</h4>' +
             '    </div>' +
             '    <div class="modal-body">' +
-            '        <p>{{message}}</p>' +
+            '       <div class="alert-icon">' +
+            '           <i ng-class="[\'fa\',\'fa-3x\', \'fa-\'+iconName]"></i>' +
+            '       </div>' +
+            '       <div class="alert-message">' +
+            '           <p>{{message}}</p>' +
+            '       </div>' +
             '    </div>' +
             '    <div class="modal-footer">' +
             '        <button class="btn btn-primary" data-ng-click="ok()">{{okText}}</button>' +
@@ -396,10 +431,15 @@ module.run([
         $templateCache.put('modalDialog.tpl.html',
             '    <div class="modal-header">' +
             '        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-ng-click="cancel(\'dismiss\')">&times;</button>' +
-            '        <h4><i class="fa fa-question-circle"></i>&nbsp;{{title}}</h4>' +
+            '        <h4><i ng-class="[\'fa\', \'fa-\'+iconName]"></i>&nbsp;{{title}}</h4>' +
             '    </div>' +
             '    <div class="modal-body">' +
-            '        <p>{{message}}</p>' +
+            '       <div class="alert-icon">' +
+            '           <i ng-class="[\'fa\',\'fa-3x\', \'fa-\'+iconName]"></i>' +
+            '       </div>' +
+            '       <div class="alert-message">' +
+            '           <p>{{message}}</p>' +
+            '       </div>' +
             '    </div>' +
             '    <div class="modal-footer">' +
             '        <button class="btn btn-default" data-ng-click="cancel(\'cancel\')">{{cancelText}}</button>' +

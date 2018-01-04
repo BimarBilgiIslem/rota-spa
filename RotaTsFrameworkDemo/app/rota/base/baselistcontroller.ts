@@ -133,11 +133,12 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
 
     //#region Bundle Services
     static injects = BaseModelController.injects.concat(['$timeout', '$interval', 'uiGridConstants',
-        'uiGridExporterConstants', 'Caching']);
+        'uiGridExporterConstants', 'Caching', 'Loader']);
     protected uigridconstants: uiGrid.IUiGridConstants;
     protected uigridexporterconstants: uiGrid.exporter.IUiGridExporterConstants;
     protected caching: ICaching;
     protected $timeout: ng.ITimeoutService;
+    private loader: ILoader;
     //#endregion
 
     //#region Init
@@ -170,6 +171,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         this.caching = bundle.services["caching"];
         this.$timeout = bundle.services["$timeout"];
         this.$interval = bundle.services["$interval"];
+        this.loader = bundle.services["loader"];
     }
     //#endregion
 
@@ -707,8 +709,13 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
         if (rowType === this.uigridexporterconstants.ALL) {
             warnDelay = this.dialogs.showConfirm({ message: this.localization.getLocal("rota.tumdataexportonay") });
         }
+        //load grid export dependencies,pdfMake and its fonts
+        let pdfMakeLoad = this.common.promise();
+        if (exportType === ModelExports.Pdf) {
+            pdfMakeLoad = this.loader.resolve("lib/vfs_fonts");
+        }
         //export
-        warnDelay.then(() => {
+        this.$q.all([warnDelay, pdfMakeLoad]).then(() => {
             switch (exportType) {
                 case ModelExports.Csv:
                     this.gridApi.exporter.csvExport(rowType, this.uigridexporterconstants.ALL);

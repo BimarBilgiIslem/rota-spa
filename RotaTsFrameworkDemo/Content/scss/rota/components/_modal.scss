@@ -1,4 +1,57 @@
-﻿.modal {
+﻿//Prevent BODY from scrolling when a modal is opened
+//https://stackoverflow.com/questions/9538868/prevent-body-from-scrolling-when-a-modal-is-opened
+/*body.modal-open {
+    overflow: hidden;
+}*/
+
+@mixin alert-dialog($bg-color,$text-color) {
+    .modal-header {
+        border-bottom: 4px solid $bg-color;
+
+        h4 {
+            color: $text-color;
+        }
+    }
+
+    i {
+        color: $text-color;
+    }
+}
+
+.alert-dialog {
+    &.modal-dialog-question {
+        @include alert-dialog($alert-info-bg,$alert-info-text)
+    }
+
+    &.modal-dialog-error {
+        @include alert-dialog($alert-danger-bg,$alert-danger-text)
+    }
+
+    &.modal-dialog-info {
+        @include alert-dialog($alert-info-bg,$alert-info-text)
+    }
+
+    &.modal-dialog-warn {
+        @include alert-dialog($alert-warning-bg,$alert-warning-text)
+    }
+
+    &.modal-dialog-success {
+        @include alert-dialog($alert-success-bg,$alert-success-text)
+    }
+
+    .modal-body {
+        .alert-message {
+        }
+
+        .alert-icon {
+            float: left;
+            padding-right: 1.2em;
+            @include clearfix();
+        }
+    }
+}
+
+.modal {
     .modal-header {
         padding: 5px 15px;
         cursor: move;

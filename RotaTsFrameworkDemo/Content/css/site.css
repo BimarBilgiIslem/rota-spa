@@ -6855,9 +6855,6 @@ textarea.ng-invalid {
 .rt-select.ng-invalid a.select2-choice {
   border: 1px solid #d44950 !important; }
 
-a {
-  cursor: pointer; }
-
 .open.select2-container .select2-choice {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0; }
@@ -6916,6 +6913,16 @@ a {
 
 .select2-container[append-to-body] .select2-choice {
   border: none; }
+
+.select2-container[multi-line] .select2-choice {
+  height: 50px;
+  line-height: 23px; }
+  .select2-container[multi-line] .select2-choice.select2-default {
+    padding-top: 11px; }
+  .select2-container[multi-line] .select2-choice abbr {
+    top: 17px; }
+  .select2-container[multi-line] .select2-choice .select2-arrow {
+    padding-top: 13px; }
 
 .select2-container.select2-drop-above .select2-choice {
   border-bottom-color: #ccc; }
@@ -7757,6 +7764,57 @@ ul.contextmenu {
       position: relative;
       top: 2px;
       left: 1px; }
+
+/*body.modal-open {
+    overflow: hidden;
+}*/
+.alert-dialog.modal-dialog-question .modal-header {
+  border-bottom: 4px solid #d9edf7; }
+  .alert-dialog.modal-dialog-question .modal-header h4 {
+    color: #31708f; }
+
+.alert-dialog.modal-dialog-question i {
+  color: #31708f; }
+
+.alert-dialog.modal-dialog-error .modal-header {
+  border-bottom: 4px solid #f2dede; }
+  .alert-dialog.modal-dialog-error .modal-header h4 {
+    color: #a94442; }
+
+.alert-dialog.modal-dialog-error i {
+  color: #a94442; }
+
+.alert-dialog.modal-dialog-info .modal-header {
+  border-bottom: 4px solid #d9edf7; }
+  .alert-dialog.modal-dialog-info .modal-header h4 {
+    color: #31708f; }
+
+.alert-dialog.modal-dialog-info i {
+  color: #31708f; }
+
+.alert-dialog.modal-dialog-warn .modal-header {
+  border-bottom: 4px solid #fcf8e3; }
+  .alert-dialog.modal-dialog-warn .modal-header h4 {
+    color: #8a6d3b; }
+
+.alert-dialog.modal-dialog-warn i {
+  color: #8a6d3b; }
+
+.alert-dialog.modal-dialog-success .modal-header {
+  border-bottom: 4px solid #dff0d8; }
+  .alert-dialog.modal-dialog-success .modal-header h4 {
+    color: #3c763d; }
+
+.alert-dialog.modal-dialog-success i {
+  color: #3c763d; }
+
+.alert-dialog .modal-body .alert-icon {
+  float: left;
+  padding-right: 1.2em; }
+  .alert-dialog .modal-body .alert-icon::after {
+    clear: both;
+    content: "";
+    display: block; }
 
 .modal {
   /*Left*/

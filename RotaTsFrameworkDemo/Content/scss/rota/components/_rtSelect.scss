@@ -13,9 +13,6 @@
     border: $validation-control-border;
 }
 
-a {
-    cursor: pointer;
-}
 //make rounded corders rtSelect
 .select2-container .select2-choice {
     @extend %rounded-corner;
@@ -88,6 +85,23 @@ a {
 
     &[append-to-body] .select2-choice {
         border: none;
+    }
+
+    &[multi-line] .select2-choice {
+        height: 50px;
+        line-height: 23px;
+
+        &.select2-default {
+            padding-top: 11px;
+        }
+
+        abbr {
+            top: 17px;
+        }
+
+        .select2-arrow {
+            padding-top: 13px;
+        }
     }
 
     &.select2-drop-above .select2-choice {

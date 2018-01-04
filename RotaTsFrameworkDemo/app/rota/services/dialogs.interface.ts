@@ -15,20 +15,33 @@
  */
 
 //#region Dialog Interfaces
+const enum DialogType {
+    Info,
+    Error,
+    Warn,
+    Success,
+    Question
+}
 /**
- * Dialog window options
+ * Base Dialog window options
  */
 interface IDialogOptions {
     message?: string,
     title?: string,
     okText?: string;
     windowClass?: string;
+    dialogType?: DialogType;
+}
+
+interface IDialogStyle {
+    [dialogType: number]: { windowClass: string; iconName: string, defaultTitle: string }
 }
 /**
- * Dialog window scope
+ * Base Dialog window scope
  */
 interface IDialogScope extends ng.IScope, IDialogOptions {
-    ok(): void
+    ok(): void;
+    dialogStyle: string;
 }
 /**
  * COnfirm window options

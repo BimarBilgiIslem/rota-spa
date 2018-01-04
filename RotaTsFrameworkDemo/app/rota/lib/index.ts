@@ -1,6 +1,5 @@
 ﻿//#region Import
 import "spinner"
-import "./vfs_fonts";
 import "grid"
 import "hotkeys"
 import "scroll"
@@ -22,9 +21,7 @@ import "fileupload"
 import "circleprogress"
 import "ng-ckeditor"
 import "ngcontextmenu"
-import "treeview"
 import "uimask"
-import "uilayout"
 //#endregion
 
 //#region Register
@@ -70,14 +67,8 @@ angular.module('rota.lib',
         //Context Menu
         //https://github.com/Wildhoney/ngContextMenu
         'ngContextMenu',
-        //https://github.com/iVantage/angular-ivh-treeview
-        //Treeview 
-        'ivh.treeview',
         //Mask
         //https://github.com/angular-ui/ui-mask
-        'ui.mask',
-        //ui-layout
-        //https://github.com/angular-ui/ui-layout
-        'ui.layout'
+        'ui.mask'
     ]);
 //#endregion

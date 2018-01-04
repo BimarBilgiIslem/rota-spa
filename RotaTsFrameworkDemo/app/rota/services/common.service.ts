@@ -437,20 +437,35 @@ class Common implements ICommon {
         return ((Date.now() + Math.random()) * Math.random()).toString().replace(".", "");
     }
     /**
-     * Update querystring of uri with provided key value
+     *  Update querystring of uri with provided key value
      * @param uri
-     * @param key
-     * @param value
+     * @param args
      */
-    updateQueryStringParameter(uri: string, key: string, value: string): string {
-        const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-        const separator = uri.indexOf('?') !== -1 ? "&" : "?";
-        if (uri.match(re)) {
-            return uri.replace(re, '$1' + key + "=" + value + '$2');
+    updateQueryStringParameter(uri: string, ...args: any[]): string {
+        let queryStrings: IDictionary<string>;
+        //key: string, value: string
+        if (typeof args[0] === "string") {
+            queryStrings = {
+                [args[0]]: args[1]
+            }
+        } else
+            //params: IDictionary<string>
+            if (typeof args[0] === "object") {
+                queryStrings = args[0];
+            }
+        //iterate params
+        for (let key in queryStrings) {
+            if (queryStrings.hasOwnProperty(key)) {
+                const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                const separator = uri.indexOf('?') !== -1 ? "&" : "?";
+                if (uri.match(re)) {
+                    uri = uri.replace(re, '$1' + key + "=" + queryStrings[key] + '$2');
+                } else {
+                    uri = uri + separator + key + "=" + queryStrings[key];
+                }
+            }
         }
-        else {
-            return uri + separator + key + "=" + value;
-        }
+        return uri;
     }
     /**
      * Flag that device is mobile or tablet

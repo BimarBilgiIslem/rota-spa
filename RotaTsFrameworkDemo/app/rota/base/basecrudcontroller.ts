@@ -541,7 +541,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                 message: this.localization.getLocal("rota.crudonay"),
                 okText: this.localization.getLocal("rota.kaydetvecik"),
                 cancelText: this.localization.getLocal("rota.iptal"),
-                cancel2Text: this.localization.getLocal("rota.cikis")
+                cancel2Text: this.localization.getLocal("rota.cikis"),
+                dialogType: DialogType.Warn
             }).then(() => {
                 //save and go to state
                 this.initSaveModel().then(() => {

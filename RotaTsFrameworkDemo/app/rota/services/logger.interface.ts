@@ -108,6 +108,11 @@ interface IBaseLogger<TLog extends ILog> {
     clearAll: () => void;
 }
 /**
+ * Dialog logger
+ */
+interface IDialogLogger extends IBaseLogger<ILog> {
+}
+/**
  * Toastr service
  */
 interface IToastr extends IBaseLogger<ILog> {
