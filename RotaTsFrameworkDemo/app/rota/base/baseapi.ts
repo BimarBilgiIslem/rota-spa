@@ -179,7 +179,8 @@ class BaseApi extends InjectableObject implements IBaseApi {
                 "Content-Type": "application/json"
             },
             params: options.params,
-            showSpinner: options.showSpinner
+            showSpinner: options.showSpinner,
+            byPassErrorInterceptor: options.byPassErrorInterceptor
         })
             .then((response: IBaseServerResponse<TResult>): TResult => {
                 //cache if configured

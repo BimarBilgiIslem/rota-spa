@@ -97,20 +97,22 @@ var errorHttpInterceptorService = ($q: ng.IQService, $rootScope: IRotaRootScope,
         responseError: (response: IBaseServerResponse<IServerFailedResponseData>) => {
             //Istemci hatasi 4xx ve Sunucu hatalari 5xx
             //Bad Requests,Internal Server Errors
-            if (response.status >= 400 && response.status <= 500) {
-                /********************************************************/
-                let message = "Unknown error occured";
-                //customize 404 messages
-                if (response.status === 404) {
-                    message = `'<b>${response.config.url}</b>' not found on the server`;
-                } else {
-                    message = concatErrorMessages(response.data);
+            if (!(response.config as IRequestOptions).byPassErrorInterceptor) {
+                if (response.status >= 400 && response.status <= 500) {
+                    /********************************************************/
+                    let message;
+                    //customize 404 messages
+                    if (response.status === 404) {
+                        message = `'<b>${response.config.url}</b>' not found on the server`;
+                    } else {
+                        message = concatErrorMessages(response.data);
+                    }
+                    logger.notification.error({ message: message });
+                    /********************************************************/
+                } else if (response.status === 0) {
+                    //no response from server
+                    logger.notification.error({ message: 'Server connection lost' });
                 }
-                logger.notification.error({ message: message });
-                /********************************************************/
-            } else if (response.status === 0) {
-                //no response from server
-                logger.notification.error({ message: 'Server connection lost' });
             }
             return $q.reject(response);
         }

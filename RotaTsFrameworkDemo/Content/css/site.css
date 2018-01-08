@@ -6909,7 +6909,8 @@ textarea.ng-invalid {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background: #fff; }
+  background: #fff;
+  cursor: pointer; }
 
 .select2-container[append-to-body] .select2-choice {
   border: none; }

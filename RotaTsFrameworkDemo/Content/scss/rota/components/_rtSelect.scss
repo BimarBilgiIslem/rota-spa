@@ -13,6 +13,8 @@
     border: $validation-control-border;
 }
 
+
+
 //make rounded corders rtSelect
 .select2-container .select2-choice {
     @extend %rounded-corner;
@@ -81,6 +83,7 @@
         -ms-user-select: none;
         user-select: none;
         background: $rt-select-bg;
+        cursor: pointer;
     }
 
     &[append-to-body] .select2-choice {

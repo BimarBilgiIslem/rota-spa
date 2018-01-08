@@ -91,6 +91,10 @@ interface IRequestOptions extends ng.IRequestShortcutConfig {
     * Show spinner
     */
     showSpinner?: boolean;
+    /**
+     * Bypass error interceptor,default false
+     */
+    byPassErrorInterceptor?: boolean;
 }
 /**
  * Base api for all services requests restful server side

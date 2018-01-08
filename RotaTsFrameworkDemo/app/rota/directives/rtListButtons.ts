@@ -25,7 +25,6 @@ function listButtonsDirective() {
         '<div class="btn-group" uib-dropdown auto-close="outsideClick" is-open="searchToggle">' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.searchButton" ' +
         'text="{{vm.listPageOptions.refreshInterval ? \'rota.yenileniyor\' : \'rota.ara\' | i18n:vm.listPageOptions.refreshInterval}}" icon="search"' +
-        'uib-tooltip="{{::\'rota.ara\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         ' ng-disabled="vm.rtForm.$invalid" color="warning" click="vm.initSearchModel()" elem-to-scroll="{{vm.options.elementToScroll}}" shortcut="ctrl+enter"></rt-button>' +
         '<button uib-dropdown-toggle ng-if="vm.listPageOptions.listButtonVisibility.searchButton" type="button" class="btn btn-warning">' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
@@ -56,8 +55,7 @@ function listButtonsDirective() {
         '</li>' +
         '</ul></div></div>&nbsp;' +
         '<div uib-dropdown ng-if="vm.listPageOptions.listButtonVisibility.exportButton" class="btn-group">' +
-        '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\')" text-i18n="rota.disariyaaktar"' +
-        'uib-tooltip="{{::\'rota.disariyaaktar\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom"></rt-button>' +
+        '<rt-button  color="info" icon="external-link" click="vm.exportGrid(\'visible\')" text-i18n="rota.disariyaaktar"></rt-button>' +
         '<button type="button" class="btn btn-info dropdown-toggle" uib-dropdown-toggle>' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
         '<ul class="dropdown-menu" uib-dropdown-menu>' +
@@ -73,7 +71,6 @@ function listButtonsDirective() {
         '<li ng-show="vm.checkEnumFlag(vm.listPageOptions.modelExports,4)"><a href i18n="rota.aktarsecilicsv" ng-if="vm.gridSeletedRows.length" ng-click="vm.exportGrid(\'selected\',4)"></a></li>' +
         '</ul></div>&nbsp;<div class="btn-group"><div class="btn-group" uib-dropdown>' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.clearButton"  text-i18n="rota.temizle" icon="eraser" ' +
-        'uib-tooltip="{{::\'rota.gridfiltretemizle\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'color="info" click="vm.clearAll()"></rt-button>' +
         '<button uib-dropdown-toggle ng-if="vm.listPageOptions.listButtonVisibility.clearButton" type="button" class="btn btn-info">' +
         '<span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
@@ -82,10 +79,8 @@ function listButtonsDirective() {
         '<li ng-if="vm.listPageOptions.listButtonVisibility.storeGridLayout"><a href ng-click="vm.removeGridLayout()"><i class="fa fa-trash fa-fw"></i>&nbsp;{{::"rota.gridlayoutsil" | i18n}}</a></li>' +
         '</ul></div></div>&nbsp;' +
         '<rt-button ng-if="vm.listPageOptions.listButtonVisibility.newButton"  text-i18n="rota.yenikayit" icon="plus" ' +
-        'uib-tooltip="{{::\'rota.tt_yenikayit\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'color="success" click="vm.goToDetailState()" shortcut="ctrl+ins"></rt-button>&nbsp;' +
         '<rt-button  text-i18n="rota.secilikayitlarisil" icon="remove" color="danger" click="vm.initDeleteSelectedModels()" ' +
-        'uib-tooltip="{{::\'rota.secilikayitlarisil\' | i18n}}" tooltip-append-to-body="true" tooltip-placement="bottom" ' +
         'shortcut="ctrl+shift+del" ' +
         'ng-if="vm.listPageOptions.listButtonVisibility.deleteSelected && vm.gridOptions.multiSelect && vm.gridSeletedRows.length"></rt-button>' +
         '</div>'
