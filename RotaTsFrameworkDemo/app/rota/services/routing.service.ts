@@ -266,7 +266,8 @@ class Routing implements IRouting {
             { 'title@shell.content': { templateUrl: this.routeconfig.templates.title } }];
         //register shell state
         //UNDONE:add shell promise
-        this.registerShellSection(this.constants.routing.SHELL_STATE_NAME, shellSections, false, '/', true);
+        this.registerShellSection(this.constants.routing.SHELL_STATE_NAME, shellSections, false,
+            this.environment.baseUrl || '/', true);
         //register content state
         this.registerShellSection(this.constants.routing.SHELL_CONTENT_STATE_NAME, contentSections, true);
     }

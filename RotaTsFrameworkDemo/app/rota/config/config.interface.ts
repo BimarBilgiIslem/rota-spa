@@ -99,6 +99,10 @@ interface IGlobalEnvironment {
      * Server rendered inital data
      */
     initialData?: IDictionary<any>;
+    /**
+     * Base url for shell state,default "/"
+     */
+    baseUrl?: string;
 }
 //#endregion
 
