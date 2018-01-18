@@ -18,14 +18,7 @@
 /**
  * Promise shortcut
  */
-interface IP<T> extends ng.IPromise<T> {
-}
-/**
- * Promise shortcut
- */
-interface IPany extends ng.IPromise<any> {
-}
-
+type IP<T> = ng.IPromise<T>;
 //#endregion
 
 //#region Common Interfaces

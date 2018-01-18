@@ -171,7 +171,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             deleteParsers: [this.checkAuthority, this.beforeDeleteModel]
         };
         this.crudPageOptions.parsers = this.crudPageOptions.parsers || parsers;
-        this.crudPageOptions.postOnlyModelChanges = this.common.iif(this.crudPageOptions.postOnlyModelChanges, this.config.postOnlyModelChanges);
+        this.crudPageOptions.postOnlyModelChanges = this.common.iif(this.crudPageOptions.postOnlyModelChanges,
+            this.config.postOnlyModelChanges);
 
         this.crudPageFlags = { isCloning: false, isDeleting: false, isSaving: false, isNew: true };
         //set readonly
@@ -209,6 +210,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             this.logger.console.log({ message: 'model reverted to original' });
 
             this.resetForm(this.model);
+            if (this.crudPageOptions.autoSave)
+                this.startAutoSave();
             (this.notification as INotification).removeAll();
             this.logger.toastr.info({ message: this.localization.getLocal('rota.degisikliklergerialindi') });
         }
