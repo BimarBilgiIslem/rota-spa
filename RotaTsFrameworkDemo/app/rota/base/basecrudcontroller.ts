@@ -210,8 +210,9 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
             this.logger.console.log({ message: 'model reverted to original' });
 
             this.resetForm(this.model);
-            if (this.crudPageOptions.autoSave)
-                this.startAutoSave();
+            //autosave actived in only new state mode,probably there would be issue in edit mode
+            //if (this.crudPageOptions.autoSave)
+            //    this.startAutoSave();
             (this.notification as INotification).removeAll();
             this.logger.toastr.info({ message: this.localization.getLocal('rota.degisikliklergerialindi') });
         }
@@ -387,15 +388,15 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         //already in progress,stop it
         if (this.autoSavePromise)
             this.stopAutoSave();
-
+        //Only actived in new mode 
         if (this.isNew) {
             this.autoSavePromise = this.$interval(this.autoSaveModel.bind(this), this.config.autoSaveInterval);
         } else {
             //watch model changes
-            this.model.subscribeDataChanged(() => {
-                if (!this.autoSavePromise)
-                    this.autoSavePromise = this.$interval(this.autoSaveModel.bind(this), this.config.autoSaveInterval);
-            });
+            //this.model.subscribeDataChanged(() => {
+            //    if (!this.autoSavePromise)
+            //        this.autoSavePromise = this.$interval(this.autoSaveModel.bind(this), this.config.autoSaveInterval);
+            //});
         }
     }
     /**

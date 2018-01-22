@@ -197,9 +197,10 @@ class RotaApp {
      * @param settings App settings
      */
     setConfig(settings: IAppConfig): this {
-        this.configure(["ConfigProvider", "SecurityConfigProvider", "RouteConfigProvider", "$urlRouterProvider",
+        this.configure(["ConfigProvider", "SecurityConfigProvider", "RouteConfigProvider", "$urlRouterProvider", "Environment",
             (config: IMainConfigProvider, securityConfig: ISecurityConfigProvider,
-                routeConfig: IRouteConfigProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) => {
+                routeConfig: IRouteConfigProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider,
+                environment: IGlobalEnvironment) => {
                 //set all configs
                 settings.main && config.configure(settings.main);
                 settings.security && securityConfig.configure(settings.security);
@@ -207,8 +208,11 @@ class RotaApp {
 
                 if (settings.main && settings.main.homePageOptions) {
                     if (settings.main.homePageOptions.url) {
+                        let baseUrl = "";
+                        if (environment.baseUrl)
+                            baseUrl = environment.baseUrl.replace(/\/$/, "");
                         //just redirect to home page when "/" is active state
-                        $urlRouterProvider.when("/", settings.main.homePageOptions.url);
+                        $urlRouterProvider.when("/", baseUrl + settings.main.homePageOptions.url);
                     }
                 }
             }]);

@@ -111,7 +111,7 @@ class Notification implements INotification {
         const result = this.addNotification({
             title: notify.title || this.loggerconfig.defaultTitles[LogType.Info],
             message: notify.message,
-            icon: 'info',
+            icon: 'info-circle',
             style: 'info',
             isSticky: notify.isSticky,
             notificationLayout: notify.notificationLayout || NotificationLayout.Content,
