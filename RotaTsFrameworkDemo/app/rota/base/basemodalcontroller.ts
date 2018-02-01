@@ -117,8 +117,8 @@ class BaseModalController<TModel extends IBaseModel, TParams = any> extends Base
     /**
      * Get model
      */
-    getModel(): ng.IPromise<TModel> | TModel {
-        return this.instanceOptions.model;
+    getModel(): ng.IPromise<TModel> {
+        return this.common.promise(this.instanceOptions.model);
     }
     /**
      * Convert model to obserable 

@@ -6855,6 +6855,9 @@ textarea.ng-invalid {
 .rt-select.ng-invalid a.select2-choice {
   border: 1px solid #d44950 !important; }
 
+.rt-select .btn {
+  padding: 5px 12px; }
+
 .open.select2-container .select2-choice {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0; }
@@ -6866,6 +6869,9 @@ textarea.ng-invalid {
 .rt-select.input-group .select2-container .select2-choice {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0; }
+
+.rt-select.input-group[multi-line] .btn {
+  padding: 14px 12px; }
 
 .select2-container {
   margin: 0;

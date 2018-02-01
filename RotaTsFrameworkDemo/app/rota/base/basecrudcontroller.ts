@@ -167,8 +167,8 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
         super(bundle);
         //update options
         const parsers: ICrudParsers = {
-            saveParsers: [this.checkAuthority, this.applyValidatitons, this.beforeSaveModel],
-            deleteParsers: [this.checkAuthority, this.beforeDeleteModel]
+            saveParsers: [this.checkAuthority.bind(this), this.applyValidatitons.bind(this), this.beforeSaveModel.bind(this)],
+            deleteParsers: [this.checkAuthority.bind(this), this.beforeDeleteModel.bind(this)]
         };
         this.crudPageOptions.parsers = this.crudPageOptions.parsers || parsers;
         this.crudPageOptions.postOnlyModelChanges = this.common.iif(this.crudPageOptions.postOnlyModelChanges,
@@ -176,7 +176,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
 
         this.crudPageFlags = { isCloning: false, isDeleting: false, isSaving: false, isNew: true };
         //set readonly
-        this.crudPageOptions.readOnly = (this.crudPageOptions.readOnly &&
+        this.crudPageOptions.readOnly = this.isFormDisabled = (this.crudPageOptions.readOnly &&
             (!this.common.isDefined(this.$stateParams.readonly) || this.$stateParams.readonly))
             || this.$stateParams.preview;
         //set form is new/edit mode
@@ -247,7 +247,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
    * New model event
    * @param clonedModel Model to be cloned
    */
-    newModel(clonedModel?: TModel): ng.IPromise<TModel> | TModel {
+    newModel(clonedModel?: TModel): TModel {
         return clonedModel || <TModel>{ modelState: ModelStates.Added };
     }
     //#endregion
@@ -310,7 +310,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     private parseAndSaveModel(options: ISaveOptions): ng.IPromise<TModel> {
         const defer = this.$q.defer<TModel>();
         //iterate save pipeline
-        const parseResult = this.initParsers<any>(this.crudPageOptions.parsers.saveParsers, options);
+        const parseResult = this.common.runPromises<any>(this.crudPageOptions.parsers.saveParsers, options);
         //save if validation parsers resolved
         if (this.isAssigned(parseResult)) {
             parseResult.then(() => {
@@ -413,11 +413,31 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      */
     autoSaveModel(): void {
         this.autoSavingBadge.show = true;
-        this.caching.localStorage.store(this.stateInfo.url, this.model.toJson());
+        this.caching.localStorage.store(this.stateInfo.url, this.model.toJson(), false);
         this.logger.console.info({ message: "model autosaved", data: this.model });
         this.$timeout(() => {
             this.autoSavingBadge.show = false;
         }, 1000);
+    }
+    /**
+     * Restore model from cache
+     */
+    restoreAutoSavedModel(): ng.IPromise<TModel> {
+        const autoSavedModel = this.caching.localStorage.get<TModel>(this.stateInfo.url, null, false);
+        if (this.common.isNotEmptyObject(autoSavedModel)) {
+            return this.dialogs.showConfirm({
+                title: this.localization.getLocal('rota.otomatikkayit'),
+                message: this.localization.getLocal('rota.otomatikkayityuklensinmi'),
+                okText: this.localization.getLocal('rota.otomatikkayityukle')
+            })
+                .then((): TModel => {
+                    return autoSavedModel;
+                })
+                .finally(() => {
+                    this.caching.localStorage.remove(this.stateInfo.url);
+                });
+        }
+        return this.common.rejectedPromise();
     }
     //#endregion
 
@@ -482,7 +502,7 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
     parseAndDeleteModel(options: IDeleteOptions): ng.IPromise<any> {
         const deferDelete = this.$q.defer<TModel>();
         //validate and delete model if valid
-        const parseResult = this.initParsers<any>(this.crudPageOptions.parsers.deleteParsers, options);
+        const parseResult = this.common.runPromises<any>(this.crudPageOptions.parsers.deleteParsers, options);
         parseResult.then(() => {
             //set modelstate as deleted
             this.model.modelState = ModelStates.Deleted;
@@ -597,31 +617,20 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
      * @param modelFilter Model Filter
      * @description Overriden baseFormController's to pass cloned copy
      */
-    defineModel(modelFilter?: IBaseFormModelFilter): ng.IPromise<TModel> | TModel {
-        if (this.crudPageOptions.autoSave) {
-            const autoSavedModel = this.caching.localStorage.get<TModel>(this.stateInfo.url);
-            if (this.common.isNotEmptyObject(autoSavedModel)) {
-                return this.dialogs.showConfirm({
-                    title: this.localization.getLocal('rota.otomatikkayit'),
-                    message: this.localization.getLocal('rota.otomatikkayityuklensinmi'),
-                    okText: this.localization.getLocal('rota.otomatikkayityukle')
-                })
-                    .then((): TModel => {
-                        return autoSavedModel;
-                    },
-                    () => {
-                        return this.isNew
-                            ? this.newModel(this.crudPageFlags.isCloning && <TModel>this.model._orginalValues)
-                            : this.getModel(modelFilter);
-                    })
-                    .finally(() => {
-                        this.caching.localStorage.remove(this.stateInfo.url);
-                    });
+    chooseModelSource(modelFilter?: IBaseFormModelFilter): ng.IPromise<TModel> {
+        if (this.isNew) {
+            if (this.crudPageOptions.autoSave) {
+                //fallback to default method if user ignored to restore the cached model
+                return this.restoreAutoSavedModel().catch(() => {
+                    return this.common.promise<TModel>(
+                        this.newModel(this.crudPageFlags.isCloning && <TModel>this.model._orginalValues));
+                });
             }
+            return this.common.promise<TModel>(
+                this.newModel(this.crudPageFlags.isCloning && <TModel>this.model._orginalValues));
+        } else {
+            return this.getModel(modelFilter);
         }
-        return this.isNew
-            ? this.newModel(this.crudPageFlags.isCloning && <TModel>this.model._orginalValues)
-            : this.getModel(modelFilter);
     }
     /**
      * Convert literal to obserable model

@@ -217,8 +217,7 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     * @abstract Get model
     * @param args Model
     */
-    abstract getModel(modelFilter?: TModelFilter): ng.IPromise<TModel[]> |
-        TModel[] | ng.IPromise<IPagingListModel<TModel>> | IPagingListModel<TModel>;
+    abstract getModel(modelFilter?: TModelFilter): ng.IPromise<TModel[] | IPagingListModel<TModel>>;
     /**
      * Check if model is null ,set it empty array for grid
      * @param model Model

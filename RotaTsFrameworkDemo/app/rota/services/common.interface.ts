@@ -33,7 +33,7 @@ interface IRotaRootScope extends ng.IRootScopeService {
  * Used for chainable promise function
  */
 interface IChainableMethod<T> {
-    (...args: any[]): ng.IPromise<T> | void;
+    (...args: any[]): ng.IPromise<T>;
 }
 /**
  * Result structure returned after caching file in server
@@ -179,6 +179,11 @@ interface ICommon extends IBaseService {
      */
     isNotEmptyObject(value: any): boolean;
     /**
+     * Transform text into an ascii slug which can be used in safely in URLs
+     * @param value
+     */
+    slugify(value: string): string;
+    /**
      * Set model's property to some value incursivly
      * @param model Model
      * @param fieldName Field name
@@ -216,6 +221,12 @@ interface ICommon extends IBaseService {
     * @param value Arg
     */
     isPromise(value: any): value is ng.IPromise<any>;
+    /**
+   * Process chainable thenable functions
+   * @param pipeline Thenable functions
+   * @param params Optional parameters
+   */
+    runPromises<T>(pipeline: Array<IChainableMethod<T>>, ...params: any[]): ng.IPromise<T>;
     /**
    * Check whether or not provided value ends with html extension
    * @param value Arg

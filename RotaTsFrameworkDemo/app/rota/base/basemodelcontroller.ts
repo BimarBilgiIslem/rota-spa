@@ -68,7 +68,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      * @abstract Abstract get model method
      * @param args Optional params
      */
-    abstract getModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> | ModelVariants<TModel>;
+    abstract getModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>>;
     /**
      * Loaded model method triggered at last
      * @param model
@@ -88,7 +88,7 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      * Overridable model definition method
      * @param modelFilter Optional Model filter 
      */
-    defineModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> | ModelVariants<TModel> {
+    chooseModelSource(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> {
         return this.getModel(modelFilter);
     }
     /**
@@ -97,47 +97,22 @@ abstract class BaseModelController<TModel extends IBaseModel> extends BaseContro
      */
     initModel(modelFilter?: IBaseModelFilter): ng.IPromise<ModelVariants<TModel>> {
         const d = this.$q.defer<ModelVariants<TModel>>();
-        const defineModelResult = this.defineModel(modelFilter);
+        const defineModelResult = this.chooseModelSource(modelFilter);
 
-        const processModel = (model: ModelVariants<TModel>): void => {
-            //call modelloaded event
-            this.loadedModel(this._model = this.setModel(model));
-            d.resolve(model);
-        }
-
-        if (this.common.isPromise(defineModelResult)) {
+        if (this.common.isAssigned(defineModelResult)) {
             defineModelResult.then((data: ModelVariants<TModel>) => {
-                processModel(data);
+                //call setModel
+                this._model = this.setModel(data);
+                //call loadedModel
+                this.loadedModel(this._model);
+                d.resolve(data);
             }, (reason: any) => {
-                //TODO: can be changed depending on server excepion response
-                //this.errorModel(reason.data || reason);
                 d.reject(reason);
             });
         } else {
-            processModel(defineModelResult);
+            d.reject("model data is missing");
         }
         return this.modelPromise = d.promise;
-    }
-    /**
-     * Process chainable thenable functions
-     * @param pipeline Thenable functions
-     * @param params Optional parameters
-     */
-    protected initParsers<T>(pipeline: Array<IChainableMethod<T>>, ...params: any[]): ng.IPromise<T> {
-        let result = this.common.promise<T>();
-        //iterate pipeline methods
-        for (let i = 0; i < pipeline.length; i++) {
-            result = ((promise: ng.IPromise<any>, method: IChainableMethod<T>) => {
-                return promise.then((response: any) => {
-                    response && params.push(response);
-                    if (method) {
-                        return method.apply(this, params);
-                    }
-                    return params;
-                });
-            })(result, pipeline[i]);
-        }
-        return result;
     }
     /**
      * this method is called from decorator with all injections are available

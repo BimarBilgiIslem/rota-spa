@@ -13,7 +13,11 @@
     border: $validation-control-border;
 }
 
-
+.rt-select {
+    .btn {
+        padding: 5px 12px;
+    }
+}
 
 //make rounded corders rtSelect
 .select2-container .select2-choice {
@@ -29,9 +33,17 @@
     border-top-left-radius: 0;
 }
 
-.rt-select.input-group .select2-container .select2-choice {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
+.rt-select.input-group {
+    .select2-container .select2-choice {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    &[multi-line] {
+        .btn {
+            padding: 14px 12px;
+        }
+    }
 }
 
 .select2-container {

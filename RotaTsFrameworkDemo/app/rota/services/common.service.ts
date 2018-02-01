@@ -58,6 +58,28 @@ class Common implements ICommon {
     isPromise(value: any): value is ng.IPromise<any> {
         return value && angular.isFunction(value.then);
     }
+    /**
+    * Process chainable thenable and cancelable functions
+     * @description Note that chain will be ceased when received rejected promise
+    * @param pipeline Thenable functions
+    * @param params Optional parameters
+    */
+    runPromises<T>(pipeline: Array<IChainableMethod<T>>, ...params: any[]): ng.IPromise<T> {
+        let result = this.promise<T>();
+        //iterate pipeline methods
+        for (let i = 0; i < pipeline.length; i++) {
+            result = ((promise: ng.IPromise<any>, method: IChainableMethod<T>) => {
+                return promise.then((response: any): ng.IPromise<T> => {
+                    response && params.push(response);
+                    if (method) {
+                        return method(params);
+                    }
+                    return response;
+                });
+            })(result, pipeline[i]);
+        }
+        return result;
+    }
     //#endregion
 
     //#region Path Utils
@@ -161,6 +183,13 @@ class Common implements ICommon {
             return v === "";
         }
         return true;
+    }
+    /**
+     * Transform text into an ascii slug which can be used in safely in URLs
+     * @param value
+     */
+    slugify(value: string): string {
+        return _s.slugify(value);
     }
     //#endregion
 

@@ -49,6 +49,8 @@ interface IBaseController {
 interface IBaseModelController<TModel extends IBaseModel> extends IBaseController {
     modelPromise: ng.IPromise<TModel | TModel[] | IPagingListModel<TModel>>;
 }
+
+type GetModelFn<T extends IBaseModel> = (modelFilter?: IBaseModelFilter) => ng.IPromise<ModelVariants<T>> | ModelVariants<T>;
 /**
  * Request Options for GET ,POST verbs
  */

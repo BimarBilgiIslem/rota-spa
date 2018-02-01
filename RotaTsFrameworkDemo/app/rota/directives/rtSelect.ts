@@ -571,8 +571,10 @@ module.factory('rtSelectI18N', selectI18NService)
                 'on-select="onItemSelect($item, $model)" theme="select2">' +
                 '<ui-select-match allow-clear="{{allowClear}}"></ui-select-match>' +
                 '<ui-select-choices rt-select-disable-animation></ui-select-choices></ui-select>' +
-                '<a href ng-if="newItemOptions" ng-click="runNewItem($event)" class="input-group-addon"><i class="fa fa-plus-circle"></i></a>' +
-                '<a href ng-if="searchItemsOptions" ng-click="searchItems($event)" class="input-group-addon"><i class="fa fa-search"></i></a></div>');
+                '<span ng-if="newItemOptions" class="input-group-btn"><button ng-click="runNewItem($event)" class="btn btn-default">' +
+                '<i class="fa fa-plus-circle"></i></button></span>' +
+                '<span ng-if="searchItemsOptions" class="input-group-btn"><button  ng-click="searchItems($event)" class="btn btn-default">' +
+                '<i class="fa fa-search"></i></button></span></div>');
         }
     ]);
 //#endregion
