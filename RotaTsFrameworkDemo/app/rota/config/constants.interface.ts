@@ -46,8 +46,6 @@ interface IConstants {
         ACTION_NAME_GET_BY_ID: string;
         ACTION_NAME_SAVE: string;
         ACTION_NAME_DELETE: string;
-        ACTION_NAME_SET_REPORT_FILTERS: string;
-        ACTION_NAME_GENERATE_REPORT: string;
         ACTION_NAME_GET_REPORT: string;
         HEADER_NAME_LANGUAGE: string;
         HEADER_NAME_ROLE_ID: string;
@@ -62,6 +60,7 @@ interface IConstants {
         EVENT_MODEL_LOADED: string;
         EVENT_STATE_CHANGE_START: string;
         EVENT_STATE_CHANGE_SUCCESS: string;
+        EVENT_START_FILEDOWNLOAD: string;
     };
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;

@@ -356,13 +356,20 @@ interface IPagingListModel<TModel extends IBaseModel> {
     total?: number;
 }
 /**
- * Used for exporting grid on server including columns meta
+ * Model export options (etc : excel..)
  */
 interface IExportOptions {
-    _fields: Array<string>;
-    _headers: Array<string>;
-    _exportType?: ModelExports;
-    _fileName?: string;
+    fields: Array<string>;
+    headers: Array<string>;
+    exportType?: ModelExports;
+    fileName?: string;
+}
+/**
+ * Used for exporting grid on server including columns meta
+ */
+interface IExportFilter<TFilter extends IBaseModelFilter> {
+    options: IExportOptions,
+    filter?: TFilter;
 }
 /**
  * Model exports

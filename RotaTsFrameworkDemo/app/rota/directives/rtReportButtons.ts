@@ -32,9 +32,6 @@ function reportButtonsDirective(reporting: IReporting) {
         link: function (scope: IReportButtonsScope, elem: ng.IAugmentedJQuery, attrs: ng.IAttributes) {
             scope.onClick = (type: string) => {
                 switch (type) {
-                    case "reportviewer":
-                        reporting.showReport({ reportName: scope.reportName, filter: scope.filters });
-                        break;
                     case "indirpdf":
                         reporting.downloadReport({
                             reportName: scope.reportName, displayReportName: scope.reportName + ".pdf",
@@ -97,9 +94,6 @@ function reportButtonsDirective(reporting: IReporting) {
         '<i class="fa fa-file-code-o fa-fw"></i>&nbsp;{{::"rota.indirhtml" | i18n}}' +
         '</a></li>' +
         '<li class="dropdown-header" i18n="rota.goster"></li>' +
-        '<li><a href ng-click="onClick(\'gosterpdf\')">' +
-        '<i class="fa fa-file-pdf-o fa-fw"></i>&nbsp;{{::"rota.indirpdf" | i18n}}' +
-        '</a></li>' +
         '</ul></div>'
     };
     return directive;

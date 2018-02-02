@@ -349,6 +349,10 @@ interface IMainConfig extends IBaseConfig {
     * Request headers
     */
     requestHeaderMaps?: RequestHeaders;
+    /**
+     * Vendor ng-module names
+     */
+    dependencyModuleNames?: string[];
 }
 /**
  * Main config provider

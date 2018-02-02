@@ -216,6 +216,10 @@ class RotaApp {
                     }
                 }
             }]);
+        //add extra vendor modules
+        if (settings.main && settings.main.dependencyModuleNames) {
+            this.rotaModule.requires.push(...settings.main.dependencyModuleNames);
+        }
         return this;
     }
     /**

@@ -26,8 +26,9 @@ class Reporting implements IReporting {
     serviceName = 'Reporting Service';
     static injectionName = "Reporting";
 
-    static $inject = ['$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants'];
+    static $inject = ['$rootScope', '$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants'];
     constructor(
+        private $rootScope: IRotaRootScope,
         private $http: ng.IHttpService,
         private $q: ng.IQService,
         private routing: IRouting,
@@ -65,60 +66,30 @@ class Reporting implements IReporting {
      * Export/Downlaod report as specified mimetype
      * @param options Report generate options
      */
-    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): ng.IPromise<any> {
+    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): void {
         //extend defaults
-        options = angular.extend({ reportExportType: ReportExportTypes.Pdf, reportDispositonType: ReportDispositonTypes.Attachment }, options);
-        //get url
-        const generateReportUrl = this.config.reportControllerUrl + "/" + this.constants.server.ACTION_NAME_GENERATE_REPORT +
-            "?reportName=" + options.reportName + "&reportExportType=" + options.reportExportType;
-        //convert filter to array
+        options = angular.extend({
+            reportExportType: ReportExportTypes.Pdf,
+            reportDispositonType: ReportDispositonTypes.Attachment
+        }, options);
+        //get url and convert filter to report params
+        const reportEndpoint = `${this.config.reportControllerUrl}/${this.constants.server.ACTION_NAME_GET_REPORT}`;
         const reportParams = this.mapReportParams(options.filter);
-        //generate report
-        const generateReportPromise = this.$http.post(generateReportUrl, reportParams);
-
-        return generateReportPromise.then(() => {
-            const getReportUrl = this.common.appendAccessTokenToUrl(
-                `${this.config.reportControllerUrl}/${this.constants.server.ACTION_NAME_GET_REPORT}?displayReportName=${
-                options.displayReportName}&reportDispositonType=${options.reportDispositonType}`);
-
-            switch (options.reportDispositonType) {
-                case ReportDispositonTypes.Attachment:
-                    window.location.replace(getReportUrl);
-                    break;
-                case ReportDispositonTypes.Inline:
-                    window.open(getReportUrl, null, 'height=950, width=950, status=yes, resizable=yes, scrollbars=yes,' +
-                        ' toolbar=no, location=no, menubar=no left=0, top=10');
-                    break;
-            }
-            this.logger.console.log({ message: options.reportName + ' report downloaded/viewed' });
-        });
-    }
-    /**
-     * Show ReportViewer
-     * @param reportName Actual SSRS Report Name
-     * @param options Report Options
-     */
-    showReport<TReportFilter extends IBaseReportFilter>(options: IReportViewerOptions<TReportFilter>): ng.IPromise<any> {
-        let paramResponsePromise;
-
-        if (!_.isEmpty(options.filter)) {
-            //convert filter to array params
-            const reportParams = this.mapReportParams(options.filter);
-            paramResponsePromise = this.$http.post(this.config.reportControllerUrl + "/" +
-                this.constants.server.ACTION_NAME_SET_REPORT_FILTERS, reportParams);
-        }
-
-        return this.common.makePromise(paramResponsePromise).then(() => {
-            this.logger.console.log({ message: options.reportName + ' report opened in reportviewer' });
-            return this.dialogs.showReport({
-                message: options.message,
-                title: options.title,
-                okText: options.okText,
-                windowClass: options.windowClass,
-                reportName: options.reportName,
-                reportViewerUrl: this.config.reportViewerUrl
+        //get report
+        this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD,
+            {
+                url: reportEndpoint,
+                filter: {
+                    options: {
+                        reportName: options.reportName,
+                        displayReportName: options.displayReportName,
+                        reportExportType: options.reportExportType,
+                        reportDispositonType: options.reportDispositonType
+                    }, filter: { reportParams }
+                },
+                inline: options.reportDispositonType === ReportDispositonTypes.Inline
             });
-        });
+        this.logger.console.log({ message: options.reportName + ' report downloaded' });
     }
 }
 

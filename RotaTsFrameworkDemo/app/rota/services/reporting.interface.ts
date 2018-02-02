@@ -60,16 +60,10 @@ interface IReportDownloadOptions<TFilter> {
  */
 interface IReporting extends IBaseService {
     /**
-    * Show ReportViewer
-    * @param reportName Actual SSRS Report Name
-    * @param options Report Options
+    * Export/Downlaod report as specified mimetype
+    * @param options Report generate options
     */
-    showReport<TReportFilter extends IBaseReportFilter>(options: IReportViewerOptions<TReportFilter>): ng.IPromise<any>;
-    /**
-      * Export/Downlaod report as specified mimetype
-      * @param options Report generate options
-      */
-    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): ng.IPromise<any>;
+    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): void;
 }
 /**
  * Report Export Types

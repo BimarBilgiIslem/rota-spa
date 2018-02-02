@@ -22,13 +22,20 @@ import BaseApi from "./baseapi";
  * @description Please refer to the static endpoint names defined below for info
  */
 class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
+    //#region Props
+    protected $rootScope: IRotaRootScope;
+    //#endregion
+
     //#region Init
+    //Note that $rootScope is injected to communicate with global rtDownload located in content page
+    static injects = BaseApi.injects.concat(['$rootScope']);
     /**
     * Update bundle
     * @param bundle IBundle
     */
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
+        this.$rootScope = bundle.services["$rootscope"];
     }
     //#endregion
 
@@ -103,11 +110,10 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param filter Filter and export options
      * @param controller Optional controller
      */
-    exportList(filter?: IBaseModelFilter & IExportOptions, controller?: string): void {
-        const url = this.common.appendAccessTokenToUrl(
-            `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}?${this
-            .$httpParamSerializer(filter)}`);
-        location.replace(url);
+    exportList(filter?: IExportFilter<IBaseModelFilter>, controller?: string): void {
+        const url = `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}`;
+        //starts download in rtDownload
+        this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD, { url, filter });
     }
     //#endregion
 }

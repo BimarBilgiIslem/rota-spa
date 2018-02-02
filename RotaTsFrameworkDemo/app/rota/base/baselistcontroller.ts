@@ -731,18 +731,17 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                     const gridExportMeta = this.gridOptions.columnDefs.reduce<IExportOptions>((memo: IExportOptions,
                         curr: uiGrid.IColumnDefOf<TModel>): IExportOptions => {
                         if (curr.displayName) {
-                            memo._headers.push(encodeURIComponent(curr.displayName));
-                            memo._fields.push((curr.field || curr.name).toLowerCase());
+                            memo.headers.push(encodeURIComponent(curr.displayName));
+                            memo.fields.push((curr.field || curr.name).toLowerCase());
                         }
                         return memo;
                     }, {
-                            _fields: [],
-                            _headers: [],
-                            _exportType: exportType,
-                            _fileName: `${s.slugify(this.routing.activeMenu.localizedTitle)}.xlsx`
+                            fields: [],
+                            headers: [],
+                            exportType: exportType,
+                            fileName: `${this.common.slugify(this.routing.activeMenu.localizedTitle)}.xlsx`
                         });
-
-                    const exportModel = angular.extend(filter, gridExportMeta);
+                    const exportModel: IExportFilter<TModelFilter> = { options: gridExportMeta, filter };
                     //call export model
                     this.onExportModel(exportModel);
                     break;
@@ -756,8 +755,8 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
      * Export model 
      * @param filter Filter
      */
-    onExportModel(filter: TModelFilter & IExportOptions): void {
-        this.toastr.warn({ message: this.localization.getLocal("rota.exporttanimsiz") });
+    onExportModel(filter: IExportFilter<TModelFilter>): void {
+        throw new Error("onExportModel is not implemented");
     }
     //#endregion
 
