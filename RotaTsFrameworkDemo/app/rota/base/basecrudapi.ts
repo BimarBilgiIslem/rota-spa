@@ -49,7 +49,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param controller Optional filter
      * @returns {ng.IPromise<TModel[]>}
      */
-    getList(filter?: IBaseListModelFilter, controller?: string): ng.IPromise<TModel[]> {
+    getList<TFilter extends IBaseListModelFilter = IBaseListModelFilter>(filter?: TFilter, controller?: string): ng.IPromise<TModel[]> {
         return this.get<TModel[]>({
             action: this.config.crudActionNames.getList,
             controller: controller,
@@ -63,7 +63,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @param controller Optional filter
     * @returns {ng.IPromise<IPagingListModel<TModel>>}
     */
-    getPagedList(filter?: IBaseListModelFilter, controller?: string): ng.IPromise<IPagingListModel<TModel>> {
+    getPagedList<TFilter extends IBaseListModelFilter = IBaseListModelFilter>(filter?: TFilter, controller?: string): ng.IPromise<IPagingListModel<TModel>> {
         return this.get<IPagingListModel<TModel>>({
             action: this.config.crudActionNames.getPagedList,
             controller: controller,
@@ -116,9 +116,9 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param filter Filter and export options
      * @param controller Optional controller
      */
-    exportList(filter?: IExportFilter<IBaseListModelFilter>, controller?: string): void {
+    exportList<TFilter extends IBaseListModelFilter = IBaseListModelFilter>(filter?: IExportFilter<TFilter>, controller?: string): void {
         const url = `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}`;
-        //starts download in rtDownload
+        //starts download in global rtDownload
         this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD, { url, filter });
     }
     //#endregion

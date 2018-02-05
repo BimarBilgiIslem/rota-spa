@@ -363,6 +363,7 @@ interface IExportOptions {
     headers: Array<string>;
     exportType?: ModelExports;
     fileName?: string;
+    pager?: IPager;
 }
 /**
  * Used for exporting grid on server including columns meta
