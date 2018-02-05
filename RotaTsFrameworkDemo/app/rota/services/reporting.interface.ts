@@ -13,22 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-interface IReportParameter {
-    name: string;
-    value: any;
-}
-
-interface IReportViewerOptions<TFilter> extends IDialogOptions {
-    /**
-    * Actual SSRS Report Name
-    */
-    reportName: string;
-    /**
-    * Report Filter
-    */
-    filter?: TFilter;
-}
+type IReportParameter = INameValueStructure;
 /**
  * Report download options
  */

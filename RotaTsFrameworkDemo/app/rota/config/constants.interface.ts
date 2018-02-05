@@ -18,6 +18,8 @@ interface IConstants {
     APP_VERSION: string;
     APP_TITLE: string;
     DEFAULT_LOGO_IMAGE_NAME: string;
+    DEFAULT_CSS_URL_DEBUG: string;
+    DEFAULT_CSS_URL_PROD: string;
     DEFAULT_STARTUP_MODULE_NAME: string;
     PRODUCTION_DEBUG_WARNING: string;
     MIN_NUMBER_VALUE: number;

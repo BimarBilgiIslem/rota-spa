@@ -780,5 +780,4 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
     }
     //#endregion
 }
-
 export default BaseListController 

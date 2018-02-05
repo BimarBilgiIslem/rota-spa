@@ -27,7 +27,10 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     //#endregion
 
     //#region Init
-    //Note that $rootScope is injected to communicate with global rtDownload located in content page
+    /**
+     * Note that $rootScope is injected to communicate
+       with global rtDownload located in content page for exporting model
+     */
     static injects = BaseApi.injects.concat(['$rootScope']);
     /**
     * Update bundle
@@ -46,7 +49,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param controller Optional filter
      * @returns {ng.IPromise<TModel[]>}
      */
-    getList(filter?: IBaseModelFilter, controller?: string): ng.IPromise<TModel[]> {
+    getList(filter?: IBaseListModelFilter, controller?: string): ng.IPromise<TModel[]> {
         return this.get<TModel[]>({
             action: this.config.crudActionNames.getList,
             controller: controller,
@@ -60,7 +63,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @param controller Optional filter
     * @returns {ng.IPromise<IPagingListModel<TModel>>}
     */
-    getPagedList(filter?: IBaseModelFilter, controller?: string): ng.IPromise<IPagingListModel<TModel>> {
+    getPagedList(filter?: IBaseListModelFilter, controller?: string): ng.IPromise<IPagingListModel<TModel>> {
         return this.get<IPagingListModel<TModel>>({
             action: this.config.crudActionNames.getPagedList,
             controller: controller,
@@ -93,7 +96,10 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     * @returns {ng.IPromise<ICrudServerResponseData>}
     */
     save(model: TModel, controller?: string): ng.IPromise<ICrudServerResponseData> {
-        return this.post<ICrudServerResponseData>({ action: this.config.crudActionNames.save, controller: controller, data: model });
+        return this.post<ICrudServerResponseData>({
+            action: this.config.crudActionNames.save,
+            controller: controller, data: model
+        });
     }
 
     /**
@@ -110,7 +116,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param filter Filter and export options
      * @param controller Optional controller
      */
-    exportList(filter?: IExportFilter<IBaseModelFilter>, controller?: string): void {
+    exportList(filter?: IExportFilter<IBaseListModelFilter>, controller?: string): void {
         const url = `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}`;
         //starts download in rtDownload
         this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD, { url, filter });

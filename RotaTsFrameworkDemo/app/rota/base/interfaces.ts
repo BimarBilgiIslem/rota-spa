@@ -367,7 +367,7 @@ interface IExportOptions {
 /**
  * Used for exporting grid on server including columns meta
  */
-interface IExportFilter<TFilter extends IBaseModelFilter> {
+interface IExportFilter<TFilter extends IBaseListModelFilter> {
     options: IExportOptions,
     filter?: TFilter;
 }

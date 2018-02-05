@@ -36,6 +36,13 @@ interface IChainableMethod<T> {
     (...args: any[]): ng.IPromise<T>;
 }
 /**
+ * Common interface for various sitiuations
+ */
+interface INameValueStructure {
+    name: string;
+    value: any;
+}
+/**
  * Result structure returned after caching file in server
  */
 interface IFileUploadResponseData extends IBaseServerResponseData {
@@ -195,6 +202,12 @@ interface ICommon extends IBaseService {
      * @returns {number} 
      */
     getUniqueNumber(): number;
+    /**
+     * Flatten simple object to name-value collection
+     * @param filter
+     * @param parentKey
+     */
+    serializeAsNameValuePairs(filter: IDictionary<any>, parentKey?: string): INameValueStructure[];
     /**
      * Get first item which is not null or undefined
      * @param args Parameters

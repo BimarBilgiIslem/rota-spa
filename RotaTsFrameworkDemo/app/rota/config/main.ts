@@ -297,6 +297,17 @@ if (typeof window !== 'undefined') {
         });
     }
     /**
+     * Load app wide stylesheet
+     */
+    const loadCss = (constants: IConstants) => {
+        const url = env.debugging ? constants.DEFAULT_CSS_URL_DEBUG : constants.DEFAULT_CSS_URL_PROD;
+        const link = document.createElement("link");
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = url;
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
+    /**
      * Init all things
      * @param constants Constants
      * @param currentCulture Current culture
@@ -310,6 +321,7 @@ if (typeof window !== 'undefined') {
         setRequireConfig();
         setConfig();
         //init fr
+        loadCss(constants);
         loadFr(constants);
     }
     //#endregion

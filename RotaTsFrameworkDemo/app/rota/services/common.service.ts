@@ -195,10 +195,43 @@ class Common implements ICommon {
 
     //#region Utils
     /**
+     * Flatten simple object to name-value collection
+     * @param filter
+     * @param parentKey
+     */
+    serializeAsNameValuePairs(filter: IDictionary<any>, parentKey: string = ""): INameValueStructure[] {
+        const getKey = (key: string, index?: number): string => {
+            return parentKey ? (this.isAssigned(index) ? `${parentKey}[${index}].${key}` : `${parentKey}.${key}`) : key;
+        }
+        const params = _.reduce<any, INameValueStructure[]>(filter, (memo, value: any, key: string) => {
+            if (_.isArray(value)) {
+                value.forEach((item: INameValueStructure, index) => {
+                    if (_.isObject(item)) {
+                        memo.push({ name: getKey("name", index), value: item.name });
+                        memo.push({ name: getKey("value", index), value: item.value });
+                    } else {
+                        memo.push({ name: getKey(key), value: item });
+                    }
+                });
+            } else
+                if (_.isDate(value))
+                    memo.push({ name: getKey(key), value: value.toISOString() });
+                else
+                    if (_.isObject(value)) {
+                        memo.push(...this.serializeAsNameValuePairs(value, getKey(key)));
+                    }
+                    else
+                        memo.push({ name: getKey(key), value: value });
+            return memo;
+        }, []);
+        return params;
+    }
+    /**
      * Add access token to url
      * @param url
      */
     appendAccessTokenToUrl(url: string): string {
+        if (this.isNullOrEmpty(this.tokens.accessToken)) return url;
         return this.updateQueryStringParameter(url,
             this.securityconfig.accessTokenQueryStringName,
             this.tokens.accessToken);
