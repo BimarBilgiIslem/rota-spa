@@ -122,6 +122,12 @@ function selectDirective($document: ng.IDocumentService, $parse: ng.IParseServic
             }
             //Unique focus event name
             scope.focusEventName = `rt-select-focus:${common.getRandomNumber()}`;
+            //Clear items on blue when isautosuggest is active
+            scope.onOpenClose = function(isOpen) {
+                if (isAutoSuggest && !isOpen) {
+                    scope.listItems = [];
+                }
+            };
             //quit edit mode in grid if selected or clicked outside 
             //https://plnkr.co/edit/ckQhv5bWha2jte5wDBI1?p=preview
             if (inGridCell) {
@@ -566,7 +572,8 @@ module.factory('rtSelectI18N', selectI18NService)
         '$templateCache', ($templateCache: ng.ITemplateCacheService) => {
             $templateCache.put('rota/rtselect-options.tpl.html',
                 '<div ng-keydown="manageKeys($event)" ng-class="{\'input-group\':newItemOptions || searchItemsOptions}" ' +
-                'class="no-padding col-md-12 col-sm-12 col-lg-12 col-xs-12 rt-select"><ui-select focus-on="{{focusEventName}}" ng-disabled=ngDisabled ' +
+                'class="no-padding col-md-12 col-sm-12 col-lg-12 col-xs-12 rt-select"><ui-select uis-open-close="onOpenClose(isOpen)" ' +
+                'focus-on="{{focusEventName}}" ng-disabled=ngDisabled ' +
                 'style="width:100%" reset-search-input="true" ng-model="selected.model" ' +
                 'on-select="onItemSelect($item, $model)" theme="select2">' +
                 '<ui-select-match allow-clear="{{allowClear}}"></ui-select-match>' +
