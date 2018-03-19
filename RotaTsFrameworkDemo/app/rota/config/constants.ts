@@ -106,11 +106,6 @@ const rotaConstants: IConstants = {
         ' tooltip-append-to-body="true" tooltip-placement="top"><i class="fa fa-trash"></i></a></div>',
         GRID_MAX_PAGE_SIZE: 999999
     },
-    tree: {
-        //rtTree
-        TREE_TWISTIE_COLLAPSED_TPL: '<span class="fa fa-plus-square text-primary"></span>',
-        TREE_TWISTIE_EXPANDED_TPL: '<span class="fa fa-minus-square text-primary"></span>'
-    },
     //rtSelect
     select: {
         OBJ_VALUE_PROP_NAME: 'key',

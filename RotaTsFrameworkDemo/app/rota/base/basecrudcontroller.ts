@@ -206,14 +206,13 @@ abstract class BaseCrudController<TModel extends IBaseCrudModel> extends BaseMod
                 this.initNewModel(this.crudPageFlags.isCloning);
             }
         } else {
+            //model revert
             this.model.revertOriginal();
             this.logger.console.log({ message: 'model reverted to original' });
-
+            //ui revert
             this.resetForm(this.model);
-            //autosave actived in only new state mode,probably there would be issue in edit mode
-            //if (this.crudPageOptions.autoSave)
-            //    this.startAutoSave();
             (this.notification as INotification).removeAll();
+            this.clearDirty();
             this.logger.toastr.info({ message: this.localization.getLocal('rota.degisikliklergerialindi') });
         }
     }

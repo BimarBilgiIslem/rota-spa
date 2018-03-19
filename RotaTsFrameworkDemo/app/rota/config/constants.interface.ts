@@ -77,7 +77,6 @@ interface IConstants {
         GRID_DELETE_BUTTON_HTML: string;
         GRID_MAX_PAGE_SIZE: number;
     };
-    tree: { TREE_TWISTIE_COLLAPSED_TPL: string; TREE_TWISTIE_EXPANDED_TPL: string };
     select: {
         OBJ_VALUE_PROP_NAME: string;
         OBJ_DISPLAY_PROP_NAME: string;
