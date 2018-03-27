@@ -1,0 +1,1171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{92239995-98C7-4B26-A67C-E76AB5E5EC2C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RotaTsFrameworkDemo</RootNamespace>
+    <AssemblyName>RotaTsFrameworkDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+    <TypeScriptModuleKind>UMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>C:\Projects\Lojistik Ortak Platform Online Islemler (LoopOnline)\TNP-DevHD\Lojistik Online Islemler\DllRef\Rota2\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityModel.1.9.2\lib\net45\IdentityModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3.AccessTokenValidation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityServer3.AccessTokenValidation.2.14.0\lib\net45\IdentityServer3.AccessTokenValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.0.1011, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.1.2.3\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.1.2.3\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.1.2.3\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.1.2.3\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=1.2.3.246, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.1.2.3\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=1.2.3.490, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.1.2.3\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Owin.1.2.2\lib\net45\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.2.33, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.2.206221351\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Projects\EMES BOX\TNP-DevHD\Application\DllRef\Microsoft\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicosoftReportViewerWebForms_v11.1.0.1\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rota2.Utils">
+      <HintPath>C:\Projects\Egekont Roro Liman Sistemi\TNP-DevHD\Roro Liman Sistemi\DllRef\Rota2\Rota2.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="RotaIdentity.Models">
+      <HintPath>C:\Projects\BIMAR IS UYGULAMALARI\ROTA Framework Projesi\RotaIdentityServer\RotaIdentity.Models\bin\Debug\RotaIdentity.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\SessionConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BkgController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ResourceApiController.cs" />
+    <Compile Include="Controllers\TodoController.cs" />
+    <Compile Include="Dto\BaseDto.cs" />
+    <Compile Include="Dto\CategoryDTO.cs" />
+    <Compile Include="Dto\CustomerDTO.cs" />
+    <Compile Include="Dto\Infrastructure\MapperBase.cs" />
+    <Compile Include="Dto\OrderDTO.cs" />
+    <Compile Include="Dto\Order_DetailDTO.cs" />
+    <Compile Include="Dto\ProductDTO.cs" />
+    <Compile Include="Dto\SupplierDTO.cs" />
+    <Compile Include="Hubs\TestHub.cs" />
+    <Compile Include="Models\Alphabetical_list_of_product.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Category_Sales_for_1997.cs" />
+    <Compile Include="Models\Current_Product_List.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerDemographic.cs" />
+    <Compile Include="Models\Customer_and_Suppliers_by_City.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\Mapping\Alphabetical_list_of_productMap.cs" />
+    <Compile Include="Models\Mapping\CategoryMap.cs" />
+    <Compile Include="Models\Mapping\Category_Sales_for_1997Map.cs" />
+    <Compile Include="Models\Mapping\Current_Product_ListMap.cs" />
+    <Compile Include="Models\Mapping\CustomerDemographicMap.cs" />
+    <Compile Include="Models\Mapping\CustomerMap.cs" />
+    <Compile Include="Models\Mapping\Customer_and_Suppliers_by_CityMap.cs" />
+    <Compile Include="Models\Mapping\EmployeeMap.cs" />
+    <Compile Include="Models\Mapping\InvoiceMap.cs" />
+    <Compile Include="Models\Mapping\OrderMap.cs" />
+    <Compile Include="Models\Mapping\Orders_QryMap.cs" />
+    <Compile Include="Models\Mapping\Order_DetailMap.cs" />
+    <Compile Include="Models\Mapping\Order_Details_ExtendedMap.cs" />
+    <Compile Include="Models\Mapping\Order_SubtotalMap.cs" />
+    <Compile Include="Models\Mapping\ProductMap.cs" />
+    <Compile Include="Models\Mapping\Products_Above_Average_PriceMap.cs" />
+    <Compile Include="Models\Mapping\Products_by_CategoryMap.cs" />
+    <Compile Include="Models\Mapping\Product_Sales_for_1997Map.cs" />
+    <Compile Include="Models\Mapping\RegionMap.cs" />
+    <Compile Include="Models\Mapping\Sales_by_CategoryMap.cs" />
+    <Compile Include="Models\Mapping\Sales_Totals_by_AmountMap.cs" />
+    <Compile Include="Models\Mapping\ShipperMap.cs" />
+    <Compile Include="Models\Mapping\Summary_of_Sales_by_QuarterMap.cs" />
+    <Compile Include="Models\Mapping\Summary_of_Sales_by_YearMap.cs" />
+    <Compile Include="Models\Mapping\SupplierMap.cs" />
+    <Compile Include="Models\Mapping\TerritoryMap.cs" />
+    <Compile Include="Models\NorthwindContext.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Orders_Qry.cs" />
+    <Compile Include="Models\Order_Detail.cs" />
+    <Compile Include="Models\Order_Details_Extended.cs" />
+    <Compile Include="Models\Order_Subtotal.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Products_Above_Average_Price.cs" />
+    <Compile Include="Models\Products_by_Category.cs" />
+    <Compile Include="Models\Product_Sales_for_1997.cs" />
+    <Compile Include="Models\ProfileData.cs" />
+    <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\Sales_by_Category.cs" />
+    <Compile Include="Models\Sales_Totals_by_Amount.cs" />
+    <Compile Include="Models\Shipper.cs" />
+    <Compile Include="Models\Summary_of_Sales_by_Quarter.cs" />
+    <Compile Include="Models\Summary_of_Sales_by_Year.cs" />
+    <Compile Include="Models\Supplier.cs" />
+    <Compile Include="Models\Territory.cs" />
+    <Compile Include="ReportViewer\ReportViewer.aspx.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportViewer\ReportViewer.aspx.designer.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Content Include="app\angular-recaptcha.min.js" />
+    <Content Include="app\animations\animations.html" />
+    <Content Include="app\bkg\bkgs.html" />
+    <Content Include="app\bkg\genelbilgiler\bkg.genelbilgiler.html" />
+    <Content Include="app\bkg\genelbilgiler\bkg.mod.html" />
+    <Content Include="app\bkg\bkg.html" />
+    <Content Include="app\bkg\yukler\bkg.yuk.html" />
+    <Content Include="app\bkg\yukler\bkg.yukler.html" />
+    <Content Include="app\category\categories.html" />
+    <Content Include="app\category\category.html" />
+    <Content Include="app\category\yukler.html" />
+    <Content Include="app\category\genel.html" />
+    <Content Include="app\customer\customer.html" />
+    <Content Include="app\customer\customers.html" />
+    <Content Include="app\customer\modal\customer.modal.controller.html" />
+    <Content Include="app\dashboard\dashboard.html" />
+    <Content Include="app\dashboard\items\widget1.html" />
+    <Content Include="app\help.html" />
+    <Content Include="app\layouts\custom-content.html" />
+    <Content Include="app\layouts\fancytitle.html" />
+    <Content Include="app\libs\angular-chart.min.js" />
+    <Content Include="app\libs\Chart.min.js" />
+    <Content Include="app\main.js" />
+    <Content Include="app\product\product.modal.html" />
+    <Content Include="app\resources\nls\en-us\resources.js" />
+    <Content Include="app\resources\nls\resources.js" />
+    <Content Include="app\resources\nls\tr-tr\resources.js" />
+    <Content Include="app\rota\core\angular-animate.min.js" />
+    <Content Include="app\rota\core\angular-cookies.min.js" />
+    <Content Include="app\rota\core\angular-locale_tr-tr.js" />
+    <Content Include="app\rota\core\angular-sanitize.min.js" />
+    <Content Include="app\rota\core\angular-ui-router.min.js" />
+    <Content Include="app\rota\core\angular.min.js" />
+    <Content Include="app\rota\core\jquery.signalR-2.2.1.min.js" />
+    <Content Include="app\rota\core\oidc-client.min.js" />
+    <Content Include="app\rota\core\Reflect.js" />
+    <Content Include="app\rota\core\require.js" />
+    <Content Include="app\rota\core\tslib.js" />
+    <Content Include="app\rota\core\ui-bootstrap-tpls-2.5.0.min.js" />
+    <Content Include="app\rota\lib\ckeditor\ckeditor.js" />
+    <Content Include="app\rota\lib\ckeditor\config.js" />
+    <Content Include="app\rota\lib\ckeditor\contents.css" />
+    <Content Include="app\rota\lib\ckeditor\lang\en.js" />
+    <Content Include="app\rota\lib\ckeditor\lang\tr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\a11yhelp.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ar.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\bg.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ca.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\cs.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\cy.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\da.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\de-ch.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\de.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\el.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\en-gb.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\en.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\eo.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\es.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\et.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\eu.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\fa.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\fi.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\fo.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\fr-ca.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\fr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\gl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\gu.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\he.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\hi.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\hr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\hu.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\id.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\it.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ja.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\km.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ko.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ku.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\lt.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\lv.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\mk.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\mn.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\nb.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\nl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\no.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\pl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\pt-br.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\pt.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ro.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ru.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\si.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\sk.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\sl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\sq.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\sr-latn.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\sr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\sv.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\th.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\tr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\tt.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\ug.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\uk.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\vi.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\zh-cn.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\zh.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\a11yhelp\dialogs\lang\_translationstatus.txt" />
+    <Content Include="app\rota\lib\ckeditor\plugins\about\dialogs\about.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\about\dialogs\hidpi\logo_ckeditor.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\clipboard\dialogs\paste.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\dialog\dialogDefinition.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\icons.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\image\dialogs\image.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\image\images\noimage.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\link\dialogs\anchor.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\link\dialogs\link.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\link\images\anchor.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\link\images\hidpi\anchor.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\magicline\images\hidpi\icon-rtl.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\magicline\images\hidpi\icon.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\magicline\images\icon-rtl.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\magicline\images\icon.png" />
+    <Content Include="app\rota\lib\ckeditor\plugins\pastefromword\filter\default.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\scayt\dialogs\options.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\af.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ca.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\cs.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\cy.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\da.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\de-ch.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\de.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\el.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\en-gb.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\en.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\eo.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\es.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\et.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\eu.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\fa.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\fi.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\fr-ca.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\fr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\gl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\he.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\hr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\hu.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\id.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\it.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ja.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\km.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ko.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ku.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\lt.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\lv.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\nb.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\nl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\no.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\pl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\pt-br.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\pt.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ru.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\si.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\sk.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\sl.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\sq.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\sv.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\th.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\tr.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\tt.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\ug.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\uk.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\vi.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\zh-cn.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\zh.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\lang\_translationstatus.txt" />
+    <Content Include="app\rota\lib\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\table\dialogs\table.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\dialogs\ciframe.html" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\dialogs\tmpFrameset.html" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\dialogs\wsc.css" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\dialogs\wsc.js" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\dialog.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\dialog_ie.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\dialog_ie7.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\dialog_ie8.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\dialog_iequirks.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\editor.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\editor_gecko.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\editor_ie.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\editor_ie7.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\editor_ie8.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\editor_iequirks.css" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\icons.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\icons_hidpi.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\arrow.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\close.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\hidpi\close.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\hidpi\lock-open.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\hidpi\lock.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\hidpi\refresh.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\lock-open.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\lock.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\refresh.png" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\images\spinner.gif" />
+    <Content Include="app\rota\lib\ckeditor\styles.js" />
+    <Content Include="app\rota\lib\ct-ui-router-extras.js" />
+    <Content Include="app\rota\core\jquery-2.1.4.min.js" />
+    <Content Include="app\rota\lib\angular-scroll.min.js" />
+    <Content Include="app\rota\lib\dateTimeInput.js" />
+    <Content Include="app\rota\lib\datetimepicker.js" />
+    <Content Include="app\rota\lib\FileAPI.min.js" />
+    <Content Include="app\rota\lib\hotkeys.min.js" />
+    <Content Include="app\rota\lib\i18n.js" />
+    <Content Include="app\rota\lib\json.js" />
+    <Content Include="app\rota\lib\mask.min.js" />
+    <Content Include="app\rota\lib\mfb-directive.js" />
+    <Content Include="app\rota\lib\moment.min.js" />
+    <Content Include="app\rota\lib\ng-ckeditor.js" />
+    <Content Include="app\rota\lib\ng-contextmenu.js" />
+    <Content Include="app\rota\lib\ng-currency.js" />
+    <Content Include="app\rota\lib\ng-file-upload-all.min.js" />
+    <Content Include="app\rota\lib\ng-img-crop.js" />
+    <Content Include="app\rota\lib\optional.js" />
+    <Content Include="app\rota\lib\pdfmake.min.js" />
+    <Content Include="app\rota\lib\roundProgress.min.js" />
+    <Content Include="app\rota\lib\select.min.js" />
+    <Content Include="app\rota\lib\spin.min.js" />
+    <Content Include="app\rota\lib\text.js" />
+    <Content Include="app\rota\lib\toastr.js" />
+    <Content Include="app\rota\lib\ui-grid.min.js" />
+    <Content Include="app\rota\lib\underscore.min.js" />
+    <Content Include="app\rota\lib\underscore.string.min.js" />
+    <Content Include="app\rota\lib\vfs_fonts.js" />
+    <Content Include="app\rota\lib\xdom.js" />
+    <Content Include="app\rota\resources\nls\en-us\moment-lang.js" />
+    <Content Include="app\rota\resources\nls\en-us\resources.js" />
+    <Content Include="app\rota\resources\nls\moment-lang.js" />
+    <Content Include="app\rota\resources\nls\resources.js" />
+    <Content Include="app\rota\resources\nls\tr-tr\moment-lang.js" />
+    <Content Include="app\rota\resources\nls\tr-tr\resources.js" />
+    <Content Include="app\rota\shell\views\badges.html" />
+    <Content Include="app\rota\shell\views\breadcrumb.html" />
+    <Content Include="app\rota\shell\views\content.html" />
+    <Content Include="app\rota\shell\views\current-company.html" />
+    <Content Include="app\rota\shell\views\error404.html" />
+    <Content Include="app\rota\shell\views\error500.html" />
+    <Content Include="app\rota\shell\views\feedback.html" />
+    <Content Include="app\rota\shell\views\header-action-buttons.html" />
+    <Content Include="app\rota\shell\views\header.html" />
+    <Content Include="app\rota\shell\views\nav-menu-mobile.html" />
+    <Content Include="app\rota\shell\views\shell.html" />
+    <Content Include="app\rota\shell\views\silent_renew.html" />
+    <Content Include="app\rota\shell\views\title.html" />
+    <Content Include="app\rota\shell\views\user-profile.html" />
+    <Content Include="app\yetkisiz\yetkisiz.html" />
+    <Content Include="App_Code\HtmlHelper.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\ben.jpg" />
+    <Content Include="build\build.config.css.js" />
+    <Content Include="build\build.config.js" />
+    <Content Include="build\r.js" />
+    <Content Include="Content\css\site.css" />
+    <Content Include="Content\css\vendor-css\bootstrap.min.css" />
+    <Content Include="Content\css\vendor-css\datetimepicker.css" />
+    <Content Include="Content\css\vendor-css\font-awesome.min.css" />
+    <Content Include="Content\css\vendor-css\hotkeys.min.css" />
+    <Content Include="Content\css\vendor-css\ivh-treeview-theme-basic.css" />
+    <Content Include="Content\css\vendor-css\ivh-treeview.css" />
+    <Content Include="Content\css\vendor-css\mfb.min.css" />
+    <Content Include="Content\css\vendor-css\ng-img-crop.css" />
+    <Content Include="Content\css\vendor-css\select.min.css" />
+    <Content Include="Content\css\vendor-css\ui-grid.min.css" />
+    <Content Include="Content\css\vendor-css\ui-layout.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\img\avatar-default-large.png" />
+    <Content Include="Content\img\avatar-default-medium.png" />
+    <Content Include="Content\img\avatar-default-small.png" />
+    <Content Include="Content\img\favicon-default.ico" />
+    <Content Include="Content\img\logo_bimar.png" />
+    <Content Include="Content\img\poster.jpg" />
+    <Content Include="Content\img\select2.png" />
+    <Content Include="Content\css\vendor-css\toastr.min.css" />
+    <Content Include="Content\fonts\ui-grid.svg" />
+    <Content Include="Content\fonts\bootstrap\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\img\de.png" />
+    <Content Include="Content\img\en-us.png" />
+    <Content Include="Content\img\es.png" />
+    <Content Include="Content\img\logo_place_holder.png" />
+    <Content Include="Content\img\tr-tr.png" />
+    <Content Include="Content\img\favicon-warn-sign.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="ReportViewer\ReportViewer.aspx" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="tsconfig.json" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\ui-grid.eot" />
+    <Content Include="Content\fonts\ui-grid.ttf" />
+    <Content Include="Content\fonts\ui-grid.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="app\animations\animations.controller.ts" />
+    <TypeScriptCompile Include="app\app.interfaces.ts" />
+    <TypeScriptCompile Include="app\bkg\bkgs.controller.ts" />
+    <TypeScriptCompile Include="app\bkg\bkg.controller.ts" />
+    <TypeScriptCompile Include="app\bkg\bkg.service.ts" />
+    <TypeScriptCompile Include="app\bkg\genelbilgiler\bkg.genelbilgiler.controller.ts" />
+    <TypeScriptCompile Include="app\bkg\IBkgService.ts" />
+    <TypeScriptCompile Include="app\bkg\interfaces.ts" />
+    <TypeScriptCompile Include="app\bkg\enums.ts" />
+    <TypeScriptCompile Include="app\bkg\yukler\bkg.yuk.controller.ts" />
+    <TypeScriptCompile Include="app\bkg\yukler\bkg.yukler.controller.ts" />
+    <TypeScriptCompile Include="app\category\categories.controller.ts" />
+    <TypeScriptCompile Include="app\category\category.api.ts" />
+    <TypeScriptCompile Include="app\category\category.controller.ts" />
+    <TypeScriptCompile Include="app\category\category.model.ts" />
+    <TypeScriptCompile Include="app\common\directives\checkdigit.directive.ts" />
+    <TypeScriptCompile Include="app\common\directives\customer.directive.ts" />
+    <TypeScriptCompile Include="app\customer\customer.api.ts" />
+    <TypeScriptCompile Include="app\customer\customer.controller.ts" />
+    <TypeScriptCompile Include="app\customer\customer.model.ts" />
+    <TypeScriptCompile Include="app\customer\customers.controller.ts" />
+    <TypeScriptCompile Include="app\customer\modal\customer.modal.controller.ts" />
+    <TypeScriptCompile Include="app\dashboard\dashboard.controller.ts" />
+    <TypeScriptCompile Include="app\dashboard\items\widget1.controller.ts" />
+    <TypeScriptCompile Include="app\help.controller.ts" />
+    <TypeScriptCompile Include="app\product\product.modal.controller.ts" />
+    <TypeScriptCompile Include="app\product\product.model.ts" />
+    <TypeScriptCompile Include="app\allow-startup.ts" />
+    <TypeScriptCompile Include="app\rota\base\basecrudapi.ts" />
+    <TypeScriptCompile Include="app\rota\base\baseapi.ts" />
+    <TypeScriptCompile Include="app\rota\base\baseconfig.ts" />
+    <TypeScriptCompile Include="app\rota\base\basecontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\basecrudcontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\basewidgetcontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\decorators.ts" />
+    <TypeScriptCompile Include="app\rota\base\defaultmodalcontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\obserablemodel.ts" />
+    <TypeScriptCompile Include="app\rota\base\baselistcontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\basemodalcontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\basemodelcontroller.ts" />
+    <TypeScriptCompile Include="app\rota\base\index.ts" />
+    <TypeScriptCompile Include="app\rota\base\injectableobject.ts" />
+    <TypeScriptCompile Include="app\rota\base\interfaces.ts" />
+    <TypeScriptCompile Include="app\rota\base\ph.ts" />
+    <TypeScriptCompile Include="app\rota\config\app.declarations.ts" />
+    <TypeScriptCompile Include="app\rota\config\constants.interface.ts" />
+    <TypeScriptCompile Include="app\rota\config\constants.ts" />
+    <TypeScriptCompile Include="app\rota\config\main.ts" />
+    <TypeScriptCompile Include="app\rota\config\oidc-manager.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtAvatar.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtContent.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtContent.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtCopyToClipboard.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDashboard.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDashboard.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDownload.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDownload.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDraggableModal.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtInfo.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtIdleTimeout.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtInclude.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="app\rota\directives\rtMultiFileUpload.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtMultiFileUpload.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtMultiSelect.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtNavMenu.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtNavProfile.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtNotification.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtPagePreview.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtPagePreviewOptions.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtReportButtons.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtSticky.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtTabs.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtCallout.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtValidator.ts" />
+    <TypeScriptCompile Include="app\rota\extensions\array.extensions.ts" />
+    <TypeScriptCompile Include="app\rota\extensions\index.ts" />
+    <TypeScriptCompile Include="app\rota\extensions\listmodel.extensions.ts" />
+    <TypeScriptCompile Include="app\rota\extensions\string.extensions.ts" />
+    <TypeScriptCompile Include="app\rota\extensions\window.extensions.ts" />
+    <TypeScriptCompile Include="app\rota\filters\rtHtmltoPlainText.ts" />
+    <TypeScriptCompile Include="app\rota\services\reporting.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\reporting.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\security.encoding.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\security.encoding.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\signalr.hub.ts" />
+    <TypeScriptCompile Include="app\rota\services\signalr.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\signalr.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\validators.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\validators.service.ts" />
+    <TypeScriptCompile Include="app\rota\config\app.ts" />
+    <TypeScriptCompile Include="app\rota\config\config.interface.ts" />
+    <TypeScriptCompile Include="app\rota\config\config.ts" />
+    <TypeScriptCompile Include="app\rota\config\infrastructure.index.ts" />
+    <TypeScriptCompile Include="app\rota\config\vendor.index.ts" />
+    <TypeScriptCompile Include="app\rota\core\index.ts" />
+    <TypeScriptCompile Include="app\rota\directives\index.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDateRange.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtDatePicker.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtEditor.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtFileUpload.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtForm.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtNumber.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtSelect.interface.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtButton.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtCrudButtons.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtFocus.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtGrid.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtI18n.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtListButtons.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtMultiSelect.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtPanel.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtSelect.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtSpinner.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtTabs.ts" />
+    <TypeScriptCompile Include="app\rota\directives\rtTextCase.ts" />
+    <TypeScriptCompile Include="app\rota\filters\index.ts" />
+    <TypeScriptCompile Include="app\rota\filters\rtCrudList.ts" />
+    <TypeScriptCompile Include="app\rota\filters\rtI18n.ts" />
+    <TypeScriptCompile Include="app\rota\filters\rtTextCase.ts" />
+    <TypeScriptCompile Include="app\rota\lib\index.ts" />
+    <TypeScriptCompile Include="app\rota\lib\underscore.mixed.ts" />
+    <TypeScriptCompile Include="app\rota\resources\resources.ts" />
+    <TypeScriptCompile Include="app\rota\services\caching.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\caching.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\common.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\common.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\dialogs.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\dialogs.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\logger.exception.ts" />
+    <TypeScriptCompile Include="app\rota\services\security.config.ts" />
+    <TypeScriptCompile Include="app\rota\services\security.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\security.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\titlebadges.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\titlebadges.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\index.ts" />
+    <TypeScriptCompile Include="app\rota\services\interceptors.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\loader.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\loader.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\localization.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\localization.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\logger.config.ts" />
+    <TypeScriptCompile Include="app\rota\services\logger.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\logger.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\routing.config.ts" />
+    <TypeScriptCompile Include="app\rota\services\routing.service.ts" />
+    <TypeScriptCompile Include="app\rota\services\routing.interface.ts" />
+    <TypeScriptCompile Include="app\rota\shell\profile.controller.ts" />
+    <TypeScriptCompile Include="app\rota\shell\shell.controller.ts" />
+    <TypeScriptCompile Include="app\rota\shell\shell.interface.ts" />
+    <TypeScriptCompile Include="app\rota\shell\templates.ts" />
+    <TypeScriptCompile Include="app\startup.ts" />
+    <TypeScriptCompile Include="app\yetkisiz\yetkisiz.api.ts" />
+    <TypeScriptCompile Include="app\yetkisiz\yetkisiz.controller.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-hotkeys\angular-hotkeys.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-scroll\angular-scroll.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-ui-bootstrap\angular-ui-bootstrap.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-ui-router\angular-ui-router.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\kjur\jws.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\ng-file-upload\ng-file-upload.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\oidc\oidc-client.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\reflect-metadata\reflect-metadata.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\requirejs\require.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\spin\spin.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\toastr\toastr.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\tslib\tslib.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\ui-grid\ui-grid.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\ui-router-extras\ui-router-extras.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\underscore.string\underscore.string.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\underscore\underscore.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\fonts\bootstrap\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\bootstrap\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\bootstrap\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\bootstrap\glyphicons-halflings-regular.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build\build.bat" />
+    <Content Include="app\rota\lib\ckeditor\skins\moono\readme.md" />
+    <Content Include="app\rota\lib\ckeditor\plugins\scayt\CHANGELOG.md" />
+    <Content Include="app\rota\lib\ckeditor\plugins\scayt\LICENSE.md" />
+    <Content Include="app\rota\lib\ckeditor\plugins\scayt\README.md" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\LICENSE.md" />
+    <Content Include="app\rota\lib\ckeditor\plugins\wsc\README.md" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="Content\scss\rota\rota.scss" />
+    <Content Include="Content\scss\rota\libraries\_vendor-overwrite.scss" />
+    <Content Include="Content\scss\rota\libraries\_helper.scss" />
+    <Content Include="Content\scss\rota\libraries\_variables.scss" />
+    <Content Include="Content\scss\rota\libraries\_mixins.scss" />
+    <Content Include="Content\scss\vendor\bourbon\helpers\_buttons-list.scss" />
+    <Content Include="Content\scss\vendor\bourbon\helpers\_scales.scss" />
+    <Content Include="Content\scss\vendor\bourbon\helpers\_text-inputs-list.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_border-color.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_border-radius.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_border-style.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_border-width.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_buttons.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_clearfix.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_contrast-switch.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_ellipsis.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_font-face.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_font-stacks.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_hide-text.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_hide-visually.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_margin.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_modular-scale.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_padding.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_position.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_prefixer.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_shade.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_size.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_strip-unit.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_text-inputs.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_timing-functions.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_tint.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_triangle.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_value-prefixer.scss" />
+    <Content Include="Content\scss\vendor\bourbon\library\_word-wrap.scss" />
+    <Content Include="Content\scss\vendor\bourbon\settings\_settings.scss" />
+    <Content Include="Content\scss\vendor\bourbon\utilities\_assign-inputs.scss" />
+    <Content Include="Content\scss\vendor\bourbon\utilities\_collapse-directionals.scss" />
+    <Content Include="Content\scss\vendor\bourbon\utilities\_directional-values.scss" />
+    <Content Include="Content\scss\vendor\bourbon\utilities\_font-source-declaration.scss" />
+    <Content Include="Content\scss\vendor\bourbon\utilities\_retrieve-bourbon-setting.scss" />
+    <Content Include="Content\scss\vendor\bourbon\utilities\_unpack.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_contains-falsy.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_contains.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_is-color.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_is-length.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_is-light.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_is-number.scss" />
+    <Content Include="Content\scss\vendor\bourbon\validators\_is-size.scss" />
+    <Content Include="Content\scss\vendor\_bourbon.scss" />
+    <Content Include="Content\scss\rota\components\_rtDatePicker.scss" />
+    <Content Include="Content\scss\rota\components\_rtTabs.scss" />
+    <Content Include="Content\scss\rota\components\_rtMultiSelect.scss" />
+    <Content Include="Content\scss\rota\components\_rtSelect.scss" />
+    <Content Include="Content\scss\rota\components\_grid.scss" />
+    <Content Include="Content\scss\rota\libraries\_animations.scss" />
+    <Content Include="Content\scss\rota\components\_initLoading.scss" />
+    <Content Include="Content\scss\rota\sections\_content.scss" />
+    <Content Include="Content\scss\rota\libraries\_inputs.scss" />
+    <Content Include="Content\scss\rota\components\_rtNavMenu.scss" />
+    <Content Include="Content\scss\vendor\_bootstrap-compass.scss" />
+    <Content Include="Content\scss\vendor\_bootstrap-mincer.scss" />
+    <Content Include="Content\scss\vendor\_bootstrap-sprockets.scss" />
+    <Content Include="Content\scss\vendor\_bootstrap.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_alerts.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_buttons.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_center-block.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_forms.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_gradients.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_grid.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_hide-text.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_image.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_labels.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_list-group.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_nav-vertical-align.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_opacity.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_pagination.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_panels.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_progress-bar.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_reset-filter.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_reset-text.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_resize.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_responsive-visibility.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_size.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_tab-focus.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_table-row.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_text-overflow.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\mixins\_vendor-prefixes.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_alerts.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_badges.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_breadcrumbs.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_button-groups.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_buttons.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_carousel.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_close.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_code.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_component-animations.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_dropdowns.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_forms.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_glyphicons.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_grid.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_input-groups.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_jumbotron.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_labels.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_list-group.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_media.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_mixins.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_modals.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_navbar.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_navs.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_normalize.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_pager.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_pagination.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_panels.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_popovers.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_print.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_progress-bars.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_responsive-embed.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_responsive-utilities.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_scaffolding.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_tables.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_theme.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_thumbnails.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_tooltip.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_type.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_utilities.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_variables.scss" />
+    <Content Include="Content\scss\vendor\bootstrap\_wells.scss" />
+    <Content Include="Content\scss\rota\components\_rtMultFileUpload.scss" />
+    <Content Include="Content\scss\rota\components\_buttons.scss" />
+    <Content Include="Content\scss\rota\components\_rtDateRange.scss" />
+    <Content Include="Content\scss\rota\components\_contextMenu.scss" />
+    <Content Include="Content\scss\rota\components\_rtTree.scss" />
+    <Content Include="Content\scss\rota\components\_modal.scss" />
+    <Content Include="Content\scss\rota\components\_rtCallout.scss" />
+    <Content Include="Content\scss\rota\components\_rtNotification.scss" />
+    <Content Include="Content\scss\vendor\animate\_animate.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounce.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceIn.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceInDown.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceInLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceInRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceInUp.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceOut.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceOutDown.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceOutLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceOutRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_bounceOutUp.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeIn.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInDown.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInDownBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInLeftBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInRightBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInUp.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeInUpBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOut.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutDown.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutDownBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutLeftBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutRightBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutUp.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_fadeOutUpBig.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_flip.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_flipInX.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_flipInY.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_flipOutX.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_flipOutY.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_helpers.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_hingeLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_hingeRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_lightSpeedIn.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_lightSpeedOut.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_pulse.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rollIn.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rollOut.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateIn.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateInDownLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateInDownRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateInUpLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateInUpRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateOut.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateOutDownLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateOutDownRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateOutUpLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_rotateOutUpRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_shake.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideInDown.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideInLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideInRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideInUp.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideOutDown.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideOutLeft.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideOutRight.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_slideOutUp.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_swing.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_tada.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_wiggle.scss" />
+    <Content Include="Content\scss\vendor\animate\partials\_wobble.scss" />
+    <Content Include="Content\scss\rota\components\_rtNavMenuMobile.scss" />
+    <Content Include="Content\scss\rota\sections\_sub-header.scss" />
+    <Content Include="Content\scss\rota\components\_avatar.scss" />
+    <Content Include="Content\scss\vendor\awesome-bootstrap-checkbox.scss" />
+    <Content Include="Content\scss\rota\components\_rtNumber.scss" />
+    <Content Include="Content\scss\rota\components\_rtNavProfile.scss" />
+    <Content Include="Content\scss\rota\components\_rtInfo.scss" />
+    <Content Include="Content\scss\rota\components\_rtPagePreview.scss" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\scss\rota\components\_rtFileUpload.scss" />
+    <None Include="Properties\PublishProfiles\RotaTest.pubxml" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptExperimentalDecorators>True</TypeScriptExperimentalDecorators>
+    <TypeScriptEmitDecoratorMetadata>True</TypeScriptEmitDecoratorMetadata>
+    <TypeScriptAdditionalFlags> $(TypeScriptAdditionalFlags) --emitDecoratorMetadata --experimentalDecorators </TypeScriptAdditionalFlags>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>44241</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:1234</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
