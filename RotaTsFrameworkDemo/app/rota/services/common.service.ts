@@ -203,25 +203,28 @@ class Common implements ICommon {
         const getKey = (key: string, index?: number): string => {
             return parentKey ? (this.isAssigned(index) ? `${parentKey}[${index}].${key}` : `${parentKey}.${key}`) : key;
         }
+        const appendItem = (list: INameValueStructure[], item: INameValueStructure): void => {
+            this.isAssigned(item.value) && list.push(item);
+        }
         const params = _.reduce<any, INameValueStructure[]>(filter, (memo, value: any, key: string) => {
             if (_.isArray(value)) {
                 value.forEach((item: INameValueStructure, index) => {
                     if (_.isObject(item)) {
-                        memo.push({ name: getKey("name", index), value: item.name });
-                        memo.push({ name: getKey("value", index), value: item.value });
+                        appendItem(memo, { name: getKey("name", index), value: item.name });
+                        appendItem(memo, { name: getKey("value", index), value: item.value });
                     } else {
-                        memo.push({ name: getKey(key), value: item });
+                        appendItem(memo, { name: getKey(key), value: item });
                     }
                 });
             } else
                 if (_.isDate(value))
-                    memo.push({ name: getKey(key), value: value.toISOString() });
+                    appendItem(memo, { name: getKey(key), value: value.toISOString() });
                 else
                     if (_.isObject(value)) {
                         memo.push(...this.serializeAsNameValuePairs(value, getKey(key)));
                     }
                     else
-                        memo.push({ name: getKey(key), value: value });
+                        appendItem(memo, { name: getKey(key), value: value });
             return memo;
         }, []);
         return params;
