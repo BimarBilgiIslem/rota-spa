@@ -32,9 +32,9 @@ function includeDirective(routing: IRouting, common: ICommon) {
         }
 
         let htmlMarkup = `<ng-include src="\'{0}\'"></ng-include>`;
-        const relativePath = getRelativePath(routing.current.templateUrl as string);
 
-        const absoluteFilePath = common.addTrailingSlash(relativePath) + (cAttrs.name || cAttrs.rtInclude);
+        const relativePath = getRelativePath((routing.current.templateUrl || routing.current.hierarchicalMenu.templateUrl) as string);
+        const absoluteFilePath = common.getBasePath() + common.addTrailingSlash(relativePath) + (cAttrs.name || cAttrs.rtInclude);
         htmlMarkup = htmlMarkup.replace('{0}', absoluteFilePath);
 
         cElement.append(htmlMarkup);
