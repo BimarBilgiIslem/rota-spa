@@ -364,6 +364,7 @@
     <Content Include="app\customer\customer.html" />
     <Content Include="app\customer\customers.html" />
     <Content Include="app\customer\modal\customer.modal.controller.html" />
+    <Content Include="app\customer\test.html" />
     <Content Include="app\dashboard\dashboard.html" />
     <Content Include="app\dashboard\items\widget1.html" />
     <Content Include="app\help.html" />
@@ -721,7 +722,6 @@
     <TypeScriptCompile Include="app\rota\base\index.ts" />
     <TypeScriptCompile Include="app\rota\base\injectableobject.ts" />
     <TypeScriptCompile Include="app\rota\base\interfaces.ts" />
-    <TypeScriptCompile Include="app\rota\base\ph.ts" />
     <TypeScriptCompile Include="app\rota\config\app.declarations.ts" />
     <TypeScriptCompile Include="app\rota\config\constants.interface.ts" />
     <TypeScriptCompile Include="app\rota\config\constants.ts" />

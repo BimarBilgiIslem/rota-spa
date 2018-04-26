@@ -192,7 +192,8 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
         'ngf-select-disabled=ngDisabled ngf-select="uploadFiles($files)" ngf-multiple="true" ngf-accept=accept ngf-max-size=maxUploadSize>' +
         '<i class="fa fa-paperclip"></i>&nbsp;{{::\'rota.yenidosyaekle\' | i18n}}</a></li>' +
         '<li class="list-group-item rota-animate-rt-multiselect" ng-repeat="file in visibleItems">' +
-        '<a href rt-download="{{file.$uploadedFile.downloadLink}}"><i ng-class="[\'fa\', \'fa-fw\', \'fa-\' + file.$uploadedFile.icon]"></i>&nbsp;{{file.$uploadedFile.name}}</a>' +
+        '<a href ng-if="file.$uploadedFile.downloadLink" rt-download="{{file.$uploadedFile.downloadLink}}"><i ng-class="[\'fa\', \'fa-fw\', \'fa-\' + file.$uploadedFile.icon]"></i>&nbsp;{{file.$uploadedFile.name}}</a>' +
+        '<a href ng-if="!file.$uploadedFile.downloadLink"><i ng-class="[\'fa\', \'fa-fw\', \'fa-\' + file.$uploadedFile.icon]"></i>&nbsp;{{file.$uploadedFile.name}}</a>' +
         '<a ng-hide="ngDisabled || !file.$uploadedFile.isLoaded" uib-tooltip="{{::\'rota.tt_sil\' | i18n}}" tooltip-append-to-body="true" href class="pull-right" ng-click="remove(file)"><i class="fa fa-minus-circle text-danger"></i></a>' +
         '<div ng-hide="file.$uploadedFile.isLoaded" class="pull-right"><round-progress color="#45ccce" max="file.$uploadedFile.total" ' +
         'current="file.$uploadedFile.loaded" radius="9" stroke="3"></round-progress></div>' +
