@@ -78,7 +78,8 @@ const rotaConstants: IConstants = {
         EVENT_MODEL_LOADED: 'rota:modelLoaded',
         EVENT_STATE_CHANGE_START: '$stateChangeStart',
         EVENT_STATE_CHANGE_SUCCESS: '$stateChangeSuccess',
-        EVENT_START_FILEDOWNLOAD: 'rota:filedownload'
+        EVENT_START_FILEDOWNLOAD: 'rota:startFileDownload',
+        EVENT_FINISH_FILEDOWNLOAD: 'rota:finishFileDownload'
     },
     //Grid 
     grid: {

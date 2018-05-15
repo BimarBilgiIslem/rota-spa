@@ -63,6 +63,7 @@ interface IConstants {
         EVENT_STATE_CHANGE_START: string;
         EVENT_STATE_CHANGE_SUCCESS: string;
         EVENT_START_FILEDOWNLOAD: string;
+        EVENT_FINISH_FILEDOWNLOAD: string;
     };
     grid: {
         GRID_DEFAULT_PAGE_SIZE: number;

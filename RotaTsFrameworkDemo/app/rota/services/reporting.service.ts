@@ -25,6 +25,7 @@ import * as moment from "moment";
 class Reporting implements IReporting {
     serviceName = 'Reporting Service';
     static injectionName = "Reporting";
+    private downloadDefer: ng.IDeferred<any>;
 
     static $inject = ['$rootScope', '$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants'];
     constructor(
@@ -42,6 +43,11 @@ class Reporting implements IReporting {
             this.logger.console.warn({ message: this.constants.errors.NO_REPORT_URL_PROVIDED });
         if (!config.reportViewerUrl)
             this.logger.console.warn({ message: this.constants.errors.NO_REPORT_VIEWER_URL_PROVIDED });
+
+        $rootScope.$on(this.constants.events.EVENT_FINISH_FILEDOWNLOAD, e => {
+            e.preventDefault();
+            this.downloadDefer.resolve();
+        });
     }
     /**
      * Convert literak filter obj to ReportParams array     
@@ -66,7 +72,8 @@ class Reporting implements IReporting {
      * Export/Downlaod report as specified mimetype
      * @param options Report generate options
      */
-    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): void {
+    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): IP<any> {
+        this.downloadDefer = this.$q.defer();
         //extend defaults
         options = angular.extend({
             reportExportType: ReportExportTypes.Pdf,
@@ -75,7 +82,7 @@ class Reporting implements IReporting {
         //get url and convert filter to report params
         const reportEndpoint = `${this.config.reportControllerUrl}/${this.constants.server.ACTION_NAME_GET_REPORT}`;
         const reportParams = this.mapReportParams(options.filter);
-        //get report
+        //start download 
         this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD,
             {
                 url: reportEndpoint,
@@ -89,7 +96,9 @@ class Reporting implements IReporting {
                 },
                 inline: options.reportDispositonType === ReportDispositonTypes.Inline
             });
-        this.logger.console.log({ message: options.reportName + ' report downloaded' });
+        //wait
+        return this.downloadDefer.promise.then(
+            () => this.logger.console.log({ message: options.reportName + ' report downloaded' }));
     }
 }
 

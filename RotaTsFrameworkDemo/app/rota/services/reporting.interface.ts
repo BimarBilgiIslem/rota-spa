@@ -48,7 +48,7 @@ interface IReporting extends IBaseService {
     * Export/Downlaod report as specified mimetype
     * @param options Report generate options
     */
-    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): void;
+    downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): IP<any>;
 }
 /**
  * Report Export Types
