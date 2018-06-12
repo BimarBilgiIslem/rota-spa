@@ -40,17 +40,20 @@ function downloadDirective($rootScope: IRotaRootScope, constants: IConstants,
                     httpMethod: "POST",
                     inline: options.inline,
                     data: options.filter,
+                    successCallback: () => {
+                        $rootScope.$broadcast(constants.events.EVENT_FINISH_FILEDOWNLOAD);
+                    },
                     prepareCallback: () => {
                         if (!options.inline)
                             $rootScope.$broadcast(constants.events.EVENT_AJAX_STARTED);
                     },
                     failCallback: () => {
+                        $rootScope.$broadcast(constants.events.EVENT_FAILED_FILEDOWNLOAD);
                         const message = localization.getLocal("rota.downloaderror");
                         logger.toastr.error({ message });
                     }
                 }).always(() => {
                     $rootScope.$broadcast(constants.events.EVENT_AJAX_FINISHED);
-                    $rootScope.$broadcast(constants.events.EVENT_FINISH_FILEDOWNLOAD);
                 });
         }
 

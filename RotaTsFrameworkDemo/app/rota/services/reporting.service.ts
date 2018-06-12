@@ -48,6 +48,11 @@ class Reporting implements IReporting {
             e.preventDefault();
             this.downloadDefer.resolve();
         });
+
+        $rootScope.$on(this.constants.events.EVENT_FAILED_FILEDOWNLOAD, e => {
+            e.preventDefault();
+            this.downloadDefer.reject();
+        });
     }
     /**
      * Convert literak filter obj to ReportParams array     
@@ -92,6 +97,7 @@ class Reporting implements IReporting {
                         displayReportName: options.displayReportName,
                         reportExportType: options.reportExportType,
                         reportDispositonType: options.reportDispositonType,
+                        reportCulture: options.reportCulture || this.localization.currentLanguage.code
                     }, filter
                 },
                 inline: options.reportDispositonType === ReportDispositonTypes.Inline,

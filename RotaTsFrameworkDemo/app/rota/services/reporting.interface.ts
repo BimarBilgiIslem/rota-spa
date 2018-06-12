@@ -38,6 +38,10 @@ interface IReportDownloadOptions<TFilter> {
      * Report Dsipositon Type
      */
     reportDispositonType?: ReportDispositonTypes;
+    /**
+     *  Report culture
+     */
+    reportCulture?: string;
 }
 
 /**
