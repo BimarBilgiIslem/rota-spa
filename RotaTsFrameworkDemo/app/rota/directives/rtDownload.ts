@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import * as $ from "jquery";
+import "fileDownload";
 
 //#region Interfaces & Scopes
 interface IDownloadAttributes extends ng.IAttributes {
@@ -25,83 +26,33 @@ interface IDownloadScope extends ng.IScope {
 }
 //#endregion
 
+
 //#region Download file within IFrame or window
-function downloadDirective($rootScope: IRotaRootScope, constants: IConstants, common: ICommon) {
-    const targetContainerName = "targetContainer";
-    const formId = "rtDownload.Form";
-    //const hiddenStyle = "position:fixed;display:none;top:-1px;left:-1px;";
-    const hiddenStyle = "position:fixed;display:none;top:-1px;left:-1px;";
+function downloadDirective($rootScope: IRotaRootScope, constants: IConstants,
+    common: ICommon, logger: ILogger, localization: ILocalization) {
     function link(scope: IDownloadScope, element: ng.IAugmentedJQuery, attrs: IDownloadAttributes) {
-        //#region Get Elems
-        /**
-         * Get IFrame in which download process will processed
-         * @param name
-         */
-        const getIFrame = (): HTMLElement => {
-            let iFrame = $('iframe#fileDownloadFrame') as ng.IAugmentedJQuery;
-            if (!(iFrame && iFrame.length > 0)) {
-                iFrame = $(`<iframe id='fileDownloadFrame'
-                                    name='${targetContainerName}' 
-                                    src='about:blank'
-                                    style='${hiddenStyle}'/>`) as ng.IAugmentedJQuery;
 
-                //append document node as global
-                document.body.appendChild(iFrame[0]);
-            }
-            return iFrame[0];
-        }
-        /**
-         * Get form elem targeted to iframe
-         * @param options
-         * @param target
-         */
-        const getForm = (url: string, context: HTMLElement): ng.IAugmentedJQuery => {
-            //remove previous form
-            $(`form#${formId}`, context).remove();
-            //add token to url
-            const secureLink = common.appendAccessTokenToUrl(url);
-            return $(`<form method='POST' 
-                            id=${formId}  
-                            action='${secureLink}' 
-                            style='${hiddenStyle}'
-                            target='${targetContainerName}'/>`) as ng.IAugmentedJQuery;
-        }
-        //#endregion
-
-        //#region Download methods
         const startDownload = (options: IDownloadOptions) => {
-            if (common.isNullOrEmpty(options.url)) throw "download url is missing";
-            //get container in which download process will occur
-            const container = (options.inline === true) ? document.body : getIFrame();
-            if (container) {
-                const formElem = getForm(options.url, container);
-                //set form body params
-                if (common.isNotEmptyObject(options.filter)) {
-                    const filterArray = common.serializeAsNameValuePairs(options.filter);
-                    filterArray.forEach(
-                        item => formElem.append(`<input type='hidden' name='${item.name}' value='${item.value}'/>`));
-                }
-                //append elements
-                container.appendChild(formElem[0]);
 
-                if (options.inline) {
-                    window.open('about:blank',
-                        targetContainerName,
-                        'height=950, width=950, status=yes, resizable=yes, scrollbars=yes,' +
-                        ' toolbar=no, location=no, menubar=no left=0, top=10');
-                } else {
-                    $rootScope.$broadcast(constants.events.EVENT_AJAX_STARTED);
-                    //wait for download process then send out signal.
-                    $(container).bind('load', () => {
-                        $rootScope.$broadcast(constants.events.EVENT_AJAX_FINISHED);
-                        $rootScope.$broadcast(constants.events.EVENT_FINISH_FILEDOWNLOAD);
-                    });
-                }
-                //actual start
-                formElem.submit();
-            }
-        };
-        //#endregion
+            const secureUrl = common.appendAccessTokenToUrl(options.url);
+            ($ as any).fileDownload(secureUrl,
+                {
+                    httpMethod: "POST",
+                    inline: options.inline,
+                    data: options.filter,
+                    prepareCallback: () => {
+                        if (!options.inline)
+                            $rootScope.$broadcast(constants.events.EVENT_AJAX_STARTED);
+                    },
+                    failCallback: () => {
+                        const message = localization.getLocal("rota.downloaderror");
+                        logger.toastr.error({ message });
+                    }
+                }).always(() => {
+                    $rootScope.$broadcast(constants.events.EVENT_AJAX_FINISHED);
+                    $rootScope.$broadcast(constants.events.EVENT_FINISH_FILEDOWNLOAD);
+                });
+        }
 
         //#region Starters
         if (common.isNullOrEmpty(attrs.rtDownload)) {
@@ -123,7 +74,7 @@ function downloadDirective($rootScope: IRotaRootScope, constants: IConstants, co
                 (e) => {
                     e.preventDefault();
                     if (common.isNullOrEmpty(attrs.rtDownload)) return;
-                    startDownload({ url: attrs.rtDownload });
+                    startDownload({ url: attrs.rtDownload, ...attrs.downloadOptions });
                 });
         }
         //#endregion
@@ -140,7 +91,7 @@ function downloadDirective($rootScope: IRotaRootScope, constants: IConstants, co
     //#endregion
 }
 //#region Injections
-downloadDirective.$inject = ["$rootScope", "Constants", "Common"];
+downloadDirective.$inject = ["$rootScope", "Constants", "Common", "Logger", "Localization"];
 //#endregion
 //#endregion
 
