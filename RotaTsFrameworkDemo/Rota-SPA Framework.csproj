@@ -569,6 +569,7 @@
     <Content Include="app\rota\lib\FileAPI.min.js" />
     <Content Include="app\rota\lib\hotkeys.min.js" />
     <Content Include="app\rota\lib\i18n.js" />
+    <Content Include="app\rota\lib\jquery.fileDownload.js" />
     <Content Include="app\rota\lib\json.js" />
     <Content Include="app\rota\lib\mask.min.js" />
     <Content Include="app\rota\lib\mfb-directive.js" />
@@ -1105,6 +1106,7 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\scss\rota\components\_rtFileUpload.scss" />
     <None Include="Properties\PublishProfiles\RotaTest.pubxml" />
+    <Content Include="Views\Home\TestCookie.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

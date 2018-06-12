@@ -81,7 +81,7 @@ class Reporting implements IReporting {
         }, options);
         //get url and convert filter to report params
         const reportEndpoint = `${this.config.reportControllerUrl}/${this.constants.server.ACTION_NAME_GET_REPORT}`;
-        const reportParams = this.mapReportParams(options.filter);
+        const filter = this.mapReportParams(options.filter);
         //start download 
         this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD,
             {
@@ -91,10 +91,11 @@ class Reporting implements IReporting {
                         reportName: options.reportName,
                         displayReportName: options.displayReportName,
                         reportExportType: options.reportExportType,
-                        reportDispositonType: options.reportDispositonType
-                    }, filter: { reportParams }
+                        reportDispositonType: options.reportDispositonType,
+                    }, filter
                 },
-                inline: options.reportDispositonType === ReportDispositonTypes.Inline
+                inline: options.reportDispositonType === ReportDispositonTypes.Inline,
+                downloadToken: new Date().getTime()
             });
         //wait
         return this.downloadDefer.promise.then(

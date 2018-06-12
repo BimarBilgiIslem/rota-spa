@@ -1,5 +1,6 @@
 ﻿define({
     rota: {
+        downloaderror:'Rapor/Dosya indirilemedi',
         geribildirim: 'Geri bildirimde bulun',
         geribildirimaciklama: 'Proje hakkında şikayet veya mesajınızı lütfen bizimle paylaşın.' +
             'Projenin gelişimi için yorumlarınız bizim için önemlidir',

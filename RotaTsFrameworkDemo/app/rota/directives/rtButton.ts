@@ -82,6 +82,8 @@ function buttonDirective($document: duScroll.IDocumentService, hotkeys: ng.hotke
                 }
             };
             scope.doclick = e => {
+                if (scope.isBusy)
+                    return;
                 const result = scope.click(e);
                 if (common.isPromise(result)) {
                     startAjax();

@@ -50,6 +50,7 @@ require.config({
         'underscore.string': './rota/lib/underscore.string.min',
         'underscore.mixed': './rota/lib/underscore.mixed',
         moment: './rota/lib/moment.min',
+        fileDownload: './rota/lib/jquery.fileDownload',
         //requirejs plugins
         i18n: './rota/lib/i18n',
         text: './rota/lib/text',
@@ -144,6 +145,9 @@ require.config({
         },
         oidc: {
             exports: 'oidc'
+        },
+        "fileDownload": {
+            exports: 'fileDownload'
         }
     }
     //#endregion

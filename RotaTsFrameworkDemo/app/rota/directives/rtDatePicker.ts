@@ -146,7 +146,7 @@ function dateTimePickerDirective($document: ng.IDocumentService, $timeout: ng.IT
             }
             //set model depending on date-format
             const setModel = (increment: number): void => {
-                const mDate = moment(modelCtrl.$modelValue);
+                const mDate = moment(modelCtrl.$modelValue || new Date());
                 switch (cAttrs.dateFormat) {
                     case "day":
                         modelCtrl.$setViewValue(mDate.add(increment, "d"));

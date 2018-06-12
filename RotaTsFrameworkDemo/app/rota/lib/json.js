@@ -10,7 +10,8 @@ define(['text'], function (text) {
     var CACHE_BUST_QUERY_PARAM = 'bust',
         CACHE_BUST_FLAG = '!bust',
         jsonParse = (typeof JSON !== 'undefined' && typeof JSON.parse === 'function') ? JSON.parse : function (val) {
-            return eval('(' + val + ')'); //quick and dirty
+            //return eval('(' + val + ')'); //quick and dirty
+            throw new Error("json not supported");
         },
         buildMap = {};
 

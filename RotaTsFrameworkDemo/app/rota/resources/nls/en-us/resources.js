@@ -1,6 +1,7 @@
 ﻿define({
     //#region Rota
     rota: {
+        downloaderror: 'Report/File could not be downloaded',
         geribildirim: 'Feedback',
         geribildirimaciklama: 'Please use this form if you have any questions or complaint about this project',
         mesajgiriniz: 'Type your message',
