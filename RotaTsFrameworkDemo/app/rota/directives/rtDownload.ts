@@ -44,7 +44,7 @@ function downloadDirective($rootScope: IRotaRootScope, constants: IConstants,
                         $rootScope.$broadcast(constants.events.EVENT_FINISH_FILEDOWNLOAD);
                     },
                     prepareCallback: () => {
-                        if (!options.inline)
+                        if (options.showIndicator)
                             $rootScope.$broadcast(constants.events.EVENT_AJAX_STARTED);
                     },
                     failCallback: () => {
@@ -53,7 +53,8 @@ function downloadDirective($rootScope: IRotaRootScope, constants: IConstants,
                         logger.toastr.error({ message });
                     }
                 }).always(() => {
-                    $rootScope.$broadcast(constants.events.EVENT_AJAX_FINISHED);
+                    if (options.showIndicator)
+                        $rootScope.$broadcast(constants.events.EVENT_AJAX_FINISHED);
                 });
         }
 

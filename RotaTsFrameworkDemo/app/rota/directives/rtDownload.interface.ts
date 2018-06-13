@@ -14,4 +14,8 @@ interface IDownloadOptions {
      * Indicator that download will be processed within IFrame or new window (window.open())
      */
     inline?: boolean;
+    /**
+     * Show loading indicator while downloading 
+     */
+    showIndicator?: boolean;
 }

@@ -101,7 +101,7 @@ class Reporting implements IReporting {
                     }, filter
                 },
                 inline: options.reportDispositonType === ReportDispositonTypes.Inline,
-                downloadToken: new Date().getTime()
+                showIndicator: true
             });
         //wait
         return this.downloadDefer.promise.then(
