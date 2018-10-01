@@ -24,6 +24,7 @@ import BaseApi from "./baseapi";
 class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     //#region Props
     protected $rootScope: IRotaRootScope;
+    protected fileDownload: IFileDownload;
     //#endregion
 
     //#region Init
@@ -31,7 +32,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * Note that $rootScope is injected to communicate
        with global rtDownload located in content page for exporting model
      */
-    static injects = BaseApi.injects.concat(['$rootScope']);
+    static injects = BaseApi.injects.concat(['$rootScope', 'FileDownload']);
     /**
     * Update bundle
     * @param bundle IBundle
@@ -39,6 +40,7 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
     initBundle(bundle: IBundle): void {
         super.initBundle(bundle);
         this.$rootScope = bundle.services["$rootscope"];
+        this.fileDownload = bundle.services["filedownload"];
     }
     //#endregion
 
@@ -116,10 +118,10 @@ class BaseCrudApi<TModel extends IBaseCrudModel> extends BaseApi {
      * @param filter Filter and export options
      * @param controller Optional controller
      */
-    exportList<TFilter extends IBaseListModelFilter = IBaseListModelFilter>(filter?: IExportFilter<TFilter>, controller?: string): void {
+    exportList<TFilter extends IBaseListModelFilter = IBaseListModelFilter>(filter?: IExportFilter<TFilter>, controller?: string): ng.IPromise<any> {
         const url = `${this.getAbsoluteUrl(this.config.crudActionNames.exportList, controller)}`;
         //starts download in global rtDownload
-        this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD, { url, filter });
+        return this.fileDownload.download({ url, filter });
     }
     //#endregion
 }

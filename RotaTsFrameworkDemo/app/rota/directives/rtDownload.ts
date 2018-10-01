@@ -28,34 +28,11 @@ interface IDownloadScope extends ng.IScope {
 
 
 //#region Download file within IFrame or window
-function downloadDirective($rootScope: IRotaRootScope, constants: IConstants,
-    common: ICommon, logger: ILogger, localization: ILocalization) {
+function downloadDirective(fileDownload: IFileDownload, common: ICommon, constants: IConstants) {
     function link(scope: IDownloadScope, element: ng.IAugmentedJQuery, attrs: IDownloadAttributes) {
 
         const startDownload = (options: IDownloadOptions) => {
-
-            const secureUrl = common.appendAccessTokenToUrl(options.url);
-            ($ as any).fileDownload(secureUrl,
-                {
-                    httpMethod: "POST",
-                    inline: options.inline,
-                    data: options.filter,
-                    successCallback: () => {
-                        $rootScope.$broadcast(constants.events.EVENT_FINISH_FILEDOWNLOAD);
-                    },
-                    prepareCallback: () => {
-                        if (options.showIndicator)
-                            $rootScope.$broadcast(constants.events.EVENT_AJAX_STARTED);
-                    },
-                    failCallback: () => {
-                        $rootScope.$broadcast(constants.events.EVENT_FAILED_FILEDOWNLOAD);
-                        const message = localization.getLocal("rota.downloaderror");
-                        logger.toastr.error({ message });
-                    }
-                }).always(() => {
-                    if (options.showIndicator)
-                        $rootScope.$broadcast(constants.events.EVENT_AJAX_FINISHED);
-                });
+            fileDownload.download(options);
         }
 
         //#region Starters
@@ -95,7 +72,7 @@ function downloadDirective($rootScope: IRotaRootScope, constants: IConstants,
     //#endregion
 }
 //#region Injections
-downloadDirective.$inject = ["$rootScope", "Constants", "Common", "Logger", "Localization"];
+downloadDirective.$inject = ["FileDownload", "Common", "Constants"];
 //#endregion
 //#endregion
 

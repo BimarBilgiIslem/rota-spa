@@ -25,34 +25,19 @@ import * as moment from "moment";
 class Reporting implements IReporting {
     serviceName = 'Reporting Service';
     static injectionName = "Reporting";
-    private downloadDefer: ng.IDeferred<any>;
 
-    static $inject = ['$rootScope', '$http', '$q', 'Routing', 'Config', 'Common', 'Localization', 'Dialogs', 'Logger', 'Constants'];
+    static $inject = ['Config', 'Logger', 'Constants', 'FileDownload', 'Localization'];
     constructor(
-        private $rootScope: IRotaRootScope,
-        private $http: ng.IHttpService,
-        private $q: ng.IQService,
-        private routing: IRouting,
         private config: IMainConfig,
-        private common: ICommon,
-        private localization: ILocalization,
-        private dialogs: IDialogs,
         private logger: ILogger,
-        private constants: IConstants) {
+        private constants: IConstants,
+        private fileDownload: IFileDownload,
+        private localization: ILocalization) {
+
         if (!config.reportControllerUrl)
             this.logger.console.warn({ message: this.constants.errors.NO_REPORT_URL_PROVIDED });
         if (!config.reportViewerUrl)
             this.logger.console.warn({ message: this.constants.errors.NO_REPORT_VIEWER_URL_PROVIDED });
-
-        $rootScope.$on(this.constants.events.EVENT_FINISH_FILEDOWNLOAD, e => {
-            e.preventDefault();
-            this.downloadDefer.resolve();
-        });
-
-        $rootScope.$on(this.constants.events.EVENT_FAILED_FILEDOWNLOAD, e => {
-            e.preventDefault();
-            this.downloadDefer.reject();
-        });
     }
     /**
      * Convert literak filter obj to ReportParams array     
@@ -78,7 +63,6 @@ class Reporting implements IReporting {
      * @param options Report generate options
      */
     downloadReport<TReportFilter extends IBaseReportFilter>(options: IReportDownloadOptions<TReportFilter>): IP<any> {
-        this.downloadDefer = this.$q.defer();
         //extend defaults
         options = angular.extend({
             reportExportType: ReportExportTypes.Pdf,
@@ -88,23 +72,20 @@ class Reporting implements IReporting {
         const reportEndpoint = `${this.config.reportControllerUrl}/${this.constants.server.ACTION_NAME_GET_REPORT}`;
         const filter = this.mapReportParams(options.filter);
         //start download 
-        this.$rootScope.$broadcast(this.constants.events.EVENT_START_FILEDOWNLOAD,
-            {
-                url: reportEndpoint,
-                filter: {
-                    options: {
-                        reportName: options.reportName,
-                        displayReportName: options.displayReportName,
-                        reportExportType: options.reportExportType,
-                        reportDispositonType: options.reportDispositonType,
-                        reportCulture: options.reportCulture || this.localization.currentLanguage.code
-                    }, filter
-                },
-                inline: options.reportDispositonType === ReportDispositonTypes.Inline,
-                showIndicator: true
-            });
-        //wait
-        return this.downloadDefer.promise.then(
+        return this.fileDownload.download({
+            url: reportEndpoint,
+            filter: {
+                options: {
+                    reportName: options.reportName,
+                    displayReportName: options.displayReportName,
+                    reportExportType: options.reportExportType,
+                    reportDispositonType: options.reportDispositonType,
+                    reportCulture: options.reportCulture || this.localization.currentLanguage.code
+                }, filter
+            },
+            inline: options.reportDispositonType === ReportDispositonTypes.Inline,
+            showIndicator: true
+        }).then(
             () => this.logger.console.log({ message: options.reportName + ' report downloaded' }));
     }
 }
