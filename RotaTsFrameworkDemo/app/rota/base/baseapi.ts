@@ -82,8 +82,7 @@ class BaseApi extends InjectableObject implements IBaseApi {
      * @param params Optional params to send to server
      */
     fileUpload(file: IFileInfo, params?: any, actionName?: string): ng.IPromise<IFileUploadResponseData> {
-        return this.uploader.upload(<any>{
-            showSpinner: false,
+        return this.uploader.upload(<any>{            
             url: this.getAbsoluteUrl(actionName || this.constants.server.ACTION_NAME_DEFAULT_FILE_UPLOAD),
             method: RequestMethod[RequestMethod.post],
             data: this.common.extend({ file: file }, params)

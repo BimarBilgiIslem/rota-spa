@@ -370,8 +370,8 @@
     <Content Include="app\help.html" />
     <Content Include="app\layouts\custom-content.html" />
     <Content Include="app\layouts\fancytitle.html" />
-    <Content Include="app\libs\angular-chart.min.js" />
-    <Content Include="app\libs\Chart.min.js" />
+    <Content Include="app\angular-chart.min.js" />
+    <Content Include="app\chart.js" />
     <Content Include="app\main.js" />
     <Content Include="app\product\product.modal.html" />
     <Content Include="app\resources\nls\en-us\resources.js" />
@@ -761,6 +761,8 @@
     <TypeScriptCompile Include="app\rota\extensions\string.extensions.ts" />
     <TypeScriptCompile Include="app\rota\extensions\window.extensions.ts" />
     <TypeScriptCompile Include="app\rota\filters\rtHtmltoPlainText.ts" />
+    <TypeScriptCompile Include="app\rota\services\filedownload.interface.ts" />
+    <TypeScriptCompile Include="app\rota\services\filedownload.service.ts" />
     <TypeScriptCompile Include="app\rota\services\reporting.interface.ts" />
     <TypeScriptCompile Include="app\rota\services\reporting.service.ts" />
     <TypeScriptCompile Include="app\rota\services\security.encoding.interface.ts" />
@@ -1108,7 +1110,9 @@
     <None Include="Properties\PublishProfiles\RotaTest.pubxml" />
     <Content Include="Views\Home\TestCookie.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="app\libs\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

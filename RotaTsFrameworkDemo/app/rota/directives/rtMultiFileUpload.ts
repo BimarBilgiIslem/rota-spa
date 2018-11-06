@@ -142,9 +142,14 @@ function multiFileUploadDirective($parse: ng.IParseService, $q: ng.IQService,
          */
         scope.uploadFiles = (files: IFileInfo[]): void => {
             if (!files || !files.length) return;
+            //show immidiately loading spinner so it prevents user from saving the form 
+            const originalDelayValue = constants.server.AJAX_TIMER_DELAY;
+            constants.server.AJAX_TIMER_DELAY = 0;
             //upload 
             uploadFiles(files).finally((): void => {
                 refreshModel();
+                //set back original delay
+                constants.server.AJAX_TIMER_DELAY = originalDelayValue; 
             });
         }
         /**

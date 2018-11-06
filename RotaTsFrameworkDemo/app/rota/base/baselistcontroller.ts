@@ -563,7 +563,6 @@ abstract class BaseListController<TModel extends IBaseModel, TModelFilter extend
                         }
                     });
             }
-            this.gridData.deleteById(id);
             return;
         });
     }

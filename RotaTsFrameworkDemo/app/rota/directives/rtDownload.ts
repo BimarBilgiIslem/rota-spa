@@ -35,30 +35,16 @@ function downloadDirective(fileDownload: IFileDownload, common: ICommon, constan
             fileDownload.download(options);
         }
 
-        //#region Starters
-        if (common.isNullOrEmpty(attrs.rtDownload)) {
-            /**
-            * Listen for download options event
-            * Element usage 
-            */
-            scope.$on(constants.events.EVENT_START_FILEDOWNLOAD,
-                (e, options: IDownloadOptions) => {
-                    e.preventDefault();
-                    if (!options) return;
-                    startDownload(options);
-                });
-        } else {
-            /**
-             * Attribute usage
-             */
-            element.bind('click',
-                (e) => {
-                    e.preventDefault();
-                    if (common.isNullOrEmpty(attrs.rtDownload)) return;
-                    startDownload({ url: attrs.rtDownload, ...attrs.downloadOptions });
-                });
-        }
-        //#endregion
+        /**
+         * Attribute usage
+         */
+        element.bind('click',
+            (e) => {
+                e.preventDefault();
+                if (common.isNullOrEmpty(attrs.rtDownload)) return;
+                startDownload({ url: attrs.rtDownload, ...attrs.downloadOptions });
+            });
+
     }
     //#region Directive Definition
     const directive = <ng.IDirective>{

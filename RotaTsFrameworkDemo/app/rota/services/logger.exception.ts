@@ -59,8 +59,10 @@ const exceptionHandler = ($delegate: ng.IExceptionHandlerService, $injector: ng.
         loggerService = loggerService || $injector.get<ILogger>('Logger');
         //toastr and notification log
         const errorMsg = typeof exception === "string" ? exception : exception.message;
-        loggerService.toastr.error({ message: errorMsg });
-        loggerService.notification.error({ message: errorMsg });
+        if (errorMsg) {
+            loggerService.toastr.error({ message: errorMsg });
+            loggerService.notification.error({ message: errorMsg });
+        }
     };
 };
 exceptionHandler.$inject = ['$delegate', '$injector', 'Config'];

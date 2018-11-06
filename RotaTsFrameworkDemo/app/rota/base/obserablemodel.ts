@@ -68,6 +68,7 @@ class ObserableModel<TModel extends IBaseCrudModel> implements IObserableModel<T
             case ModelStates.Modified:
                 if (oldState !== ModelStates.Unchanged)
                     return;
+                break;
             case ModelStates.Unchanged:
                 break;
             case ModelStates.Detached:
