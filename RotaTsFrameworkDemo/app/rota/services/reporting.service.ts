@@ -26,13 +26,15 @@ class Reporting implements IReporting {
     serviceName = 'Reporting Service';
     static injectionName = "Reporting";
 
-    static $inject = ['Config', 'Logger', 'Constants', 'FileDownload', 'Localization'];
+    static $inject = ['$q', 'Config', 'Logger', 'Constants', 'FileDownload', 'Localization'];
     constructor(
+        private $q: ng.IQService,
         private config: IMainConfig,
         private logger: ILogger,
         private constants: IConstants,
         private fileDownload: IFileDownload,
-        private localization: ILocalization) {
+        private localization: ILocalization,
+        private notification: INotification) {
 
         if (!config.reportControllerUrl)
             this.logger.console.warn({ message: this.constants.errors.NO_REPORT_URL_PROVIDED });
@@ -71,6 +73,7 @@ class Reporting implements IReporting {
         //get url and convert filter to report params
         const reportEndpoint = `${this.config.reportControllerUrl}/${this.constants.server.ACTION_NAME_GET_REPORT}`;
         const filter = this.mapReportParams(options.filter);
+        const inline = options.reportDispositonType === ReportDispositonTypes.Inline;
         //start download 
         return this.fileDownload.download({
             url: reportEndpoint,
@@ -83,10 +86,17 @@ class Reporting implements IReporting {
                     reportCulture: options.reportCulture || this.localization.currentLanguage.code
                 }, filter
             },
-            inline: options.reportDispositonType === ReportDispositonTypes.Inline,
-            showIndicator: true
+            inline,
+            showIndicator: !inline
         }).then(
-            () => this.logger.console.log({ message: options.reportName + ' report downloaded' }));
+            () => this.logger.console.log({ message: options.reportName + ' report downloaded' }),
+            (error: Error | string) => {
+                const errorMessage = error && ((error as Error).message || (error as string));
+                if (errorMessage) {
+                    this.logger.notification.error({ message: errorMessage });
+                }
+                return this.$q.reject(new Error(errorMessage));
+            });
     }
 }
 

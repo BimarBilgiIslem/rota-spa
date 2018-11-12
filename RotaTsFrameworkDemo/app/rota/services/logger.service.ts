@@ -173,6 +173,7 @@ class Notification implements INotification {
      * @param notifyType Notify Type
      */
     private addNotification(notify: INotify): INotify {
+        if (notify.message === "") return;
         //TODO:sce sanitize message and text ?
         this.notifications.push(notify);
         //autohide 

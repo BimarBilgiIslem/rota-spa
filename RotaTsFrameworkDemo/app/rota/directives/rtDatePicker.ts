@@ -265,7 +265,7 @@ function dateTimePickerDirective($document: ng.IDocumentService, $timeout: ng.IT
             const inGridCell = !!$(elem).parent('.ui-grid-cell').length;
             return '<div class="rt-date-picker" uib-dropdown is-open="openIt" ' + (inGridCell ? 'dropdown-append-to-body' : '') + '>' +
                 '<div class="input-group">' +
-                '<input ng-disabled=ngDisabled ng-model-options="{debounce:50}" ng-required="ngRequired" ' +
+                '<input ng-disabled=ngDisabled on-selected=onSelected ng-model-options="{debounce:50}" ng-required="ngRequired" ' +
                 'data-date-parse-strict="false" ng-model=ngModel type="text" class="form-control"> ' +
                 '<span class="input-group-btn"><button ng-disabled=ngDisabled class="btn btn-default calendar-picker" ng-click="openPicker($event)">' +
                 '<i class="fa fa-calendar"></i></button></span></div>' +

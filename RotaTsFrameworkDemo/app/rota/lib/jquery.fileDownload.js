@@ -140,12 +140,12 @@
                 //It is recommended that on the server, htmlentity decoding is done irrespective.
                 //
                 encodeHTMLEntities: true,
-
-
+                //inline options
+                //IMPORTANT :  added/modified by Bimar *******************************************************************************
                 inline: false,
                 inlineWindowOptions: 'height=950, width=950, status=yes, resizable=yes, scrollbars=yes,' +
                     ' toolbar=no, location=no, menubar=no left=0, top=10'
-
+                //IMPORTANT :  added/modified by Bimar *******************************************************************************
             }, options);
 
             var deferred = new $.Deferred();
@@ -323,6 +323,27 @@
                     });
                 }
 
+                //put inline stuff into seperate block
+
+                //IMPORTANT NOTE: SERVER MUST NOT RETURN/SET COOKIE WHEN REPORT DISPOSITION IS INLINE
+
+                //IMPORTANT :  added/modified by Bimar *******************************************************************************
+                if (settings.inline === true) {
+
+                    const inlineWindow = window.open("about:blank", null, settings.inlineWindowOptions);
+                    inlineWindow.document.title = settings.popupWindowTitle;
+                    const inlineFormDoc = inlineWindow.document;
+                    window.focus();
+
+                    inlineFormDoc.write("<html><head></head><body><form method='" + settings.httpMethod + "' action='" + fileUrl + "'>" + formInnerHtml + "</form>" + settings.popupWindowTitle + "</body></html>");
+                    $inlineForm = $(inlineFormDoc).find('form');
+                    $inlineForm.submit();
+                   
+                    deferred.resolve();
+                    return deferred.promise();
+                }
+                //IMPORTANT :  added/modified by Bimar *******************************************************************************
+
                 if (isOtherMobileBrowser) {
 
                     $form = $("<form>").appendTo("body");
@@ -333,9 +354,9 @@
 
                 } else {
 
-                    if (isIos || settings.inline === true) {
+                    if (isIos) {
 
-                        downloadWindow = window.open("about:blank", null, settings.inline === true && settings.inlineWindowOptions);
+                        downloadWindow = window.open("about:blank");
                         downloadWindow.document.title = settings.popupWindowTitle;
                         formDoc = downloadWindow.document;
                         window.focus();
@@ -440,6 +461,7 @@
                 //keep checking...
                 setTimeout(checkFileDownloadComplete, settings.checkInterval);
             }
+
 
             //gets an iframes document in a cross browser compatible manner
             function getiframeDocument($iframe) {
